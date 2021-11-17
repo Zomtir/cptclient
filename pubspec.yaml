@@ -1,0 +1,53 @@
+name: cptclient
+description: Course Participation Tracker
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+version: 1.0.0+1
+
+environment:
+
+  sdk: ">=2.14.0-0.beta <3.0.0"
+  flutter: ^2.4.0-0.pre
+
+dependencies:
+  # Fetch data from the internet
+  http: ^0.13.3
+
+  # Hash the password
+  crypto: ^3.0.0
+
+  # Date & Time
+  intl: ^0.17.0
+
+  # Local storage
+  universal_html: ^2.0.8
+
+dev_dependencies:
+
+  flutter_test:
+    sdk: flutter
+
+  integration_test:
+    sdk: flutter
+
+# The following section is specific to Flutter
+flutter:
+
+  # Material Icons font
+  uses-material-design: true
+
+  # Local assets
+  assets:
+    - assets/images/splash.png
+    - assets/icons/icon_calendar.png
+    - assets/icons/icon_course.png
+    - assets/icons/icon_individual.png
+    - assets/icons/icon_membership.png
+    - assets/icons/icon_reservations.png
+    - assets/icons/icon_rankings.png
+    - assets/icons/icon_teams.png
+
