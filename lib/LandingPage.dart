@@ -93,7 +93,7 @@ class LandingPageState extends State<LandingPage> {
     _ctrlUserLogin.text = "";
     _ctrlUserPasswd.text = "";
 
-    var body = json.encode(credential);
+    String body = json.encode(credential);
 
     final response = await http.post(
       Uri.http(navi.server, 'user_login'),
@@ -104,10 +104,17 @@ class LandingPageState extends State<LandingPage> {
       body: body,
     );
 
-    if (response.statusCode != 200) return;
+    String status = "Case was unhandled";
 
-    window.localStorage['Token'] = response.body;
-    navi.confirmUser();
+    if (response.statusCode == 200) {
+      status = "Login was successful";
+      window.localStorage['Token'] = response.body;
+      navi.confirmUser();
+    } else {
+      status = "${response.headers["error-uri"]} error: ${response.headers["error-message"]}";
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(status)));
   }
 
   @override
