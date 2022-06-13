@@ -5,7 +5,6 @@ import 'material/app/AppButton.dart';
 import 'material/app/AppMemberTile.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import 'static/navigation.dart' as navi;
@@ -45,8 +44,6 @@ class UserDetailPageState extends State<UserDetailPage> {
     _ctrlUserKey.text = widget.user.key;
     _ctrlUserFirstname.text = widget.user.firstname;
     _ctrlUserLastname.text = widget.user.lastname;
-    _ctrlUserEmail.text = widget.user.email;
-    _ctrlUserTerm.text = DateFormat("yyyy-MM-dd").format(widget.user.term);
     _ctrlUserPassword.text = "";
   }
 
@@ -54,8 +51,6 @@ class UserDetailPageState extends State<UserDetailPage> {
     widget.user.key = _ctrlUserKey.text;
     widget.user.firstname = _ctrlUserFirstname.text;
     widget.user.lastname = _ctrlUserLastname.text;
-    widget.user.email = _ctrlUserEmail.text;
-    widget.user.term = DateFormat("yyyy-MM-dd").parse(_ctrlUserTerm.text, false);
     widget.user.pwd = crypto.hashPassword(_ctrlUserPassword.text, _ctrlUserKey.text);
   }
 

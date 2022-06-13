@@ -3,7 +3,6 @@ import 'material/app/AppBody.dart';
 import 'material/app/AppInfoRow.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import 'static/navigation.dart' as navi;
@@ -25,37 +24,14 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   List <Ranking> _rankings = [];
 
   TextEditingController _ctrlUserPassword = TextEditingController();
-  TextEditingController _ctrlUserEmail = TextEditingController();
 
   MemberProfilePageState();
 
   @override
   void initState() {
     super.initState();
-    _ctrlUserEmail.text = widget.session.user!.email;
     _ctrlUserPassword.text = "";
     _getRanking();
-  }
-
-  Future<void> _saveEmail() async {
-    if (_ctrlUserEmail.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid E-Mail')));
-      return;
-    }
-
-    final response = await http.post(
-      Uri.http(navi.server, 'user_email'),
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Token': widget.session.token,
-      },
-      body: _ctrlUserEmail.text,
-    );
-
-    if (response.statusCode != 200) return;
-
-    widget.session.user!.email = _ctrlUserEmail.text;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully changed email')));
   }
 
   Future<void> _savePassword() async {
@@ -114,24 +90,6 @@ class MemberProfilePageState extends State<MemberProfilePage> {
           AppInfoRow(
             info: Text("Name"),
             child: Text("${widget.session.user!.lastname}, ${widget.session.user!.firstname}"),
-          ),
-          AppInfoRow(
-              info: Text("Membership"),
-              child: Text(DateFormat("dd MMMM yyyy").format(widget.session.user!.term)),
-          ),
-          AppInfoRow(
-            info: Text("E-Mail"),
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUserEmail,
-              decoration: InputDecoration(
-                hintText: "Enter your E-Mail",
-                suffixIcon: IconButton(
-                  onPressed: _saveEmail,
-                  icon: Icon(Icons.save),
-                ),
-              ),
-            ),
           ),
           AppInfoRow(
             info: Text("Password"),

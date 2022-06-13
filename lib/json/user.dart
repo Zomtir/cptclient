@@ -8,14 +8,14 @@ class User implements Comparable {
   String? pwd;
   String firstname;
   String lastname;
-  String email;
-  DateTime term;
+
+  final bool enabled = false;
   final bool admin_users;
   final bool admin_rankings;
   final bool admin_reservations;
   final bool admin_courses;
 
-  User(this.id, this.key, this.pwd, this.firstname, this.lastname, this.email, this.term,
+  User(this.id, this.key, this.pwd, this.firstname, this.lastname,
       {this.admin_users = false, this.admin_rankings = false, this.admin_reservations = false, this.admin_courses = false });
 
   User.fromVoid() :
@@ -24,8 +24,6 @@ class User implements Comparable {
     pwd = "",
     firstname = "First Name",
     lastname = "Last Name",
-    email = "default@e-mail.org",
-    term = DateTime.now(),
     // TODO Probably "member" should be used instead of user in the user list?
     admin_users = false,
     admin_rankings = false,
@@ -38,8 +36,7 @@ class User implements Comparable {
     pwd = json['pwd'],
     firstname = json['firstname'],
     lastname = json['lastname'],
-    email = json['email'],
-    term = DateFormat("yyyy-MM-dd").parse(json['term'], true).toLocal(),
+
     admin_users = json['admin_users'],
     admin_rankings = json['admin_rankings'],
     admin_reservations = json['admin_reservations'],
@@ -52,8 +49,7 @@ class User implements Comparable {
       'pwd': pwd,
       'firstname': firstname,
       'lastname': lastname,
-      'email': email,
-      'term': DateFormat("yyyy-MM-dd").format(term.toUtc()),
+
       'admin_users': admin_users,
       'admin_rankings': admin_rankings,
       'admin_reservations': admin_reservations,

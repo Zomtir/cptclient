@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/static/format.dart';
 
 class AppRankingTile extends StatelessWidget {
   final Ranking ranking;
@@ -37,7 +38,7 @@ class AppRankingTile extends StatelessWidget {
               children: [
                 Text("${ranking.user!.firstname} ${ranking.user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
                 Text("${ranking.branch!.key} ${ranking.rank}"),
-                Text("${ranking.date} ${ranking.judge!.firstname} ${ranking.judge!.lastname}", style: TextStyle(color: Colors.black54)),
+                Text("${niceDateTime(ranking.date)} ${ranking.judge!.firstname} ${ranking.judge!.lastname}", style: TextStyle(color: Colors.black54)),
               ],
             ),
           ],

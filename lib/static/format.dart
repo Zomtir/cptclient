@@ -15,3 +15,6 @@ String compressDate(DateTime begin, DateTime end) {
   return "$strBegin - $strEnd";
 }
 
+String niceDateTime(DateTime dt) {
+  return DateFormat("dd MMM yyyy hh:mm").format(dt);
+}

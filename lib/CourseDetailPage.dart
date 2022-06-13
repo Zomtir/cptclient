@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/app/AppBody.dart';
