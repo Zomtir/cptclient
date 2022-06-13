@@ -119,7 +119,7 @@ class CourseDetailPageState extends State<CourseDetailPage> with RouteAware {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onChanged: _getCourseSlots)));
   }
 
   void _createCourseSlot() async {

@@ -23,31 +23,14 @@ class UserOverviewPage extends StatefulWidget {
   UserOverviewPageState createState() => UserOverviewPageState();
 }
 
-class UserOverviewPageState extends State<UserOverviewPage> with RouteAware {
+class UserOverviewPageState extends State<UserOverviewPage> {
   List <User> _users = [];
 
   UserOverviewPageState();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
-    _getUsers();
-  }
-
-  @override
-  void didPopNext() {
     _getUsers();
   }
 
@@ -69,7 +52,7 @@ class UserOverviewPageState extends State<UserOverviewPage> with RouteAware {
   }
 
   void _selectUser(User user) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetailPage(session: widget.session, user: user)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetailPage(session: widget.session, user: user, onUpdate: _getUsers)));
   }
 
   void _createUser() async {

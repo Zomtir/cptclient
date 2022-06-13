@@ -25,7 +25,7 @@ class ReservationManagementPage extends StatefulWidget {
   State<StatefulWidget> createState() => ReservationManagementPageState();
 }
 
-class ReservationManagementPageState extends State<ReservationManagementPage> with RouteAware {
+class ReservationManagementPageState extends State<ReservationManagementPage> {
   List<Slot> _reservations = [];
   List<Slot> _reservationsFiltered = [];
   bool _hideFilters = true;
@@ -39,23 +39,6 @@ class ReservationManagementPageState extends State<ReservationManagementPage> wi
   @override
   void initState() {
     super.initState();
-    _getReservations();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
     _getReservations();
   }
 

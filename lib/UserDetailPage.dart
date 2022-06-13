@@ -16,8 +16,9 @@ import 'json/member.dart';
 class UserDetailPage extends StatefulWidget {
   final Session session;
   final User user;
+  final void Function() onUpdate;
 
-  UserDetailPage({Key? key, required this.session, required this.user}) : super(key: key);
+  UserDetailPage({Key? key, required this.session, required this.user, required this.onUpdate}) : super(key: key);
 
   @override
   UserDetailPageState createState() => UserDetailPageState();
@@ -71,6 +72,8 @@ class UserDetailPageState extends State<UserDetailPage> {
       return;
     }
 
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully saved user')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -88,6 +91,7 @@ class UserDetailPageState extends State<UserDetailPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted user')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 

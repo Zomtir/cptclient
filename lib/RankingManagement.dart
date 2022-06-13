@@ -29,7 +29,7 @@ class RankingManagementPage extends StatefulWidget {
   State<StatefulWidget> createState() => RankingManagementPageState();
 }
 
-class RankingManagementPageState extends State<RankingManagementPage> with RouteAware {
+class RankingManagementPageState extends State<RankingManagementPage> {
   List<Ranking> _rankings = [];
   List<Ranking> _rankingsFiltered = [];
   bool _hideFilters = true;
@@ -44,23 +44,6 @@ class RankingManagementPageState extends State<RankingManagementPage> with Route
   @override
   void initState() {
     super.initState();
-    _getRankings();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
     _getRankings();
   }
 
@@ -107,7 +90,7 @@ class RankingManagementPageState extends State<RankingManagementPage> with Route
   }
 
   void _selectRanking(Ranking ranking) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingEditPage(session: widget.session, ranking: ranking)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingEditPage(session: widget.session, ranking: ranking, onUpdate: _getRankings)));
   }
 
   @override

@@ -23,7 +23,7 @@ class IndividualPage extends StatefulWidget {
   State<StatefulWidget> createState() => IndividualPageState();
 }
 
-class IndividualPageState extends State<IndividualPage> with RouteAware {
+class IndividualPageState extends State<IndividualPage> {
   List <Slot> _slotsOccurring = [];
   List <Slot> _slotsDraft = [];
   List <Slot> _slotsPending = [];
@@ -35,23 +35,6 @@ class IndividualPageState extends State<IndividualPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    _getIndividualSlots();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
     _getIndividualSlots();
   }
 
@@ -94,7 +77,7 @@ class IndividualPageState extends State<IndividualPage> with RouteAware {
   }
 
   void _selectIndividualSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onChanged: _getIndividualSlots)));
   }
 
   Future<void> _submitSlot(Slot slot) async {

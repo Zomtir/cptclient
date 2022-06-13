@@ -21,8 +21,9 @@ import 'json/location.dart';
 class SlotDetailPage extends StatefulWidget {
   final Session session;
   final Slot slot;
+  final void Function() onChanged;
   
-  SlotDetailPage({Key? key, required this.session, required this.slot}) : super(key: key);
+  SlotDetailPage({Key? key, required this.session, required this.slot, required this.onChanged}) : super(key: key);
 
   @override
   SlotDetailPageState createState() => SlotDetailPageState();
@@ -69,12 +70,13 @@ class SlotDetailPageState extends State<SlotDetailPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted time slot')));
+    widget.onChanged();
     Navigator.pop(context);
   }
 
   void _duplicateSlot() {
     Slot _slot = Slot.fromSlot(widget.slot);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: _slot)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: _slot, onChanged: widget.onChanged)));
   }
 
   void _applySlot() {
@@ -107,9 +109,12 @@ class SlotDetailPageState extends State<SlotDetailPage> {
 
     if (response.statusCode != 200) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to modify slot')));
-    } else {
-      Navigator.pop(context);
+      return;
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Succeeded to modify slot')));
+    widget.onChanged();
+    Navigator.pop(context);
   }
 
   @override

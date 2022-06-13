@@ -21,8 +21,9 @@ import 'json/branch.dart';
 class RankingEditPage extends StatefulWidget {
   final Session session;
   final Ranking ranking;
+  final void Function() onUpdate;
 
-  RankingEditPage({Key? key, required this.session, required this.ranking}) : super(key: key);
+  RankingEditPage({Key? key, required this.session, required this.ranking, required this.onUpdate}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => RankingEditPageState();
@@ -94,12 +95,13 @@ class RankingEditPageState extends State<RankingEditPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted ranking')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _duplicateRanking() {
     Ranking _ranking = Ranking.fromRanking(widget.ranking);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RankingEditPage(session: widget.session, ranking: _ranking)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RankingEditPage(session: widget.session, ranking: _ranking, onUpdate: widget.onUpdate)));
   }
 
   void _submitRanking() async {
@@ -120,6 +122,7 @@ class RankingEditPageState extends State<RankingEditPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully saved ranking')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 
