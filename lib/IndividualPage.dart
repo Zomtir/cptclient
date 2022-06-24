@@ -77,7 +77,7 @@ class IndividualPageState extends State<IndividualPage> {
   }
 
   void _selectIndividualSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onChanged: _getIndividualSlots)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onUpdate: _getIndividualSlots)));
   }
 
   Future<void> _submitSlot(Slot slot) async {
@@ -167,14 +167,15 @@ class IndividualPageState extends State<IndividualPage> {
       body: AppBody(
         children: [
           AppButton(
-            text: "\u{2795} New slot",
+            text: "\u{2795} Draft new slot",
             onPressed: _createIndividualSlot,
           ),
           PanelSwiper(
+            swipes: 0,
             panels: [
-              Panel("Occurring", _buildOccurringSlotPanel()),
               Panel("Draft", _buildDraftSlotPanel()),
               Panel("Pending", _buildPendingSlotPanel()),
+              Panel("Occurring", _buildOccurringSlotPanel()),
               Panel("Rejected", _buildRejectedSlotPanel()),
               Panel("Canceled", _buildCanceledSlotPanel()),
             ]

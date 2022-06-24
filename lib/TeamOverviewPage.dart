@@ -22,33 +22,10 @@ class TeamOverviewPage extends StatefulWidget {
   TeamOverviewPageState createState() => TeamOverviewPageState();
 }
 
-class TeamOverviewPageState extends State<TeamOverviewPage> with RouteAware {
+class TeamOverviewPageState extends State<TeamOverviewPage> {
   List <Team> _teams = [];
 
   TeamOverviewPageState();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getTeams();
-  }
-
-  @override
-  void didPopNext() {
-    _getTeams();
-  }
 
   Future<void> _getTeams() async {
     final response = await http.get(
@@ -68,7 +45,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> with RouteAware {
   }
 
   void _selectTeam(Team team) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailPage(session: widget.session, team: team)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailPage(session: widget.session, team: team, onUpdate: _getTeams)));
   }
 
   void _createTeam() async {

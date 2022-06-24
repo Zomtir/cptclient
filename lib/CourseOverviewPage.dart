@@ -31,7 +31,7 @@ class CourseOverviewPage extends StatefulWidget {
   CourseOverviewPageState createState() => CourseOverviewPageState();
 }
 
-class CourseOverviewPageState extends State<CourseOverviewPage> with RouteAware {
+class CourseOverviewPageState extends State<CourseOverviewPage> {
   List <Course> _owncourses = [];
   List <Course> _courses = [];
   List <Course> _coursesFiltered = [];
@@ -47,26 +47,12 @@ class CourseOverviewPageState extends State<CourseOverviewPage> with RouteAware 
   @override
   void initState() {
     super.initState();
+    _update();
+  }
+
+  void _update() {
     _getOwnCourses();
-    if(widget.session.user!.admin_courses) _getCourses();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
-    _getOwnCourses();
-    if(widget.session.user!.admin_courses) _getCourses();
+    if(widget.session.user!.admin_courses) _getAllCourses();
   }
 
   Future<void> _getOwnCourses() async {
@@ -86,7 +72,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> with RouteAware 
     });
   }
 
-  Future<void> _getCourses() async {
+  Future<void> _getAllCourses() async {
     final response = await http.get(
       Uri.http(navi.server, 'course_list', {'user_id': '0'}),
       headers: {
@@ -124,7 +110,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> with RouteAware 
   }
 
   void _selectCourse(Course course) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: course)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: course, onUpdate: _update)));
   }
 
   @override

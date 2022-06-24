@@ -27,14 +27,15 @@ import 'package:cptclient/json/access.dart';
 class CourseDetailPage extends StatefulWidget {
   final Session session;
   final Course course;
+  final void Function() onUpdate;
 
-  CourseDetailPage({Key? key, required this.session, required this.course}) : super(key: key);
+  CourseDetailPage({Key? key, required this.session, required this.course, required this.onUpdate}) : super(key: key);
 
   @override
   CourseDetailPageState createState() => CourseDetailPageState();
 }
 
-class CourseDetailPageState extends State<CourseDetailPage> with RouteAware {
+class CourseDetailPageState extends State<CourseDetailPage> {
   List <Slot> _slots = [];
   List <Member> _moderators = [];
 
@@ -52,26 +53,10 @@ class CourseDetailPageState extends State<CourseDetailPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    if (widget.course.id != 0) _getCourseSlots();
-    if (widget.course.id != 0) _getCourseModerators();
-    if (widget.session.user!.admin_courses) _applyCourse();
-    if (widget.session.user!.admin_courses) _getModeratorCandidates();
+    _update();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    navi.routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    navi.routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
+  void _update() {
     if (widget.course.id != 0) _getCourseSlots();
     if (widget.course.id != 0) _getCourseModerators();
     if (widget.session.user!.admin_courses) _applyCourse();
@@ -92,12 +77,13 @@ class CourseDetailPageState extends State<CourseDetailPage> with RouteAware {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted course')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _duplicateCourse() {
     Course _course = Course.fromCourse(widget.course);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: _course)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: _course, onUpdate: _update)));
   }
 
   Future<void> _getCourseSlots() async {
@@ -119,7 +105,7 @@ class CourseDetailPageState extends State<CourseDetailPage> with RouteAware {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onChanged: _getCourseSlots)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots)));
   }
 
   void _createCourseSlot() async {
@@ -237,6 +223,7 @@ class CourseDetailPageState extends State<CourseDetailPage> with RouteAware {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited course')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 

@@ -14,8 +14,9 @@ import 'json/team.dart';
 class TeamDetailPage extends StatefulWidget {
   final Session session;
   final Team team;
+  final void Function() onUpdate;
 
-  TeamDetailPage({Key? key, required this.session, required this.team}) : super(key: key);
+  TeamDetailPage({Key? key, required this.session, required this.team, required this.onUpdate}) : super(key: key);
 
   @override
   TeamDetailPageState createState() => TeamDetailPageState();
@@ -72,6 +73,8 @@ class TeamDetailPageState extends State<TeamDetailPage> {
       return;
     }
 
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Succeeded to edit team')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -89,12 +92,13 @@ class TeamDetailPageState extends State<TeamDetailPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted team')));
+    widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _duplicateTeam() {
     Team _team = Team.fromTeam(widget.team);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeamDetailPage(session: widget.session, team: _team)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeamDetailPage(session: widget.session, team: _team, onUpdate: widget.onUpdate)));
   }
 
   @override

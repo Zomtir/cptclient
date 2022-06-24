@@ -11,28 +11,27 @@ class Panel {
 
 class PanelSwiper extends StatefulWidget {
   final List<Panel>  panels;
+  final int swipes;
 
-  PanelSwiper({
-    Key? key,
-    required this.panels,
-  }) : super(key: key);
+  PanelSwiper({Key? key, required this.panels, this.swipes = 0}) : super(key: key) {
+    if (panels.length == 0)
+      throw("SwipePanel needs at least one entry for the label and panel.");
+  }
 
   @override
   _PanelSwiperState createState() => new _PanelSwiperState();
 }
 
 class _PanelSwiperState extends State<PanelSwiper> {
+
   int _index = 0;
   int _count = 0;
 
   @override
   void initState() {
+    _count = widget.panels.length;
+    _index = widget.swipes;
     super.initState();
-
-   _count = widget.panels.length;
-
-    if (_count == 0)
-      throw("SwipePanel needs at least one entry for the label and panel.");
   }
 
   @override
