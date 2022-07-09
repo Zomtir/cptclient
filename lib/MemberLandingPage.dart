@@ -5,6 +5,7 @@ import 'material/app/AppIconButton.dart';
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 
+import 'CalendarPage.dart';
 import 'MemberProfilePage.dart';
 import 'EventOverview.dart';
 import 'CourseOverviewPage.dart';
@@ -48,7 +49,7 @@ class MemberLandingPage extends StatelessWidget {
               AppIconButton(
                 icon: Image.asset('icons/icon_calendar.png'),
                 text: "Calendar",
-                onPressed: () => {},
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarPage())),
               ),
               AppIconButton(
                 icon: Image.asset('icons/icon_course.png'),
@@ -57,7 +58,7 @@ class MemberLandingPage extends StatelessWidget {
               ),
               AppIconButton(
                 icon: Image.asset('icons/icon_individual.png'),
-                text: "Individual",
+                text: "Events",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverview(session: session))),
               ),
             ],
