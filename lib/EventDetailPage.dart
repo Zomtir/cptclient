@@ -18,18 +18,18 @@ import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
 
-class SlotDetailPage extends StatefulWidget {
+class EventDetailPage extends StatefulWidget {
   final Session session;
   final Slot slot;
   final void Function() onUpdate;
-  
-  SlotDetailPage({Key? key, required this.session, required this.slot, required this.onUpdate}) : super(key: key);
+
+  EventDetailPage({Key? key, required this.session, required this.slot, required this.onUpdate}) : super(key: key);
 
   @override
   SlotDetailPageState createState() => SlotDetailPageState();
 }
 
-class SlotDetailPageState extends State<SlotDetailPage> {
+class SlotDetailPageState extends State<EventDetailPage> {
   TextEditingController _ctrlSlotPassword = TextEditingController();
   TextEditingController _ctrlSlotBegin = TextEditingController();
   TextEditingController _ctrlSlotEnd = TextEditingController();
@@ -37,7 +37,6 @@ class SlotDetailPageState extends State<SlotDetailPage> {
 
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
   String?                      _confirmAction;
-  String?                      _deleteAction;
 
   SlotDetailPageState();
 
@@ -47,18 +46,12 @@ class SlotDetailPageState extends State<SlotDetailPage> {
 
     _applySlot();
 
-    if (widget.slot.course_id != null) {
-      _confirmAction = widget.slot.id == 0 ? 'course_slot_create' : 'course_slot_edit';
-      _deleteAction = 'course_slot_delete';
-    } else if (widget.slot.user_id != null) {
-      _confirmAction = widget.slot.id == 0 ? 'indi_slot_create' : 'indi_slot_edit';
-      _deleteAction = 'indi_slot_delete';
-    }
+    _confirmAction = widget.slot.id == 0 ? 'indi_slot_create' : 'indi_slot_edit';
   }
 
   void _deleteSlot() async {
     final response = await http.head(
-      Uri.http(navi.server, _deleteAction!, {'slot_id': widget.slot.id.toString()}),
+      Uri.http(navi.server, 'indi_slot_delete', {'slot_id': widget.slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -76,7 +69,8 @@ class SlotDetailPageState extends State<SlotDetailPage> {
 
   void _duplicateSlot() {
     Slot _slot = Slot.fromSlot(widget.slot);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate)));
+    _slot.status = Status.DRAFT;
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EventDetailPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate)));
   }
 
   void _applySlot() {
@@ -133,11 +127,11 @@ class SlotDetailPageState extends State<SlotDetailPage> {
                   slot: widget.slot,
                 ),
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: _duplicateSlot,
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              if (widget.slot.status == Status.DRAFT) IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteSlot,
               ),
@@ -149,7 +143,7 @@ class SlotDetailPageState extends State<SlotDetailPage> {
               if (widget.slot.id != 0) Panel("Group Invites", Container()),
               if (widget.slot.id != 0) Panel("Personal Invites", Container()),
               if (widget.slot.id != 0) Panel("Level Invites", Container()),
-              if (widget.session.user!.admin_courses) Panel("Edit", _buildEditPanel()),
+              Panel("Edit", _buildEditPanel()),
             ]
           ),
         ],

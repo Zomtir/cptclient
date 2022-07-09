@@ -8,29 +8,29 @@ import 'material/app/AppSlotTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'SlotDetailPage.dart';
+import 'EventDetailPage.dart';
 
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 import 'json/slot.dart';
 
-class IndividualPage extends StatefulWidget {
+class EventOverview extends StatefulWidget {
   final Session session;
 
-  IndividualPage({Key? key, required this.session}) : super(key: key);
+  EventOverview({Key? key, required this.session}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => IndividualPageState();
+  State<StatefulWidget> createState() => EventOverviewState();
 }
 
-class IndividualPageState extends State<IndividualPage> {
+class EventOverviewState extends State<EventOverview> {
   List <Slot> _slotsOccurring = [];
   List <Slot> _slotsDraft = [];
   List <Slot> _slotsPending = [];
   List <Slot> _slotsRejected = [];
   List <Slot> _slotsCanceled = [];
 
-  IndividualPageState();
+  EventOverviewState();
 
   @override
   void initState() {
@@ -77,7 +77,7 @@ class IndividualPageState extends State<IndividualPage> {
   }
 
   void _selectIndividualSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onUpdate: _getIndividualSlots)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(session: widget.session, slot: slot, onUpdate: _getIndividualSlots)));
   }
 
   Future<void> _submitSlot(Slot slot) async {

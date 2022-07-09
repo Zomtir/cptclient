@@ -6,13 +6,13 @@ import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 
 import 'MemberProfilePage.dart';
-import 'IndividualPage.dart';
+import 'EventOverview.dart';
 import 'CourseOverviewPage.dart';
 
 import 'UserOverviewPage.dart';
 import 'TeamOverviewPage.dart';
 import 'RankingManagement.dart';
-import 'ReservationManagement.dart';
+import 'EventManagement.dart';
 
 class MemberLandingPage extends StatelessWidget {
   final Session session;
@@ -58,7 +58,7 @@ class MemberLandingPage extends StatelessWidget {
               AppIconButton(
                 icon: Image.asset('icons/icon_individual.png'),
                 text: "Individual",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => IndividualPage(session: session))),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverview(session: session))),
               ),
             ],
           ),

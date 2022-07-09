@@ -12,7 +12,7 @@ import 'package:cptclient/material/app/AppSlotTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'SlotDetailPage.dart';
+import 'CourseSlotDetailPage.dart';
 
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
@@ -105,7 +105,7 @@ class CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SlotDetailPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots)));
   }
 
   void _createCourseSlot() async {
