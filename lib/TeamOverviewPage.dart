@@ -27,6 +27,12 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
 
   TeamOverviewPageState();
 
+  @override
+  void initState() {
+    super.initState();
+    _getTeams();
+  }
+
   Future<void> _getTeams() async {
     final response = await http.get(
       Uri.http(navi.server, 'team_list'),
