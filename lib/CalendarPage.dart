@@ -1,4 +1,3 @@
-import 'package:cptclient/material/app/AppButton.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -15,9 +14,16 @@ class CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    _date = DateTime(_date.year, _date.month);
-    _scrollMonth(0);
+    _resetMonth();
     super.initState();
+  }
+
+  void _resetMonth() {
+    setState(() {
+      _date = DateTime.now();
+      _date = DateTime(_date.year, _date.month);
+      _days = DateTime(_date.year, _date.month + 1, 0).day;
+    });
   }
 
   void _scrollMonth(int scroll) {
@@ -38,9 +44,10 @@ class CalendarPageState extends State<CalendarPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AppButton(text: "Before", onPressed: () => _scrollMonth(-1)),
+              IconButton(onPressed: () => _scrollMonth(-1), icon: Icon(Icons.chevron_left)),
+              IconButton(onPressed: _resetMonth, icon: Icon(Icons.home)),
               Text(DateFormat("yyyy-MM").format(_date)),
-              AppButton(text: "After", onPressed: () => _scrollMonth(1)),
+              IconButton(onPressed: () => _scrollMonth(-1), icon: Icon(Icons.chevron_right)),
             ],
           ),
           Expanded(

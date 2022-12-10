@@ -1,3 +1,4 @@
+import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/app/AppBody.dart';
 import 'package:cptclient/material/app/AppDropdown.dart';
@@ -10,6 +11,7 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'material/app/AppButton.dart';
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
 import 'json/session.dart';
@@ -27,13 +29,15 @@ class ReservationManagementPage extends StatefulWidget {
 }
 
 class ReservationManagementPageState extends State<ReservationManagementPage> {
+  DateTimeRange _dateRange = DateTimeRange(start: DateTime.now(), end: DateTime.now().add(Duration(days: 30)));
+
   List<Slot> _reservations = [];
   List<Slot> _reservationsFiltered = [];
   bool _hideFilters = true;
 
-  DropdownController<Member>   _ctrlDropdownUser = DropdownController<Member>(items: []);
+  DropdownController<Member> _ctrlDropdownUser = DropdownController<Member>(items: []);
   DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: db.cacheLocations);
-  RangeValues                  _timeRange = RangeValues(1, 12);
+  RangeValues _timeRange = RangeValues(1, 12);
 
   ReservationManagementPageState();
 
@@ -97,17 +101,24 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Events"),
       ),
       body: AppBody(
         children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppButton(text: niceDate(_dateRange.start), onPressed: _pickDateRange),
+              AppButton(text: niceDate(_dateRange.end), onPressed: _pickDateRange),
+            ],
+          ),
           TextButton.icon(
             icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-            label: _hideFilters ? Text('Show Filters') : Text ('Hide Filters'),
-            onPressed: () => setState (() => _hideFilters = !_hideFilters),
+            label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
+            onPressed: () => setState(() => _hideFilters = !_hideFilters),
           ),
           CollapseWidget(
             collapse: _hideFilters,
@@ -116,7 +127,9 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
                 info: Text("User"),
                 child: AppDropdown<Member>(
                   controller: _ctrlDropdownUser,
-                  builder: (Member member) {return Text("${member.firstname} ${member.lastname}");},
+                  builder: (Member member) {
+                    return Text("${member.firstname} ${member.lastname}");
+                  },
                   onChanged: (Member? member) {
                     _ctrlDropdownUser.value = member;
                     _filterReservations();
@@ -134,7 +147,9 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
                 info: Text("Location"),
                 child: AppDropdown<Location>(
                   controller: _ctrlDropdownLocation,
-                  builder: (Location location) {return Text(location.key);},
+                  builder: (Location location) {
+                    return Text(location.key);
+                  },
                   onChanged: (Location? location) {
                     _ctrlDropdownLocation.value = location;
                     _filterReservations();
@@ -149,17 +164,17 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
                 ),
               ),
               AppInfoRow(
-                info: Text("Month in 2021"),
+                info: Text("Time Window (Days)"),
                 child: RangeSlider(
                   values: _timeRange,
                   min: 1,
-                  max: 12,
-                  divisions: 10,
+                  max: 366,
+                  divisions: 365,
                   onChanged: (RangeValues values) {
                     _timeRange = values;
                     _filterReservations();
                   },
-                  labels: RangeLabels("${_timeRange.start}","${_timeRange.end}"),
+                  labels: RangeLabels("${_timeRange.start}", "${_timeRange.end}"),
                 ),
               ),
               AppInfoRow(
@@ -204,4 +219,19 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
     );
   }
 
+  Future _pickDateRange() async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: _dateRange,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (newDateRange == null) return;
+    
+    if (newDateRange.end.isAfter(newDateRange.start.add(Duration(days: 366))))
+      newDateRange = DateTimeRange(start: newDateRange.start, end: newDateRange.start.add(Duration(days: 366)));
+
+    setState(() => _dateRange = newDateRange!);
+  }
 }
