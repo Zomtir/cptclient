@@ -15,6 +15,7 @@ import 'static/db.dart' as db;
 import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
+import 'json/member.dart';
 
 class ReservationManagementPage extends StatefulWidget {
   final Session session;
@@ -30,7 +31,7 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
   List<Slot> _reservationsFiltered = [];
   bool _hideFilters = true;
 
-  DropdownController<int>      _ctrlDropdownUser = DropdownController<int>(items: []);
+  DropdownController<Member>   _ctrlDropdownUser = DropdownController<Member>(items: []);
   DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: db.cacheLocations);
   RangeValues                  _timeRange = RangeValues(1, 12);
 
@@ -55,7 +56,7 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
     Iterable list = json.decode(utf8.decode(response.bodyBytes));
 
     _reservations = List<Slot>.from(list.map((model) => Slot.fromJson(model)));
-    _ctrlDropdownUser.items = Set<int>.from(_reservations.map((model) => model.user_id)).toList();
+    _ctrlDropdownUser.items = Set<Member>.from(_reservations.map((model) => model.user_id)).toList();
 
     _filterReservations();
   }
@@ -63,7 +64,7 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
   void _filterReservations() {
     setState(() {
       _reservationsFiltered = _reservations.where((reservation) {
-        bool userFilter = (_ctrlDropdownUser.value == null) ? true : (reservation.user_id == _ctrlDropdownUser.value);
+        bool userFilter = (_ctrlDropdownUser.value == null) ? true : (reservation.user_id == _ctrlDropdownUser.value!.id);
         bool locationFilter = (_ctrlDropdownLocation.value == null) ? true : (reservation.location == _ctrlDropdownLocation.value);
         bool timeFilter = true; // TODO actually implement this
         return userFilter && locationFilter && timeFilter;
@@ -99,7 +100,7 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
   Widget build (BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Reservations"),
+        title: Text("Events"),
       ),
       body: AppBody(
         children: <Widget>[
@@ -113,10 +114,10 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
             children: [
               AppInfoRow(
                 info: Text("User"),
-                child: AppDropdown<int>(
+                child: AppDropdown<Member>(
                   controller: _ctrlDropdownUser,
-                  builder: (int member) {return Text(member.toString());},
-                  onChanged: (int? member) {
+                  builder: (Member member) {return Text("${member.firstname} ${member.lastname}");},
+                  onChanged: (Member? member) {
                     _ctrlDropdownUser.value = member;
                     _filterReservations();
                   },
@@ -160,6 +161,18 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
                   },
                   labels: RangeLabels("${_timeRange.start}","${_timeRange.end}"),
                 ),
+              ),
+              AppInfoRow(
+                info: Text("Location"),
+                child: Text(""),
+              ),
+              AppInfoRow(
+                info: Text("Status"),
+                child: Text(""),
+              ),
+              AppInfoRow(
+                info: Text("Show Courses"),
+                child: Text("yes/no"),
               ),
             ],
           ),

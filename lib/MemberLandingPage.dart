@@ -30,6 +30,10 @@ class MemberLandingPage extends StatelessWidget {
         title: Text("Welcome ${session.user!.firstname}"),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.refresh, color: Colors.white),
+            onPressed: () => navi.refresh(),
+          ),
+          IconButton(
             icon: Icon(Icons.perm_identity, color: Colors.white),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MemberProfilePage(session: session))),
           ),

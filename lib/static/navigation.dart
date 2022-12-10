@@ -6,6 +6,7 @@ import "package:universal_html/html.dart"; // TODO go back to dart:html?
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:cptclient/static/db.dart' as db;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
@@ -46,6 +47,7 @@ void confirmUser() async {
   User user  = User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
   session = Session(window.localStorage['Token']!, user: user);
 
+  db.loadMembers();
   navigatorKey.currentState?.pushReplacementNamed('/user');
 }
 
@@ -67,9 +69,17 @@ void confirmSlot() async {
   navigatorKey.currentState?.pushReplacementNamed('/slot');
 }
 
+void refresh() {
+  db.loadMembers();
+  db.loadAccess();
+  db.loadBranches();
+  db.loadLocations();
+}
+
 void logout() {
   window.localStorage['Token'] = "";
   session = Session("");
+  db.unloadMembers();
   navigatorKey.currentState?.pushReplacementNamed('/login');
 }
 

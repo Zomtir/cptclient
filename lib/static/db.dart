@@ -2,16 +2,40 @@ library db;
 
 import 'dart:convert';
 
+import "package:universal_html/html.dart"; // TODO go back to dart:html?
 import 'package:http/http.dart' as http;
 
 import 'package:cptclient/static/navigation.dart';
+import 'package:cptclient/json/member.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/access.dart';
 
+List<Member> cacheMembers = [];
 List<Location> cacheLocations = [];
 List<Branch> cacheBranches = [];
 List<Access> cacheAccess = [];
+
+Future<bool> loadMembers() async {
+  final response = await http.get(
+    Uri.http(server, 'user_member_list'),
+    headers: {
+      'Token': window.localStorage['Token']!,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return false;
+
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  cacheMembers = List<Member>.from(l.map((model) => Member.fromJson(model)));
+
+  return true;
+}
+
+void unloadMembers() {
+  cacheMembers = [];
+}
 
 Future<bool> loadLocations() async {
   final response = await http.get(
