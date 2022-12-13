@@ -22,3 +22,11 @@ String niceDate(DateTime dt) {
 String niceDateTime(DateTime dt) {
   return DateFormat("dd MMM yyyy HH:mm").format(dt);
 }
+
+String webDate(DateTime dt) {
+  return DateFormat("yyyy-MM-dd").format(dt.toUtc());
+}
+
+String webDateTime(DateTime dt) {
+  return DateFormat("yyyy-MM-dd-HH-mm").format(dt.toUtc());
+}

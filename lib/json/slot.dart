@@ -1,3 +1,4 @@
+import 'package:cptclient/json/member.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 
@@ -19,10 +20,10 @@ class Slot {
   DateTime end;
   Status? status;
   int? course_id;
-  int? user_id;
+  List<Member>? owners;
   //final String description;
 
-  Slot(this.id, this.key, this.title, this.location, this.begin, this.end, {this.pwd = "", this.course_id, this.user_id});
+  Slot(this.id, this.key, this.title, this.location, this.begin, this.end, {this.pwd = "", this.course_id, this.owners});
 
   Slot.fromSlot(Slot slot)
       : this.id = 0,
@@ -34,7 +35,7 @@ class Slot {
         this.end = slot.end,
         this.status = slot.status,
         this.course_id = slot.course_id,
-        this.user_id = slot.user_id;
+        this.owners = slot.owners;
 
   Slot.fromJson(Map<String, dynamic> json)
     : id = json['id'],
@@ -46,7 +47,7 @@ class Slot {
       end = DateFormat("yyyy-MM-dd HH:mm").parse(json['end'], true).toLocal(),
       status = Status.values.firstWhere((x) => describeEnum(x) == json['status']),
       course_id = json['course_id'],
-      user_id = json['user_id'];
+      owners = json['user_id']?.map((data) => Member.fromJson(data)).toList();
 
   Map<String, dynamic> toJson() =>
     {
@@ -58,8 +59,7 @@ class Slot {
       'begin': DateFormat("yyyy-MM-dd HH:mm").format(begin.toUtc()),
       'end': DateFormat("yyyy-MM-dd HH:mm").format(end.toUtc()),
       'status': status.toString(),
-      'course_id': course_id,
-      'user_id': user_id,
+      'course_id': course_id
     };
 
   Slot.fromCourse(Course course)
@@ -72,7 +72,7 @@ class Slot {
       this.end = DateTime.now().add(Duration(hours: 1)),
       this.status = null,
       this.course_id = course.id,
-      this.user_id = null;
+      this.owners = null;
 
   Slot.fromUser(User user)
     : this.id = 0,
@@ -84,7 +84,7 @@ class Slot {
       this.end = DateTime.now().add(Duration(hours: 1)),
       this.status = null,
       this.course_id = null,
-      this.user_id = user.id;
+      this.owners = [Member.fromUser(user)];
 
   // TODO The user ID is not picked up server side anyway,
   // but should be eventually if an admin should be able to create user reservations

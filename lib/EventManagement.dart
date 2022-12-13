@@ -11,7 +11,9 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'material/app/AppButton.dart';
+import 'EventDetailPage.dart';
+import 'material/PanelSwiper.dart';
+import 'material/app/DatePicker.dart';
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
 import 'json/session.dart';
@@ -29,27 +31,36 @@ class ReservationManagementPage extends StatefulWidget {
 }
 
 class ReservationManagementPageState extends State<ReservationManagementPage> {
-  DateTimeRange _dateRange = DateTimeRange(start: DateTime.now(), end: DateTime.now().add(Duration(days: 30)));
+  DateTime _dateBegin = DateTime.now();
+  DateTime _dateEnd = DateTime.now().add(Duration(days: 30));
 
-  List<Slot> _reservations = [];
-  List<Slot> _reservationsFiltered = [];
+  List<Slot> _events = [];
+  List<Slot> _eventsFiltered = [];
   bool _hideFilters = true;
+  final _filterDaysMax = 366;
 
-  DropdownController<Member> _ctrlDropdownUser = DropdownController<Member>(items: []);
+  int _panelIndex = 0;
+  List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
+
+  DropdownController<Member> _ctrlDropdownUser = DropdownController<Member>(items: db.cacheMembers);
   DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: db.cacheLocations);
-  RangeValues _timeRange = RangeValues(1, 12);
 
   ReservationManagementPageState();
 
   @override
   void initState() {
     super.initState();
-    _getReservations();
+    _loadSlots();
   }
 
-  Future<void> _getReservations() async {
+  Future<void> _loadSlots() async {
     final response = await http.get(
-      Uri.http(navi.server, 'reservation_list', {'status': 'PENDING'}),
+      Uri.http(navi.server, 'reservation_list', {
+        'begin': webDate(_dateBegin),
+        'end': webDate(_dateEnd),
+        'status': _panelStatus[_panelIndex],
+        'user_id': (_ctrlDropdownUser.value?.id ?? 0).toString(),
+      }),
       headers: {
         'Token': widget.session.token,
       },
@@ -58,46 +69,56 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
     if (response.statusCode != 200) return;
 
     Iterable list = json.decode(utf8.decode(response.bodyBytes));
-
-    _reservations = List<Slot>.from(list.map((model) => Slot.fromJson(model)));
-    _ctrlDropdownUser.items = Set<Member>.from(_reservations.map((model) => model.user_id)).toList();
+    _events = List<Slot>.from(list.map((model) => Slot.fromJson(model)));
 
     _filterReservations();
   }
 
   void _filterReservations() {
     setState(() {
-      _reservationsFiltered = _reservations.where((reservation) {
-        bool userFilter = (_ctrlDropdownUser.value == null) ? true : (reservation.user_id == _ctrlDropdownUser.value!.id);
+      _eventsFiltered = _events.where((reservation) {
         bool locationFilter = (_ctrlDropdownLocation.value == null) ? true : (reservation.location == _ctrlDropdownLocation.value);
-        bool timeFilter = true; // TODO actually implement this
-        return userFilter && locationFilter && timeFilter;
+        bool courseFilter = true; // TODO actually implement this (Any, onlyCourse, onlyEvent)
+        return locationFilter && courseFilter;
       }).toList();
     });
   }
 
-  void _acceptReservation(Slot reservation) async {
-    final response = await http.head(
-      Uri.http(navi.server, 'reservation_accept', {'slot_id': reservation.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
+  void _selectSlot(Slot slot) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetailPage(
+          session: widget.session,
+          slot: slot,
+          onUpdate: _loadSlots,
+        ),
+      ),
     );
-
-    if (response.statusCode != 200) return;
-    _getReservations();
   }
 
-  void _denyReservation(Slot reservation) async {
+  void _acceptReservation(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'reservation_deny', {'slot_id': reservation.id.toString()}),
+      Uri.http(navi.server, 'reservation_accept', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
     );
 
     if (response.statusCode != 200) return;
-    _getReservations();
+    _loadSlots();
+  }
+
+  void _denyReservation(Slot slot) async {
+    final response = await http.head(
+      Uri.http(navi.server, 'reservation_deny', {'slot_id': slot.id.toString()}),
+      headers: {
+        'Token': widget.session.token,
+      },
+    );
+
+    if (response.statusCode != 200) return;
+    _loadSlots();
   }
 
   @override
@@ -108,130 +129,174 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppButton(text: niceDate(_dateRange.start), onPressed: _pickDateRange),
-              AppButton(text: niceDate(_dateRange.end), onPressed: _pickDateRange),
-            ],
+          AppInfoRow(
+            info: Text("Begin Date"),
+            child: Text(niceDate(_dateBegin)),
+            trailing: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: _pickDateBegin,
+            ),
           ),
-          TextButton.icon(
-            icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-            label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
-            onPressed: () => setState(() => _hideFilters = !_hideFilters),
+          AppInfoRow(
+            info: Text("End Date"),
+            child: Text(niceDate(_dateEnd)),
+            trailing: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: _pickDateEnd,
+            ),
           ),
-          CollapseWidget(
-            collapse: _hideFilters,
-            children: [
-              AppInfoRow(
-                info: Text("User"),
-                child: AppDropdown<Member>(
-                  controller: _ctrlDropdownUser,
-                  builder: (Member member) {
-                    return Text("${member.firstname} ${member.lastname}");
-                  },
-                  onChanged: (Member? member) {
-                    _ctrlDropdownUser.value = member;
-                    _filterReservations();
-                  },
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    _ctrlDropdownUser.value = null;
-                    _filterReservations();
-                  },
-                ),
-              ),
-              AppInfoRow(
-                info: Text("Location"),
-                child: AppDropdown<Location>(
-                  controller: _ctrlDropdownLocation,
-                  builder: (Location location) {
-                    return Text(location.key);
-                  },
-                  onChanged: (Location? location) {
-                    _ctrlDropdownLocation.value = location;
-                    _filterReservations();
-                  },
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    _ctrlDropdownLocation.value = null;
-                    _filterReservations();
-                  },
-                ),
-              ),
-              AppInfoRow(
-                info: Text("Time Window (Days)"),
-                child: RangeSlider(
-                  values: _timeRange,
-                  min: 1,
-                  max: 366,
-                  divisions: 365,
-                  onChanged: (RangeValues values) {
-                    _timeRange = values;
-                    _filterReservations();
-                  },
-                  labels: RangeLabels("${_timeRange.start}", "${_timeRange.end}"),
-                ),
-              ),
-              AppInfoRow(
-                info: Text("Location"),
-                child: Text(""),
-              ),
-              AppInfoRow(
-                info: Text("Status"),
-                child: Text(""),
-              ),
-              AppInfoRow(
-                info: Text("Show Courses"),
-                child: Text("yes/no"),
-              ),
-            ],
+          AppInfoRow(
+            info: Text("User"),
+            child: AppDropdown<Member>(
+              controller: _ctrlDropdownUser,
+              builder: (Member member) {
+                return Text("${member.firstname} ${member.lastname}");
+              },
+              onChanged: _pickMember,
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () => _pickMember(null),
+            ),
           ),
-          AppListView<Slot>(
-            items: _reservationsFiltered,
-            itemBuilder: (Slot slot) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: AppSlotTile(
-                      onTap: (reservation) => {},
-                      slot: slot,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.highlight_remove),
-                    onPressed: () => _denyReservation(slot),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.check_circle_outline),
-                    onPressed: () => _acceptReservation(slot),
-                  ),
-                ],
-              );
+          PanelSwiper(
+            swipes: 0,
+            onChange: (int index) {
+              _panelIndex = index;
+              _loadSlots();
             },
+            panels: [
+              Panel("Pending", _buildSlotPendingPanel()),
+              Panel("Occurring", _buildSlotPendingPanel()),
+              Panel("Rejected", _buildSlotPendingPanel()),
+              Panel("Canceled", _buildSlotPendingPanel()),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Future _pickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
+  Future _pickDateBegin() async {
+    DateTime? newDateBegin = await showAppDatePicker(
       context: context,
-      initialDateRange: _dateRange,
+      initialDate: _dateBegin,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
 
-    if (newDateRange == null) return;
-    
-    if (newDateRange.end.isAfter(newDateRange.start.add(Duration(days: 366))))
-      newDateRange = DateTimeRange(start: newDateRange.start, end: newDateRange.start.add(Duration(days: 366)));
+    if (newDateBegin == null) return;
 
-    setState(() => _dateRange = newDateRange!);
+    DateTime newDateEnd = _dateEnd;
+
+    if (_dateEnd.isBefore(newDateBegin)) newDateEnd = newDateBegin;
+
+    if (_dateEnd.isAfter(newDateBegin.add(Duration(days: _filterDaysMax)))) newDateEnd = newDateBegin.add(Duration(days: _filterDaysMax));
+
+    setState(() {
+      _dateBegin = newDateBegin;
+      _dateEnd = newDateEnd;
+    });
+    _loadSlots();
+  }
+
+  Future _pickDateEnd() async {
+    DateTime? newDateEnd = await showAppDatePicker(
+      context: context,
+      initialDate: _dateEnd,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (newDateEnd == null) return;
+
+    DateTime newDateBegin = _dateBegin;
+
+    if (_dateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
+
+    if (_dateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
+
+    setState(() {
+      _dateBegin = newDateBegin;
+      _dateEnd = newDateEnd;
+    });
+    _loadSlots();
+  }
+
+  void _pickMember(Member? member) {
+    setState(() => _ctrlDropdownUser.value = member);
+    _loadSlots();
+  }
+
+  Widget _buildFilters() {
+    return Column(
+      children: [
+        TextButton.icon(
+          icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
+          label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
+          onPressed: () => setState(() => _hideFilters = !_hideFilters),
+        ),
+        CollapseWidget(
+          collapse: _hideFilters,
+          children: [
+            AppInfoRow(
+              info: Text("Location"),
+              child: AppDropdown<Location>(
+                controller: _ctrlDropdownLocation,
+                builder: (Location location) {
+                  return Text(location.key);
+                },
+                onChanged: (Location? location) {
+                  _ctrlDropdownLocation.value = location;
+                  _filterReservations();
+                },
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  _ctrlDropdownLocation.value = null;
+                  _filterReservations();
+                },
+              ),
+            ),
+            AppInfoRow(
+              info: Text("Show Courses"),
+              child: Text("all/yes/no"),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSlotPendingPanel() {
+    return Column(
+      children: [
+        _buildFilters(),
+        AppListView(
+          items: _eventsFiltered,
+          itemBuilder: (Slot slot) {
+            return Row(
+              children: [
+                Expanded(
+                  child: AppSlotTile(
+                    onTap: _selectSlot,
+                    slot: slot,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.highlight_remove),
+                  onPressed: () => _denyReservation(slot),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.check_circle_outline),
+                  onPressed: () => _acceptReservation(slot),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
   }
 }

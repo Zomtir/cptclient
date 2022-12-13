@@ -9,7 +9,7 @@ class CalendarPage extends StatefulWidget {
 
 class CalendarPageState extends State<CalendarPage> {
 
-  DateTime _date = DateTime.now();
+  DateTime? _date;
   int _days = 0;
 
   @override
@@ -20,16 +20,15 @@ class CalendarPageState extends State<CalendarPage> {
 
   void _resetMonth() {
     setState(() {
-      _date = DateTime.now();
-      _date = DateTime(_date.year, _date.month);
-      _days = DateTime(_date.year, _date.month + 1, 0).day;
+      _date = DateUtils.dateOnly(_date ?? DateTime.now());
+      _days = DateTime(_date!.year, _date!.month + 1, 0).day;
     });
   }
 
   void _scrollMonth(int scroll) {
     setState(() {
-      _date = DateTime(_date.year, _date.month + scroll);
-      _days = DateTime(_date.year, _date.month + 1, 0).day;
+      _date = DateTime(_date!.year, _date!.month + scroll);
+      _days = DateTime(_date!.year, _date!.month + 1, 0).day;
     });
   }
 
@@ -46,14 +45,13 @@ class CalendarPageState extends State<CalendarPage> {
             children: [
               IconButton(onPressed: () => _scrollMonth(-1), icon: Icon(Icons.chevron_left)),
               IconButton(onPressed: _resetMonth, icon: Icon(Icons.home)),
-              Text(DateFormat("yyyy-MM").format(_date)),
+              Text(DateFormat("yyyy-MM").format(_date!)),
               IconButton(onPressed: () => _scrollMonth(-1), icon: Icon(Icons.chevron_right)),
             ],
           ),
           Expanded(
             child: GridView.count(
               crossAxisCount: 7,
-              // Generate 100 widgets that display their index in the List.
               children: buildList(context),
             ),
           ),
@@ -82,11 +80,9 @@ class CalendarPageState extends State<CalendarPage> {
       );
     });
 
-    var lc3 = List.generate(_date.weekday-1, (index) {
+    var lc3 = List.generate(_date!.weekday-1, (index) {
       return Center();
     });
-
-
 
     return lc2+lc3+lc;
   }

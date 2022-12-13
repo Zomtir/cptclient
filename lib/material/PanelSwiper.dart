@@ -10,12 +10,12 @@ class Panel {
 }
 
 class PanelSwiper extends StatefulWidget {
-  final List<Panel>  panels;
+  final List<Panel> panels;
   final int swipes;
+  final Function(int index)? onChange;
 
-  PanelSwiper({Key? key, required this.panels, this.swipes = 0}) : super(key: key) {
-    if (panels.length == 0)
-      throw("SwipePanel needs at least one entry for the label and panel.");
+  PanelSwiper({Key? key, required this.panels, this.swipes = 0, this.onChange}) : super(key: key) {
+    if (panels.length == 0) throw ("SwipePanel needs at least one entry for the label and panel.");
   }
 
   @override
@@ -23,7 +23,6 @@ class PanelSwiper extends StatefulWidget {
 }
 
 class _PanelSwiperState extends State<PanelSwiper> {
-
   int _index = 0;
   int _count = 0;
 
@@ -43,25 +42,33 @@ class _PanelSwiperState extends State<PanelSwiper> {
       children: [
         Row(
           children: [
-            if (_count > 1) IconButton(
-              icon: Icon(Icons.arrow_left),
-              onPressed: () => setState(() => _index = _indexPrev),
-            ),
-            if (_count > 1) Expanded(
-              child: ClipPath(
-                clipper: CornerClipper(left: 20, right: -20),
-                child: Container(
-                  height: 30,
-                  color: Colors.amber,
-                  child: RawMaterialButton(
-                    onPressed: () => setState(() => _index = _indexPrev),
-                    child: Center(
-                      child: Text(widget.panels[_indexPrev].text, style: TextStyle(fontSize: 16)),
+            if (_count > 1)
+              IconButton(
+                icon: Icon(Icons.arrow_left),
+                onPressed: () {
+                  setState(() => _index = _indexPrev);
+                  widget.onChange?.call(_index);
+                },
+              ),
+            if (_count > 1)
+              Expanded(
+                child: ClipPath(
+                  clipper: CornerClipper(left: 20, right: -20),
+                  child: Container(
+                    height: 30,
+                    color: Colors.amber,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        setState(() => _index = _indexPrev);
+                        widget.onChange?.call(_index);
+                      },
+                      child: Center(
+                        child: Text(widget.panels[_indexPrev].text, style: TextStyle(fontSize: 16)),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
             Expanded(
               child: ClipPath(
                 clipper: CornerClipper(left: 20, right: 20),
@@ -74,25 +81,33 @@ class _PanelSwiperState extends State<PanelSwiper> {
                 ),
               ),
             ),
-            if (_count > 1) Expanded(
-              child: ClipPath(
-                clipper: CornerClipper(left: -20, right: 20),
-                child: Container(
-                  height: 30,
-                  color: Colors.amber,
-                  child: RawMaterialButton(
-                    onPressed: () => setState(() => _index = _indexNext),
-                    child: Center(
-                      child: Text(widget.panels[_indexNext].text, style: TextStyle(fontSize: 16)),
+            if (_count > 1)
+              Expanded(
+                child: ClipPath(
+                  clipper: CornerClipper(left: -20, right: 20),
+                  child: Container(
+                    height: 30,
+                    color: Colors.amber,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        setState(() => _index = _indexNext);
+                        widget.onChange?.call(_index);
+                      },
+                      child: Center(
+                        child: Text(widget.panels[_indexNext].text, style: TextStyle(fontSize: 16)),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            if (_count > 1) IconButton(
-              icon: Icon(Icons.arrow_right),
-              onPressed: () => setState(() => _index = _indexNext),
-            ),
+            if (_count > 1)
+              IconButton(
+                icon: Icon(Icons.arrow_right),
+                onPressed: () {
+                  setState(() => _index = _indexNext);
+                  widget.onChange?.call(_index);
+                },
+              ),
           ],
         ),
         widget.panels[_index].widget,

@@ -105,7 +105,7 @@ class CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, draft: false,)));
   }
 
   void _createCourseSlot() async {

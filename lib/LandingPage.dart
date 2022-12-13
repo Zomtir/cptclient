@@ -21,7 +21,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-
   TextEditingController _ctrlSlotLogin = TextEditingController();
   TextEditingController _ctrlSlotPasswd = TextEditingController();
   TextEditingController _ctrlUserLogin = TextEditingController();
@@ -32,20 +31,28 @@ class LandingPageState extends State<LandingPage> {
     super.initState();
 
     if (window.localStorage['Token']! != "") {
-      switch(window.localStorage['AutoLogin']!) {
-        case 'slot': { navi.confirmSlot(); }
-        break;
-        case 'autoslot': { _autoSlot(); }
-        break;
-        case 'user': { navi.confirmUser(); }
-        break;
+      switch (window.localStorage['AutoLogin']!) {
+        case 'slot':
+          {
+            navi.confirmSlot();
+          }
+          break;
+        case 'autoslot':
+          {
+            _autoSlot();
+          }
+          break;
+        case 'user':
+          {
+            navi.confirmUser();
+          }
+          break;
       }
     }
   }
 
   void _loginSlot() async {
-    if (_ctrlSlotLogin.text.isEmpty || _ctrlSlotPasswd.text.isEmpty)
-      return;
+    if (_ctrlSlotLogin.text.isEmpty || _ctrlSlotPasswd.text.isEmpty) return;
 
     Credential credential = Credential(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
     _ctrlSlotLogin.text = "";
@@ -69,8 +76,7 @@ class LandingPageState extends State<LandingPage> {
   }
 
   void _autoSlot() async {
-    if (window.localStorage['DefaultLocation']! == '0')
-      return;
+    if (window.localStorage['DefaultLocation']! == '0') return;
 
     final response = await http.get(
       Uri.http(navi.server, 'slot_autologin', {'location_id': window.localStorage['DefaultLocation']!}),
@@ -86,8 +92,7 @@ class LandingPageState extends State<LandingPage> {
   }
 
   void _loginUser() async {
-    if (_ctrlUserLogin.text.isEmpty || _ctrlUserPasswd.text.isEmpty)
-      return;
+    if (_ctrlUserLogin.text.isEmpty || _ctrlUserPasswd.text.isEmpty) return;
 
     Credential credential = Credential(_ctrlUserLogin.text, crypto.hashPassword(_ctrlUserPasswd.text, _ctrlUserLogin.text));
     _ctrlUserLogin.text = "";
@@ -134,83 +139,82 @@ class LandingPageState extends State<LandingPage> {
           ),
         ],
       ),
-      body: AppBody(
-        children: [
-          TextField(
-            autofocus: true,
-            maxLines: 1,
-            controller: _ctrlSlotLogin,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              hintText: "Enter time slot key (8 characters)",
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlSlotLogin.clear(),
-                icon: Icon(Icons.clear),
-              ),
+      body: AppBody(children: [
+        TextFormField(
+          autofocus: true,
+          maxLines: 1,
+          controller: _ctrlSlotLogin,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "Slot Key",
+            hintText: "8 alphanumeric characters",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlSlotLogin.clear(),
+              icon: Icon(Icons.clear),
             ),
           ),
-          TextField(
-            obscureText: true,
-            maxLines: 1,
-            controller: _ctrlSlotPasswd,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              hintText: "Enter password",
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlSlotPasswd.clear(),
-                icon: Icon(Icons.clear),
-              ),
+        ),
+        TextField(
+          obscureText: true,
+          maxLines: 1,
+          controller: _ctrlSlotPasswd,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "Slot Password",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlSlotPasswd.clear(),
+              icon: Icon(Icons.clear),
             ),
           ),
-          AppButton(
-            text: "Time Slot Login",
-            onPressed: _loginSlot,
-          ),
-          Divider(
-            height: 30,
-            thickness: 5,
-            color: Colors.black,
-          ),
-          TextField(
-            maxLines: 1,
-            controller: _ctrlUserLogin,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              hintText: "Enter user key (6 characters)",
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlUserLogin.clear(),
-                icon: Icon(Icons.clear),
-              ),
+        ),
+        AppButton(
+          text: "Slot Login",
+          onPressed: _loginSlot,
+        ),
+        Divider(
+          height: 30,
+          thickness: 5,
+          color: Colors.black,
+        ),
+        TextField(
+          maxLines: 1,
+          controller: _ctrlUserLogin,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "User Key",
+            hintText: "6 alphanumeric characters",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlUserLogin.clear(),
+              icon: Icon(Icons.clear),
             ),
           ),
-          TextField(
-            obscureText: true,
-            maxLines: 1,
-            controller: _ctrlUserPasswd,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              hintText: "Enter password",
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlUserPasswd.clear(),
-                icon: Icon(Icons.clear),
-              ),
+        ),
+        TextField(
+          obscureText: true,
+          maxLines: 1,
+          controller: _ctrlUserPasswd,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "User password",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlUserPasswd.clear(),
+              icon: Icon(Icons.clear),
             ),
           ),
-          AppButton(
-            text: "User Login",
-            onPressed: _loginUser,
-          ),
-        ]
-      ),
+        ),
+        AppButton(
+          text: "User Login",
+          onPressed: _loginUser,
+        ),
+      ]),
     );
   }
 }
-

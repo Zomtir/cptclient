@@ -22,8 +22,9 @@ class CourseSlotDetailPage extends StatefulWidget {
   final Session session;
   final Slot slot;
   final void Function() onUpdate;
+  final bool draft;
   
-  CourseSlotDetailPage({Key? key, required this.session, required this.slot, required this.onUpdate}) : super(key: key);
+  CourseSlotDetailPage({Key? key, required this.session, required this.slot, required this.onUpdate, required this.draft}) : super(key: key);
 
   @override
   CourseSlotDetailPageState createState() => CourseSlotDetailPageState();
@@ -69,7 +70,7 @@ class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
 
   void _duplicateSlot() {
     Slot _slot = Slot.fromSlot(widget.slot);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate, draft: true)));
   }
 
   void _applySlot() {
@@ -130,7 +131,7 @@ class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
                 icon: const Icon(Icons.copy),
                 onPressed: _duplicateSlot,
               ),
-              if (widget.session.user!.admin_courses || widget.slot.user_id != 0) IconButton(
+              if (!widget.draft && widget.session.user!.admin_courses) IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteSlot,
               ),
