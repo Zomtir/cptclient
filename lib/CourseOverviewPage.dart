@@ -149,7 +149,8 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         AppButton(
-          text: "\u{2795} New course",
+          leading: Icon(Icons.add),
+          text: "New course",
           onPressed: _createCourse,
         ),
         TextButton.icon(

@@ -19,9 +19,10 @@ class MemberLandingPage extends StatelessWidget {
   final Session session;
 
   MemberLandingPage({Key? key, required this.session}) : super(key: key) {
-    if (session.token == "" || session.user == null)
-      // TODO try first to reconnect user, before logging him out for good
-      navi.logout();
+    print("how often");
+    if (session.user == null) {
+      throw new Exception("The member landing page requires a logged-in user.");
+    }
   }
 
   @override

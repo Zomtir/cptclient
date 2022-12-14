@@ -33,8 +33,14 @@ void main() {
       '/': (context) => MainPage(),
       '/config': (context) => ConnectionPage(),
       '/login': (context) => LandingPage(),
-      '/user': (context) => MemberLandingPage(session: navi.session),
-      '/slot': (context) => EnrollPage(session: navi.session),
+      '/user': (context) {
+        if (navi.session == null || navi.session?.user == null) {
+          return LandingPage();
+        } else {
+          return MemberLandingPage(session: navi.session!);
+        }
+      },
+      '/slot': (context) => EnrollPage(session: navi.session!),
     },
   ));
 }
@@ -50,7 +56,7 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    navi.tryConnect();
+    navi.connect();
   }
 
   @override

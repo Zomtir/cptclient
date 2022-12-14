@@ -180,6 +180,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
             ],
           ),
           AppButton(
+            leading: Icon(Icons.add),
             text: "New ranking",
             onPressed: _createRanking,
           ),

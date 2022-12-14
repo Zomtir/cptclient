@@ -30,24 +30,16 @@ class LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
 
-    if (window.localStorage['Token']! != "") {
-      switch (window.localStorage['AutoLogin']!) {
-        case 'slot':
-          {
-            navi.confirmSlot();
-          }
-          break;
-        case 'autoslot':
-          {
-            _autoSlot();
-          }
-          break;
-        case 'user':
-          {
-            navi.confirmUser();
-          }
-          break;
-      }
+    switch (window.localStorage['AutoLogin']!) {
+      case 'slot':
+        navi.confirmSlot();
+        break;
+      case 'location':
+        _autoSlot();
+        break;
+      case 'user':
+        navi.loginUser();
+        break;
     }
   }
 
@@ -114,7 +106,7 @@ class LandingPageState extends State<LandingPage> {
     if (response.statusCode == 200) {
       status = "Login was successful";
       window.localStorage['Token'] = response.body;
-      navi.confirmUser();
+      navi.loginUser();
     } else {
       status = "${response.headers["error-uri"]} error: ${response.headers["error-message"]}";
     }
@@ -183,6 +175,7 @@ class LandingPageState extends State<LandingPage> {
         TextField(
           maxLines: 1,
           controller: _ctrlUserLogin,
+          autofillHints: const <String>[AutofillHints.username],
           textInputAction: TextInputAction.next,
           onEditingComplete: () => node.nextFocus(),
           decoration: InputDecoration(
@@ -199,6 +192,7 @@ class LandingPageState extends State<LandingPage> {
           obscureText: true,
           maxLines: 1,
           controller: _ctrlUserPasswd,
+          autofillHints: const <String>[AutofillHints.password],
           textInputAction: TextInputAction.next,
           onEditingComplete: () => node.nextFocus(),
           decoration: InputDecoration(

@@ -167,7 +167,8 @@ class EventOverviewState extends State<EventOverview> {
       body: AppBody(
         children: [
           AppButton(
-            text: "\u{2795} Draft new slot",
+            leading: Icon(Icons.add),
+            text: "Draft new slot",
             onPressed: _createIndividualSlot,
           ),
           PanelSwiper(

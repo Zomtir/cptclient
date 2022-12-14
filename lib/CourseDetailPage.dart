@@ -270,7 +270,8 @@ class CourseDetailPageState extends State<CourseDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppButton(
-          text: "\u{2795} New slot",
+          leading: Icon(Icons.add),
+          text: "New slot",
           onPressed: _createCourseSlot,
         ),
         AppListView<Slot>(
