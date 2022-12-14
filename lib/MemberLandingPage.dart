@@ -20,6 +20,7 @@ class MemberLandingPage extends StatelessWidget {
 
   MemberLandingPage({Key? key, required this.session}) : super(key: key) {
     if (session.token == "" || session.user == null)
+      // TODO try first to reconnect user, before logging him out for good
       navi.logout();
   }
 

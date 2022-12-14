@@ -76,10 +76,26 @@ void refresh() {
   db.loadLocations();
 }
 
+Future<void> tryConnect() async {
+  // We are at the splash screen
+  if (!await loadStatus()) {
+    // If connection fails, go the config page
+    navigatorKey.currentState?.pushReplacementNamed('/config');
+  } else {
+    // If connection succeeds, go the login page
+    await db.loadLocations();
+    await db.loadBranches();
+    await db.loadAccess();
+    await Future.delayed(Duration(milliseconds: 200));
+    navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+  }
+}
+
 void logout() {
   window.localStorage['Token'] = "";
   session = Session("");
   db.unloadMembers();
-  navigatorKey.currentState?.pushReplacementNamed('/login');
+
+  tryConnect();
 }
 

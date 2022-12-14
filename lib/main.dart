@@ -10,21 +10,23 @@ import 'MemberLandingPage.dart';
 import 'EnrollPage.dart';
 
 void main() {
-  window.localStorage.putIfAbsent('ServerURL', ()=>'localhost:8002');
-  window.localStorage.putIfAbsent('Token', ()=>'');
-  window.localStorage.putIfAbsent('AutoLogin', ()=>'none');
-  window.localStorage.putIfAbsent('DefaultLocation', ()=>'0');
+  window.localStorage.putIfAbsent('ServerURL', () => 'localhost:8002');
+  window.localStorage.putIfAbsent('Token', () => '');
+  window.localStorage.putIfAbsent('AutoLogin', () => 'none');
+  window.localStorage.putIfAbsent('DefaultLocation', () => '0');
 
   runApp(MaterialApp(
     title: 'CPT Client',
     theme: ThemeData(
       primarySwatch: Colors.amber,
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),),
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+        ),
       ),
     ),
     navigatorObservers: [navi.routeObserver],
-   // onGenerateRoute: generateRoute,
+    // onGenerateRoute: generateRoute,
     navigatorKey: navi.navigatorKey,
     initialRoute: '/',
     routes: {
@@ -45,34 +47,20 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-
   @override
   void initState() {
     super.initState();
-
-    _connect();
-  }
-
-  Future<void> _connect() async {
-    if (!await navi.loadStatus() || !await db.loadLocations() || !await db.loadBranches() || !await db.loadAccess()) {
-      Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.pushReplacementNamed(context, '/config');
-      return;
-    }
-
-    // Splash Screen
-    await Future.delayed(Duration(milliseconds: 200));
-    Navigator.popUntil(context, (route) => route.isFirst);
-    Navigator.pushReplacementNamed(context, '/login');
+    navi.tryConnect();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset('assets/images/splash.png',
-            fit: BoxFit.cover,
-            alignment: Alignment.center,
+        child: Image.asset(
+          'assets/images/splash.png',
+          fit: BoxFit.cover,
+          alignment: Alignment.center,
         ),
       ),
     );
