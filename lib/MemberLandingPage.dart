@@ -62,9 +62,14 @@ class MemberLandingPage extends StatelessWidget {
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseOverviewPage(session: session))),
               ),
               AppIconButton(
-                icon: Image.asset('icons/icon_individual.png'),
+                icon: Image.asset('icons/icon_event.png'),
                 text: "Events",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverview(session: session))),
+              ),
+              AppIconButton(
+                icon: Icon(Icons.settings),
+                text: "Inventory",
+                onPressed: () => {},
               ),
             ],
           ),
@@ -80,23 +85,28 @@ class MemberLandingPage extends StatelessWidget {
             children: [
               if (session.user!.admin_users) AppIconButton(
                 icon: Image.asset('icons/icon_membership.png'),
-                text: "Membership",
+                text: "Membership Management",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
               ),
               if (session.user!.admin_users) AppIconButton(
                 icon: Image.asset('icons/icon_teams.png'),
-                text: "Teams",
+                text: "Team Management",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewPage(session: session))),
               ),
               if (session.user!.admin_rankings) AppIconButton(
                 icon: Image.asset('icons/icon_rankings.png'),
-                text: "Rankings",
+                text: "Ranking Management",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingManagementPage(session: session))),
               ),
               if (session.user!.admin_reservations) AppIconButton(
-                icon: Image.asset('icons/icon_reservations.png'),
-                text: "Reservations",
+                icon: Image.asset('icons/icon_event.png'),
+                text: "Event Management",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventManagementPage(session: session))),
+              ),
+              if (session.user!.admin_inventory) AppIconButton(
+                icon: Icon(Icons.settings),
+                text: "Inventory Management",
+                onPressed: () => {},
               ),
             ],
           ),

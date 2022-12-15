@@ -45,9 +45,9 @@ flutter:
     - assets/images/splash.png
     - assets/icons/icon_calendar.png
     - assets/icons/icon_course.png
-    - assets/icons/icon_individual.png
+    - assets/icons/icon_event.png
     - assets/icons/icon_membership.png
-    - assets/icons/icon_reservations.png
+    - assets/icons/icon_time.png
     - assets/icons/icon_rankings.png
     - assets/icons/icon_teams.png
 

@@ -33,7 +33,7 @@ class CourseOverviewPage extends StatefulWidget {
 
 class CourseOverviewPageState extends State<CourseOverviewPage> {
   List <Course> _owncourses = [];
-  List <Course> _courses = [];
+  List <Course> _modcourses = [];
   List <Course> _coursesFiltered = [];
   bool          _hideFilters = true;
 
@@ -52,7 +52,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   void _update() {
     _getOwnCourses();
-    if(widget.session.user!.admin_courses) _getAllCourses();
+    _getModCourses();
   }
 
   Future<void> _getOwnCourses() async {
@@ -72,7 +72,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
     });
   }
 
-  Future<void> _getAllCourses() async {
+  Future<void> _getModCourses() async {
     final response = await http.get(
       Uri.http(navi.server, 'course_list', {'user_id': '0'}),
       headers: {
@@ -84,13 +84,13 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
     Iterable l = json.decode(response.body);
 
-    _courses = List<Course>.from(l.map((model) => Course.fromJson(model)));
+    _modcourses = List<Course>.from(l.map((model) => Course.fromJson(model)));
     _filterCourses();
   }
 
   void _filterCourses() {
     setState(() {
-      _coursesFiltered = _courses.where((course) {
+      _coursesFiltered = _modcourses.where((course) {
         bool activeFilter = course.active == _isActive;
         bool accessFilter = (_ctrlDropdownAccess.value == null) ? true : (course.access == _ctrlDropdownAccess.value);
         bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (
@@ -117,14 +117,14 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
   Widget build (BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Course Overview"),
+        title: Text("Your Courses"),
       ),
       body: AppBody(
         children: [
           PanelSwiper(
               panels: [
                 Panel("Own Courses", _buildOwnCoursePanel()),
-                if(widget.session.user!.admin_courses) Panel("All Courses", _buildAllCoursePanel()),
+                Panel("Moderation", _buildModCoursePanel()),
               ]
           ),
         ],
@@ -144,15 +144,10 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
     );
   }
 
-  Widget _buildAllCoursePanel() {
+  Widget _buildModCoursePanel() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        AppButton(
-          leading: Icon(Icons.add),
-          text: "New course",
-          onPressed: _createCourse,
-        ),
         TextButton.icon(
           icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
           label: _hideFilters ? Text('Show Filters') : Text ('Hide Filters'),

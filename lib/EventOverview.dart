@@ -176,7 +176,7 @@ class EventOverviewState extends State<EventOverview> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Individual Overview"),
+        title: Text("Your Events"),
       ),
       body: AppBody(
         children: [

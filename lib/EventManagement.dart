@@ -126,7 +126,7 @@ class EventManagementPageState extends State<EventManagementPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Events"),
+        title: Text("Event Management"),
       ),
       body: AppBody(
         children: <Widget>[

@@ -14,6 +14,7 @@ class User implements Comparable {
   final bool admin_rankings;
   final bool admin_reservations;
   final bool admin_courses;
+  final bool admin_inventory = true;
 
   User(this.id, this.key, this.pwd, this.firstname, this.lastname,
       {this.admin_users = false, this.admin_rankings = false, this.admin_reservations = false, this.admin_courses = false });
