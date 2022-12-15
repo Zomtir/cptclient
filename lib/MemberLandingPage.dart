@@ -67,7 +67,7 @@ class MemberLandingPage extends StatelessWidget {
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverview(session: session))),
               ),
               AppIconButton(
-                icon: Icon(Icons.settings),
+                icon: Image.asset('icons/icon_inventory.png'),
                 text: "Inventory",
                 onPressed: () => {},
               ),
@@ -85,27 +85,32 @@ class MemberLandingPage extends StatelessWidget {
             children: [
               if (session.user!.admin_users) AppIconButton(
                 icon: Image.asset('icons/icon_membership.png'),
-                text: "Membership Management",
+                text: "Membership\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
               ),
               if (session.user!.admin_users) AppIconButton(
                 icon: Image.asset('icons/icon_teams.png'),
-                text: "Team Management",
+                text: "Team\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewPage(session: session))),
               ),
               if (session.user!.admin_rankings) AppIconButton(
                 icon: Image.asset('icons/icon_rankings.png'),
-                text: "Ranking Management",
+                text: "Ranking\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingManagementPage(session: session))),
               ),
               if (session.user!.admin_reservations) AppIconButton(
                 icon: Image.asset('icons/icon_event.png'),
-                text: "Event Management",
+                text: "Event\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventManagementPage(session: session))),
               ),
+              if (session.user!.admin_courses) AppIconButton(
+                icon: Image.asset('icons/icon_course.png'),
+                text: "Course\nManagement",
+                onPressed: () => {},
+              ),
               if (session.user!.admin_inventory) AppIconButton(
-                icon: Icon(Icons.settings),
-                text: "Inventory Management",
+                icon: Image.asset('icons/icon_inventory.png'),
+                text: "Inventory\nManagement",
                 onPressed: () => {},
               ),
             ],
