@@ -7,17 +7,18 @@ class AppListView<T> extends StatelessWidget {
     required this.itemBuilder,
   }) : super(key: key);
 
-  final List<T> items;
+  final List<T>? items;
   final Widget Function(T) itemBuilder;
 
   @override
   Widget build(BuildContext context) {
+    if (items == null) return Container();
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: items.length,
+      itemCount: items!.length,
       itemBuilder: (context, index) {
-        return itemBuilder(items[index]);
+        return itemBuilder(items![index]);
       },
     );
   }

@@ -19,7 +19,6 @@ class MemberLandingPage extends StatelessWidget {
   final Session session;
 
   MemberLandingPage({Key? key, required this.session}) : super(key: key) {
-    print("how often");
     if (session.user == null) {
       throw new Exception("The member landing page requires a logged-in user.");
     }
@@ -97,7 +96,7 @@ class MemberLandingPage extends StatelessWidget {
               if (session.user!.admin_reservations) AppIconButton(
                 icon: Image.asset('icons/icon_reservations.png'),
                 text: "Reservations",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ReservationManagementPage(session: session))),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventManagementPage(session: session))),
               ),
             ],
           ),

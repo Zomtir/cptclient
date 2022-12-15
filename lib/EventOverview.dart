@@ -24,11 +24,11 @@ class EventOverview extends StatefulWidget {
 }
 
 class EventOverviewState extends State<EventOverview> {
-  List <Slot> _slotsOccurring = [];
-  List <Slot> _slotsDraft = [];
-  List <Slot> _slotsPending = [];
-  List <Slot> _slotsRejected = [];
-  List <Slot> _slotsCanceled = [];
+  List<Slot> _slotsOccurring = [];
+  List<Slot> _slotsDraft = [];
+  List<Slot> _slotsPending = [];
+  List<Slot> _slotsRejected = [];
+  List<Slot> _slotsCanceled = [];
 
   EventOverviewState();
 
@@ -59,7 +59,7 @@ class EventOverviewState extends State<EventOverview> {
 
   Future<List<Slot>?> _requestIndividualSlots(String status) async {
     final response = await http.get(
-      Uri.http(navi.server, 'indi_slot_list', {'status': status}),
+      Uri.http(navi.server, 'event_list', {'status': status}),
       headers: {
         'Token': widget.session.token,
       },
@@ -73,16 +73,36 @@ class EventOverviewState extends State<EventOverview> {
 
   void _createIndividualSlot() async {
     Slot slot = Slot.fromUser(widget.session.user!);
-    _selectIndividualSlot(slot);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetailPage(
+          session: widget.session,
+          slot: slot,
+          onUpdate: _getIndividualSlots,
+          draft: true,
+        ),
+      ),
+    );
   }
 
   void _selectIndividualSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(session: widget.session, slot: slot, onUpdate: _getIndividualSlots)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetailPage(
+          session: widget.session,
+          slot: slot,
+          onUpdate: _getIndividualSlots,
+          draft: false,
+        ),
+      ),
+    );
   }
 
   Future<void> _submitSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'indi_slot_submit', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.server, 'event_submit', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -100,7 +120,7 @@ class EventOverviewState extends State<EventOverview> {
 
   Future<void> _withdrawSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'indi_slot_withdraw', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.server, 'event_withdraw', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -108,19 +128,17 @@ class EventOverviewState extends State<EventOverview> {
 
     switch (response.statusCode) {
       case 200:
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Successfully withdrew slot')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully withdrew slot')));
         _getIndividualSlots();
         break;
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to withdrew slot')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to withdrew slot')));
     }
   }
 
   Future<void> _cancelSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'indi_slot_cancel', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.server, 'event_cancel', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -128,19 +146,17 @@ class EventOverviewState extends State<EventOverview> {
 
     switch (response.statusCode) {
       case 200:
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Successfully cancelled slot')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully cancelled slot')));
         _getIndividualSlots();
         break;
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to cancel slot')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to cancel slot')));
     }
   }
 
   Future<void> _recycleSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'indi_slot_recycle', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.server, 'event_recycle', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -148,18 +164,16 @@ class EventOverviewState extends State<EventOverview> {
 
     switch (response.statusCode) {
       case 200:
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Successfully recycled slot')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully recycled slot')));
         _getIndividualSlots();
         break;
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to recycle slot')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to recycle slot')));
     }
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Individual Overview"),
@@ -171,16 +185,13 @@ class EventOverviewState extends State<EventOverview> {
             text: "Draft new slot",
             onPressed: _createIndividualSlot,
           ),
-          PanelSwiper(
-            swipes: 0,
-            panels: [
-              Panel("Draft", _buildDraftSlotPanel()),
-              Panel("Pending", _buildPendingSlotPanel()),
-              Panel("Occurring", _buildOccurringSlotPanel()),
-              Panel("Rejected", _buildRejectedSlotPanel()),
-              Panel("Canceled", _buildCanceledSlotPanel()),
-            ]
-          ),
+          PanelSwiper(swipes: 0, panels: [
+            Panel("Draft", _buildDraftSlotPanel()),
+            Panel("Pending", _buildPendingSlotPanel()),
+            Panel("Occurring", _buildOccurringSlotPanel()),
+            Panel("Rejected", _buildRejectedSlotPanel()),
+            Panel("Canceled", _buildCanceledSlotPanel()),
+          ]),
         ],
       ),
     );
@@ -285,5 +296,4 @@ class EventOverviewState extends State<EventOverview> {
       },
     );
   }
-
 }

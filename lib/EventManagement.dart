@@ -21,16 +21,16 @@ import 'json/slot.dart';
 import 'json/location.dart';
 import 'json/member.dart';
 
-class ReservationManagementPage extends StatefulWidget {
+class EventManagementPage extends StatefulWidget {
   final Session session;
 
-  ReservationManagementPage({Key? key, required this.session}) : super(key: key);
+  EventManagementPage({Key? key, required this.session}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => ReservationManagementPageState();
+  State<StatefulWidget> createState() => EventManagementPageState();
 }
 
-class ReservationManagementPageState extends State<ReservationManagementPage> {
+class EventManagementPageState extends State<EventManagementPage> {
   DateTime _dateBegin = DateTime.now();
   DateTime _dateEnd = DateTime.now().add(Duration(days: 30));
 
@@ -45,7 +45,7 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
   DropdownController<Member> _ctrlDropdownUser = DropdownController<Member>(items: db.cacheMembers);
   DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: db.cacheLocations);
 
-  ReservationManagementPageState();
+  EventManagementPageState();
 
   @override
   void initState() {
@@ -92,6 +92,7 @@ class ReservationManagementPageState extends State<ReservationManagementPage> {
           session: widget.session,
           slot: slot,
           onUpdate: _loadSlots,
+          draft: false,
         ),
       ),
     );

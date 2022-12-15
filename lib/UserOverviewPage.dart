@@ -68,6 +68,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
       body: AppBody(
         children: <Widget>[
           AppButton(
+            leading: Icon(Icons.add),
             text: "New user",
             onPressed: _createUser,
           ),
