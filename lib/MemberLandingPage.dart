@@ -11,9 +11,10 @@ import 'EventOverview.dart';
 import 'CourseOverviewPage.dart';
 
 import 'UserOverviewPage.dart';
-import 'TeamOverviewPage.dart';
+import 'TeamManagementPage.dart';
 import 'RankingManagement.dart';
 import 'EventManagement.dart';
+import 'CourseManagementPage.dart';
 
 class MemberLandingPage extends StatelessWidget {
   final Session session;
@@ -91,7 +92,7 @@ class MemberLandingPage extends StatelessWidget {
               if (session.user!.admin_users) AppIconButton(
                 icon: Image.asset('icons/icon_teams.png'),
                 text: "Team\nManagement",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewPage(session: session))),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamManagementPage(session: session))),
               ),
               if (session.user!.admin_rankings) AppIconButton(
                 icon: Image.asset('icons/icon_rankings.png'),
@@ -106,7 +107,7 @@ class MemberLandingPage extends StatelessWidget {
               if (session.user!.admin_courses) AppIconButton(
                 icon: Image.asset('icons/icon_course.png'),
                 text: "Course\nManagement",
-                onPressed: () => {},
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseManagementPage(session: session))),
               ),
               if (session.user!.admin_inventory) AppIconButton(
                 icon: Image.asset('icons/icon_inventory.png'),

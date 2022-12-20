@@ -24,18 +24,19 @@ import 'package:cptclient/json/member.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/access.dart';
 
-class CourseDetailPage extends StatefulWidget {
+class CourseAdminPage extends StatefulWidget {
   final Session session;
   final Course course;
   final void Function() onUpdate;
+  final bool draft;
 
-  CourseDetailPage({Key? key, required this.session, required this.course, required this.onUpdate}) : super(key: key);
+  CourseAdminPage({Key? key, required this.session, required this.course, required this.onUpdate, required this.draft}) : super(key: key);
 
   @override
-  CourseDetailPageState createState() => CourseDetailPageState();
+  CourseAdminPageState createState() => CourseAdminPageState();
 }
 
-class CourseDetailPageState extends State<CourseDetailPage> {
+class CourseAdminPageState extends State<CourseAdminPage> {
   List <Slot> _slots = [];
   List <Member> _moderators = [];
 
@@ -48,7 +49,7 @@ class CourseDetailPageState extends State<CourseDetailPage> {
   DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: db.cacheBranches);
   int                        _pickThresholdValue = 0;
 
-  CourseDetailPageState();
+  CourseAdminPageState();
 
   @override
   void initState() {
@@ -57,10 +58,9 @@ class CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   void _update() {
-    if (widget.course.id != 0) _getCourseSlots();
-    if (widget.course.id != 0) _getCourseModerators();
-    if (widget.session.user!.admin_courses) _applyCourse();
-    if (widget.session.user!.admin_courses) _getModeratorCandidates();
+    if (!widget.draft) _getCourseSlots();
+    if (!widget.draft) _getCourseModerators();
+    _applyCourse();
   }
 
   void _deleteCourse() async {
@@ -83,7 +83,7 @@ class CourseDetailPageState extends State<CourseDetailPage> {
 
   void _duplicateCourse() {
     Course _course = Course.fromCourse(widget.course);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: _course, onUpdate: _update)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: _course, onUpdate: _update, draft: true)));
   }
 
   Future<void> _getCourseSlots() async {
@@ -110,25 +110,6 @@ class CourseDetailPageState extends State<CourseDetailPage> {
 
   void _createCourseSlot() async {
     _selectCourseSlot(Slot.fromCourse(widget.course));
-  }
-
-  Future<void> _getModeratorCandidates() async {
-    final response = await http.get(
-      Uri.http(navi.server, 'user_member_list'),
-      headers: {
-        'Token': widget.session.token,
-        'Accept': 'application/json; charset=utf-8',
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    Iterable list = json.decode(utf8.decode(response.bodyBytes));
-    var members = List<Member>.from(list.map((model) => Member.fromJson(model)));
-
-    setState(() {
-      _ctrlModerator.items = members;
-    });
   }
 
   Future<void> _getCourseModerators() async {
@@ -255,8 +236,8 @@ class CourseDetailPageState extends State<CourseDetailPage> {
           ),
           PanelSwiper(
             panels: [
-              if (widget.course.id != 0) Panel("Slots", _buildSlotPanel()),
-              if (widget.course.id != 0) Panel("Moderators", _buildModeratorPanel()),
+              if (!widget.draft) Panel("Slots", _buildSlotPanel()),
+              if (!widget.draft) Panel("Moderators", _buildModeratorPanel()),
               if (widget.session.user!.admin_courses) Panel("Edit", buildEditPanel()),
             ]
           ),

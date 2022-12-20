@@ -3,7 +3,6 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/app/AppBody.dart';
-import 'package:cptclient/material/app/AppButton.dart';
 import 'package:cptclient/material/app/AppInfoRow.dart';
 import 'package:cptclient/material/app/AppDropdown.dart';
 import 'package:cptclient/material/app/AppListView.dart';
@@ -12,7 +11,7 @@ import 'package:cptclient/material/app/AppCourseTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'CourseDetailPage.dart';
+import 'CourseInfoPage.dart';
 
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
@@ -74,7 +73,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getModCourses() async {
     final response = await http.get(
-      Uri.http(navi.server, 'course_list', {'user_id': '0'}),
+      Uri.http(navi.server, 'mod_course_list', {'user_id': '0'}),
       headers: {
         'Token': widget.session.token,
       },
@@ -103,14 +102,8 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
     });
   }
 
-  void _createCourse() async {
-    Course course = Course.fromVoid();
-
-    _selectCourse(course);
-  }
-
   void _selectCourse(Course course) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: course, onUpdate: _update)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseInfoPage(session: widget.session, course: course, onUpdate: _update)));
   }
 
   @override

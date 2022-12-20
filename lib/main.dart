@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
 
 import 'static/navigation.dart' as navi;
-import 'static/db.dart' as db;
 
 import 'ConnectionPage.dart';
 import 'LandingPage.dart';

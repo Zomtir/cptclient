@@ -11,18 +11,18 @@ import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 import 'json/team.dart';
 
-class TeamDetailPage extends StatefulWidget {
+class TeamAdminPage extends StatefulWidget {
   final Session session;
   final Team team;
   final void Function() onUpdate;
 
-  TeamDetailPage({Key? key, required this.session, required this.team, required this.onUpdate}) : super(key: key);
+  TeamAdminPage({Key? key, required this.session, required this.team, required this.onUpdate}) : super(key: key);
 
   @override
-  TeamDetailPageState createState() => TeamDetailPageState();
+  TeamAdminPageState createState() => TeamAdminPageState();
 }
 
-class TeamDetailPageState extends State<TeamDetailPage> {
+class TeamAdminPageState extends State<TeamAdminPage> {
   TextEditingController _ctrlName = TextEditingController();
   TextEditingController _ctrlDescription = TextEditingController();
 
@@ -32,7 +32,7 @@ class TeamDetailPageState extends State<TeamDetailPage> {
   bool _ctrlRightTeam = false;
   bool _ctrlRightUser = false;
 
-  TeamDetailPageState();
+  TeamAdminPageState();
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class TeamDetailPageState extends State<TeamDetailPage> {
 
   void _duplicateTeam() {
     Team _team = Team.fromTeam(widget.team);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeamDetailPage(session: widget.session, team: _team, onUpdate: widget.onUpdate)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeamAdminPage(session: widget.session, team: _team, onUpdate: widget.onUpdate)));
   }
 
   @override

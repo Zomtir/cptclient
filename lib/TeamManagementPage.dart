@@ -7,25 +7,25 @@ import 'material/app/AppTeamTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'TeamDetailPage.dart';
+import 'TeamAdminPage.dart';
 
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 import 'json/team.dart';
 
-class TeamOverviewPage extends StatefulWidget {
+class TeamManagementPage extends StatefulWidget {
   final Session session;
 
-  TeamOverviewPage({Key? key, required this.session}) : super(key: key);
+  TeamManagementPage({Key? key, required this.session}) : super(key: key);
 
   @override
-  TeamOverviewPageState createState() => TeamOverviewPageState();
+  TeamManagementPageState createState() => TeamManagementPageState();
 }
 
-class TeamOverviewPageState extends State<TeamOverviewPage> {
+class TeamManagementPageState extends State<TeamManagementPage> {
   List <Team> _teams = [];
 
-  TeamOverviewPageState();
+  TeamManagementPageState();
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
   }
 
   void _selectTeam(Team team) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailPage(session: widget.session, team: team, onUpdate: _getTeams)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TeamAdminPage(session: widget.session, team: team, onUpdate: _getTeams)));
   }
 
   void _createTeam() async {

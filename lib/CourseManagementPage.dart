@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
-import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/app/AppBody.dart';
 import 'package:cptclient/material/app/AppButton.dart';
 import 'package:cptclient/material/app/AppInfoRow.dart';
@@ -12,7 +11,7 @@ import 'package:cptclient/material/app/AppCourseTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'CourseDetailPage.dart';
+import 'CourseAdminPage.dart';
 
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
@@ -22,16 +21,16 @@ import 'json/course.dart';
 import 'json/branch.dart';
 import 'json/access.dart';
 
-class CourseOverviewPage extends StatefulWidget {
+class CourseManagementPage extends StatefulWidget {
   final Session session;
 
-  CourseOverviewPage({Key? key, required this.session}) : super(key: key);
+  CourseManagementPage({Key? key, required this.session}) : super(key: key);
 
   @override
-  CourseOverviewPageState createState() => CourseOverviewPageState();
+  CourseManagementPageState createState() => CourseManagementPageState();
 }
 
-class CourseOverviewPageState extends State<CourseOverviewPage> {
+class CourseManagementPageState extends State<CourseManagementPage> {
   List <Course> _courses = [];
   List <Course> _coursesFiltered = [];
   bool          _hideFilters = true;
@@ -41,7 +40,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
   DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: db.cacheBranches);
   RangeValues                _thresholdRange = RangeValues(0, 10);
 
-  CourseOverviewPageState();
+  CourseManagementPageState();
 
   @override
   void initState() {
@@ -86,12 +85,11 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   void _createCourse() async {
     Course course = Course.fromVoid();
-
-    _selectCourse(course);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, draft: true)));
   }
 
   void _selectCourse(Course course) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetailPage(session: widget.session, course: course, onUpdate: _update)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, draft: false)));
   }
 
   @override
