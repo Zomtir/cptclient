@@ -14,23 +14,23 @@ import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 import 'json/slot.dart';
 
-class EventOverview extends StatefulWidget {
+class EventOverviewPage extends StatefulWidget {
   final Session session;
 
-  EventOverview({Key? key, required this.session}) : super(key: key);
+  EventOverviewPage({Key? key, required this.session}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => EventOverviewState();
+  State<StatefulWidget> createState() => EventOverviewPageState();
 }
 
-class EventOverviewState extends State<EventOverview> {
+class EventOverviewPageState extends State<EventOverviewPage> {
   List<Slot> _slotsOccurring = [];
   List<Slot> _slotsDraft = [];
   List<Slot> _slotsPending = [];
   List<Slot> _slotsRejected = [];
   List<Slot> _slotsCanceled = [];
 
-  EventOverviewState();
+  EventOverviewPageState();
 
   @override
   void initState() {

@@ -121,11 +121,11 @@ class TeamAdminPageState extends State<TeamAdminPage> {
                   item: widget.team,
                 ),
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: _duplicateTeam,
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteTeam,
               ),

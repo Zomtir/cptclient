@@ -18,19 +18,20 @@ import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
 
-class CourseSlotDetailPage extends StatefulWidget {
+class ClassMemberPage extends StatefulWidget {
   final Session session;
   final Slot slot;
   final void Function() onUpdate;
-  final bool draft;
+  final bool isDraft;
+  final bool isModerator = false;
   
-  CourseSlotDetailPage({Key? key, required this.session, required this.slot, required this.onUpdate, required this.draft}) : super(key: key);
+  ClassMemberPage({Key? key, required this.session, required this.slot, required this.onUpdate, required this.isDraft}) : super(key: key);
 
   @override
-  CourseSlotDetailPageState createState() => CourseSlotDetailPageState();
+  ClassMemberPageState createState() => ClassMemberPageState();
 }
 
-class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
+class ClassMemberPageState extends State<ClassMemberPage> {
   TextEditingController _ctrlSlotPassword = TextEditingController();
   TextEditingController _ctrlSlotBegin = TextEditingController();
   TextEditingController _ctrlSlotEnd = TextEditingController();
@@ -39,7 +40,7 @@ class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
   String?                      _confirmAction;
 
-  CourseSlotDetailPageState();
+  ClassMemberPageState();
 
   @override
   void initState() {
@@ -70,7 +71,7 @@ class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
 
   void _duplicateSlot() {
     Slot _slot = Slot.fromSlot(widget.slot);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate, draft: true)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ClassMemberPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate, isDraft: true)));
   }
 
   void _applySlot() {
@@ -127,11 +128,11 @@ class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
                   slot: widget.slot,
                 ),
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              if (widget.isModerator) IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: _duplicateSlot,
               ),
-              if (!widget.draft && widget.session.user!.admin_courses) IconButton(
+              if (widget.isModerator) IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteSlot,
               ),
@@ -140,10 +141,10 @@ class CourseSlotDetailPageState extends State<CourseSlotDetailPage> {
           //Text(widget.slot.status!.toString()),
           PanelSwiper(
             panels: [
-              if (widget.slot.id != 0) Panel("Group Invites", Container()),
-              if (widget.slot.id != 0) Panel("Personal Invites", Container()),
-              if (widget.slot.id != 0) Panel("Level Invites", Container()),
-              if (widget.session.user!.admin_courses) Panel("Edit", _buildEditPanel()),
+              if (!widget.isDraft) Panel("Group Invites", Container()),
+              if (!widget.isDraft) Panel("Personal Invites", Container()),
+              if (!widget.isDraft) Panel("Level Invites", Container()),
+              if (widget.isModerator) Panel("Edit", _buildEditPanel()),
             ]
           ),
         ],

@@ -12,7 +12,7 @@ import 'package:cptclient/material/app/AppSlotTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'CourseSlotDetailPage.dart';
+import 'ClassMemberPage.dart';
 
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
@@ -20,7 +20,7 @@ import 'static/db.dart' as db;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/slot.dart';
-import 'package:cptclient/json/member.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/access.dart';
 
@@ -37,9 +37,9 @@ class CourseInfoPage extends StatefulWidget {
 
 class CourseInfoPageState extends State<CourseInfoPage> {
   List <Slot> _slots = [];
-  List <Member> _moderators = [];
+  List <User> _moderators = [];
 
-  DropdownController<Member> _ctrlModerator = DropdownController<Member>(items: []);
+  DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
 
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
@@ -59,7 +59,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
   void _update() {
     _getCourseSlots();
     _getCourseModerators();
-    if (widget.session.user!.admin_courses) _applyCourse();
+    if (widget.session.right!.admin_courses) _applyCourse();
   }
 
   void _deleteCourse() async {
@@ -104,7 +104,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseSlotDetailPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, draft: false,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ClassMemberPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, isDraft: false,)));
   }
 
   void _createCourseSlot() async {
@@ -125,15 +125,15 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     Iterable list = json.decode(utf8.decode(response.bodyBytes));
 
     setState(() {
-      _moderators = List<Member>.from(list.map((model) => Member.fromJson(model)));
+      _moderators = List<User>.from(list.map((model) => User.fromJson(model)));
     });
   }
 
-  void _modMember(Member member) async {
+  void _modMember(User user) async {
     final response = await http.head(
       Uri.http(navi.server, 'course_mod', {
         'course_id': widget.course.id.toString(),
-        'user_id' : member.id.toString(),
+        'user_id' : user.id.toString(),
       }),
       headers: {
         'Token': widget.session.token,
@@ -148,7 +148,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     _getCourseModerators();
   }
 
-  void _unmodMember(Member member) async {
+  void _unmodMember(User member) async {
     final response = await http.head(
       Uri.http(navi.server, 'course_unmod', {
         'course': widget.course.id.toString(),
@@ -223,11 +223,11 @@ class CourseInfoPageState extends State<CourseInfoPage> {
                   course: widget.course,
                 ),
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              if (widget.session.right!.admin_courses) IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: _duplicateCourse,
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              if (widget.session.right!.admin_courses) IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteCourse,
               ),
@@ -269,23 +269,13 @@ class CourseInfoPageState extends State<CourseInfoPage> {
   Widget _buildModeratorPanel() {
     return Column(
       children: [
-        if(widget.session.user!.admin_courses) AppDropdown<Member>(
-          hint: Text("Add moderator"),
-          controller: _ctrlModerator,
-          builder: (Member member) {return Text(member.key);},
-          onChanged: (Member? member) => _modMember(member!),
-        ),
-        AppListView<Member>(
+        AppListView<User>(
           items: _moderators,
-          itemBuilder: (Member member) {
+          itemBuilder: (User user) {
             return InkWell(
               child: ListTile(
-                title: Text("${member.lastname}, ${member.firstname}"),
-                subtitle: Text("${member.key}"),
-                  trailing: !widget.session.user!.admin_courses ? null :  IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _unmodMember(member),
-                ),
+                title: Text("${user.lastname}, ${user.firstname}"),
+                subtitle: Text("${user.key}"),
               ),
             );
           },

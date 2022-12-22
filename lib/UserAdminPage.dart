@@ -11,20 +11,20 @@ import 'static/navigation.dart' as navi;
 import 'static/crypto.dart' as crypto;
 import 'json/session.dart';
 import 'json/user.dart';
-import 'json/member.dart';
 
-class UserDetailPage extends StatefulWidget {
+class UserAdminPage extends StatefulWidget {
   final Session session;
   final User user;
   final void Function() onUpdate;
+  final bool isDraft;
 
-  UserDetailPage({Key? key, required this.session, required this.user, required this.onUpdate}) : super(key: key);
+  UserAdminPage({Key? key, required this.session, required this.user, required this.onUpdate, required this.isDraft}) : super(key: key);
 
   @override
-  UserDetailPageState createState() => UserDetailPageState();
+  UserAdminPageState createState() => UserAdminPageState();
 }
 
-class UserDetailPageState extends State<UserDetailPage> {
+class UserAdminPageState extends State<UserAdminPage> {
   TextEditingController _ctrlUserKey = TextEditingController();
   TextEditingController _ctrlUserPassword = TextEditingController();
   TextEditingController _ctrlUserFirstname = TextEditingController();
@@ -32,7 +32,7 @@ class UserDetailPageState extends State<UserDetailPage> {
   TextEditingController _ctrlUserEmail = TextEditingController();
   TextEditingController _ctrlUserTerm = TextEditingController();
 
-  UserDetailPageState();
+  UserAdminPageState();
 
   @override
   void initState() {
@@ -103,15 +103,15 @@ class UserDetailPageState extends State<UserDetailPage> {
       ),
       body: AppBody(
         children: [
-          if (widget.user.id != 0) Row(
+          if (!widget.isDraft) Row(
             children: [
               Expanded(
                 child: AppMemberTile(
                   onTap: (member) => {},
-                  item: Member.fromUser(widget.user),
+                  item: widget.user,
                 ),
               ),
-              if (widget.session.user!.admin_courses) IconButton(
+              IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteUser,
               ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
 
-import 'json/member.dart';
+import 'json/user.dart';
 import 'material/app/AppBody.dart';
 import 'material/app/AppDropdown.dart';
 import 'material/app/AppInfoRow.dart';
@@ -42,7 +42,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
   String? _confirmAction;
 
-  DropdownController<Member> _ctrlDropdownMember = DropdownController<Member>(items: db.cacheMembers);
+  DropdownController<User> _ctrlDropdownMember = DropdownController<User>(items: db.cacheMembers);
 
   SlotDetailPageState();
 
@@ -145,11 +145,11 @@ class SlotDetailPageState extends State<EventDetailPage> {
     }
 
     setState(() {
-      widget.slot.owners = List<Member>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => Member.fromJson(data)));
+      widget.slot.owners = List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
     });
   }
 
-  void _addSlotOwner(Member? member) async {
+  void _addSlotOwner(User? member) async {
     if (member == null) return;
 
     final response = await http.head(
@@ -170,7 +170,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
     _getSlotOwners();
   }
 
-  void _removeSlotOwner(Member? member) async {
+  void _removeSlotOwner(User? member) async {
     if (member == null) return;
 
     final response = await http.head(
@@ -295,9 +295,9 @@ class SlotDetailPageState extends State<EventDetailPage> {
       children: [
         AppInfoRow(
           info: Text("User"),
-          child: AppDropdown<Member>(
+          child: AppDropdown<User>(
             controller: _ctrlDropdownMember,
-            builder: (Member member) {
+            builder: (User member) {
               return Text("${member.firstname} ${member.lastname}");
             },
             onChanged: _addSlotOwner,
@@ -309,12 +309,12 @@ class SlotDetailPageState extends State<EventDetailPage> {
         ),
         AppListView(
           items: widget.slot.owners,
-          itemBuilder: (Member member) {
+          itemBuilder: (User member) {
             return Row(
               children: [
                 Expanded(
                   child: AppMemberTile(
-                    onTap: (Member member) => {},
+                    onTap: (User member) => {},
                     item: member,
                   ),
                 ),

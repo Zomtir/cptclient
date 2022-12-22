@@ -6,12 +6,12 @@ import "package:universal_html/html.dart"; // TODO go back to dart:html?
 import 'package:http/http.dart' as http;
 
 import 'package:cptclient/static/navigation.dart';
-import 'package:cptclient/json/member.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/access.dart';
 
-List<Member> cacheMembers = [];
+List<User> cacheMembers = [];
 List<Location> cacheLocations = [];
 List<Branch> cacheBranches = [];
 List<Access> cacheAccess = [];
@@ -28,7 +28,7 @@ Future<bool> loadMembers() async {
   if (response.statusCode != 200) return false;
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  cacheMembers = List<Member>.from(l.map((model) => Member.fromJson(model)));
+  cacheMembers = List<User>.from(l.map((model) => User.fromJson(model)));
 
   return true;
 }

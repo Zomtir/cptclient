@@ -15,28 +15,28 @@ import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
 import 'json/session.dart';
 import 'json/ranking.dart';
-import 'json/member.dart';
+import 'json/user.dart';
 import 'json/branch.dart';
 
-class RankingEditPage extends StatefulWidget {
+class RankingAdminPage extends StatefulWidget {
   final Session session;
   final Ranking ranking;
   final void Function() onUpdate;
 
-  RankingEditPage({Key? key, required this.session, required this.ranking, required this.onUpdate}) : super(key: key);
+  RankingAdminPage({Key? key, required this.session, required this.ranking, required this.onUpdate}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => RankingEditPageState();
+  State<StatefulWidget> createState() => RankingAdminPageState();
 }
 
-class RankingEditPageState extends State<RankingEditPage> {
-  DropdownController<Member>    _ctrlRankingUser = DropdownController<Member>(items: []);
+class RankingAdminPageState extends State<RankingAdminPage> {
+  DropdownController<User>    _ctrlRankingUser = DropdownController<User>(items: []);
   DropdownController<Branch>    _ctrlRankingBranch = DropdownController<Branch>(items: db.cacheBranches);
   int                           _rankingLevel = 0;
-  DropdownController<Member>    _ctrlRankingJudge = DropdownController<Member>(items: []);
+  DropdownController<User>    _ctrlRankingJudge = DropdownController<User>(items: []);
   TextEditingController         _ctrlRankingDate = TextEditingController();
 
-  RankingEditPageState();
+  RankingAdminPageState();
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class RankingEditPageState extends State<RankingEditPage> {
     if (response.statusCode != 200) return;
 
     Iterable list = json.decode(utf8.decode(response.bodyBytes));
-    var members = List<Member>.from(list.map((model) => Member.fromJson(model)));
+    var members = List<User>.from(list.map((model) => User.fromJson(model)));
 
     setState(() {
       _ctrlRankingUser.items = members;
@@ -101,7 +101,7 @@ class RankingEditPageState extends State<RankingEditPage> {
 
   void _duplicateRanking() {
     Ranking _ranking = Ranking.fromRanking(widget.ranking);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RankingEditPage(session: widget.session, ranking: _ranking, onUpdate: widget.onUpdate)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RankingAdminPage(session: widget.session, ranking: _ranking, onUpdate: widget.onUpdate)));
   }
 
   void _submitRanking() async {
@@ -142,23 +142,23 @@ class RankingEditPageState extends State<RankingEditPage> {
                   ranking: widget.ranking,
                 ),
               ),
-              if (widget.session.user!.admin_rankings) IconButton(
+              if (widget.session.right!.admin_rankings) IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: _duplicateRanking,
               ),
-              if (widget.session.user!.admin_rankings) IconButton(
+              if (widget.session.right!.admin_rankings) IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: _deleteRanking,
               ),
             ],
           ),
           AppInfoRow(
-            info: Text("Member"),
-            child: AppDropdown<Member>(
+            info: Text("User"),
+            child: AppDropdown<User>(
               hint: Text("Select member"),
               controller: _ctrlRankingUser,
-              builder: (Member member) {return Text(member.key);},
-              onChanged: (Member? member) {
+              builder: (User member) {return Text(member.key);},
+              onChanged: (User? member) {
                 setState(() {
                   _ctrlRankingUser.value = member;
                 });
@@ -190,11 +190,11 @@ class RankingEditPageState extends State<RankingEditPage> {
           ),
           AppInfoRow(
             info: Text("Judge"),
-            child: AppDropdown<Member>(
+            child: AppDropdown<User>(
               hint: Text("Select member"),
               controller: _ctrlRankingJudge,
-              builder: (Member member) {return Text(member.key);},
-              onChanged: (Member? member) {
+              builder: (User member) {return Text(member.key);},
+              onChanged: (User? member) {
                 setState(() {
                   _ctrlRankingJudge.value = member;
                 });

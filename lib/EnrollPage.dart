@@ -8,7 +8,7 @@ import 'dart:convert';
 
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
-import 'json/member.dart';
+import 'json/user.dart';
 
 class EnrollPage extends StatefulWidget {
   final Session session;
@@ -23,9 +23,9 @@ class EnrollPage extends StatefulWidget {
 }
 
 class EnrollPageState extends State<EnrollPage> {
-  List<Member> candidates = [];
-  List<Member> candidatesFiltered = [];
-  List<Member> participants = [];
+  List<User> candidates = [];
+  List<User> candidatesFiltered = [];
+  List<User> participants = [];
 
   TextEditingController _ctrlMemberFilter = TextEditingController();
   SelectController _ctrlMemberSelect = SelectController();
@@ -72,7 +72,7 @@ class EnrollPageState extends State<EnrollPage> {
 
     Iterable l = json.decode(response.body);
 
-    participants = List<Member>.from(l.map((model) => Member.fromJson(model)));
+    participants = List<User>.from(l.map((model) => User.fromJson(model)));
   }
 
   Future<void> _getCandidates() async {
@@ -93,12 +93,12 @@ class EnrollPageState extends State<EnrollPage> {
 
     Iterable l = json.decode(response.body);
 
-    candidates = List<Member>.from(l.map((model) => Member.fromJson(model)));
+    candidates = List<User>.from(l.map((model) => User.fromJson(model)));
   }
 
   void _filterCandidates(String filter) {
     setState(() {
-      candidatesFiltered = candidates.where((Member member) => member.key.contains(new RegExp(filter, caseSensitive: false))).toList();
+      candidatesFiltered = candidates.where((User user) => user.key.contains(new RegExp(filter, caseSensitive: false))).toList();
     });
   }
 
@@ -115,7 +115,7 @@ class EnrollPageState extends State<EnrollPage> {
       _enrolMember(candidatesFiltered[0]);
   }
 
-  void _enrolMember(Member member) async {
+  void _enrolMember(User member) async {
     final response = await http.head(
       Uri.http(navi.server, 'slot_enrol', {'user': member.id.toString()}),
       headers: {
@@ -136,7 +136,7 @@ class EnrollPageState extends State<EnrollPage> {
     _ctrlParticipantSelect.deselect();
   }
 
-  void _dimissMember(Member member) async {
+  void _dimissMember(User member) async {
     final response = await http.head(
       Uri.http(navi.server, 'slot_dismiss', {'user': member.id.toString()}),
       headers: {
@@ -228,7 +228,7 @@ class EnrollPageState extends State<EnrollPage> {
     );
   }
 
-  ListView _buildMemberList(SelectController _ctrl, List<Member> members, Function(Member) _onConfirmed) {
+  ListView _buildMemberList(SelectController _ctrl, List<User> members, Function(User) _onConfirmed) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,

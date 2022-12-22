@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:cptclient/static/db.dart' as db;
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 
@@ -79,7 +80,7 @@ Future<bool> loadCache() async {
 Future<bool> confirmUser() async {
   if (window.localStorage['Token']! == "") return false;
 
-  final response = await http.get(
+  final response_info = await http.get(
     Uri.http(server, 'user_info'),
     headers: {
       'Token': window.localStorage['Token']!,
@@ -87,10 +88,23 @@ Future<bool> confirmUser() async {
     },
   );
 
-  if (response.statusCode != 200) return false;
+  if (response_info.statusCode != 200) return false;
 
-  User user = User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
-  session = Session(window.localStorage['Token']!, user: user);
+  final response_right = await http.get(
+    Uri.http(server, 'user_right'),
+    headers: {
+      'Token': window.localStorage['Token']!,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response_right.statusCode != 200) return false;
+
+  session = Session(
+    window.localStorage['Token']!,
+    user: User.fromJson(json.decode(utf8.decode(response_info.bodyBytes))),
+    right: Right.fromJson(json.decode(utf8.decode(response_right.bodyBytes))),
+  );
 
   db.loadMembers();
   return true;

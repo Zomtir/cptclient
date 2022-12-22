@@ -16,9 +16,9 @@ import 'static/db.dart' as db;
 import 'json/session.dart';
 import 'json/ranking.dart';
 import 'json/branch.dart';
-import 'json/member.dart';
+import 'json/user.dart';
 
-import 'RankingEditPage.dart';
+import 'RankingAdminPage.dart';
 
 class RankingManagementPage extends StatefulWidget {
   final Session session;
@@ -34,8 +34,8 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   List<Ranking> _rankingsFiltered = [];
   bool _hideFilters = true;
 
-  DropdownController<Member> _ctrlDropdownUser = DropdownController<Member>(items: []);
-  DropdownController<Member> _ctrlDropdownJudge = DropdownController<Member>(items: []);
+  DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
+  DropdownController<User> _ctrlDropdownJudge = DropdownController<User>(items: []);
   DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: db.cacheBranches);
   RangeValues                _thresholdRange = RangeValues(0, 10);
 
@@ -64,8 +64,8 @@ class RankingManagementPageState extends State<RankingManagementPage> {
     Iterable list = json.decode(response.body);
 
     _rankings = List<Ranking>.from(list.map((model) => Ranking.fromJson(model)));
-    _ctrlDropdownUser.items = Set<Member>.from(_rankings.map((model) => model.user)).toList();
-    _ctrlDropdownJudge.items = Set<Member>.from(_rankings.map((model) => model.judge)).toList();
+    _ctrlDropdownUser.items = Set<User>.from(_rankings.map((model) => model.user)).toList();
+    _ctrlDropdownJudge.items = Set<User>.from(_rankings.map((model) => model.judge)).toList();
 
     _filterRankings();
   }
@@ -90,7 +90,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   }
 
   void _selectRanking(Ranking ranking) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingEditPage(session: widget.session, ranking: ranking, onUpdate: _getRankings)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingAdminPage(session: widget.session, ranking: ranking, onUpdate: _getRankings)));
   }
 
   @override
@@ -111,10 +111,10 @@ class RankingManagementPageState extends State<RankingManagementPage> {
             children: [
               AppInfoRow(
                 info: Text("User"),
-                child: AppDropdown<Member>(
+                child: AppDropdown<User>(
                   controller: _ctrlDropdownUser,
-                  builder: (Member member) {return Text(member.key);},
-                  onChanged: (Member? member) {
+                  builder: (User member) {return Text(member.key);},
+                  onChanged: (User? member) {
                     _ctrlDropdownUser.value = member;
                     _filterRankings();
                   },
@@ -129,10 +129,10 @@ class RankingManagementPageState extends State<RankingManagementPage> {
               ),
               AppInfoRow(
                 info: Text("Judge"),
-                child: AppDropdown<Member>(
+                child: AppDropdown<User>(
                   controller: _ctrlDropdownJudge,
-                  builder: (Member member) {return Text(member.key);},
-                  onChanged: (Member? member) {
+                  builder: (User member) {return Text(member.key);},
+                  onChanged: (User? member) {
                     _ctrlDropdownJudge.value = member;
                     _filterRankings();
                   },

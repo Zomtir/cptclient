@@ -1,4 +1,3 @@
-import 'package:cptclient/json/member.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 
@@ -20,7 +19,7 @@ class Slot {
   DateTime end;
   Status? status;
   int? course_id;
-  List<Member>? owners;
+  List<User>? owners;
   //final String description;
 
   Slot(this.id, this.key, this.title, this.location, this.begin, this.end, {this.pwd = "", this.course_id, this.owners});
@@ -47,7 +46,7 @@ class Slot {
       end = DateFormat("yyyy-MM-dd HH:mm").parse(json['end'], true).toLocal(),
       status = Status.values.firstWhere((x) => describeEnum(x) == json['status']),
       course_id = json['course_id'],
-      owners = json['user_id']?.map((data) => Member.fromJson(data)).toList();
+      owners = json['user_id']?.map((data) => User.fromJson(data)).toList();
 
   Map<String, dynamic> toJson() =>
     {
@@ -84,7 +83,7 @@ class Slot {
       this.end = DateTime.now().add(Duration(hours: 1)),
       this.status = null,
       this.course_id = null,
-      this.owners = [Member.fromUser(user)];
+      this.owners = [user];
 
   // TODO The user ID is not picked up server side anyway,
   // but should be eventually if an admin should be able to create user reservations

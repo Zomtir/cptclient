@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cptclient/json/member.dart';
+import 'package:cptclient/json/user.dart';
 
 import 'AppTile.dart';
 
 class AppMemberTile extends StatelessWidget {
-  final Member item;
-  final Function(Member) onTap;
+  final User item;
+  final Function(User) onTap;
 
   const AppMemberTile({
     Key? key,
@@ -15,7 +15,7 @@ class AppMemberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppTile<Member>(
+    return AppTile<User>(
         onTap: onTap,
         item: item,
         child: Row(

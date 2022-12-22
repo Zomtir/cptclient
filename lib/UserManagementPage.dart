@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
-import 'json/member.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppButton.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'UserDetailPage.dart';
+import 'UserAdminPage.dart';
 
+import 'material/app/AppBody.dart';
+import 'material/app/AppButton.dart';
 import 'material/app/AppListView.dart';
 import 'material/app/AppMemberTile.dart';
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 import 'json/user.dart';
 
-class UserOverviewPage extends StatefulWidget {
+class UserManagementPage extends StatefulWidget {
   final Session session;
 
-  UserOverviewPage({Key? key, required this.session}) : super(key: key);
+  UserManagementPage({Key? key, required this.session}) : super(key: key);
 
   @override
-  UserOverviewPageState createState() => UserOverviewPageState();
+  UserManagementPageState createState() => UserManagementPageState();
 }
 
-class UserOverviewPageState extends State<UserOverviewPage> {
-  List <User> _users = [];
+class UserManagementPageState extends State<UserManagementPage> {
+  List<User> _users = [];
 
-  UserOverviewPageState();
+  UserManagementPageState();
 
   @override
   void initState() {
@@ -52,15 +50,35 @@ class UserOverviewPageState extends State<UserOverviewPage> {
   }
 
   void _selectUser(User user) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetailPage(session: widget.session, user: user, onUpdate: _getUsers)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserAdminPage(
+          session: widget.session,
+          user: user,
+          onUpdate: _getUsers,
+          isDraft: false,
+        ),
+      ),
+    );
   }
 
   void _createUser() async {
-    _selectUser(User.fromVoid());
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserAdminPage(
+          session: widget.session,
+          user: User.fromVoid(),
+          onUpdate: _getUsers,
+          isDraft: true,
+        ),
+      ),
+    );
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("User Administration"),
@@ -77,7 +95,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
             itemBuilder: (User user) {
               return AppMemberTile(
                 onTap: (member) => _selectUser(_users.firstWhere((user) => user.id == member.id)),
-                item: Member.fromUser(user),
+                item: user,
               );
             },
           ),
@@ -85,7 +103,4 @@ class UserOverviewPageState extends State<UserOverviewPage> {
       ),
     );
   }
-
-
-
 }

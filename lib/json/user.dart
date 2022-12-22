@@ -8,40 +8,23 @@ class User implements Comparable {
   String? pwd;
   String firstname;
   String lastname;
-
   final bool enabled = false;
-  final bool admin_users;
-  final bool admin_rankings;
-  final bool admin_reservations;
-  final bool admin_courses;
-  final bool admin_inventory = true;
 
-  User(this.id, this.key, this.pwd, this.firstname, this.lastname,
-      {this.admin_users = false, this.admin_rankings = false, this.admin_reservations = false, this.admin_courses = false });
+  User(this.id, this.key, this.pwd, this.firstname, this.lastname);
 
   User.fromVoid() :
     id = 0,
     key = "",
     pwd = "",
     firstname = "First Name",
-    lastname = "Last Name",
-    // TODO Probably "member" should be used instead of user in the user list?
-    admin_users = false,
-    admin_rankings = false,
-    admin_reservations = false,
-    admin_courses = false;
+    lastname = "Last Name";
 
   User.fromJson(Map<String, dynamic> json) :
     id = json['id'],
     key = json['key'],
     pwd = json['pwd'],
     firstname = json['firstname'],
-    lastname = json['lastname'],
-
-    admin_users = json['admin_users'],
-    admin_rankings = json['admin_rankings'],
-    admin_reservations = json['admin_reservations'],
-    admin_courses = json['admin_courses'];
+    lastname = json['lastname'];
 
   Map<String, dynamic> toJson() =>
     {
@@ -50,11 +33,6 @@ class User implements Comparable {
       'pwd': pwd,
       'firstname': firstname,
       'lastname': lastname,
-
-      'admin_users': admin_users,
-      'admin_rankings': admin_rankings,
-      'admin_reservations': admin_reservations,
-      'admin_courses': admin_courses,
     };
 
   bool operator == (other) => other is User && id == other.id;

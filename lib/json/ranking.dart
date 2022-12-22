@@ -2,15 +2,15 @@
 
 import 'package:intl/intl.dart';
 import 'branch.dart';
-import 'member.dart';
+import 'user.dart';
 
 class Ranking {
   final int id;
-  Member? user;
+  User? user;
   Branch? branch;
   int rank;
   DateTime date;
-  Member? judge;
+  User? judge;
 
   Ranking(this.id, this.user, this.branch, this.rank, this.date, this.judge);
 
@@ -24,11 +24,11 @@ class Ranking {
 
   Ranking.fromJson(Map<String, dynamic> json)
     : id = json['id'],
-      user = Member.fromJson(json['user']),
+      user = User.fromJson(json['user']),
       branch = Branch.fromJson(json['branch']),
       rank = json['rank'],
       date = DateFormat("yyyy-MM-dd").parse(json['date'], true).toLocal(),
-      judge = Member.fromJson(json['judge']);
+      judge = User.fromJson(json['judge']);
 
   Map<String, dynamic> toJson() =>
     {

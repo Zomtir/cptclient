@@ -19,7 +19,7 @@ import 'static/db.dart' as db;
 import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
-import 'json/member.dart';
+import 'json/user.dart';
 
 class EventManagementPage extends StatefulWidget {
   final Session session;
@@ -42,7 +42,7 @@ class EventManagementPageState extends State<EventManagementPage> {
   int _panelIndex = 0;
   List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
 
-  DropdownController<Member> _ctrlDropdownUser = DropdownController<Member>(items: db.cacheMembers);
+  DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: db.cacheMembers);
   DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: db.cacheLocations);
 
   EventManagementPageState();
@@ -148,9 +148,9 @@ class EventManagementPageState extends State<EventManagementPage> {
           ),
           AppInfoRow(
             info: Text("User"),
-            child: AppDropdown<Member>(
+            child: AppDropdown<User>(
               controller: _ctrlDropdownUser,
-              builder: (Member member) {
+              builder: (User member) {
                 return Text("${member.firstname} ${member.lastname}");
               },
               onChanged: _pickMember,
@@ -224,7 +224,7 @@ class EventManagementPageState extends State<EventManagementPage> {
     _loadSlots();
   }
 
-  void _pickMember(Member? member) {
+  void _pickMember(User? member) {
     setState(() => _ctrlDropdownUser.value = member);
     _loadSlots();
   }
