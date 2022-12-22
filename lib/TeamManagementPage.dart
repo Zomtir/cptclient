@@ -35,7 +35,7 @@ class TeamManagementPageState extends State<TeamManagementPage> {
 
   Future<void> _getTeams() async {
     final response = await http.get(
-      Uri.http(navi.server, 'team_list'),
+      Uri.http(navi.server, '/admin/team_list'),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',

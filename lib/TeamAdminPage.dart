@@ -13,7 +13,7 @@ import 'json/team.dart';
 
 class TeamAdminPage extends StatefulWidget {
   final Session session;
-  final Team team;
+  Team team;
   final void Function() onUpdate;
 
   TeamAdminPage({Key? key, required this.session, required this.team, required this.onUpdate}) : super(key: key);
@@ -27,8 +27,9 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   TextEditingController _ctrlDescription = TextEditingController();
 
   bool _ctrlRightCourse = false;
+  bool _ctrlRightEvent = false;
+  bool _ctrlRightInventory = false;
   bool _ctrlRightRanking = false;
-  bool _ctrlRightReservation = false;
   bool _ctrlRightTeam = false;
   bool _ctrlRightUser = false;
 
@@ -43,21 +44,23 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   void _applyTeam() {
     _ctrlName.text = widget.team.name;
     _ctrlDescription.text = widget.team.description;
-    _ctrlRightCourse = widget.team.right_course_edit;
-    _ctrlRightRanking = widget.team.right_ranking_edit;
-    _ctrlRightReservation = widget.team.right_reservation_edit;
-    _ctrlRightTeam = widget.team.right_team_edit;
-    _ctrlRightUser = widget.team.right_user_edit;
+    _ctrlRightCourse = widget.team.right!.admin_courses;
+    _ctrlRightEvent = widget.team.right!.admin_courses;
+    _ctrlRightInventory = widget.team.right!.admin_inventory;
+    _ctrlRightRanking = widget.team.right!.admin_rankings;
+    _ctrlRightTeam = widget.team.right!.admin_teams;
+    _ctrlRightUser = widget.team.right!.admin_users;
   }
 
   void _gatherTeam() {
     widget.team.name = _ctrlName.text;
     widget.team.description = _ctrlDescription.text;
-    widget.team.right_course_edit = _ctrlRightCourse;
-    widget.team.right_ranking_edit = _ctrlRightRanking;
-    widget.team.right_reservation_edit = _ctrlRightReservation;
-    widget.team.right_team_edit = _ctrlRightTeam;
-    widget.team.right_user_edit = _ctrlRightUser;
+    widget.team.right!.admin_courses = _ctrlRightCourse;
+    widget.team.right!.admin_rankings = _ctrlRightRanking;
+    widget.team.right!.admin_event = _ctrlRightEvent;
+    widget.team.right!.admin_inventory = _ctrlRightInventory;
+    widget.team.right!.admin_teams = _ctrlRightTeam;
+    widget.team.right!.admin_users = _ctrlRightUser;
   }
 
   void _submitTeam() async {
@@ -106,31 +109,32 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Team Details"),
       ),
       body: AppBody(
         children: [
-          if (widget.team.id != 0) Row(
-            children: [
-              Expanded(
-                child: AppTeamTile(
-                  onTap: (team) => {},
-                  item: widget.team,
+          if (widget.team.id != 0)
+            Row(
+              children: [
+                Expanded(
+                  child: AppTeamTile(
+                    onTap: (team) => {},
+                    item: widget.team,
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: _duplicateTeam,
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _deleteTeam,
-              ),
-            ],
-          ),
+                IconButton(
+                  icon: const Icon(Icons.copy),
+                  onPressed: _duplicateTeam,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: _deleteTeam,
+                ),
+              ],
+            ),
           AppInfoRow(
             info: Text("Name"),
             child: TextField(
@@ -149,35 +153,42 @@ class TeamAdminPageState extends State<TeamAdminPage> {
             info: Text("Course Edit"),
             child: Checkbox(
               value: _ctrlRightCourse,
-              onChanged: (bool? enabled) =>  setState(() => _ctrlRightCourse = enabled!),
+              onChanged: (bool? enabled) => setState(() => _ctrlRightCourse = enabled!),
             ),
           ),
           AppInfoRow(
-            info: Text("Reservation Edit"),
+            info: Text("Event Edit"),
             child: Checkbox(
-              value: _ctrlRightReservation,
-              onChanged: (bool? enabled) =>  setState(() => _ctrlRightReservation = enabled!),
+              value: _ctrlRightEvent,
+              onChanged: (bool? enabled) => setState(() => _ctrlRightEvent = enabled!),
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Inventory Edit"),
+            child: Checkbox(
+              value: _ctrlRightInventory,
+              onChanged: (bool? enabled) => setState(() => _ctrlRightInventory = enabled!),
             ),
           ),
           AppInfoRow(
             info: Text("Ranking Edit"),
             child: Checkbox(
               value: _ctrlRightRanking,
-              onChanged: (bool? enabled) =>  setState(() => _ctrlRightRanking = enabled!),
+              onChanged: (bool? enabled) => setState(() => _ctrlRightRanking = enabled!),
             ),
           ),
           AppInfoRow(
             info: Text("Team Edit"),
             child: Checkbox(
               value: _ctrlRightTeam,
-              onChanged: (bool? enabled) =>  setState(() => _ctrlRightTeam = enabled!),
+              onChanged: (bool? enabled) => setState(() => _ctrlRightTeam = enabled!),
             ),
           ),
           AppInfoRow(
             info: Text("User Edit"),
             child: Checkbox(
               value: _ctrlRightUser,
-              onChanged: (bool? enabled) =>  setState(() => _ctrlRightUser = enabled!),
+              onChanged: (bool? enabled) => setState(() => _ctrlRightUser = enabled!),
             ),
           ),
           AppButton(

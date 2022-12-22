@@ -56,7 +56,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getOwnCourses() async {
     final response = await http.get(
-      Uri.http(navi.server, 'user_course_list'),
+      Uri.http(navi.server, 'member/course_list'),
       headers: {
         'Token': widget.session.token,
       },
@@ -73,7 +73,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getModCourses() async {
     final response = await http.get(
-      Uri.http(navi.server, 'mod_course_list', {'user_id': '0'}),
+      Uri.http(navi.server, 'mod/course_list'),
       headers: {
         'Token': widget.session.token,
       },
