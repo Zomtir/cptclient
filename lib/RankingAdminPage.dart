@@ -157,7 +157,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
             child: AppDropdown<User>(
               hint: Text("Select member"),
               controller: _ctrlRankingUser,
-              builder: (User member) {return Text(member.key);},
+              builder: (User user) {return Text(user.key);},
               onChanged: (User? member) {
                 setState(() {
                   _ctrlRankingUser.value = member;
@@ -193,10 +193,10 @@ class RankingAdminPageState extends State<RankingAdminPage> {
             child: AppDropdown<User>(
               hint: Text("Select member"),
               controller: _ctrlRankingJudge,
-              builder: (User member) {return Text(member.key);},
-              onChanged: (User? member) {
+              builder: (User user) {return Text(user.key);},
+              onChanged: (User? user) {
                 setState(() {
-                  _ctrlRankingJudge.value = member;
+                  _ctrlRankingJudge.value = user;
                 });
               },
             ),

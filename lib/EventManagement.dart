@@ -150,8 +150,8 @@ class EventManagementPageState extends State<EventManagementPage> {
             info: Text("User"),
             child: AppDropdown<User>(
               controller: _ctrlDropdownUser,
-              builder: (User member) {
-                return Text("${member.firstname} ${member.lastname}");
+              builder: (User user) {
+                return Text("${user.firstname} ${user.lastname}");
               },
               onChanged: _pickMember,
             ),

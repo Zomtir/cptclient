@@ -297,8 +297,8 @@ class SlotDetailPageState extends State<EventDetailPage> {
           info: Text("User"),
           child: AppDropdown<User>(
             controller: _ctrlDropdownMember,
-            builder: (User member) {
-              return Text("${member.firstname} ${member.lastname}");
+            builder: (User user) {
+              return Text("${user.firstname} ${user.lastname}");
             },
             onChanged: _addSlotOwner,
           ),
@@ -309,18 +309,18 @@ class SlotDetailPageState extends State<EventDetailPage> {
         ),
         AppListView(
           items: widget.slot.owners,
-          itemBuilder: (User member) {
+          itemBuilder: (User user) {
             return Row(
               children: [
                 Expanded(
                   child: AppMemberTile(
-                    onTap: (User member) => {},
-                    item: member,
+                    onTap: (User u) => {},
+                    item: user,
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: () => _removeSlotOwner(member),
+                  onPressed: () => _removeSlotOwner(user),
                 ),
               ],
             );

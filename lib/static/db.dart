@@ -18,7 +18,7 @@ List<Access> cacheAccess = [];
 
 Future<bool> loadMembers() async {
   final response = await http.get(
-    Uri.http(server, 'user_member_list'),
+    Uri.http(server, '/member/user_list'),
     headers: {
       'Token': window.localStorage['Token']!,
       'Accept': 'application/json; charset=utf-8',

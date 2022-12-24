@@ -39,8 +39,6 @@ class CourseInfoPageState extends State<CourseInfoPage> {
   List <Slot> _slots = [];
   List <User> _moderators = [];
 
-  DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
-
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
   bool                  _ctrlCourseActive = true;
@@ -148,11 +146,11 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     _getCourseModerators();
   }
 
-  void _unmodMember(User member) async {
+  void _unmodMember(User user) async {
     final response = await http.head(
       Uri.http(navi.server, 'course_unmod', {
         'course': widget.course.id.toString(),
-        'user' : member.id.toString(),
+        'user' : user.id.toString(),
       }),
       headers: {
         'Token': widget.session.token,

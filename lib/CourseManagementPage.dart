@@ -20,6 +20,7 @@ import 'json/session.dart';
 import 'json/course.dart';
 import 'json/branch.dart';
 import 'json/access.dart';
+import 'json/user.dart';
 
 class CourseManagementPage extends StatefulWidget {
   final Session session;
@@ -31,14 +32,15 @@ class CourseManagementPage extends StatefulWidget {
 }
 
 class CourseManagementPageState extends State<CourseManagementPage> {
-  List <Course> _courses = [];
-  List <Course> _coursesFiltered = [];
-  bool          _hideFilters = true;
+  List<Course> _courses = [];
+  DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: db.cacheMembers);
 
-  bool                       _isActive = true;
+  List<Course> _coursesFiltered = [];
+  bool _hideFilters = true;
+  bool _isActive = true;
   DropdownController<Access> _ctrlDropdownAccess = DropdownController<Access>(items: db.cacheAccess);
   DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: db.cacheBranches);
-  RangeValues                _thresholdRange = RangeValues(0, 10);
+  RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseManagementPageState();
 
@@ -54,7 +56,9 @@ class CourseManagementPageState extends State<CourseManagementPage> {
 
   Future<void> _getCourses() async {
     final response = await http.get(
-      Uri.http(navi.server, 'admin_course_list', {'user_id': '0'}),
+      Uri.http(navi.server, '/admin/course_list', {
+        if (_ctrlDropdownModerators.value != null) 'user_id': _ctrlDropdownModerators.value.toString(),
+      }),
       headers: {
         'Token': widget.session.token,
       },
@@ -73,11 +77,8 @@ class CourseManagementPageState extends State<CourseManagementPage> {
       _coursesFiltered = _courses.where((course) {
         bool activeFilter = course.active == _isActive;
         bool accessFilter = (_ctrlDropdownAccess.value == null) ? true : (course.access == _ctrlDropdownAccess.value);
-        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (
-          course.branch == _ctrlDropdownBranch.value &&
-          course.threshold >= _thresholdRange.start &&
-          course.threshold <= _thresholdRange.end
-        );
+        bool branchFilter =
+            (_ctrlDropdownBranch.value == null) ? true : (course.branch == _ctrlDropdownBranch.value && course.threshold >= _thresholdRange.start && course.threshold <= _thresholdRange.end);
         return activeFilter && accessFilter && branchFilter;
       }).toList();
     });
@@ -93,13 +94,31 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Course Management"),
       ),
       body: AppBody(
         children: [
+          AppInfoRow(
+            info: Text("User"),
+            child: AppDropdown<User>(
+              controller: _ctrlDropdownModerators,
+              builder: (User user) {
+                return Text(user.key);
+              },
+              onChanged: (User? user) {
+                _ctrlDropdownModerators.value = user;
+              },
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                _ctrlDropdownModerators.value = null;
+              },
+            ),
+          ),
           AppButton(
             leading: Icon(Icons.add),
             text: "New course",
@@ -107,8 +126,8 @@ class CourseManagementPageState extends State<CourseManagementPage> {
           ),
           TextButton.icon(
             icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-            label: _hideFilters ? Text('Show Filters') : Text ('Hide Filters'),
-            onPressed: () => setState (() => _hideFilters = !_hideFilters),
+            label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
+            onPressed: () => setState(() => _hideFilters = !_hideFilters),
           ),
           CollapseWidget(
             collapse: _hideFilters,
@@ -127,7 +146,9 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                 info: Text("Access"),
                 child: AppDropdown<Access>(
                   controller: _ctrlDropdownAccess,
-                  builder: (Access access) {return Text(access.title);},
+                  builder: (Access access) {
+                    return Text(access.title);
+                  },
                   onChanged: (Access? access) {
                     _ctrlDropdownAccess.value = access;
                     _filterCourses();
@@ -145,7 +166,9 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                 info: Text("Branch"),
                 child: AppDropdown<Branch>(
                   controller: _ctrlDropdownBranch,
-                  builder: (Branch branch) {return Text(branch.title);},
+                  builder: (Branch branch) {
+                    return Text(branch.title);
+                  },
                   onChanged: (Branch? branch) {
                     _ctrlDropdownBranch.value = branch;
                     _filterCourses();
@@ -170,7 +193,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                     _thresholdRange = values;
                     _filterCourses();
                   },
-                  labels: RangeLabels("${_thresholdRange.start}","${_thresholdRange.end}"),
+                  labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
                 ),
               ),
             ],
@@ -188,5 +211,4 @@ class CourseManagementPageState extends State<CourseManagementPage> {
       ),
     );
   }
-
 }

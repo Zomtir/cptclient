@@ -67,6 +67,7 @@ class TeamManagementPageState extends State<TeamManagementPage> {
       body: AppBody(
         children: <Widget>[
           AppButton(
+            leading: Icon(Icons.add),
             text: "New team",
             onPressed: _createTeam,
           ),

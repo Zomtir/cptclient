@@ -25,6 +25,7 @@ class CollapseWidgetState extends State<CollapseWidget> with SingleTickerProvide
       parent: _ctrlAnimation,
       curve: Curves.fastOutSlowIn,
     );
+    widget.collapse ? _ctrlAnimation.reverse() : _ctrlAnimation.forward();
   }
 
   @override

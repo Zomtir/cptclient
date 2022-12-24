@@ -115,9 +115,9 @@ class EnrollPageState extends State<EnrollPage> {
       _enrolMember(candidatesFiltered[0]);
   }
 
-  void _enrolMember(User member) async {
+  void _enrolMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.server, 'slot_enrol', {'user': member.id.toString()}),
+      Uri.http(navi.server, 'slot_enrol', {'user': user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -126,8 +126,8 @@ class EnrollPageState extends State<EnrollPage> {
     if (response.statusCode != 200) return;
 
     setState(() {
-      candidates.remove(member);
-      participants.add(member);
+      candidates.remove(user);
+      participants.add(user);
       participants.sort();
       candidatesFiltered = candidates;
     });
@@ -136,9 +136,9 @@ class EnrollPageState extends State<EnrollPage> {
     _ctrlParticipantSelect.deselect();
   }
 
-  void _dimissMember(User member) async {
+  void _dimissMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.server, 'slot_dismiss', {'user': member.id.toString()}),
+      Uri.http(navi.server, 'slot_dismiss', {'user': user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -147,8 +147,8 @@ class EnrollPageState extends State<EnrollPage> {
     if (response.statusCode != 200) return;
 
     setState(() {
-      participants.remove(member);
-      candidates.add(member);
+      participants.remove(user);
+      candidates.add(user);
       candidates.sort();
       candidatesFiltered = candidates;
     });

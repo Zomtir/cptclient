@@ -113,9 +113,9 @@ class RankingManagementPageState extends State<RankingManagementPage> {
                 info: Text("User"),
                 child: AppDropdown<User>(
                   controller: _ctrlDropdownUser,
-                  builder: (User member) {return Text(member.key);},
-                  onChanged: (User? member) {
-                    _ctrlDropdownUser.value = member;
+                  builder: (User user) {return Text(user.key);},
+                  onChanged: (User? user) {
+                    _ctrlDropdownUser.value = user;
                     _filterRankings();
                   },
                 ),
@@ -131,9 +131,9 @@ class RankingManagementPageState extends State<RankingManagementPage> {
                 info: Text("Judge"),
                 child: AppDropdown<User>(
                   controller: _ctrlDropdownJudge,
-                  builder: (User member) {return Text(member.key);},
-                  onChanged: (User? member) {
-                    _ctrlDropdownJudge.value = member;
+                  builder: (User user) {return Text(user.key);},
+                  onChanged: (User? user) {
+                    _ctrlDropdownJudge.value = user;
                     _filterRankings();
                   },
                 ),
