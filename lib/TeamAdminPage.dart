@@ -13,7 +13,7 @@ import 'json/team.dart';
 
 class TeamAdminPage extends StatefulWidget {
   final Session session;
-  Team team;
+  final Team team;
   final void Function() onUpdate;
 
   TeamAdminPage({Key? key, required this.session, required this.team, required this.onUpdate}) : super(key: key);
@@ -67,7 +67,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     _gatherTeam();
 
     final response = await http.post(
-      Uri.http(navi.server, widget.team.id == 0 ? 'team_create' : 'team_edit'),
+      Uri.http(navi.serverURL, widget.team.id == 0 ? 'team_create' : 'team_edit'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,
@@ -87,7 +87,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
 
   void _deleteTeam() async {
     final response = await http.head(
-      Uri.http(navi.server, 'team_delete', {'team_id': widget.team.id.toString()}),
+      Uri.http(navi.serverURL, 'team_delete', {'team_id': widget.team.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

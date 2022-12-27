@@ -62,7 +62,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   void _deleteCourse() async {
     final response = await http.head(
-      Uri.http(navi.server, 'course_delete', {'course_id': widget.course.id.toString()}),
+      Uri.http(navi.serverURL, 'course_delete', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -85,7 +85,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   Future<void> _getCourseSlots() async {
     final response = await http.get(
-      Uri.http(navi.server, 'course_slot_list', {'course_id': widget.course.id.toString()}),
+      Uri.http(navi.serverURL, 'course_slot_list', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -111,7 +111,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   Future<void> _getCourseModerators() async {
     final response = await http.get(
-      Uri.http(navi.server, 'course_moderator_list', {'course_id': widget.course.id.toString()}),
+      Uri.http(navi.serverURL, 'course_moderator_list', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -129,7 +129,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   void _modMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.server, 'course_mod', {
+      Uri.http(navi.serverURL, 'course_mod', {
         'course_id': widget.course.id.toString(),
         'user_id' : user.id.toString(),
       }),
@@ -148,7 +148,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   void _unmodMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.server, 'course_unmod', {
+      Uri.http(navi.serverURL, 'course_unmod', {
         'course': widget.course.id.toString(),
         'user' : user.id.toString(),
       }),
@@ -187,7 +187,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     _gatherCourse();
 
     final response = await http.post(
-      Uri.http(navi.server, widget.course.id == 0 ? 'course_create' : 'course_edit'),
+      Uri.http(navi.serverURL, widget.course.id == 0 ? 'course_create' : 'course_edit'),
       headers: {
         'Token': widget.session.token,
         'Content-Type': 'application/json; charset=utf-8',

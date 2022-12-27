@@ -53,7 +53,7 @@ class LandingPageState extends State<LandingPage> {
     var body = json.encode(credential);
 
     final response = await http.post(
-      Uri.http(navi.server, 'slot_login'),
+      Uri.http(navi.serverURL, 'slot_login'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'text/plain; charset=utf-8',
@@ -71,7 +71,7 @@ class LandingPageState extends State<LandingPage> {
     if (window.localStorage['DefaultLocation']! == '0') return;
 
     final response = await http.get(
-      Uri.http(navi.server, 'slot_autologin', {'location_id': window.localStorage['DefaultLocation']!}),
+      Uri.http(navi.serverURL, 'slot_autologin', {'location_id': window.localStorage['DefaultLocation']!}),
       headers: {
         'Accept': 'text/plain; charset=utf-8',
       },
@@ -93,7 +93,7 @@ class LandingPageState extends State<LandingPage> {
     String body = json.encode(credential);
 
     final response = await http.post(
-      Uri.http(navi.server, 'user_login'),
+      Uri.http(navi.serverURL, 'user_login'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'text/plain; charset=utf-8',

@@ -18,7 +18,7 @@ List<Access> cacheAccess = [];
 
 Future<bool> loadMembers() async {
   final response = await http.get(
-    Uri.http(server, '/member/user_list'),
+    Uri.http(serverURL, '/member/user_list'),
     headers: {
       'Token': window.localStorage['Token']!,
       'Accept': 'application/json; charset=utf-8',
@@ -39,7 +39,7 @@ void unloadMembers() {
 
 Future<bool> loadLocations() async {
   final response = await http.get(
-    Uri.http(server, 'location_list'),
+    Uri.http(serverURL, 'location_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },
@@ -55,7 +55,7 @@ Future<bool> loadLocations() async {
 
 Future<bool> loadBranches() async {
   final response = await http.get(
-    Uri.http(server, 'branch_list'),
+    Uri.http(serverURL, 'branch_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },
@@ -71,7 +71,7 @@ Future<bool> loadBranches() async {
 
 Future<bool> loadAccess() async {
   final response = await http.get(
-    Uri.http(server, 'access_list'),
+    Uri.http(serverURL, 'access_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },

@@ -59,7 +59,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
 
   void _deleteSlot() async {
     final response = await http.head(
-      Uri.http(navi.server, 'event_delete', {'slot_id': widget.slot.id.toString()}),
+      Uri.http(navi.serverURL, 'event_delete', {'slot_id': widget.slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -111,7 +111,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
     _gatherSlot();
 
     final response = await http.post(
-      Uri.http(navi.server, _confirmAction!),
+      Uri.http(navi.serverURL, _confirmAction!),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,
@@ -131,7 +131,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
 
   void _getSlotOwners() async {
     final response = await http.get(
-      Uri.http(navi.server, '/event_owner_list', {
+      Uri.http(navi.serverURL, '/event_owner_list', {
         'slot_id': widget.slot.id.toString(),
       }),
       headers: {
@@ -153,7 +153,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
     if (member == null) return;
 
     final response = await http.head(
-      Uri.http(navi.server, '/event_owner_add', {
+      Uri.http(navi.serverURL, '/event_owner_add', {
         'slot_id': widget.slot.id.toString(),
         'user_id': member.id.toString(),
       }),
@@ -174,7 +174,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
     if (member == null) return;
 
     final response = await http.head(
-      Uri.http(navi.server, '/event_owner_remove', {
+      Uri.http(navi.serverURL, '/event_owner_remove', {
         'slot_id': widget.slot.id.toString(),
         'user_id': member.id.toString(),
       }),

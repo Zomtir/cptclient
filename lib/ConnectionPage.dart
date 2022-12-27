@@ -61,7 +61,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerURL,
-              onChanged: (String text) { window.localStorage['ServerURL'] = text; navi.server = text; },
+              onChanged: (String text) { window.localStorage['ServerURL'] = text; navi.serverURL = text; },
             ),
             trailing:
               IconButton(

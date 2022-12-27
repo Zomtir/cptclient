@@ -12,7 +12,7 @@ import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 
-String server = window.localStorage['ServerURL']!;
+String serverURL = window.localStorage['ServerURL']!;
 Session? session;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -54,7 +54,7 @@ Future<bool> loadStatus() async {
   final response;
 
   try {
-    response = await http.head(Uri.http(server, 'status'));
+    response = await http.head(Uri.http(serverURL, 'status'));
   } on Exception {
     return false;
   }
@@ -80,30 +80,30 @@ Future<bool> loadCache() async {
 Future<bool> confirmUser() async {
   if (window.localStorage['Token']! == "") return false;
 
-  final response_info = await http.get(
-    Uri.http(server, 'user_info'),
+  final responseInfo = await http.get(
+    Uri.http(serverURL, 'user_info'),
     headers: {
       'Token': window.localStorage['Token']!,
       'Accept': 'application/json; charset=utf-8',
     },
   );
 
-  if (response_info.statusCode != 200) return false;
+  if (responseInfo.statusCode != 200) return false;
 
-  final response_right = await http.get(
-    Uri.http(server, 'user_right'),
+  final responseRight = await http.get(
+    Uri.http(serverURL, 'user_right'),
     headers: {
       'Token': window.localStorage['Token']!,
       'Accept': 'application/json; charset=utf-8',
     },
   );
 
-  if (response_right.statusCode != 200) return false;
+  if (responseRight.statusCode != 200) return false;
 
   session = Session(
     window.localStorage['Token']!,
-    user: User.fromJson(json.decode(utf8.decode(response_info.bodyBytes))),
-    right: Right.fromJson(json.decode(utf8.decode(response_right.bodyBytes))),
+    user: User.fromJson(json.decode(utf8.decode(responseInfo.bodyBytes))),
+    right: Right.fromJson(json.decode(utf8.decode(responseRight.bodyBytes))),
   );
 
   db.loadMembers();
@@ -114,7 +114,7 @@ Future<bool> confirmSlot() async {
   if (window.localStorage['Token']! == "") return false;
 
   final response = await http.get(
-    Uri.http(server, 'slot_info'),
+    Uri.http(serverURL, 'slot_info'),
     headers: {
       'Token': window.localStorage['Token']!,
     },

@@ -47,7 +47,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   Future<void> _getMembers() async {
     final response = await http.get(
-      Uri.http(navi.server, 'user_member_list'),
+      Uri.http(navi.serverURL, 'user_member_list'),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -83,7 +83,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   void _deleteRanking() async {
     final response = await http.head(
-      Uri.http(navi.server, 'ranking_delete', {'ranking': widget.ranking.id.toString()}),
+      Uri.http(navi.serverURL, 'ranking_delete', {'ranking': widget.ranking.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -108,7 +108,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
     _gatherRanking();
 
     final response = await http.post(
-      Uri.http(navi.server, widget.ranking.id == 0 ? 'ranking_create' : 'ranking_edit'),
+      Uri.http(navi.serverURL, widget.ranking.id == 0 ? 'ranking_create' : 'ranking_edit'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,

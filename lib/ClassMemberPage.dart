@@ -53,7 +53,7 @@ class ClassMemberPageState extends State<ClassMemberPage> {
 
   void _deleteSlot() async {
     final response = await http.head(
-      Uri.http(navi.server, 'course_slot_delete', {'slot_id': widget.slot.id.toString()}),
+      Uri.http(navi.serverURL, 'course_slot_delete', {'slot_id': widget.slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -94,7 +94,7 @@ class ClassMemberPageState extends State<ClassMemberPage> {
     _gatherSlot();
 
     final response = await http.post(
-      Uri.http(navi.server, _confirmAction!),
+      Uri.http(navi.serverURL, _confirmAction!),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,

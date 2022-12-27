@@ -57,7 +57,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   Future<void> _getParticipants() async {
     final response = await http.get(
-      Uri.http(navi.server, 'slot_participants'),
+      Uri.http(navi.serverURL, 'slot_participants'),
       headers: {
         'Token': widget.session.token,
       },
@@ -77,7 +77,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   Future<void> _getCandidates() async {
     final response = await http.get(
-      Uri.http(navi.server, 'slot_candidates'),
+      Uri.http(navi.serverURL, 'slot_candidates'),
       headers: {
         'Token': widget.session.token,
       },
@@ -117,7 +117,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   void _enrolMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.server, 'slot_enrol', {'user': user.id.toString()}),
+      Uri.http(navi.serverURL, 'slot_enrol', {'user': user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -138,7 +138,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   void _dimissMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.server, 'slot_dismiss', {'user': user.id.toString()}),
+      Uri.http(navi.serverURL, 'slot_dismiss', {'user': user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

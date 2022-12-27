@@ -49,7 +49,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
 
   Future<void> _getRankings() async {
     final response = await http.get(
-      Uri.http(navi.server, 'ranking_list', {
+      Uri.http(navi.serverURL, 'ranking_list', {
         'user_id': '0',
         'branch_id': '0',
         'min': '0',

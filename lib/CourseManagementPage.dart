@@ -56,7 +56,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
 
   Future<void> _getCourses() async {
     final response = await http.get(
-      Uri.http(navi.server, '/admin/course_list', {
+      Uri.http(navi.serverURL, '/admin/course_list', {
         if (_ctrlDropdownModerators.value != null) 'user_id': _ctrlDropdownModerators.value.toString(),
       }),
       headers: {
@@ -86,11 +86,11 @@ class CourseManagementPageState extends State<CourseManagementPage> {
 
   void _createCourse() async {
     Course course = Course.fromVoid();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, draft: true)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, isDraft: true)));
   }
 
   void _selectCourse(Course course) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, draft: false)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, isDraft: false)));
   }
 
   @override

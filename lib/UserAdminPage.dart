@@ -59,7 +59,7 @@ class UserAdminPageState extends State<UserAdminPage> {
     _gatherUser();
 
     final response = await http.post(
-      Uri.http(navi.server, widget.user.id == 0 ? 'user_create' : 'user_edit'),
+      Uri.http(navi.serverURL, widget.user.id == 0 ? 'user_create' : 'user_edit'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,
@@ -79,7 +79,7 @@ class UserAdminPageState extends State<UserAdminPage> {
 
   void _deleteUser() async {
     final response = await http.head(
-      Uri.http(navi.server, 'user_delete', {'user_id': widget.user.id.toString()}),
+      Uri.http(navi.serverURL, 'user_delete', {'user_id': widget.user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

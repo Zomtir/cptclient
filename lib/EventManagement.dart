@@ -55,7 +55,7 @@ class EventManagementPageState extends State<EventManagementPage> {
 
   Future<void> _loadSlots() async {
     final response = await http.get(
-      Uri.http(navi.server, 'reservation_list', {
+      Uri.http(navi.serverURL, 'reservation_list', {
         'begin': webDate(_dateBegin),
         'end': webDate(_dateEnd),
         'status': _panelStatus[_panelIndex],
@@ -100,7 +100,7 @@ class EventManagementPageState extends State<EventManagementPage> {
 
   void _acceptReservation(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'reservation_accept', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.serverURL, 'reservation_accept', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -112,7 +112,7 @@ class EventManagementPageState extends State<EventManagementPage> {
 
   void _denyReservation(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'reservation_deny', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.serverURL, 'reservation_deny', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

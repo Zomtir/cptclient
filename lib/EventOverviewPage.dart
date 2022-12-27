@@ -59,7 +59,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   Future<List<Slot>?> _requestIndividualSlots(String status) async {
     final response = await http.get(
-      Uri.http(navi.server, 'event_list', {'status': status}),
+      Uri.http(navi.serverURL, 'event_list', {'status': status}),
       headers: {
         'Token': widget.session.token,
       },
@@ -102,7 +102,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   Future<void> _submitSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'event_submit', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.serverURL, 'event_submit', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -120,7 +120,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   Future<void> _withdrawSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'event_withdraw', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.serverURL, 'event_withdraw', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -138,7 +138,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   Future<void> _cancelSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'event_cancel', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.serverURL, 'event_cancel', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -156,7 +156,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   Future<void> _recycleSlot(Slot slot) async {
     final response = await http.head(
-      Uri.http(navi.server, 'event_recycle', {'slot_id': slot.id.toString()}),
+      Uri.http(navi.serverURL, 'event_recycle', {'slot_id': slot.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

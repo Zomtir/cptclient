@@ -41,7 +41,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
     }
 
     final response = await http.post(
-      Uri.http(navi.server, 'user_password'),
+      Uri.http(navi.serverURL, 'user_password'),
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'Token': widget.session.token,
@@ -57,7 +57,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
 
   Future<void> _getRanking() async {
     final response = await http.get(
-      Uri.http(navi.server, 'user_info_rankings'),
+      Uri.http(navi.serverURL, 'user_info_rankings'),
       headers: {
         'Token': widget.session.token,
       },

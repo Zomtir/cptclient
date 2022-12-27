@@ -34,7 +34,7 @@ class UserManagementPageState extends State<UserManagementPage> {
 
   Future<void> _getUsers() async {
     final response = await http.get(
-      Uri.http(navi.server, '/admin/user_list'),
+      Uri.http(navi.serverURL, '/admin/user_list'),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',

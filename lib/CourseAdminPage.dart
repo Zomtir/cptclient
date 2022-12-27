@@ -9,28 +9,25 @@ import 'package:cptclient/material/app/AppDropdown.dart';
 import 'package:cptclient/material/app/AppCourseTile.dart';
 import 'package:cptclient/material/app/AppSlotTile.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'ClassMemberPage.dart';
 
-import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
+import 'static/serverCourseAdmin.dart';
 
-import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/course.dart';
-import 'package:cptclient/json/slot.dart';
-import 'package:cptclient/json/user.dart';
-import 'package:cptclient/json/branch.dart';
-import 'package:cptclient/json/access.dart';
+import 'json/session.dart';
+import 'json/course.dart';
+import 'json/slot.dart';
+import 'json/user.dart';
+import 'json/branch.dart';
+import 'json/access.dart';
 
 class CourseAdminPage extends StatefulWidget {
   final Session session;
   final Course course;
   final void Function() onUpdate;
-  final bool draft;
+  final bool isDraft;
 
-  CourseAdminPage({Key? key, required this.session, required this.course, required this.onUpdate, required this.draft}) : super(key: key);
+  CourseAdminPage({Key? key, required this.session, required this.course, required this.onUpdate, required this.isDraft}) : super(key: key);
 
   @override
   CourseAdminPageState createState() => CourseAdminPageState();
@@ -58,20 +55,15 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _update() {
-    if (!widget.draft) _getCourseSlots();
-    if (!widget.draft) _getCourseModerators();
+    if (!widget.isDraft) _getCourseSlots();
+    if (!widget.isDraft) _getCourseModerators();
     _applyCourse();
   }
 
   void _deleteCourse() async {
-    final response = await http.head(
-      Uri.http(navi.server, 'course_delete', {'course_id': widget.course.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
+    bool success = await course_delete(widget.session, widget.course.id);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete course')));
       return;
     }
@@ -83,24 +75,16 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   void _duplicateCourse() {
     Course _course = Course.fromCourse(widget.course);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: _course, onUpdate: _update, draft: true)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: _course, onUpdate: _update, isDraft: true)));
   }
 
   Future<void> _getCourseSlots() async {
-    final response = await http.get(
-      Uri.http(navi.server, 'course_slot_list', {'course_id': widget.course.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-        'Accept': 'application/json; charset=utf-8',
-      },
-    );
+    List<Slot>? slots = await course_slot_list(widget.session, widget.course.id);
 
-    if (response.statusCode != 200) return;
-
-    Iterable l = json.decode(utf8.decode(response.bodyBytes));
+    if (slots == null) return;
 
     setState(() {
-      _slots = List<Slot>.from(l.map((model) => Slot.fromJson(model)));
+      _slots = slots;
     });
   }
 
@@ -113,35 +97,19 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   Future<void> _getCourseModerators() async {
-    final response = await http.get(
-      Uri.http(navi.server, 'course_moderator_list', {'course_id': widget.course.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-        'Accept': 'application/json; charset=utf-8',
-      },
-    );
+    List<User>? moderators = await course_moderator_list(widget.session, widget.course.id);
 
-    if (response.statusCode != 200) return;
-
-    Iterable list = json.decode(utf8.decode(response.bodyBytes));
+    if (moderators == null) return;
 
     setState(() {
-      _moderators = List<User>.from(list.map((model) => User.fromJson(model)));
+      _moderators = moderators;
     });
   }
 
   void _modMember(User user) async {
-    final response = await http.head(
-      Uri.http(navi.server, 'course_mod', {
-        'course_id': widget.course.id.toString(),
-        'user_id' : user.id.toString(),
-      }),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
+    bool success = await course_mod(widget.session, widget.course.id, user.id);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add moderator')));
       return;
     }
@@ -150,17 +118,9 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _unmodMember(User user) async {
-    final response = await http.head(
-      Uri.http(navi.server, 'course_unmod', {
-        'course': widget.course.id.toString(),
-        'user' : user.id.toString(),
-      }),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
+    bool success = await course_unmod(widget.session, widget.course.id, user.id);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove moderator')));
       return;
     }
@@ -188,17 +148,14 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   void _submitCourse() async {
     _gatherCourse();
+    
+    bool success;
+    if (widget.isDraft)
+      success = await course_create(widget.session, widget.course);
+    else
+      success = await course_edit(widget.session, widget.course.id, widget.course);
 
-    final response = await http.post(
-      Uri.http(navi.server, widget.course.id == 0 ? 'course_create' : 'course_edit'),
-      headers: {
-        'Token': widget.session.token,
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: json.encode(widget.course),
-    );
-
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit course')));
       return;
     }
@@ -236,8 +193,8 @@ class CourseAdminPageState extends State<CourseAdminPage> {
           ),
           PanelSwiper(
             panels: [
-              if (!widget.draft) Panel("Slots", _buildSlotPanel()),
-              if (!widget.draft) Panel("Moderators", _buildModeratorPanel()),
+              if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
+              if (!widget.isDraft) Panel("Moderators", _buildModeratorPanel()),
               if (widget.session.right!.admin_courses) Panel("Edit", buildEditPanel()),
             ]
           ),
