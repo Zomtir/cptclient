@@ -14,8 +14,8 @@ class CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    _resetMonth();
     super.initState();
+    _resetMonth();
   }
 
   void _resetMonth() {

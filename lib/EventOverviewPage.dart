@@ -59,7 +59,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   Future<List<Slot>?> _requestIndividualSlots(String status) async {
     final response = await http.get(
-      Uri.http(navi.serverURL, 'event_list', {'status': status}),
+      Uri.http(navi.serverURL, '/member/event_list', {'status': status}),
       headers: {
         'Token': widget.session.token,
       },

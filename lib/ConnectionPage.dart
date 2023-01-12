@@ -5,7 +5,8 @@ import 'material/app/AppInfoRow.dart';
 
 import "package:universal_html/html.dart";
 
-import 'static/navigation.dart' as navi;
+import 'package:cptclient/static/db.dart' as db;
+import 'package:cptclient/static/navigation.dart' as navi;
 
 class ConnectionPage extends StatefulWidget {
   @override
@@ -35,7 +36,7 @@ class ConnectionPageState extends State<ConnectionPage> {
     window.localStorage.putIfAbsent('AutoLogin', ()=>'none');
     window.localStorage.putIfAbsent('DefaultLocation', ()=>'0');
 
-    bool tmpStatus = await navi.loadStatus();
+    bool tmpStatus = await db.loadStatus();
     setState(() => _serverOnline = tmpStatus);
   }
 

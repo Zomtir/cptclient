@@ -9,6 +9,22 @@ import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/course.dart';
 
+Future<List<Course>> course_list(Session session, User? user) async {
+  final response = await http.get(
+    Uri.http(navi.serverURL, '/admin/course_list', {
+      if (user != null) 'mod_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(response.body);
+  return List<Course>.from(l.map((model) => Course.fromJson(model)));
+}
+
 Future<bool> course_create(Session session, Course course) async {
   final response = await http.post(
     Uri.http(navi.serverURL, '/admin/course_create'),
@@ -48,7 +64,7 @@ Future<bool> course_delete(Session session, int courseID) async {
   return (response.statusCode == 200);
 }
 
-Future<List<Slot>?> course_slot_list(Session session, int courseID) async {
+Future<List<Slot>> course_slot_list(Session session, int courseID) async {
   final response = await http.get(
     Uri.http(navi.serverURL, '/admin/course_slot_list', {'course_id': courseID.toString()}),
     headers: {
@@ -57,7 +73,7 @@ Future<List<Slot>?> course_slot_list(Session session, int courseID) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (response.statusCode != 200) return [];
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
@@ -92,7 +108,7 @@ Future<bool> course_moderator_add(Session session, int courseID, int userID) asy
   return (response.statusCode == 200);
 }
 
-Future<bool> course_unmod(Session session, int courseID, int userID) async {
+Future<bool> course_moderator_remove(Session session, int courseID, int userID) async {
   final response = await http.head(
     Uri.http(navi.serverURL, 'course_unmod', {
       'course': courseID.toString(),

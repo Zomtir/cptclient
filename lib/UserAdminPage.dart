@@ -30,14 +30,16 @@ class UserAdminPageState extends State<UserAdminPage> {
   TextEditingController _ctrlUserFirstname = TextEditingController();
   TextEditingController _ctrlUserLastname = TextEditingController();
   TextEditingController _ctrlUserEmail = TextEditingController();
-  TextEditingController _ctrlUserTerm = TextEditingController();
+  TextEditingController _ctrlUserPhone = TextEditingController();
+  TextEditingController _ctrlUserAddress = TextEditingController();
+  TextEditingController _ctrlUserBirthday = TextEditingController();
+  TextEditingController _ctrlUserGender = TextEditingController();
 
   UserAdminPageState();
 
   @override
   void initState() {
     super.initState();
-
     _applyUser();
   }
 
@@ -125,6 +127,17 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
+            info: Text("Password"),
+            child: TextField(
+              obscureText: true,
+              maxLines: 1,
+              controller: _ctrlUserPassword,
+              decoration: InputDecoration(
+                hintText: "Reset password (leave empty to keep current password)",
+              ),
+            ),
+          ),
+          AppInfoRow(
             info: Text("First Name"),
             child: TextField(
               maxLines: 1,
@@ -146,21 +159,31 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Term"),
+            info: Text("Phone"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlUserTerm,
+              controller: _ctrlUserPhone,
             ),
           ),
           AppInfoRow(
-            info: Text("Password"),
+            info: Text("Address"),
             child: TextField(
-              obscureText: true,
               maxLines: 1,
-              controller: _ctrlUserPassword,
-              decoration: InputDecoration(
-                hintText: "Reset password (leave empty to keep current password)",
-              ),
+              controller: _ctrlUserAddress,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Birthday"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserBirthday,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Gender"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserGender,
             ),
           ),
           AppButton(

@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'material/app/AppBody.dart';
 import 'material/app/AppInfoRow.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'static/navigation.dart' as navi;
-import 'static/crypto.dart' as crypto;
+import 'static/serverUserMember.dart' as server;
 
 import 'json/session.dart';
-import 'json/ranking.dart';
 
 class MemberProfilePage extends StatefulWidget {
   final Session session;
@@ -21,8 +16,6 @@ class MemberProfilePage extends StatefulWidget {
 }
 
 class MemberProfilePageState extends State<MemberProfilePage> {
-  List <Ranking> _rankings = [];
-
   TextEditingController _ctrlUserPassword = TextEditingController();
 
   MemberProfilePageState();
@@ -31,7 +24,6 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   void initState() {
     super.initState();
     _ctrlUserPassword.text = "";
-    _getRanking();
   }
 
   Future<void> _savePassword() async {
@@ -40,36 +32,10 @@ class MemberProfilePageState extends State<MemberProfilePage> {
       return;
     }
 
-    final response = await http.post(
-      Uri.http(navi.serverURL, 'user_password'),
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Token': widget.session.token,
-      },
-      body: crypto.hashPassword(_ctrlUserPassword.text, widget.session.user!.key),
-    );
-
-    if (response.statusCode != 200) return;
+    if (!await server.password_edit(widget.session, _ctrlUserPassword.text)) return;
 
     widget.session.user!.pwd = _ctrlUserPassword.text;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully changed password')));
-  }
-
-  Future<void> _getRanking() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, 'user_info_rankings'),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    Iterable l = json.decode(response.body);
-
-    setState(() {
-      _rankings = List<Ranking>.from(l.map((model) => Ranking.fromJson(model)));
-    });
   }
 
   @override
@@ -106,33 +72,8 @@ class MemberProfilePageState extends State<MemberProfilePage> {
               ),
             ),
           ),
-          Divider(
-            height: 30,
-            thickness: 5,
-            color: Colors.black,
-          ),
-          Text("Rankings"),
-          _buildRankingList()
         ],
       ),
-    );
-  }
-
-  ListView _buildRankingList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: _rankings.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          child: Container(
-            child: ListTile(
-              title: Text("${_rankings[index].branch!.title}: ${_rankings[index].rank}"),
-              subtitle: Text("${_rankings[index].date} by ${_rankings[index].judge!.key}"),
-            ),
-          ),
-        );
-      },
     );
   }
 

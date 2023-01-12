@@ -7,6 +7,7 @@ import 'json/session.dart';
 
 import 'CalendarPage.dart';
 import 'MemberProfilePage.dart';
+import 'RankingOverviewPage.dart';
 import 'EventOverviewPage.dart';
 import 'CourseOverviewPage.dart';
 
@@ -66,6 +67,11 @@ class MemberLandingPage extends StatelessWidget {
                 icon: Image.asset('icons/icon_event.png'),
                 text: "Events",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewPage(session: session))),
+              ),
+              AppIconButton(
+                icon: Image.asset('icons/icon_rankings.png'),
+                text: "Rankings",
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingOverviewPage(session: session))),
               ),
               AppIconButton(
                 icon: Image.asset('icons/icon_inventory.png'),

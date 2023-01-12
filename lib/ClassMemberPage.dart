@@ -45,9 +45,7 @@ class ClassMemberPageState extends State<ClassMemberPage> {
   @override
   void initState() {
     super.initState();
-
     _applySlot();
-
     _confirmAction = widget.slot.id == 0 ? 'course_slot_create' : 'course_slot_edit';
   }
 

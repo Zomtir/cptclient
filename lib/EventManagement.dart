@@ -1,4 +1,3 @@
-import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/app/AppBody.dart';
 import 'package:cptclient/material/app/AppDropdown.dart';
@@ -8,14 +7,12 @@ import 'package:cptclient/material/app/AppSlotTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'EventDetailPage.dart';
 import 'material/PanelSwiper.dart';
 import 'material/app/DatePicker.dart';
-import 'static/navigation.dart' as navi;
+import 'static/format.dart';
 import 'static/db.dart' as db;
+import 'static/serverEventAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
@@ -50,27 +47,11 @@ class EventManagementPageState extends State<EventManagementPage> {
   @override
   void initState() {
     super.initState();
-    _loadSlots();
+    _requestSlots();
   }
 
-  Future<void> _loadSlots() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, 'reservation_list', {
-        'begin': webDate(_dateBegin),
-        'end': webDate(_dateEnd),
-        'status': _panelStatus[_panelIndex],
-        'user_id': (_ctrlDropdownUser.value?.id ?? 0).toString(),
-      }),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    Iterable list = json.decode(utf8.decode(response.bodyBytes));
-    _events = List<Slot>.from(list.map((model) => Slot.fromJson(model)));
-
+  Future<void> _requestSlots() async {
+    _events = await server.event_list(widget.session, _dateBegin, _dateEnd, _panelStatus[_panelIndex], _ctrlDropdownUser.value);
     _filterReservations();
   }
 
@@ -91,7 +72,7 @@ class EventManagementPageState extends State<EventManagementPage> {
         builder: (context) => EventDetailPage(
           session: widget.session,
           slot: slot,
-          onUpdate: _loadSlots,
+          onUpdate: _requestSlots,
           draft: false,
         ),
       ),
@@ -99,27 +80,13 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   void _acceptReservation(Slot slot) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'reservation_accept', {'slot_id': slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return;
-    _loadSlots();
+    if (!await server.event_accept(widget.session, slot)) return;
+    _requestSlots();
   }
 
   void _denyReservation(Slot slot) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'reservation_deny', {'slot_id': slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return;
-    _loadSlots();
+    if (!await server.event_deny(widget.session, slot)) return;
+    _requestSlots();
   }
 
   @override
@@ -164,7 +131,7 @@ class EventManagementPageState extends State<EventManagementPage> {
             swipes: 0,
             onChange: (int index) {
               _panelIndex = index;
-              _loadSlots();
+              _requestSlots();
             },
             panels: [
               Panel("Pending", _buildSlotPendingPanel()),
@@ -198,7 +165,7 @@ class EventManagementPageState extends State<EventManagementPage> {
       _dateBegin = newDateBegin;
       _dateEnd = newDateEnd;
     });
-    _loadSlots();
+    _requestSlots();
   }
 
   Future _pickDateEnd() async {
@@ -221,12 +188,12 @@ class EventManagementPageState extends State<EventManagementPage> {
       _dateBegin = newDateBegin;
       _dateEnd = newDateEnd;
     });
-    _loadSlots();
+    _requestSlots();
   }
 
   void _pickMember(User? member) {
     setState(() => _ctrlDropdownUser.value = member);
-    _loadSlots();
+    _requestSlots();
   }
 
   Widget _buildFilters() {

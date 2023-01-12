@@ -8,11 +8,8 @@ import 'material/app/AppRankingTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
+import 'static/serverRankingAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/ranking.dart';
 import 'json/branch.dart';
@@ -44,26 +41,11 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   @override
   void initState() {
     super.initState();
-    _getRankings();
+    _requestRankings();
   }
 
-  Future<void> _getRankings() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, 'ranking_list', {
-        'user_id': '0',
-        'branch_id': '0',
-        'min': '0',
-        'max': '0'}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    Iterable list = json.decode(response.body);
-
-    _rankings = List<Ranking>.from(list.map((model) => Ranking.fromJson(model)));
+  Future<void> _requestRankings() async {
+    _rankings = await server.ranking_list(widget.session, null, null);
     _ctrlDropdownUser.items = Set<User>.from(_rankings.map((model) => model.user)).toList();
     _ctrlDropdownJudge.items = Set<User>.from(_rankings.map((model) => model.judge)).toList();
 
@@ -90,7 +72,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   }
 
   void _selectRanking(Ranking ranking) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingAdminPage(session: widget.session, ranking: ranking, onUpdate: _getRankings)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingAdminPage(session: widget.session, ranking: ranking, onUpdate: _requestRankings)));
   }
 
   @override

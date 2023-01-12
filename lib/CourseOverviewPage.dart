@@ -50,13 +50,13 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
   }
 
   void _update() {
-    _getOwnCourses();
-    _getModCourses();
+    _getAvailableCourses();
+    _getResponsibleCourses();
   }
 
-  Future<void> _getOwnCourses() async {
+  Future<void> _getAvailableCourses() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, 'member/course_list'),
+      Uri.http(navi.serverURL, '/member/course_availiblity'),
       headers: {
         'Token': widget.session.token,
       },
@@ -71,9 +71,9 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
     });
   }
 
-  Future<void> _getModCourses() async {
+  Future<void> _getResponsibleCourses() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, 'mod/course_list'),
+      Uri.http(navi.serverURL, '/mod/course_responsibility'),
       headers: {
         'Token': widget.session.token,
       },
@@ -116,8 +116,8 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
         children: [
           PanelSwiper(
               panels: [
-                Panel("Own Courses", _buildOwnCoursePanel()),
-                Panel("Moderation", _buildModCoursePanel()),
+                Panel("Available", _buildOwnCoursePanel()),
+                Panel("Moderated", _buildModCoursePanel()),
               ]
           ),
         ],

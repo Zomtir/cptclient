@@ -11,6 +11,18 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/access.dart';
 
+Future<bool> loadStatus() async {
+  final response;
+
+  try {
+    response = await http.head(Uri.http(serverURL, 'status'));
+  } on Exception {
+    return false;
+  }
+
+  return (response.statusCode == 200);
+}
+
 List<User> cacheMembers = [];
 List<Location> cacheLocations = [];
 List<Branch> cacheBranches = [];

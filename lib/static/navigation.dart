@@ -3,10 +3,10 @@ library navigation;
 import 'package:flutter/material.dart';
 
 import "package:universal_html/html.dart"; // TODO go back to dart:html?
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'package:cptclient/static/db.dart' as db;
+import 'package:cptclient/static/serverUserMember.dart' as server;
+import 'package:cptclient/static/serverSlotCasual.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/slot.dart';
@@ -19,7 +19,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
 
 void connect() async {
-  if (await loadStatus()) {
+  if (await db.loadStatus()) {
     await loadCache();
     gotoRoute('/login');
   } else {
@@ -28,7 +28,7 @@ void connect() async {
 }
 
 void loginUser() async {
-  if (await loadStatus()) {
+  if (await db.loadStatus()) {
     if (await confirmUser()) {
       gotoRoute('/user');
     }
@@ -42,7 +42,7 @@ void logout() async {
   session = null;
   db.unloadMembers();
 
-  if (await loadStatus()) {
+  if (await db.loadStatus()) {
     await loadCache();
     gotoRoute('/login');
   } else {
@@ -50,21 +50,9 @@ void logout() async {
   }
 }
 
-Future<bool> loadStatus() async {
-  final response;
-
-  try {
-    response = await http.head(Uri.http(serverURL, 'status'));
-  } on Exception {
-    return false;
-  }
-
-  return (response.statusCode == 200);
-}
-
 Future<bool> loadCache() async {
   // We are at the splash screen
-  if (!await loadStatus()) {
+  if (!await db.loadStatus()) {
     // Connection fails
     return false;
   } else {
@@ -80,30 +68,16 @@ Future<bool> loadCache() async {
 Future<bool> confirmUser() async {
   if (window.localStorage['Token']! == "") return false;
 
-  final responseInfo = await http.get(
-    Uri.http(serverURL, 'user_info'),
-    headers: {
-      'Token': window.localStorage['Token']!,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
+  User? user = await server.user_info(window.localStorage['Token']!);
+  if (user == null) return false;
 
-  if (responseInfo.statusCode != 200) return false;
-
-  final responseRight = await http.get(
-    Uri.http(serverURL, 'user_right'),
-    headers: {
-      'Token': window.localStorage['Token']!,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (responseRight.statusCode != 200) return false;
+  Right? right = await server.right_info(window.localStorage['Token']!);
+  if (right == null) return false;
 
   session = Session(
     window.localStorage['Token']!,
-    user: User.fromJson(json.decode(utf8.decode(responseInfo.bodyBytes))),
-    right: Right.fromJson(json.decode(utf8.decode(responseRight.bodyBytes))),
+    user: user,
+    right: right,
   );
 
   db.loadMembers();
@@ -113,16 +87,8 @@ Future<bool> confirmUser() async {
 Future<bool> confirmSlot() async {
   if (window.localStorage['Token']! == "") return false;
 
-  final response = await http.get(
-    Uri.http(serverURL, 'slot_info'),
-    headers: {
-      'Token': window.localStorage['Token']!,
-    },
-  );
-
-  if (response.statusCode != 200) return false;
-
-  Slot slot = Slot.fromJson(json.decode(response.body));
+  Slot? slot = await server.slot_info(window.localStorage['Token']!);
+  if (slot == null) return false;
 
   session = Session(window.localStorage['Token']!, slot: slot);
   return true;

@@ -1,3 +1,4 @@
+import 'package:cptclient/static/serverCourseAdmin.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
@@ -8,12 +9,8 @@ import 'package:cptclient/material/app/AppDropdown.dart';
 import 'package:cptclient/material/app/AppListView.dart';
 import 'package:cptclient/material/app/AppCourseTile.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'CourseAdminPage.dart';
 
-import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
 
 import 'json/session.dart';
@@ -51,24 +48,12 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   }
 
   void _update() {
-    _getCourses();
+    _requestCourses(_ctrlDropdownModerators.value);
   }
 
-  Future<void> _getCourses() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, '/admin/course_list', {
-        if (_ctrlDropdownModerators.value != null) 'user_id': _ctrlDropdownModerators.value.toString(),
-      }),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    Iterable l = json.decode(response.body);
-
-    _courses = List<Course>.from(l.map((model) => Course.fromJson(model)));
+  Future<void> _requestCourses(User? user) async {
+    _courses = await course_list(widget.session, user);
+    setState(() => _ctrlDropdownModerators.value = user);
     _filterCourses();
   }
 
@@ -108,15 +93,11 @@ class CourseManagementPageState extends State<CourseManagementPage> {
               builder: (User user) {
                 return Text(user.key);
               },
-              onChanged: (User? user) {
-                _ctrlDropdownModerators.value = user;
-              },
+              onChanged: (User? user) => _requestCourses(user),
             ),
             trailing: IconButton(
               icon: Icon(Icons.clear),
-              onPressed: () {
-                _ctrlDropdownModerators.value = null;
-              },
+              onPressed: () => _requestCourses(null),
             ),
           ),
           AppButton(

@@ -79,9 +79,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   Future<void> _getCourseSlots() async {
-    List<Slot>? slots = await course_slot_list(widget.session, widget.course.id);
-
-    if (slots == null) return;
+    List<Slot> slots = await course_slot_list(widget.session, widget.course.id);
 
     setState(() {
       _slots = slots;
@@ -106,8 +104,8 @@ class CourseAdminPageState extends State<CourseAdminPage> {
     });
   }
 
-  void _modMember(User user) async {
-    bool success = await course_mod(widget.session, widget.course.id, user.id);
+  void _addModerator(User user) async {
+    bool success = await course_moderator_add(widget.session, widget.course.id, user.id);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add moderator')));
@@ -117,8 +115,8 @@ class CourseAdminPageState extends State<CourseAdminPage> {
     _getCourseModerators();
   }
 
-  void _unmodMember(User user) async {
-    bool success = await course_unmod(widget.session, widget.course.id, user.id);
+  void _removeModerator(User user) async {
+    bool success = await course_moderator_remove(widget.session, widget.course.id, user.id);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove moderator')));
@@ -232,7 +230,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
           hint: Text("Add moderator"),
           controller: _ctrlModerator,
           builder: (User user) {return Text(user.key);},
-          onChanged: (User? user) => _modMember(user!),
+          onChanged: (User? user) => _addModerator(user!),
         ),
         AppListView<User>(
           items: _moderators,
@@ -243,7 +241,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
                 subtitle: Text("${user.key}"),
                   trailing: !widget.session.right!.admin_courses ? null :  IconButton(
                   icon: Icon(Icons.delete),
-                  onPressed: () => _unmodMember(user),
+                  onPressed: () => _removeModerator(user),
                 ),
               ),
             );

@@ -28,9 +28,9 @@ class _PanelSwiperState extends State<PanelSwiper> {
 
   @override
   void initState() {
+    super.initState();
     _count = widget.panels.length;
     _index = widget.swipes;
-    super.initState();
   }
 
   @override

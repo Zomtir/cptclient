@@ -47,7 +47,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   Future<void> _getMembers() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, 'user_member_list'),
+      Uri.http(navi.serverURL, '/member/user_list'),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
