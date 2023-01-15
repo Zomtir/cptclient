@@ -4,9 +4,9 @@ import 'material/SelectItem.dart';
 
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'static/navigation.dart' as navi;
+import 'static/serverSlotCasual.dart' as server;
 import 'json/session.dart';
 import 'json/user.dart';
 
@@ -36,13 +36,13 @@ class EnrollPageState extends State<EnrollPage> {
   @override
   void initState() {
     super.initState();
-    _loadInit();
+    _update();
   }
 
-  void _loadInit() async
+  void _update() async
   {
-    await _getParticipants();
-    await _getCandidates();
+    candidates = await server.slot_candidates(widget.session);
+    participants = await server.slot_participants(widget.session);
 
     var setP = Set.from(participants);
     var setC = Set.from(candidates);
@@ -53,47 +53,6 @@ class EnrollPageState extends State<EnrollPage> {
       candidatesFiltered = candidates;
       participants.sort();
     });
-  }
-
-  Future<void> _getParticipants() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, 'slot_participants'),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode == 401) {
-      Navigator.pop(context);
-      return;
-    }
-
-    if (response.statusCode != 200) return;
-
-    Iterable l = json.decode(response.body);
-
-    participants = List<User>.from(l.map((model) => User.fromJson(model)));
-  }
-
-  Future<void> _getCandidates() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, 'slot_candidates'),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode == 401) {
-      Navigator.pop(context);
-      return;
-    }
-
-    if (response.statusCode != 200)
-      return;
-
-    Iterable l = json.decode(response.body);
-
-    candidates = List<User>.from(l.map((model) => User.fromJson(model)));
   }
 
   void _filterCandidates(String filter) {

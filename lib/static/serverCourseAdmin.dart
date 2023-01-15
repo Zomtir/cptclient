@@ -110,9 +110,9 @@ Future<bool> course_moderator_add(Session session, int courseID, int userID) asy
 
 Future<bool> course_moderator_remove(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, 'course_unmod', {
-      'course': courseID.toString(),
-      'user' : userID.toString(),
+    Uri.http(navi.serverURL, '/admin/course_moderator_remove', {
+      'course_id': courseID.toString(),
+      'user_id' : userID.toString(),
     }),
     headers: {
       'Token': session.token,

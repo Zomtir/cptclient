@@ -10,19 +10,19 @@ import 'static/serverUserAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/user.dart';
 
-class UserManagementPage extends StatefulWidget {
+class TermManagementPage extends StatefulWidget {
   final Session session;
 
-  UserManagementPage({Key? key, required this.session}) : super(key: key);
+  TermManagementPage({Key? key, required this.session}) : super(key: key);
 
   @override
-  UserManagementPageState createState() => UserManagementPageState();
+  TermManagementPageState createState() => TermManagementPageState();
 }
 
-class UserManagementPageState extends State<UserManagementPage> {
+class TermManagementPageState extends State<TermManagementPage> {
   List<User> _users = [];
 
-  UserManagementPageState();
+  TermManagementPageState();
 
   @override
   void initState() {
@@ -73,6 +73,7 @@ class UserManagementPageState extends State<UserManagementPage> {
       ),
       body: AppBody(
         children: <Widget>[
+          // three pages, choose user, users that should be enabled, users that should be disabled
           AppButton(
             leading: Icon(Icons.add),
             text: "New user",

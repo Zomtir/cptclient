@@ -9,7 +9,7 @@ import 'package:cptclient/material/app/AppDropdown.dart';
 import 'package:cptclient/material/app/AppCourseTile.dart';
 import 'package:cptclient/material/app/AppSlotTile.dart';
 
-import 'ClassMemberPage.dart';
+import 'ClassAdminPage.dart';
 
 import 'static/db.dart' as db;
 import 'static/serverCourseAdmin.dart';
@@ -37,7 +37,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   List <Slot> _slots = [];
   List <User> _moderators = [];
 
-  DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
+  DropdownController<User> _ctrlModerator = DropdownController<User>(items: db.cacheMembers);
 
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
@@ -57,6 +57,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   void _update() {
     if (!widget.isDraft) _getCourseSlots();
     if (!widget.isDraft) _getCourseModerators();
+
     _applyCourse();
   }
 
@@ -87,7 +88,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ClassMemberPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, isDraft: false,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ClassAdminPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, isDraft: false,)));
   }
 
   void _createCourseSlot() async {

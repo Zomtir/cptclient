@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/user.dart';
 
 Future<Slot?> slot_info(String token) async {
   final response = await http.get(
@@ -19,4 +20,32 @@ Future<Slot?> slot_info(String token) async {
   if (response.statusCode != 200) return null;
 
   return Slot.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+}
+
+Future<List<User>> slot_candidates(Session session) async {
+  final response = await http.get(
+    Uri.http(navi.serverURL, 'slot_candidates'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(response.body);
+  return List<User>.from(l.map((model) => User.fromJson(model)));
+}
+
+Future<List<User>> slot_participants(Session session) async {
+  final response = await http.get(
+    Uri.http(navi.serverURL, 'slot_participants'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(response.body);
+  return List<User>.from(l.map((model) => User.fromJson(model)));
 }

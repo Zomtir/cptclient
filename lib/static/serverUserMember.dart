@@ -23,7 +23,6 @@ Future<User?> user_info(String token) async {
   return User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-
 Future<Right?> right_info(String token) async {
   final response = await http.get(
     Uri.http(navi.serverURL, '/member/user_right'),

@@ -48,7 +48,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   }
 
   void _update() {
-    _requestCourses(_ctrlDropdownModerators.value);
+    _requestCourses(null);
   }
 
   Future<void> _requestCourses(User? user) async {

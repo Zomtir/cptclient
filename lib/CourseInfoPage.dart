@@ -127,44 +127,6 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     });
   }
 
-  void _modMember(User user) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'course_mod', {
-        'course_id': widget.course.id.toString(),
-        'user_id' : user.id.toString(),
-      }),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add moderator')));
-      return;
-    }
-
-    _getCourseModerators();
-  }
-
-  void _unmodMember(User user) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'course_unmod', {
-        'course': widget.course.id.toString(),
-        'user' : user.id.toString(),
-      }),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove moderator')));
-      return;
-    }
-
-    _getCourseModerators();
-  }
-
   void _applyCourse() {
     _ctrlCourseKey.text = widget.course.key;
     _ctrlCourseTitle.text = widget.course.title;

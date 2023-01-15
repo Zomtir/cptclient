@@ -4,10 +4,7 @@ import 'material/app/AppInfoRow.dart';
 import 'material/app/AppButton.dart';
 import 'material/app/AppMemberTile.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'static/navigation.dart' as navi;
+import 'static/serverUserAdmin.dart' as server;
 import 'static/crypto.dart' as crypto;
 import 'json/session.dart';
 import 'json/user.dart';
@@ -60,39 +57,23 @@ class UserAdminPageState extends State<UserAdminPage> {
   void _submitUser() async {
     _gatherUser();
 
-    final response = await http.post(
-      Uri.http(navi.serverURL, widget.user.id == 0 ? 'user_create' : 'user_edit'),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-      body: json.encode(widget.user),
-    );
+    bool success = widget.isDraft ? await server.user_create(widget.session, widget.user) : await server.user_edit(widget.session, widget.user);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit user')));
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully saved user')));
     widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _deleteUser() async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'user_delete', {'user_id': widget.user.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
+    if (!await server.user_delete(widget.session, widget.user)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete user')));
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted user')));
     widget.onUpdate();
     Navigator.pop(context);
   }
