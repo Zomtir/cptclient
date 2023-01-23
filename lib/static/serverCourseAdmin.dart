@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/course.dart';
 
@@ -62,21 +61,6 @@ Future<bool> course_delete(Session session, int courseID) async {
   );
 
   return (response.statusCode == 200);
-}
-
-Future<List<Slot>> course_slot_list(Session session, int courseID) async {
-  final response = await http.get(
-    Uri.http(navi.serverURL, '/admin/course_slot_list', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
 }
 
 Future<List<User>?> course_moderator_list(Session session, int courseID) async {

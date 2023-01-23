@@ -73,7 +73,9 @@ class EventManagementPageState extends State<EventManagementPage> {
           session: widget.session,
           slot: slot,
           onUpdate: _requestSlots,
-          draft: false,
+          isDraft: false,
+          isOwner: false,
+          isAdmin: true,
         ),
       ),
     );
@@ -99,7 +101,10 @@ class EventManagementPageState extends State<EventManagementPage> {
         children: <Widget>[
           AppInfoRow(
             info: Text("Begin Date"),
-            child: Text(niceDate(_dateBegin)),
+            child: TextButton(
+              child: Text(niceDate(_dateBegin)),
+              onPressed: _pickDateBegin,
+            ),
             trailing: IconButton(
               icon: Icon(Icons.edit),
               onPressed: _pickDateBegin,
@@ -107,7 +112,10 @@ class EventManagementPageState extends State<EventManagementPage> {
           ),
           AppInfoRow(
             info: Text("End Date"),
-            child: Text(niceDate(_dateEnd)),
+            child: TextButton(
+              child: Text(niceDate(_dateEnd)),
+              onPressed: _pickDateEnd,
+            ),
             trailing: IconButton(
               icon: Icon(Icons.edit),
               onPressed: _pickDateEnd,

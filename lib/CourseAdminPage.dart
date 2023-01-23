@@ -12,7 +12,8 @@ import 'package:cptclient/material/app/AppSlotTile.dart';
 import 'ClassAdminPage.dart';
 
 import 'static/db.dart' as db;
-import 'static/serverCourseAdmin.dart';
+import 'static/serverCourseAdmin.dart' as server;
+import 'static/serverClassAdmin.dart' as server;
 
 import 'json/session.dart';
 import 'json/course.dart';
@@ -34,17 +35,17 @@ class CourseAdminPage extends StatefulWidget {
 }
 
 class CourseAdminPageState extends State<CourseAdminPage> {
-  List <Slot> _slots = [];
-  List <User> _moderators = [];
+  List<Slot> _slots = [];
+  List<User> _moderators = [];
 
   DropdownController<User> _ctrlModerator = DropdownController<User>(items: db.cacheMembers);
 
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
-  bool                  _ctrlCourseActive = true;
+  bool _ctrlCourseActive = true;
   DropdownController<Access> _ctrlCourseAccess = DropdownController<Access>(items: db.cacheAccess);
   DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: db.cacheBranches);
-  int                        _pickThresholdValue = 0;
+  int _pickThresholdValue = 0;
 
   CourseAdminPageState();
 
@@ -62,7 +63,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _deleteCourse() async {
-    bool success = await course_delete(widget.session, widget.course.id);
+    bool success = await server.course_delete(widget.session, widget.course.id);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete course')));
@@ -80,7 +81,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   Future<void> _getCourseSlots() async {
-    List<Slot> slots = await course_slot_list(widget.session, widget.course.id);
+    List<Slot> slots = await server.class_list(widget.session, widget.course.id);
 
     setState(() {
       _slots = slots;
@@ -88,15 +89,37 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ClassAdminPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, isDraft: false,)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClassAdminPage(
+          session: widget.session,
+          slot: slot,
+          onUpdate: _getCourseSlots,
+          isDraft: false,
+        ),
+      ),
+    );
   }
 
   void _createCourseSlot() async {
-    _selectCourseSlot(Slot.fromCourse(widget.course));
+    Slot slot = Slot.fromCourse(widget.course);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClassAdminPage(
+          session: widget.session,
+          slot: slot,
+          onUpdate: _getCourseSlots,
+          isDraft: true,
+        ),
+      ),
+    );
   }
 
   Future<void> _getCourseModerators() async {
-    List<User>? moderators = await course_moderator_list(widget.session, widget.course.id);
+    List<User>? moderators = await server.course_moderator_list(widget.session, widget.course.id);
 
     if (moderators == null) return;
 
@@ -106,7 +129,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _addModerator(User user) async {
-    bool success = await course_moderator_add(widget.session, widget.course.id, user.id);
+    bool success = await server.course_moderator_add(widget.session, widget.course.id, user.id);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add moderator')));
@@ -117,7 +140,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _removeModerator(User user) async {
-    bool success = await course_moderator_remove(widget.session, widget.course.id, user.id);
+    bool success = await server.course_moderator_remove(widget.session, widget.course.id, user.id);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove moderator')));
@@ -147,12 +170,12 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   void _submitCourse() async {
     _gatherCourse();
-    
+
     bool success;
     if (widget.isDraft)
-      success = await course_create(widget.session, widget.course);
+      success = await server.course_create(widget.session, widget.course);
     else
-      success = await course_edit(widget.session, widget.course.id, widget.course);
+      success = await server.course_edit(widget.session, widget.course.id, widget.course);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit course')));
@@ -165,38 +188,39 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Course Details"),
       ),
       body: AppBody(
         children: <Widget>[
-          if (widget.course.id != 0) Row(
-            children: [
-              Expanded(
-                child: AppCourseTile(
-                  onTap: (course) => {},
-                  course: widget.course,
+          if (widget.course.id != 0)
+            Row(
+              children: [
+                Expanded(
+                  child: AppCourseTile(
+                    onTap: (course) => {},
+                    course: widget.course,
+                  ),
                 ),
-              ),
-              if (widget.session.right!.admin_courses) IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: _duplicateCourse,
-              ),
-              if (widget.session.right!.admin_courses) IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _deleteCourse,
-              ),
-            ],
-          ),
-          PanelSwiper(
-            panels: [
-              if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
-              if (!widget.isDraft) Panel("Moderators", _buildModeratorPanel()),
-              if (widget.session.right!.admin_courses) Panel("Edit", buildEditPanel()),
-            ]
-          ),
+                if (widget.session.right!.admin_courses)
+                  IconButton(
+                    icon: const Icon(Icons.copy),
+                    onPressed: _duplicateCourse,
+                  ),
+                if (widget.session.right!.admin_courses)
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: _deleteCourse,
+                  ),
+              ],
+            ),
+          PanelSwiper(panels: [
+            if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
+            if (!widget.isDraft) Panel("Moderators", _buildModeratorPanel()),
+            if (widget.session.right!.admin_courses) Panel("Edit", buildEditPanel()),
+          ]),
         ],
       ),
     );
@@ -227,12 +251,15 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   Widget _buildModeratorPanel() {
     return Column(
       children: [
-        if(widget.session.right!.admin_courses) AppDropdown<User>(
-          hint: Text("Add moderator"),
-          controller: _ctrlModerator,
-          builder: (User user) {return Text(user.key);},
-          onChanged: (User? user) => _addModerator(user!),
-        ),
+        if (widget.session.right!.admin_courses)
+          AppDropdown<User>(
+            hint: Text("Add moderator"),
+            controller: _ctrlModerator,
+            builder: (User user) {
+              return Text(user.key);
+            },
+            onChanged: (User? user) => _addModerator(user!),
+          ),
         AppListView<User>(
           items: _moderators,
           itemBuilder: (User user) {
@@ -240,10 +267,12 @@ class CourseAdminPageState extends State<CourseAdminPage> {
               child: ListTile(
                 title: Text("${user.lastname}, ${user.firstname}"),
                 subtitle: Text("${user.key}"),
-                  trailing: !widget.session.right!.admin_courses ? null :  IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _removeModerator(user),
-                ),
+                trailing: !widget.session.right!.admin_courses
+                    ? null
+                    : IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () => _removeModerator(user),
+                      ),
               ),
             );
           },
@@ -273,7 +302,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
           info: Text("Active"),
           child: Checkbox(
             value: _ctrlCourseActive,
-            onChanged: (bool? active) =>  setState(() => _ctrlCourseActive = active!),
+            onChanged: (bool? active) => setState(() => _ctrlCourseActive = active!),
           ),
         ),
         AppInfoRow(
@@ -305,8 +334,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
                 setState(() => _pickThresholdValue = value.toInt());
               },
               label: "$_pickThresholdValue",
-            )
-        ),
+            )),
         AppButton(
           text: "Save",
           onPressed: _submitCourse,
@@ -314,5 +342,4 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       ],
     );
   }
-
 }

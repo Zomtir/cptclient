@@ -41,7 +41,6 @@ class ClassMemberPageState extends State<ClassMemberPage> {
             children: [
               Expanded(
                 child: AppSlotTile(
-                  onTap: (slot) => {},
                   slot: widget.slot,
                 ),
               ),

@@ -4,18 +4,18 @@ import 'package:cptclient/json/slot.dart';
 
 class AppSlotTile extends StatelessWidget {
   final Slot slot;
-  final Function(Slot) onTap;
+  final Function(Slot)? onTap;
 
   const AppSlotTile({
     Key? key,
     required this.slot,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap(slot),
+      onTap: (onTap != null) ? () => onTap!(this.slot) : null,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 2.0),
         padding: const EdgeInsets.symmetric(vertical: 4.0),

@@ -5,12 +5,10 @@ import 'material/app/AppButton.dart';
 import 'material/app/AppListView.dart';
 import 'material/app/AppSlotTile.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'EventDetailPage.dart';
 
-import 'static/navigation.dart' as navi;
+import 'static/serverEventMember.dart' as server;
+import 'static/serverEventOwner.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
 
@@ -39,11 +37,11 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _getIndividualSlots() async {
-    _slotsOccurring = (await _requestIndividualSlots('OCCURRING'))!;
-    _slotsDraft = (await _requestIndividualSlots('DRAFT'))!;
-    _slotsPending = (await _requestIndividualSlots('PENDING'))!;
-    _slotsRejected = (await _requestIndividualSlots('REJECTED'))!;
-    _slotsCanceled = (await _requestIndividualSlots('CANCELED'))!;
+    _slotsOccurring = await server.event_list(widget.session, 'OCCURRING');
+    _slotsDraft = await server.event_list(widget.session, 'DRAFT');
+    _slotsPending = await server.event_list(widget.session, 'PENDING');
+    _slotsRejected = await server.event_list(widget.session, 'REJECTED');
+    _slotsCanceled = await server.event_list(widget.session, 'CANCELED');
 
     /* This "bad" practice.
      * Ideally the assignment should be inside the setState function
@@ -57,21 +55,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     setState(() {});
   }
 
-  Future<List<Slot>?> _requestIndividualSlots(String status) async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, '/member/event_list', {'status': status}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) return null;
-
-    Iterable l = json.decode(utf8.decode(response.bodyBytes));
-    return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
-  }
-
-  void _createIndividualSlot() async {
+  void _createEvent() async {
     Slot slot = Slot.fromUser(widget.session.user!);
     Navigator.push(
       context,
@@ -80,13 +64,16 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           session: widget.session,
           slot: slot,
           onUpdate: _getIndividualSlots,
-          draft: true,
+          isDraft: true,
+          isOwner: true,
+          isAdmin: false,
         ),
       ),
     );
   }
 
-  void _selectIndividualSlot(Slot slot) {
+  void _selectIndividualSlot(Slot slot) async {
+    bool isOwner = await server.event_owner_condition(widget.session, slot);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -94,82 +81,48 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           session: widget.session,
           slot: slot,
           onUpdate: _getIndividualSlots,
-          draft: false,
+          isDraft: false,
+          isOwner: isOwner,
+          isAdmin: false,
         ),
       ),
     );
   }
 
   Future<void> _submitSlot(Slot slot) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'event_submit', {'slot_id': slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    switch (response.statusCode) {
-      case 200:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully submitted slot')));
-        _getIndividualSlots();
-        break;
-      default:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to submit slot')));
+    if (!await server.event_submit(widget.session, slot)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to submit slot')));
+      return;
     }
+
+    _getIndividualSlots();
   }
 
   Future<void> _withdrawSlot(Slot slot) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'event_withdraw', {'slot_id': slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    switch (response.statusCode) {
-      case 200:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully withdrew slot')));
-        _getIndividualSlots();
-        break;
-      default:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to withdrew slot')));
+    if (!await server.event_withdraw(widget.session, slot)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to withdraw slot')));
+      return;
     }
+
+    _getIndividualSlots();
   }
 
   Future<void> _cancelSlot(Slot slot) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'event_cancel', {'slot_id': slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    switch (response.statusCode) {
-      case 200:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully cancelled slot')));
-        _getIndividualSlots();
-        break;
-      default:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to cancel slot')));
+    if (!await server.event_cancel(widget.session, slot)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to cancel slot')));
+      return;
     }
+
+    _getIndividualSlots();
   }
 
   Future<void> _recycleSlot(Slot slot) async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'event_recycle', {'slot_id': slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    switch (response.statusCode) {
-      case 200:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully recycled slot')));
-        _getIndividualSlots();
-        break;
-      default:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to recycle slot')));
+    if (!await server.event_recycle(widget.session, slot)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to recycle slot')));
+      return;
     }
+
+    _getIndividualSlots();
   }
 
   @override
@@ -183,7 +136,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           AppButton(
             leading: Icon(Icons.add),
             text: "Draft new slot",
-            onPressed: _createIndividualSlot,
+            onPressed: _createEvent,
           ),
           PanelSwiper(swipes: 0, panels: [
             Panel("Draft", _buildDraftSlotPanel()),

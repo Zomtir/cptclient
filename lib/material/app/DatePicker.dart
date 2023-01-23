@@ -76,9 +76,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   }
 
   void _handleOk() {
-    if (_selectedDate == widget.initialDate) _handleCancel();
-
-    Navigator.pop(context, _selectedDate);
+    if (_selectedDate == widget.initialDate)
+      _handleCancel();
+    else
+      Navigator.pop(context, _selectedDate);
   }
 
   void _handleCancel() {
@@ -143,18 +144,23 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
 
     final Widget actions = Container(
       alignment: AlignmentDirectional.center,
-      constraints: const BoxConstraints(minHeight: 52.0),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: <Widget>[
-          TextButton(
-            onPressed: _handleCancel,
-            child: Text(cancelText),
+          Container(
+            margin: EdgeInsets.only(left: 10, top: 10),
+            child: TextButton(
+              onPressed: _handleCancel,
+              child: Text(cancelText),
+            ),
           ),
           Spacer(),
-          TextButton(
-            onPressed: _handleOk,
-            child: Text(confirmText),
+          Container(
+            margin: EdgeInsets.only(right: 10, top: 10),
+            child: TextButton(
+              onPressed: _handleOk,
+              child: Text(confirmText),
+            ),
           ),
         ],
       ),
@@ -162,7 +168,6 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
 
     final Widget form = Container(
       alignment: AlignmentDirectional.center,
-      constraints: const BoxConstraints(minHeight: 52.0),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -170,10 +175,15 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
           IconButton(onPressed: () => _handleYearJump(-1), icon: Icon(Icons.chevron_left)),
           SizedBox(
             width: 60,
-            child: TextField(
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              controller: _ctrlYear,
+            child: Focus(
+              child: TextField(
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                controller: _ctrlYear,
+              ),
+              onFocusChange: (hasFocus) {
+                if (!hasFocus) _parseDateFields();
+              },
             ),
           ),
           IconButton(onPressed: () => _handleYearJump(1), icon: Icon(Icons.chevron_right)),
@@ -181,10 +191,15 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
           IconButton(onPressed: () => _handleMonthJump(-1), icon: Icon(Icons.chevron_left)),
           SizedBox(
             width: 50,
-            child: TextField(
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              controller: _ctrlMonth,
+            child: Focus(
+              child: TextField(
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                controller: _ctrlMonth,
+              ),
+              onFocusChange: (hasFocus) {
+                if (!hasFocus) _parseDateFields();
+              },
             ),
           ),
           IconButton(onPressed: () => _handleMonthJump(1), icon: Icon(Icons.chevron_right)),
@@ -192,10 +207,15 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
           IconButton(onPressed: () => _handleDayJump(-1), icon: Icon(Icons.chevron_left)),
           SizedBox(
             width: 50,
-            child: TextField(
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              controller: _ctrlDay,
+            child: Focus(
+              child: TextField(
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                controller: _ctrlDay,
+              ),
+              onFocusChange: (hasFocus) {
+                if (!hasFocus) _parseDateFields();
+              },
             ),
           ),
           IconButton(onPressed: () => _handleDayJump(1), icon: Icon(Icons.chevron_right)),
@@ -216,6 +236,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
       insetPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       clipBehavior: Clip.antiAlias,
       child: Container(
+        height: 500,
+        width: 430,
         child: Column(
           children: [
             actions,
@@ -246,8 +268,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
           onPressed: () => _handleDayPick(index + 1),
           child: Text(
             '${index + 1}',
-            textScaleFactor: 2.0,
-              style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
+            textScaleFactor: 1.6,
+            style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
           ),
         ),
       );

@@ -22,6 +22,7 @@ class ClassAdminPage extends StatefulWidget {
   final void Function() onUpdate;
   final bool isDraft;
   final bool isModerator = false;
+  final bool isAdmin = false;
 
   ClassAdminPage({Key? key, required this.session, required this.slot, required this.onUpdate, required this.isDraft}) : super(key: key);
 
@@ -98,33 +99,32 @@ class ClassAdminPageState extends State<ClassAdminPage> {
       ),
       body: AppBody(
         children: [
-          if (widget.slot.id != 0)
+          if (widget.isDraft == false)
             Row(
               children: [
                 Expanded(
                   child: AppSlotTile(
-                    onTap: (slot) => {},
                     slot: widget.slot,
                   ),
                 ),
-                if (widget.isModerator)
-                  IconButton(
-                    icon: const Icon(Icons.copy),
-                    onPressed: _duplicateSlot,
-                  ),
-                if (widget.isModerator)
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: _deleteSlot,
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.copy),
+                  onPressed: _duplicateSlot,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: _deleteSlot,
+                ),
               ],
             ),
           //Text(widget.slot.status!.toString()),
           PanelSwiper(panels: [
+            Panel("Edit", _buildEditPanel()),
+            if (!widget.isDraft) Panel("Owners", Container()),
+            if (!widget.isDraft) Panel("Participants", Container()),
             if (!widget.isDraft) Panel("Group Invites", Container()),
             if (!widget.isDraft) Panel("Personal Invites", Container()),
             if (!widget.isDraft) Panel("Level Invites", Container()),
-            if (widget.isModerator) Panel("Edit", _buildEditPanel()),
           ]),
         ],
       ),

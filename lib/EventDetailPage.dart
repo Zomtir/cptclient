@@ -17,6 +17,7 @@ import 'dart:convert';
 
 import 'static/navigation.dart' as navi;
 import 'static/db.dart' as db;
+import 'static/serverEventOwner.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
@@ -25,9 +26,19 @@ class EventDetailPage extends StatefulWidget {
   final Session session;
   final Slot slot;
   final void Function() onUpdate;
-  final bool draft;
+  final bool isDraft;
+  final bool isOwner;
+  final bool isAdmin;
 
-  EventDetailPage({Key? key, required this.session, required this.slot, required this.onUpdate, required this.draft}) : super(key: key);
+  EventDetailPage({
+    Key? key,
+    required this.session,
+    required this.slot,
+    required this.onUpdate,
+    required this.isDraft,
+    required this.isOwner,
+    required this.isAdmin,
+  }) : super(key: key);
 
   @override
   SlotDetailPageState createState() => SlotDetailPageState();
@@ -52,27 +63,9 @@ class SlotDetailPageState extends State<EventDetailPage> {
 
     _applySlot();
     widget.slot.owners = [];
-    _getSlotOwners();
+    _requestSlotOwners();
 
-    _confirmAction = widget.draft ? 'event_create' : 'event_edit';
-  }
-
-  void _deleteSlot() async {
-    final response = await http.head(
-      Uri.http(navi.serverURL, 'event_delete', {'slot_id': widget.slot.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete time slot')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted time slot')));
-    widget.onUpdate();
-    Navigator.pop(context);
+    _confirmAction = widget.isDraft ? 'event_create' : 'event_edit';
   }
 
   void _duplicateSlot() {
@@ -85,7 +78,9 @@ class SlotDetailPageState extends State<EventDetailPage> {
           session: widget.session,
           slot: _slot,
           onUpdate: widget.onUpdate,
-          draft: true,
+          isDraft: true,
+          isOwner: true,
+          isAdmin: widget.isAdmin,
         ),
       ),
     );
@@ -129,66 +124,34 @@ class SlotDetailPageState extends State<EventDetailPage> {
     Navigator.pop(context);
   }
 
-  void _getSlotOwners() async {
-    final response = await http.get(
-      Uri.http(navi.serverURL, '/event_owner_list', {
-        'slot_id': widget.slot.id.toString(),
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
+  void _deleteSlot() async {
+    if (!await server.event_delete(widget.session, widget.slot)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete time')));
       return;
     }
 
+    widget.onUpdate();
+    Navigator.pop(context);
+  }
+
+  void _requestSlotOwners() async {
+    List<User> owners = await server.event_owner_list(widget.session, widget.slot);
+
     setState(() {
-      widget.slot.owners = List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+      widget.slot.owners = owners;
     });
   }
 
-  void _addSlotOwner(User? member) async {
-    if (member == null) return;
-
-    final response = await http.head(
-      Uri.http(navi.serverURL, '/event_owner_add', {
-        'slot_id': widget.slot.id.toString(),
-        'user_id': member.id.toString(),
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      return;
-    }
-
-    _getSlotOwners();
+  void _addSlotOwner(User? user) async {
+    if (user == null) return;
+    if (!await server.event_owner_add(widget.session, widget.slot, user)) return;
+    _requestSlotOwners();
   }
 
-  void _removeSlotOwner(User? member) async {
-    if (member == null) return;
-
-    final response = await http.head(
-      Uri.http(navi.serverURL, '/event_owner_remove', {
-        'slot_id': widget.slot.id.toString(),
-        'user_id': member.id.toString(),
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      return;
-    }
-
-    _getSlotOwners();
+  void _removeSlotOwner(User? user) async {
+    if (user == null) return;
+    if (!await server.event_owner_remove(widget.session, widget.slot, user)) return;
+    _requestSlotOwners();
   }
 
   @override
@@ -222,10 +185,11 @@ class SlotDetailPageState extends State<EventDetailPage> {
           //Text(widget.slot.status!.toString()),
           PanelSwiper(panels: [
             Panel("Edit", _buildEditPanel()),
-            if (widget.slot.id != 0) Panel("Group Invites", Container()),
-            if (widget.slot.id != 0) Panel("Personal Invites", Container()),
-            if (widget.slot.id != 0) Panel("Level Invites", Container()),
-            if (widget.slot.id != 0) Panel("Owners", _buildOwnerPanel()),
+            if (!widget.isDraft) Panel("Owners", _buildOwnerPanel()),
+            if (!widget.isDraft) Panel("Participants", Container()),
+            if (!widget.isDraft) Panel("Group Invites", Container()),
+            if (!widget.isDraft) Panel("Personal Invites", Container()),
+            if (!widget.isDraft) Panel("Level Invites", Container()),
           ]),
         ],
       ),

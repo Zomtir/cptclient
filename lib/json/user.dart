@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 // ignore_for_file: non_constant_identifier_names
 
 class User implements Comparable {
