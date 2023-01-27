@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
-
-import 'json/user.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppDropdown.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppListView.dart';
-import 'material/app/AppMemberTile.dart';
-import 'material/app/AppSlotTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -21,6 +20,7 @@ import 'static/serverEventOwner.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
+import 'json/user.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Session session;
@@ -277,7 +277,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
             return Row(
               children: [
                 Expanded(
-                  child: AppMemberTile(
+                  child: AppUserTile(
                     onTap: (User u) => {},
                     item: user,
                   ),

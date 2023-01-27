@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/app/AppBody.dart';
-import 'package:cptclient/material/app/AppInfoRow.dart';
-import 'package:cptclient/material/app/AppButton.dart';
-import 'package:cptclient/material/app/AppListView.dart';
-import 'package:cptclient/material/app/AppDropdown.dart';
-import 'package:cptclient/material/app/AppCourseTile.dart';
-import 'package:cptclient/material/app/AppSlotTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'ClassAdminPage.dart';
 
+import 'material/panels/UserSelectionPanel.dart';
 import 'static/db.dart' as db;
 import 'static/serverCourseAdmin.dart' as server;
 import 'static/serverClassAdmin.dart' as server;
@@ -37,8 +38,6 @@ class CourseAdminPage extends StatefulWidget {
 class CourseAdminPageState extends State<CourseAdminPage> {
   List<Slot> _slots = [];
   List<User> _moderators = [];
-
-  DropdownController<User> _ctrlModerator = DropdownController<User>(items: db.cacheMembers);
 
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
@@ -218,7 +217,12 @@ class CourseAdminPageState extends State<CourseAdminPage> {
             ),
           PanelSwiper(panels: [
             if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
-            if (!widget.isDraft) Panel("Moderators", _buildModeratorPanel()),
+            if (!widget.isDraft) Panel("Moderators", UserSelectionPanel(
+              usersAvailable: db.cacheMembers,
+              usersChosen: _moderators,
+              onAdd: _addModerator,
+              onRemove: _removeModerator,
+            )),
             if (widget.session.right!.admin_courses) Panel("Edit", buildEditPanel()),
           ]),
         ],
@@ -241,39 +245,6 @@ class CourseAdminPageState extends State<CourseAdminPage> {
             return AppSlotTile(
               onTap: _selectCourseSlot,
               slot: slot,
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildModeratorPanel() {
-    return Column(
-      children: [
-        if (widget.session.right!.admin_courses)
-          AppDropdown<User>(
-            hint: Text("Add moderator"),
-            controller: _ctrlModerator,
-            builder: (User user) {
-              return Text(user.key);
-            },
-            onChanged: (User? user) => _addModerator(user!),
-          ),
-        AppListView<User>(
-          items: _moderators,
-          itemBuilder: (User user) {
-            return InkWell(
-              child: ListTile(
-                title: Text("${user.lastname}, ${user.firstname}"),
-                subtitle: Text("${user.key}"),
-                trailing: !widget.session.right!.admin_courses
-                    ? null
-                    : IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () => _removeModerator(user),
-                      ),
-              ),
             );
           },
         ),

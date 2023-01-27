@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cptclient/material/app/AppTile.dart';
+import 'package:cptclient/material/tiles/AppTile.dart';
 import 'package:cptclient/json/team.dart';
 
 class AppTeamTile extends StatelessWidget {

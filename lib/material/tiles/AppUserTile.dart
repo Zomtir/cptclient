@@ -3,14 +3,14 @@ import 'package:cptclient/json/user.dart';
 
 import 'AppTile.dart';
 
-class AppMemberTile extends StatelessWidget {
+class AppUserTile extends StatelessWidget {
   final User item;
-  final Function(User) onTap;
+  final Function(User)? onTap;
 
-  const AppMemberTile({
+  const AppUserTile({
     Key? key,
     required this.item,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   @override

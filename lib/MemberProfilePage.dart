@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppInfoRow.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 
 import 'static/serverUserMember.dart' as server;
 

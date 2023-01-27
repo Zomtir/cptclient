@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 class AppTile<T> extends StatelessWidget {
   final T item;
-  final Function(T) onTap;
   final child;
+  final Function(T)? onTap;
 
   const AppTile({
     Key? key,
     required this.item,
-    required this.onTap,
     required this.child,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap(item),
+      onTap: (onTap != null) ? onTap!(item) : null,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 2.0),
         padding: const EdgeInsets.symmetric(vertical: 4.0),

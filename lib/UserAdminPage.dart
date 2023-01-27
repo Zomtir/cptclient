@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppMemberTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 
 import 'static/serverUserAdmin.dart' as server;
 import 'static/crypto.dart' as crypto;
@@ -89,7 +89,7 @@ class UserAdminPageState extends State<UserAdminPage> {
           if (!widget.isDraft) Row(
             children: [
               Expanded(
-                child: AppMemberTile(
+                child: AppUserTile(
                   onTap: (member) => {},
                   item: widget.user,
                 ),

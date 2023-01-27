@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppButton.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'material/AppButton.dart';
 
 import "package:universal_html/html.dart";
 import 'package:http/http.dart' as http;

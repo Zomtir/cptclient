@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppListView.dart';
-import 'material/app/AppTeamTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';

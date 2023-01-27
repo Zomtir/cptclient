@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:cptclient/material/app/AppBody.dart';
-import 'package:cptclient/material/app/AppDropdown.dart';
-import 'package:cptclient/material/app/AppInfoRow.dart';
-import 'package:cptclient/material/app/AppListView.dart';
-import 'package:cptclient/material/app/AppSlotTile.dart';
+
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/PanelSwiper.dart';
+import 'package:cptclient/material/dialogs/DatePicker.dart';
 
 import 'EventDetailPage.dart';
-import 'material/PanelSwiper.dart';
-import 'material/app/DatePicker.dart';
+
 import 'static/format.dart';
 import 'static/db.dart' as db;
 import 'static/serverEventAdmin.dart' as server;

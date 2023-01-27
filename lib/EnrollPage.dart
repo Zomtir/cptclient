@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/SelectItem.dart';
+
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/SelectItem.dart';
 
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;

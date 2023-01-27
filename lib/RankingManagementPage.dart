@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppDropdown.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppListView.dart';
-import 'material/app/AppRankingTile.dart';
+
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 

@@ -1,12 +1,12 @@
+import 'package:cptclient/material/panels/UserSelectionPanel.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
-
-import 'material/app/AppBody.dart';
-import 'material/app/AppDropdown.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppSlotTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:intl/intl.dart';
 
@@ -15,6 +15,7 @@ import 'static/serverClassAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
 import 'json/location.dart';
+import 'json/user.dart';
 
 class ClassAdminPage extends StatefulWidget {
   final Session session;
@@ -38,12 +39,16 @@ class ClassAdminPageState extends State<ClassAdminPage> {
 
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
 
+  List<User> _owners = [];
+  //List<User> _participants = [];
+
   ClassAdminPageState();
 
   @override
   void initState() {
     super.initState();
     _applySlot();
+    _requestOwnerList();
   }
 
   void _applySlot() {
@@ -91,6 +96,24 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ClassAdminPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate, isDraft: true)));
   }
 
+  void _requestOwnerList() async {
+    List<User> owners = await server.class_owner_list(widget.session, widget.slot);
+
+    setState(() {
+      _owners = owners;
+    });
+  }
+
+  void _submitOwnerAddition(User user) async {
+    await server.class_owner_add(widget.session, widget.slot, user);
+    _requestOwnerList();
+  }
+
+  void _submitOwnerRemoval(User user) async {
+    await server.class_owner_remove(widget.session, widget.slot, user);
+    _requestOwnerList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -120,8 +143,18 @@ class ClassAdminPageState extends State<ClassAdminPage> {
           //Text(widget.slot.status!.toString()),
           PanelSwiper(panels: [
             Panel("Edit", _buildEditPanel()),
-            if (!widget.isDraft) Panel("Owners", Container()),
-            if (!widget.isDraft) Panel("Participants", Container()),
+            if (!widget.isDraft) Panel("Owners", UserSelectionPanel(
+              usersAvailable: db.cacheMembers,
+              usersChosen: _owners,
+              onAdd: _submitOwnerAddition,
+              onRemove: _submitOwnerRemoval,
+            )),
+            /*if (!widget.isDraft) Panel("Participants", UserSelectionPanel(
+              usersAvailable: db.cacheMembers,
+              usersChosen: _participants,
+              onAdd: _submitOwnerAddition,
+              onRemove: _submitOwnerRemoval,
+            )),*/
             if (!widget.isDraft) Panel("Group Invites", Container()),
             if (!widget.isDraft) Panel("Personal Invites", Container()),
             if (!widget.isDraft) Panel("Level Invites", Container()),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppButton.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'material/app/AppTeamTile.dart';
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 import 'json/team.dart';

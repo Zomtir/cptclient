@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'material/app/AppBody.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppSlotTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'json/session.dart';
 import 'json/slot.dart';

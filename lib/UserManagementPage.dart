@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 
 import 'UserAdminPage.dart';
 
-import 'material/app/AppBody.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppListView.dart';
-import 'material/app/AppMemberTile.dart';
 import 'static/serverUserAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/user.dart';
@@ -81,7 +81,7 @@ class UserManagementPageState extends State<UserManagementPage> {
           AppListView(
             items: _users,
             itemBuilder: (User user) {
-              return AppMemberTile(
+              return AppUserTile(
                 onTap: (member) => _selectUser(_users.firstWhere((user) => user.id == member.id)),
                 item: user,
               );

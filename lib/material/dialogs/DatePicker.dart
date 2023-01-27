@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:cptclient/material/AppBody.dart';
 
-import 'AppBody.dart';
+import 'dart:math';
 
 Future<DateTime?> showAppDatePicker({
   required BuildContext context,
@@ -12,7 +11,7 @@ Future<DateTime?> showAppDatePicker({
 }) async {
   initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now());
 
-  Widget dialog = DatePickerDialog(
+  Widget dialog = DatePicker(
     initialDate: initialDate,
     firstDate: firstDate,
     lastDate: lastDate,
@@ -42,8 +41,8 @@ Future<DateTime?> showAppDatePicker({
   );
 }
 
-class DatePickerDialog extends StatefulWidget {
-  DatePickerDialog({
+class DatePicker extends StatefulWidget {
+  DatePicker({
     super.key,
     required DateTime initialDate,
     required DateTime firstDate,
@@ -57,10 +56,10 @@ class DatePickerDialog extends StatefulWidget {
   final DateTime lastDate;
 
   @override
-  State<DatePickerDialog> createState() => _DatePickerDialogState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
-class _DatePickerDialogState extends State<DatePickerDialog> {
+class _DatePickerState extends State<DatePicker> {
   late DateTime _selectedDate = widget.initialDate;
   int _monthlyDays = 0;
   int _firstDayOffset = 0;

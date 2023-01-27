@@ -1,10 +1,11 @@
-import 'package:cptclient/material/app/AppRankingTile.dart';
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppDropdown.dart';
-import 'material/app/AppInfoRow.dart';
-import 'material/app/AppButton.dart';
-import 'material/DropdownController.dart';
+
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/tiles/AppRankingTile.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/DropdownController.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

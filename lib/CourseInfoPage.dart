@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/app/AppBody.dart';
-import 'package:cptclient/material/app/AppInfoRow.dart';
-import 'package:cptclient/material/app/AppButton.dart';
-import 'package:cptclient/material/app/AppListView.dart';
-import 'package:cptclient/material/app/AppDropdown.dart';
-import 'package:cptclient/material/app/AppCourseTile.dart';
-import 'package:cptclient/material/app/AppSlotTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';

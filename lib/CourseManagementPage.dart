@@ -1,17 +1,18 @@
-import 'package:cptclient/static/serverCourseAdmin.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
-import 'package:cptclient/material/app/AppBody.dart';
-import 'package:cptclient/material/app/AppButton.dart';
-import 'package:cptclient/material/app/AppInfoRow.dart';
-import 'package:cptclient/material/app/AppDropdown.dart';
-import 'package:cptclient/material/app/AppListView.dart';
-import 'package:cptclient/material/app/AppCourseTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppCourseTile.dart';
 
 import 'CourseAdminPage.dart';
 
 import 'static/db.dart' as db;
+import 'static/serverCourseAdmin.dart' as server;
 
 import 'json/session.dart';
 import 'json/course.dart';
@@ -52,7 +53,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   }
 
   Future<void> _requestCourses(User? user) async {
-    _courses = await course_list(widget.session, user);
+    _courses = await server.course_list(widget.session, user);
     setState(() => _ctrlDropdownModerators.value = user);
     _filterCourses();
   }

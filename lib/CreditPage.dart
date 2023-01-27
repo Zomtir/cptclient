@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
+import 'package:cptclient/material/AppBody.dart';
 
 class CreditPage extends StatelessWidget {
   @override

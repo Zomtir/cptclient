@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'material/PanelSwiper.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppButton.dart';
-import 'material/app/AppListView.dart';
-import 'material/app/AppSlotTile.dart';
+import 'package:cptclient/material/PanelSwiper.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'EventDetailPage.dart';
 

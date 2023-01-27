@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppIconButton.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppIconButton.dart';
 
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';

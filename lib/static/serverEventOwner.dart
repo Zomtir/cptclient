@@ -90,7 +90,7 @@ Future<bool> event_recycle(Session session, Slot slot) async {
 
 Future<List<User>> event_owner_list(Session session, Slot slot) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/event_owner_list', {
+    Uri.http(navi.serverURL, '/owner/event_owner_list', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

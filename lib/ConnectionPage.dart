@@ -1,12 +1,12 @@
-import 'package:cptclient/material/app/AppButton.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppInfoRow.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 
 import "package:universal_html/html.dart";
 
-import 'package:cptclient/static/db.dart' as db;
-import 'package:cptclient/static/navigation.dart' as navi;
+import 'static/db.dart' as db;
+import 'static/navigation.dart' as navi;
 
 class ConnectionPage extends StatefulWidget {
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'material/app/AppBody.dart';
-import 'material/app/AppListView.dart';
-import 'material/app/AppRankingTile.dart';
-import 'material/app/AppSkillTile.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppRankingTile.dart';
+import 'package:cptclient/material/tiles/AppSkillTile.dart';
 
 import 'static/serverRankingMember.dart' as server;
 import 'json/session.dart';
