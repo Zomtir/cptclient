@@ -40,7 +40,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
 
   List<User> _owners = [];
-  //List<User> _participants = [];
+  List<User> _participants = [];
 
   ClassAdminPageState();
 
@@ -49,6 +49,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     super.initState();
     _applySlot();
     _requestOwnerList();
+    _requestParticipantList();
   }
 
   void _applySlot() {
@@ -114,6 +115,24 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     _requestOwnerList();
   }
 
+  void _requestParticipantList() async {
+    List<User> participants = await server.class_participant_list(widget.session, widget.slot);
+
+    setState(() {
+      _participants = participants;
+    });
+  }
+
+  void _submitParticipantAddition(User user) async {
+    await server.class_participant_add(widget.session, widget.slot, user);
+    _requestParticipantList();
+  }
+
+  void _submitParticipantRemoval(User user) async {
+    await server.class_participant_remove(widget.session, widget.slot, user);
+    _requestParticipantList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -149,12 +168,12 @@ class ClassAdminPageState extends State<ClassAdminPage> {
               onAdd: _submitOwnerAddition,
               onRemove: _submitOwnerRemoval,
             )),
-            /*if (!widget.isDraft) Panel("Participants", UserSelectionPanel(
+            if (!widget.isDraft) Panel("Participants", UserSelectionPanel(
               usersAvailable: db.cacheMembers,
               usersChosen: _participants,
-              onAdd: _submitOwnerAddition,
-              onRemove: _submitOwnerRemoval,
-            )),*/
+              onAdd: _submitParticipantAddition,
+              onRemove: _submitParticipantRemoval,
+            )),
             if (!widget.isDraft) Panel("Group Invites", Container()),
             if (!widget.isDraft) Panel("Personal Invites", Container()),
             if (!widget.isDraft) Panel("Level Invites", Container()),
