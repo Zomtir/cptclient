@@ -4,14 +4,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'crypto.dart' as crypto;
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/right.dart';
 
 Future<User?> user_info(String token) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/member/user_info'),
+    Uri.http(server.serverURL, '/member/user_info'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -25,7 +25,7 @@ Future<User?> user_info(String token) async {
 
 Future<Right?> right_info(String token) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/member/user_right'),
+    Uri.http(server.serverURL, '/member/user_right'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -39,7 +39,7 @@ Future<Right?> right_info(String token) async {
 
 Future<bool> password_edit(Session session, String password) async {
   final response = await http.post(
-    Uri.http(navi.serverURL, '/member/user_password'),
+    Uri.http(server.serverURL, '/member/user_password'),
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
       'Token': session.token,

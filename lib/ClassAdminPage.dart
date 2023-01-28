@@ -10,7 +10,7 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:intl/intl.dart';
 
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'static/serverClassAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
@@ -37,7 +37,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   TextEditingController _ctrlSlotEnd = TextEditingController();
   TextEditingController _ctrlSlotTitle = TextEditingController();
 
-  DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
+  DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
   List<User> _owners = [];
   List<User> _participants = [];
@@ -163,13 +163,13 @@ class ClassAdminPageState extends State<ClassAdminPage> {
           PanelSwiper(panels: [
             Panel("Edit", _buildEditPanel()),
             if (!widget.isDraft) Panel("Owners", UserSelectionPanel(
-              usersAvailable: db.cacheMembers,
+              usersAvailable: server.cacheMembers,
               usersChosen: _owners,
               onAdd: _submitOwnerAddition,
               onRemove: _submitOwnerRemoval,
             )),
             if (!widget.isDraft) Panel("Participants", UserSelectionPanel(
-              usersAvailable: db.cacheMembers,
+              usersAvailable: server.cacheMembers,
               usersChosen: _participants,
               onAdd: _submitParticipantAddition,
               onRemove: _submitParticipantRemoval,

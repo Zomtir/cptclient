@@ -3,14 +3,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/course.dart';
 
 Future<List<Course>> course_list(Session session, User? user) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/admin/course_list', {
+    Uri.http(server.serverURL, '/admin/course_list', {
       if (user != null) 'mod_id': user.id.toString(),
     }),
     headers: {
@@ -26,7 +26,7 @@ Future<List<Course>> course_list(Session session, User? user) async {
 
 Future<bool> course_create(Session session, Course course) async {
   final response = await http.post(
-    Uri.http(navi.serverURL, '/admin/course_create'),
+    Uri.http(server.serverURL, '/admin/course_create'),
     headers: {
       'Token': session.token,
       'Content-Type': 'application/json; charset=utf-8',
@@ -39,7 +39,7 @@ Future<bool> course_create(Session session, Course course) async {
 
 Future<bool> course_edit(Session session, int courseID, Course course) async {
   final response = await http.post(
-    Uri.http(navi.serverURL, '/admin/course_edit', {
+    Uri.http(server.serverURL, '/admin/course_edit', {
      'course_id' : courseID.toString(),
     }),
     headers: {
@@ -54,7 +54,7 @@ Future<bool> course_edit(Session session, int courseID, Course course) async {
 
 Future<bool> course_delete(Session session, int courseID) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, '/admin/course_delete', {'course_id': courseID.toString()}),
+    Uri.http(server.serverURL, '/admin/course_delete', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
     },
@@ -65,7 +65,7 @@ Future<bool> course_delete(Session session, int courseID) async {
 
 Future<List<User>?> course_moderator_list(Session session, int courseID) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/admin/course_moderator_list', {'course_id': courseID.toString()}),
+    Uri.http(server.serverURL, '/admin/course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -80,7 +80,7 @@ Future<List<User>?> course_moderator_list(Session session, int courseID) async {
 
 Future<bool> course_moderator_add(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, '/admin/course_moderator_add', {
+    Uri.http(server.serverURL, '/admin/course_moderator_add', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
     }),
@@ -94,7 +94,7 @@ Future<bool> course_moderator_add(Session session, int courseID, int userID) asy
 
 Future<bool> course_moderator_remove(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, '/admin/course_moderator_remove', {
+    Uri.http(server.serverURL, '/admin/course_moderator_remove', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
     }),

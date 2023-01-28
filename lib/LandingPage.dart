@@ -3,12 +3,9 @@ import 'package:cptclient/material/AppBody.dart';
 import 'material/AppButton.dart';
 
 import "package:universal_html/html.dart";
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
+import 'static/server.dart' as server;
 import 'static/navigation.dart' as navi;
-import 'static/crypto.dart' as crypto;
-import 'json/credentials.dart';
 
 import 'ConnectionPage.dart';
 import 'CreditPage.dart';
@@ -21,97 +18,66 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-  TextEditingController _ctrlSlotLogin = TextEditingController();
-  TextEditingController _ctrlSlotPasswd = TextEditingController();
   TextEditingController _ctrlUserLogin = TextEditingController();
   TextEditingController _ctrlUserPasswd = TextEditingController();
+  TextEditingController _ctrlSlotLogin = TextEditingController();
+  TextEditingController _ctrlSlotPasswd = TextEditingController();
+  TextEditingController _ctrlLocationLogin = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    switch (window.localStorage['AutoLogin']!) {
+    _ctrlUserLogin.text = window.localStorage['DefaultUser']!;
+    _ctrlSlotLogin.text = window.localStorage['DefaultSlot']!;
+    _ctrlLocationLogin.text = window.localStorage['DefaultLocation']!;
+
+    /*switch (window.localStorage['AutoLogin']!) {
       case 'slot':
         navi.confirmSlot();
         break;
       case 'location':
-        _autoSlot();
+        _loginLocation();
         break;
       case 'user':
         navi.loginUser();
         break;
-    }
-  }
-
-  void _loginSlot() async {
-    if (_ctrlSlotLogin.text.isEmpty || _ctrlSlotPasswd.text.isEmpty) return;
-
-    Credential credential = Credential(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
-    _ctrlSlotLogin.text = "";
-    _ctrlSlotPasswd.text = "";
-
-    var body = json.encode(credential);
-
-    final response = await http.post(
-      Uri.http(navi.serverURL, 'slot_login'),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'text/plain; charset=utf-8',
-      },
-      body: body,
-    );
-
-    if (response.statusCode != 200) return;
-
-    window.localStorage['Token'] = response.body;
-    navi.confirmSlot();
-  }
-
-  void _autoSlot() async {
-    if (window.localStorage['DefaultLocation']! == '0') return;
-
-    final response = await http.get(
-      Uri.http(navi.serverURL, 'slot_autologin', {'location_id': window.localStorage['DefaultLocation']!}),
-      headers: {
-        'Accept': 'text/plain; charset=utf-8',
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    window.localStorage['Token'] = response.body;
-    navi.confirmSlot();
+    }*/
   }
 
   void _loginUser() async {
-    if (_ctrlUserLogin.text.isEmpty || _ctrlUserPasswd.text.isEmpty) return;
+    bool success = await server.loginUser(_ctrlUserLogin.text, _ctrlUserPasswd.text);
 
-    Credential credential = Credential(_ctrlUserLogin.text, crypto.hashPassword(_ctrlUserPasswd.text, _ctrlUserLogin.text));
-    _ctrlUserLogin.text = "";
+    _ctrlUserLogin.text = window.localStorage['DefaultUser']!;
     _ctrlUserPasswd.text = "";
-
-    String body = json.encode(credential);
-
-    final response = await http.post(
-      Uri.http(navi.serverURL, 'user_login'),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'text/plain; charset=utf-8',
-      },
-      body: body,
-    );
 
     String status = "Case was unhandled";
 
-    if (response.statusCode == 200) {
+    if (success) {
       status = "Login was successful";
-      window.localStorage['Token'] = response.body;
       navi.loginUser();
     } else {
-      status = "${response.headers["error-uri"]} error: ${response.headers["error-message"]}";
+      status = "Login failed";
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(status)));
+  }
+
+  void _loginSlot() async {
+    bool success = await server.loginUser(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
+
+    _ctrlSlotLogin.text = window.localStorage['DefaultSlot']!;
+    _ctrlSlotPasswd.text = "";
+
+    if (success) navi.confirmSlot();
+  }
+
+  void _loginLocation() async {
+    bool success = await server.loginUser(_ctrlLocationLogin.text, _ctrlSlotPasswd.text);
+
+    _ctrlLocationLogin.text = window.localStorage['DefaultLocation']!;
+
+    if (success) navi.confirmSlot();
   }
 
   @override
@@ -132,6 +98,47 @@ class LandingPageState extends State<LandingPage> {
         ],
       ),
       body: AppBody(children: [
+        TextField(
+          maxLines: 1,
+          controller: _ctrlUserLogin,
+          autofillHints: const <String>[AutofillHints.username],
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "User Key",
+            hintText: "6 alphanumeric characters",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlUserLogin.clear(),
+              icon: Icon(Icons.clear),
+            ),
+          ),
+        ),
+        TextField(
+          obscureText: true,
+          maxLines: 1,
+          controller: _ctrlUserPasswd,
+          autofillHints: const <String>[AutofillHints.password],
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "User password",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlUserPasswd.clear(),
+              icon: Icon(Icons.clear),
+            ),
+          ),
+        ),
+        AppButton(
+          text: "User Login",
+          onPressed: _loginUser,
+        ),
+        Divider(
+          height: 30,
+          thickness: 5,
+          color: Colors.black,
+        ),
         TextFormField(
           autofocus: true,
           maxLines: 1,
@@ -172,41 +179,25 @@ class LandingPageState extends State<LandingPage> {
           thickness: 5,
           color: Colors.black,
         ),
-        TextField(
+        TextFormField(
+          autofocus: true,
           maxLines: 1,
-          controller: _ctrlUserLogin,
-          autofillHints: const <String>[AutofillHints.username],
+          controller: _ctrlLocationLogin,
           textInputAction: TextInputAction.next,
           onEditingComplete: () => node.nextFocus(),
           decoration: InputDecoration(
-            labelText: "User Key",
-            hintText: "6 alphanumeric characters",
+            labelText: "Location Key",
+            hintText: "Only alphanumeric characters",
             suffixIcon: IconButton(
               focusNode: FocusNode(skipTraversal: true),
-              onPressed: () => _ctrlUserLogin.clear(),
-              icon: Icon(Icons.clear),
-            ),
-          ),
-        ),
-        TextField(
-          obscureText: true,
-          maxLines: 1,
-          controller: _ctrlUserPasswd,
-          autofillHints: const <String>[AutofillHints.password],
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-            labelText: "User password",
-            suffixIcon: IconButton(
-              focusNode: FocusNode(skipTraversal: true),
-              onPressed: () => _ctrlUserPasswd.clear(),
+              onPressed: () => _ctrlLocationLogin.clear(),
               icon: Icon(Icons.clear),
             ),
           ),
         ),
         AppButton(
-          text: "User Login",
-          onPressed: _loginUser,
+          text: "Location Login",
+          onPressed: _loginLocation,
         ),
       ]),
     );

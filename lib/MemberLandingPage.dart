@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppIconButton.dart';
 
+import 'static/server.dart' as server;
 import 'static/navigation.dart' as navi;
 import 'json/session.dart';
 
@@ -34,7 +35,7 @@ class MemberLandingPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh, color: Colors.white),
-            onPressed: () => navi.refresh(),
+            onPressed: () => server.refresh(),
           ),
           IconButton(
             icon: Icon(Icons.perm_identity, color: Colors.white),

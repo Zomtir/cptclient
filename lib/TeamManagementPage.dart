@@ -9,7 +9,7 @@ import 'dart:convert';
 
 import 'TeamAdminPage.dart';
 
-import 'static/navigation.dart' as navi;
+import 'static/server.dart' as server;
 import 'json/session.dart';
 import 'json/team.dart';
 
@@ -35,7 +35,7 @@ class TeamManagementPageState extends State<TeamManagementPage> {
 
   Future<void> _getTeams() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, '/admin/team_list'),
+      Uri.http(server.serverURL, '/admin/team_list'),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 import 'static/navigation.dart' as navi;
+import 'static/server.dart' as server;
 import 'static/serverSlotCasual.dart' as server;
 import 'json/session.dart';
 import 'json/user.dart';
@@ -77,7 +78,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   void _enrolMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.serverURL, 'slot_enrol', {'user': user.id.toString()}),
+      Uri.http(server.serverURL, 'slot_enrol', {'user': user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -98,7 +99,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   void _dimissMember(User user) async {
     final response = await http.head(
-      Uri.http(navi.serverURL, 'slot_dismiss', {'user': user.id.toString()}),
+      Uri.http(server.serverURL, 'slot_dismiss', {'user': user.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

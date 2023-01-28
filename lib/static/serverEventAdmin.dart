@@ -4,14 +4,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'format.dart';
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 
 Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, String status, User? user) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/admin/event_list', {
+    Uri.http(server.serverURL, '/admin/event_list', {
       'begin': webDate(begin),
       'end': webDate(end),
       'status': status,
@@ -30,7 +30,7 @@ Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Str
 
 Future<bool> event_accept(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, '/admin/event_accept', {
+    Uri.http(server.serverURL, '/admin/event_accept', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -43,7 +43,7 @@ Future<bool> event_accept(Session session, Slot slot) async {
 
 Future<bool> event_deny(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, '/admin/event_deny', {
+    Uri.http(server.serverURL, '/admin/event_deny', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

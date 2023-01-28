@@ -7,7 +7,7 @@ import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'static/navigation.dart' as navi;
+import 'static/server.dart' as server;
 import 'json/session.dart';
 import 'json/team.dart';
 
@@ -67,7 +67,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     _gatherTeam();
 
     final response = await http.post(
-      Uri.http(navi.serverURL, widget.team.id == 0 ? 'team_create' : 'team_edit'),
+      Uri.http(server.serverURL, widget.team.id == 0 ? 'team_create' : 'team_edit'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,
@@ -87,7 +87,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
 
   void _deleteTeam() async {
     final response = await http.head(
-      Uri.http(navi.serverURL, 'team_delete', {'team_id': widget.team.id.toString()}),
+      Uri.http(server.serverURL, 'team_delete', {'team_id': widget.team.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

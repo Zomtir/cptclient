@@ -3,14 +3,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 
 Future<Slot?> slot_info(String token) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/casual/slot_info'),
+    Uri.http(server.serverURL, '/casual/slot_info'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ Future<Slot?> slot_info(String token) async {
 
 Future<List<User>> slot_candidates(Session session) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, 'slot_candidates'),
+    Uri.http(server.serverURL, 'slot_candidates'),
     headers: {
       'Token': session.token,
     },
@@ -38,7 +38,7 @@ Future<List<User>> slot_candidates(Session session) async {
 
 Future<List<User>> slot_participants(Session session) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, 'slot_participants'),
+    Uri.http(server.serverURL, 'slot_participants'),
     headers: {
       'Token': session.token,
     },

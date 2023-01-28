@@ -13,7 +13,7 @@ import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'EventDetailPage.dart';
 
 import 'static/format.dart';
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'static/serverEventAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
@@ -41,8 +41,8 @@ class EventManagementPageState extends State<EventManagementPage> {
   int _panelIndex = 0;
   List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
 
-  DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: db.cacheMembers);
-  DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: db.cacheLocations);
+  DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: server.cacheMembers);
+  DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: server.cacheLocations);
 
   EventManagementPageState();
 

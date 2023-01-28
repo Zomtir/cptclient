@@ -14,9 +14,7 @@ import 'dart:convert';
 
 import 'ClassMemberPage.dart';
 
-import 'static/navigation.dart' as navi;
-import 'static/db.dart' as db;
-
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/slot.dart';
@@ -42,8 +40,8 @@ class CourseInfoPageState extends State<CourseInfoPage> {
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
   bool                  _ctrlCourseActive = true;
-  DropdownController<Access> _ctrlCourseAccess = DropdownController<Access>(items: db.cacheAccess);
-  DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: db.cacheBranches);
+  DropdownController<Access> _ctrlCourseAccess = DropdownController<Access>(items: server.cacheAccess);
+  DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: server.cacheBranches);
   int                        _pickThresholdValue = 0;
 
   CourseInfoPageState();
@@ -62,7 +60,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   void _deleteCourse() async {
     final response = await http.head(
-      Uri.http(navi.serverURL, 'course_delete', {'course_id': widget.course.id.toString()}),
+      Uri.http(server.serverURL, 'course_delete', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -85,7 +83,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   Future<void> _getCourseSlots() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, 'course_slot_list', {'course_id': widget.course.id.toString()}),
+      Uri.http(server.serverURL, 'course_slot_list', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -111,7 +109,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   Future<void> _getCourseModerators() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, 'course_moderator_list', {'course_id': widget.course.id.toString()}),
+      Uri.http(server.serverURL, 'course_moderator_list', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -149,7 +147,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     _gatherCourse();
 
     final response = await http.post(
-      Uri.http(navi.serverURL, widget.course.id == 0 ? 'course_create' : 'course_edit'),
+      Uri.http(server.serverURL, widget.course.id == 0 ? 'course_create' : 'course_edit'),
       headers: {
         'Token': widget.session.token,
         'Content-Type': 'application/json; charset=utf-8',

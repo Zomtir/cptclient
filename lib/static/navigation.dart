@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import "package:universal_html/html.dart"; // TODO go back to dart:html?
 
-import 'package:cptclient/static/db.dart' as db;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/serverUserMember.dart' as server;
 import 'package:cptclient/static/serverSlotCasual.dart' as server;
 import 'package:cptclient/json/session.dart';
@@ -12,15 +12,14 @@ import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 
-String serverURL = window.localStorage['ServerURL']!;
 Session? session;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
 
 void connect() async {
-  if (await db.loadStatus()) {
-    await loadCache();
+  if (await server.loadStatus()) {
+    await server.loadCache();
     gotoRoute('/login');
   } else {
     gotoRoute('/config');
@@ -28,7 +27,7 @@ void connect() async {
 }
 
 void loginUser() async {
-  if (await db.loadStatus()) {
+  if (await server.loadStatus()) {
     if (await confirmUser()) {
       gotoRoute('/user');
     }
@@ -40,28 +39,13 @@ void loginUser() async {
 void logout() async {
   window.localStorage['Token'] = "";
   session = null;
-  db.unloadMembers();
+  server.unloadMembers();
 
-  if (await db.loadStatus()) {
-    await loadCache();
+  if (await server.loadStatus()) {
+    await server.loadCache();
     gotoRoute('/login');
   } else {
     gotoRoute('/config');
-  }
-}
-
-Future<bool> loadCache() async {
-  // We are at the splash screen
-  if (!await db.loadStatus()) {
-    // Connection fails
-    return false;
-  } else {
-    // Connection succeeds
-    await db.loadLocations();
-    await db.loadBranches();
-    await db.loadAccess();
-    await Future.delayed(Duration(milliseconds: 200));
-    return true;
   }
 }
 
@@ -80,7 +64,7 @@ Future<bool> confirmUser() async {
     right: right,
   );
 
-  db.loadMembers();
+  server.loadMembers();
   return true;
 }
 
@@ -98,9 +82,3 @@ void gotoRoute(String targetroute) {
   navigatorKey.currentState?.pushNamedAndRemoveUntil(targetroute, (route) => false);
 }
 
-void refresh() {
-  db.loadMembers();
-  db.loadAccess();
-  db.loadBranches();
-  db.loadLocations();
-}

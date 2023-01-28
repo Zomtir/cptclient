@@ -11,7 +11,7 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 
 import 'CourseAdminPage.dart';
 
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'static/serverCourseAdmin.dart' as server;
 
 import 'json/session.dart';
@@ -31,13 +31,13 @@ class CourseManagementPage extends StatefulWidget {
 
 class CourseManagementPageState extends State<CourseManagementPage> {
   List<Course> _courses = [];
-  DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: db.cacheMembers);
+  DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: server.cacheMembers);
 
   List<Course> _coursesFiltered = [];
   bool _hideFilters = true;
   bool _isActive = true;
-  DropdownController<Access> _ctrlDropdownAccess = DropdownController<Access>(items: db.cacheAccess);
-  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: db.cacheBranches);
+  DropdownController<Access> _ctrlDropdownAccess = DropdownController<Access>(items: server.cacheAccess);
+  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseManagementPageState();

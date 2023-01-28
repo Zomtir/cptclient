@@ -12,7 +12,7 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'ClassAdminPage.dart';
 
 import 'material/panels/UserSelectionPanel.dart';
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'static/serverCourseAdmin.dart' as server;
 import 'static/serverClassAdmin.dart' as server;
 
@@ -42,8 +42,8 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
   bool _ctrlCourseActive = true;
-  DropdownController<Access> _ctrlCourseAccess = DropdownController<Access>(items: db.cacheAccess);
-  DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: db.cacheBranches);
+  DropdownController<Access> _ctrlCourseAccess = DropdownController<Access>(items: server.cacheAccess);
+  DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: server.cacheBranches);
   int _pickThresholdValue = 0;
 
   CourseAdminPageState();
@@ -218,7 +218,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
           PanelSwiper(panels: [
             if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
             if (!widget.isDraft) Panel("Moderators", UserSelectionPanel(
-              usersAvailable: db.cacheMembers,
+              usersAvailable: server.cacheMembers,
               usersChosen: _moderators,
               onAdd: _addModerator,
               onRemove: _removeModerator,

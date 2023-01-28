@@ -3,13 +3,13 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 
 Future<List<User>> user_list(Session session) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/admin/user_list'),
+    Uri.http(server.serverURL, '/admin/user_list'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ Future<List<User>> user_list(Session session) async {
 
 Future<bool> user_create(Session session, User user) async {
   final response = await http.post(
-    Uri.http(navi.serverURL, '/admin/user_create'),
+    Uri.http(server.serverURL, '/admin/user_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -37,7 +37,7 @@ Future<bool> user_create(Session session, User user) async {
 
 Future<bool> user_edit(Session session, User user) async {
   final response = await http.post(
-    Uri.http(navi.serverURL,  '/admin/user_edit'),
+    Uri.http(server.serverURL,  '/admin/user_edit'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -50,7 +50,7 @@ Future<bool> user_edit(Session session, User user) async {
 
 Future<bool> user_delete(Session session, User user) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, 'user_delete', {'user_id': user.id.toString()}),
+    Uri.http(server.serverURL, 'user_delete', {'user_id': user.id.toString()}),
     headers: {
       'Token': session.token,
     },

@@ -3,13 +3,13 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 
 Future<List<User>?> course_moderator_list(Session session, int courseID) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, 'course_moderator_list', {'course_id': courseID.toString()}),
+    Uri.http(server.serverURL, 'course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ Future<List<User>?> course_moderator_list(Session session, int courseID) async {
 
 Future<bool> course_mod(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, 'course_mod', {
+    Uri.http(server.serverURL, 'course_mod', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
     }),
@@ -38,7 +38,7 @@ Future<bool> course_mod(Session session, int courseID, int userID) async {
 
 Future<bool> course_unmod(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, 'course_unmod', {
+    Uri.http(server.serverURL, 'course_unmod', {
       'course': courseID.toString(),
       'user' : userID.toString(),
     }),

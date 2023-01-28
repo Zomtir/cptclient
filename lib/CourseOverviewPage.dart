@@ -13,8 +13,7 @@ import 'dart:convert';
 
 import 'CourseInfoPage.dart';
 
-import 'static/navigation.dart' as navi;
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 
 import 'json/session.dart';
 import 'json/course.dart';
@@ -37,8 +36,8 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
   bool          _hideFilters = true;
 
   bool                       _isActive = true;
-  DropdownController<Access> _ctrlDropdownAccess = DropdownController<Access>(items: db.cacheAccess);
-  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: db.cacheBranches);
+  DropdownController<Access> _ctrlDropdownAccess = DropdownController<Access>(items: server.cacheAccess);
+  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues                _thresholdRange = RangeValues(0, 10);
 
   CourseOverviewPageState();
@@ -56,7 +55,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getAvailableCourses() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, '/member/course_availiblity'),
+      Uri.http(server.serverURL, '/member/course_availiblity'),
       headers: {
         'Token': widget.session.token,
       },
@@ -73,7 +72,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getResponsibleCourses() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, '/mod/course_responsibility'),
+      Uri.http(server.serverURL, '/mod/course_responsibility'),
       headers: {
         'Token': widget.session.token,
       },

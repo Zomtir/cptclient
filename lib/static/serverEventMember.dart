@@ -3,14 +3,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 
 Future<List<Slot>> event_list(Session session, String status) async {
   final response = await http.get(
-    Uri.http(navi.serverURL, '/member/event_list', {
+    Uri.http(server.serverURL, '/member/event_list', {
       'status': status,
     }),
     headers: {
@@ -26,7 +26,7 @@ Future<List<Slot>> event_list(Session session, String status) async {
 
 Future<bool> event_owner_condition(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(navi.serverURL, '/member/event_owner_condition', {
+    Uri.http(server.serverURL, '/member/event_owner_condition', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

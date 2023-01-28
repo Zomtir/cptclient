@@ -12,8 +12,7 @@ import 'package:intl/intl.dart';
 
 import 'dart:convert';
 
-import 'static/navigation.dart' as navi;
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'json/session.dart';
 import 'json/ranking.dart';
 import 'json/user.dart';
@@ -32,7 +31,7 @@ class RankingAdminPage extends StatefulWidget {
 
 class RankingAdminPageState extends State<RankingAdminPage> {
   DropdownController<User>    _ctrlRankingUser = DropdownController<User>(items: []);
-  DropdownController<Branch>    _ctrlRankingBranch = DropdownController<Branch>(items: db.cacheBranches);
+  DropdownController<Branch>    _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
   int                           _rankingLevel = 0;
   DropdownController<User>    _ctrlRankingJudge = DropdownController<User>(items: []);
   TextEditingController         _ctrlRankingDate = TextEditingController();
@@ -48,7 +47,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   Future<void> _getMembers() async {
     final response = await http.get(
-      Uri.http(navi.serverURL, '/member/user_list'),
+      Uri.http(server.serverURL, '/member/user_list'),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -84,7 +83,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   void _deleteRanking() async {
     final response = await http.head(
-      Uri.http(navi.serverURL, 'ranking_delete', {'ranking': widget.ranking.id.toString()}),
+      Uri.http(server.serverURL, 'ranking_delete', {'ranking': widget.ranking.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -109,7 +108,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
     _gatherRanking();
 
     final response = await http.post(
-      Uri.http(navi.serverURL, widget.ranking.id == 0 ? 'ranking_create' : 'ranking_edit'),
+      Uri.http(server.serverURL, widget.ranking.id == 0 ? 'ranking_create' : 'ranking_edit'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,

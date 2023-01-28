@@ -5,8 +5,7 @@ import 'package:cptclient/material/AppInfoRow.dart';
 
 import "package:universal_html/html.dart";
 
-import 'static/db.dart' as db;
-import 'static/navigation.dart' as navi;
+import 'static/server.dart' as server;
 
 class ConnectionPage extends StatefulWidget {
   @override
@@ -16,6 +15,8 @@ class ConnectionPage extends StatefulWidget {
 class ConnectionPageState extends State<ConnectionPage> {
   TextEditingController _ctrlServerURL = TextEditingController();
   TextEditingController _ctrlAutoLogin = TextEditingController();
+  TextEditingController _ctrlUser = TextEditingController();
+  TextEditingController _ctrlSlot = TextEditingController();
   TextEditingController _ctrlLocation = TextEditingController();
   bool _serverOnline = false;
 
@@ -25,18 +26,15 @@ class ConnectionPageState extends State<ConnectionPage> {
 
     _ctrlServerURL.text = window.localStorage['ServerURL']!;
     _ctrlAutoLogin.text = window.localStorage['AutoLogin']!;
+    _ctrlUser.text = window.localStorage['DefaultUser']!;
+    _ctrlSlot.text = window.localStorage['DefaultSlot']!;
     _ctrlLocation.text = window.localStorage['DefaultLocation']!;
 
     _testConnection();
   }
 
   void _testConnection() async {
-    window.localStorage.putIfAbsent('ServerURL', ()=>'localhost:8002');
-    window.localStorage.putIfAbsent('Token', ()=>'');
-    window.localStorage.putIfAbsent('AutoLogin', ()=>'none');
-    window.localStorage.putIfAbsent('DefaultLocation', ()=>'0');
-
-    bool tmpStatus = await db.loadStatus();
+    bool tmpStatus = await server.loadStatus();
     setState(() => _serverOnline = tmpStatus);
   }
 
@@ -62,7 +60,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerURL,
-              onChanged: (String text) { window.localStorage['ServerURL'] = text; navi.serverURL = text; },
+              onChanged: (String text) { window.localStorage['ServerURL'] = text; server.serverURL = text; },
             ),
             trailing:
               IconButton(
@@ -79,7 +77,23 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Default Location ID"),
+            info: Text("Default User Key"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUser,
+              onChanged: (String text) => { window.localStorage['DefaultUser'] = text },
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Default Slot Key"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlSlot,
+              onChanged: (String text) => { window.localStorage['DefaultSlot'] = text },
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Default Location Key"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlLocation,

@@ -9,7 +9,7 @@ import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'static/serverRankingAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/ranking.dart';
@@ -34,7 +34,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
 
   DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
   DropdownController<User> _ctrlDropdownJudge = DropdownController<User>(items: []);
-  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: db.cacheBranches);
+  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues                _thresholdRange = RangeValues(0, 10);
 
   RankingManagementPageState();

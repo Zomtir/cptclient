@@ -9,10 +9,12 @@ import 'MemberLandingPage.dart';
 import 'EnrollPage.dart';
 
 void main() {
-  window.localStorage.putIfAbsent('ServerURL', () => 'localhost:8002');
+  window.localStorage.putIfAbsent('ServerURL', () => 'localhost:8000');
   window.localStorage.putIfAbsent('Token', () => '');
   window.localStorage.putIfAbsent('AutoLogin', () => 'none');
-  window.localStorage.putIfAbsent('DefaultLocation', () => '0');
+  window.localStorage.putIfAbsent('DefaultUser', ()=>'');
+  window.localStorage.putIfAbsent('DefaultSlot', ()=>'');
+  window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
 
   runApp(MaterialApp(
     title: 'CPT Client',

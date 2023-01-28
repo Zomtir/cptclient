@@ -14,8 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
-import 'static/navigation.dart' as navi;
-import 'static/db.dart' as db;
+import 'static/server.dart' as server;
 import 'static/serverEventOwner.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
@@ -50,10 +49,10 @@ class SlotDetailPageState extends State<EventDetailPage> {
   TextEditingController _ctrlSlotEnd = TextEditingController();
   TextEditingController _ctrlSlotTitle = TextEditingController();
 
-  DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: db.cacheLocations);
+  DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
   String? _confirmAction;
 
-  DropdownController<User> _ctrlDropdownMember = DropdownController<User>(items: db.cacheMembers);
+  DropdownController<User> _ctrlDropdownMember = DropdownController<User>(items: server.cacheMembers);
 
   SlotDetailPageState();
 
@@ -106,7 +105,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
     _gatherSlot();
 
     final response = await http.post(
-      Uri.http(navi.serverURL, _confirmAction!),
+      Uri.http(server.serverURL, _confirmAction!),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,
