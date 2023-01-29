@@ -24,6 +24,19 @@ Future<List<Slot>> event_list(Session session, String status) async {
   return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
 }
 
+Future<bool> event_create(Session session, Slot slot) async {
+  final response = await http.post(
+    Uri.http(server.serverURL, '/member/event_create'),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(slot),
+  );
+
+  return (response.statusCode == 200);
+}
+
 Future<bool> event_owner_condition(Session session, Slot slot) async {
   final response = await http.head(
     Uri.http(server.serverURL, '/member/event_owner_condition', {

@@ -51,33 +51,24 @@ class LandingPageState extends State<LandingPage> {
     _ctrlUserLogin.text = window.localStorage['DefaultUser']!;
     _ctrlUserPasswd.text = "";
 
-    String status = "Case was unhandled";
-
-    if (success) {
-      status = "Login was successful";
-      navi.loginUser();
-    } else {
-      status = "Login failed";
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(status)));
+    if (success) navi.loginUser();
   }
 
   void _loginSlot() async {
-    bool success = await server.loginUser(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
+    bool success = await server.loginSlot(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
 
     _ctrlSlotLogin.text = window.localStorage['DefaultSlot']!;
     _ctrlSlotPasswd.text = "";
 
-    if (success) navi.confirmSlot();
+    if (success) navi.loginSlot();
   }
 
   void _loginLocation() async {
-    bool success = await server.loginUser(_ctrlLocationLogin.text, _ctrlSlotPasswd.text);
+    bool success = await server.loginLocation(_ctrlLocationLogin.text);
 
     _ctrlLocationLogin.text = window.localStorage['DefaultLocation']!;
 
-    if (success) navi.confirmSlot();
+    if (success) navi.loginSlot();
   }
 
   @override
@@ -115,6 +106,7 @@ class LandingPageState extends State<LandingPage> {
           ),
         ),
         TextField(
+          autofocus: true,
           obscureText: true,
           maxLines: 1,
           controller: _ctrlUserPasswd,
@@ -140,7 +132,6 @@ class LandingPageState extends State<LandingPage> {
           color: Colors.black,
         ),
         TextFormField(
-          autofocus: true,
           maxLines: 1,
           controller: _ctrlSlotLogin,
           textInputAction: TextInputAction.next,

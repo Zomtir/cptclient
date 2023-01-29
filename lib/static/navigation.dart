@@ -36,6 +36,16 @@ void loginUser() async {
   }
 }
 
+void loginSlot() async {
+  if (await server.loadStatus()) {
+    if (await confirmSlot()) {
+      gotoRoute('/slot');
+    }
+  } else {
+    gotoRoute('/config');
+  }
+}
+
 void logout() async {
   window.localStorage['Token'] = "";
   session = null;

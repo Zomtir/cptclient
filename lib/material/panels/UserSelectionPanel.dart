@@ -37,7 +37,7 @@ class UserSelectionPanel extends StatelessWidget {
               children: [
                 Expanded(
                   child: AppUserTile(
-                    item: user,
+                    user: user,
                   ),
                 ),
                 IconButton(

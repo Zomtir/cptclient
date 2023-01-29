@@ -22,11 +22,13 @@ class UserManagementPage extends StatefulWidget {
 class UserManagementPageState extends State<UserManagementPage> {
   List<User> _users = [];
 
-  UserManagementPageState();
-
   @override
   void initState() {
     super.initState();
+    _update();
+  }
+
+  void _update() {
     _requestUsers();
   }
 
@@ -37,14 +39,18 @@ class UserManagementPageState extends State<UserManagementPage> {
     });
   }
 
-  void _selectUser(User user) {
+  void _selectUser(User user) async {
+    User? userdetailed = await server.user_detailed(widget.session, user);
+
+    if (userdetailed == null) return;
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => UserAdminPage(
           session: widget.session,
-          user: user,
-          onUpdate: _requestUsers,
+          user: userdetailed,
+          onUpdate: _update,
           isDraft: false,
         ),
       ),
@@ -58,7 +64,7 @@ class UserManagementPageState extends State<UserManagementPage> {
         builder: (context) => UserAdminPage(
           session: widget.session,
           user: User.fromVoid(),
-          onUpdate: _requestUsers,
+          onUpdate: _update,
           isDraft: true,
         ),
       ),
@@ -78,12 +84,12 @@ class UserManagementPageState extends State<UserManagementPage> {
             text: "New user",
             onPressed: _createUser,
           ),
-          AppListView(
+          AppListView<User>(
             items: _users,
             itemBuilder: (User user) {
               return AppUserTile(
-                onTap: (member) => _selectUser(_users.firstWhere((user) => user.id == member.id)),
-                item: user,
+                onTap: (u) => _selectUser(user),
+                user: user,
               );
             },
           ),

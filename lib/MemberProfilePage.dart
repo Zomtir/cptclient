@@ -34,7 +34,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
 
     if (!await server.password_edit(widget.session, _ctrlUserPassword.text)) return;
 
-    widget.session.user!.pwd = _ctrlUserPassword.text;
+    _ctrlUserPassword.text = '';
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully changed password')));
   }
 

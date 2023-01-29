@@ -15,7 +15,7 @@ class AppTile<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (onTap != null) ? onTap!(item) : null,
+      onTap: (onTap != null) ? () => onTap!(item) : null,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 2.0),
         padding: const EdgeInsets.symmetric(vertical: 4.0),

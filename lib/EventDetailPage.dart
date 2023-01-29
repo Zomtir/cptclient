@@ -10,11 +10,10 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'dart:convert';
 
 import 'static/server.dart' as server;
+import 'static/serverEventMember.dart' as server;
 import 'static/serverEventOwner.dart' as server;
 import 'json/session.dart';
 import 'json/slot.dart';
@@ -50,9 +49,6 @@ class SlotDetailPageState extends State<EventDetailPage> {
   TextEditingController _ctrlSlotTitle = TextEditingController();
 
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
-  String? _confirmAction;
-
-  DropdownController<User> _ctrlDropdownMember = DropdownController<User>(items: server.cacheMembers);
 
   SlotDetailPageState();
 
@@ -63,8 +59,6 @@ class SlotDetailPageState extends State<EventDetailPage> {
     _applySlot();
     widget.slot.owners = [];
     _requestSlotOwners();
-
-    _confirmAction = widget.isDraft ? 'event_create' : 'event_edit';
   }
 
   void _duplicateSlot() {
@@ -86,7 +80,6 @@ class SlotDetailPageState extends State<EventDetailPage> {
   }
 
   void _applySlot() {
-    _ctrlSlotPassword.text = "";
     _ctrlSlotBegin.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.begin);
     _ctrlSlotEnd.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
@@ -94,31 +87,25 @@ class SlotDetailPageState extends State<EventDetailPage> {
   }
 
   void _gatherSlot() {
-    widget.slot.pwd = _ctrlSlotPassword.text;
     widget.slot.location = _ctrlCourseLocation.value;
     widget.slot.begin = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotBegin.text, false);
     widget.slot.end = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotEnd.text, false);
     widget.slot.title = _ctrlSlotTitle.text;
   }
 
-  void _submitSlot() async {
+  void _handleSubmit() async {
     _gatherSlot();
 
-    final response = await http.post(
-      Uri.http(server.serverURL, _confirmAction!),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-      body: json.encode(widget.slot),
-    );
+    bool success = widget.isDraft ? await server.event_create(widget.session, widget.slot) : await server.event_edit(widget.session, widget.slot);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to modify slot')));
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Succeeded to modify slot')));
+    await server.event_edit_password(widget.session, widget.slot, _ctrlSlotPassword.text);
+    _ctrlSlotPassword.text = '';
+
     widget.onUpdate();
     Navigator.pop(context);
   }
@@ -184,7 +171,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
           //Text(widget.slot.status!.toString()),
           PanelSwiper(panels: [
             Panel("Edit", _buildEditPanel()),
-            if (!widget.isDraft) Panel("Owners", _buildOwnerPanel()),
+            if (!widget.isDraft) Panel("Owners", Container()),
             if (!widget.isDraft) Panel("Participants", Container()),
             if (!widget.isDraft) Panel("Group Invites", Container()),
             if (!widget.isDraft) Panel("Personal Invites", Container()),
@@ -247,48 +234,8 @@ class SlotDetailPageState extends State<EventDetailPage> {
         ),
         AppButton(
           text: "Save",
-          onPressed: _submitSlot,
+          onPressed: _handleSubmit,
         ),
-      ],
-    );
-  }
-
-  Widget _buildOwnerPanel() {
-    return Column(
-      children: [
-        AppInfoRow(
-          info: Text("User"),
-          child: AppDropdown<User>(
-            controller: _ctrlDropdownMember,
-            builder: (User user) {
-              return Text("${user.firstname} ${user.lastname}");
-            },
-            onChanged: _addSlotOwner,
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () => setState(() => _ctrlDropdownMember.value = null),
-          ),
-        ),
-        AppListView(
-          items: widget.slot.owners,
-          itemBuilder: (User user) {
-            return Row(
-              children: [
-                Expanded(
-                  child: AppUserTile(
-                    onTap: (User u) => {},
-                    item: user,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _removeSlotOwner(user),
-                ),
-              ],
-            );
-          },
-        )
       ],
     );
   }

@@ -32,11 +32,11 @@ class ClassAdminPage extends StatefulWidget {
 }
 
 class ClassAdminPageState extends State<ClassAdminPage> {
+  TextEditingController _ctrlSlotKey = TextEditingController();
   TextEditingController _ctrlSlotPassword = TextEditingController();
+  TextEditingController _ctrlSlotTitle = TextEditingController();
   TextEditingController _ctrlSlotBegin = TextEditingController();
   TextEditingController _ctrlSlotEnd = TextEditingController();
-  TextEditingController _ctrlSlotTitle = TextEditingController();
-
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
   List<User> _owners = [];
@@ -53,7 +53,6 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   }
 
   void _applySlot() {
-    _ctrlSlotPassword.text = "";
     _ctrlSlotBegin.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.begin);
     _ctrlSlotEnd.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
@@ -61,14 +60,13 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   }
 
   void _gatherSlot() {
-    widget.slot.pwd = _ctrlSlotPassword.text;
     widget.slot.location = _ctrlCourseLocation.value;
     widget.slot.begin = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotBegin.text, false);
     widget.slot.end = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotEnd.text, false);
     widget.slot.title = _ctrlSlotTitle.text;
   }
 
-  void _submitSlot() async {
+  void _handleSubmit() async {
     _gatherSlot();
 
     bool success = widget.isDraft ? await server.class_create(widget.session, widget.slot) : await server.class_edit(widget.session, widget.slot);
@@ -77,6 +75,9 @@ class ClassAdminPageState extends State<ClassAdminPage> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to modify slot')));
       return;
     }
+
+    await server.class_edit_password(widget.session, widget.slot, _ctrlSlotPassword.text);
+    _ctrlSlotPassword.text = '';
 
     widget.onUpdate();
     Navigator.pop(context);
@@ -160,24 +161,35 @@ class ClassAdminPageState extends State<ClassAdminPage> {
               ],
             ),
           //Text(widget.slot.status!.toString()),
-          PanelSwiper(panels: [
-            Panel("Edit", _buildEditPanel()),
-            if (!widget.isDraft) Panel("Owners", UserSelectionPanel(
-              usersAvailable: server.cacheMembers,
-              usersChosen: _owners,
-              onAdd: _submitOwnerAddition,
-              onRemove: _submitOwnerRemoval,
-            )),
-            if (!widget.isDraft) Panel("Participants", UserSelectionPanel(
-              usersAvailable: server.cacheMembers,
-              usersChosen: _participants,
-              onAdd: _submitParticipantAddition,
-              onRemove: _submitParticipantRemoval,
-            )),
-            if (!widget.isDraft) Panel("Group Invites", Container()),
-            if (!widget.isDraft) Panel("Personal Invites", Container()),
-            if (!widget.isDraft) Panel("Level Invites", Container()),
-          ]),
+          PanelSwiper(
+            panels: [
+              Panel("Edit", _buildEditPanel()),
+              if (!widget.isDraft)
+                Panel(
+                  "Owners",
+                  UserSelectionPanel(
+                    usersAvailable: server.cacheMembers,
+                    usersChosen: _owners,
+                    onAdd: _submitOwnerAddition,
+                    onRemove: _submitOwnerRemoval,
+                  ),
+                ),
+              if (!widget.isDraft)
+                Panel(
+                  "Participants",
+                  UserSelectionPanel(
+                    usersAvailable: server.cacheMembers,
+                    usersChosen: _participants,
+                    onAdd: _submitParticipantAddition,
+                    onRemove: _submitParticipantRemoval,
+                  ),
+                ),
+              if (!widget.isDraft) Panel("Group Invites", Container()),
+              if (!widget.isDraft) Panel("Personal Invites", Container()),
+              if (!widget.isDraft) Panel("Level Invites", Container()),
+            ],
+            swipes: 2,
+          ),
         ],
       ),
     );
@@ -186,6 +198,33 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   Widget _buildEditPanel() {
     return Column(
       children: [
+        if (!widget.isDraft)
+          AppInfoRow(
+            info: Text("Key"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlSlotKey,
+            ),
+          ),
+        if (!widget.isDraft)
+          AppInfoRow(
+            info: Text("Password"),
+            child: TextField(
+              obscureText: true,
+              maxLines: 1,
+              controller: _ctrlSlotPassword,
+              decoration: InputDecoration(
+                hintText: "Reset password (leave empty to keep current)",
+              ),
+            ),
+          ),
+        AppInfoRow(
+          info: Text("Title"),
+          child: TextField(
+            maxLines: 1,
+            controller: _ctrlSlotTitle,
+          ),
+        ),
         AppInfoRow(
           info: Text("Location"),
           child: AppDropdown<Location>(
@@ -215,27 +254,9 @@ class ClassAdminPageState extends State<ClassAdminPage> {
             controller: _ctrlSlotEnd,
           ),
         ),
-        AppInfoRow(
-          info: Text("Title"),
-          child: TextField(
-            maxLines: 1,
-            controller: _ctrlSlotTitle,
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Password"),
-          child: TextField(
-            obscureText: true,
-            maxLines: 1,
-            controller: _ctrlSlotPassword,
-            decoration: InputDecoration(
-              hintText: "Reset password (leave empty to keep current)",
-            ),
-          ),
-        ),
         AppButton(
           text: "Save",
-          onPressed: _submitSlot,
+          onPressed: _handleSubmit,
         ),
       ],
     );

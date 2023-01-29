@@ -12,22 +12,21 @@ enum Status { DRAFT, PENDING, OCCURRING, REJECTED, CANCELED }
 class Slot {
   final int id;
   String key;
-  String? pwd;
   String title;
   Location? location;
   DateTime begin;
   DateTime end;
   Status? status;
+  bool autologin = false;
   int? course_id;
   List<User>? owners;
   //final String description;
 
-  Slot(this.id, this.key, this.title, this.location, this.begin, this.end, {this.pwd = "", this.course_id, this.owners});
+  Slot(this.id, this.key, this.title, this.location, this.begin, this.end, {this.course_id, this.owners});
 
   Slot.fromSlot(Slot slot)
       : this.id = 0,
         this.key = "",
-        this.pwd = slot.pwd,
         this.title = slot.title,
         this.location = slot.location,
         this.begin = slot.begin,
@@ -39,7 +38,6 @@ class Slot {
   Slot.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       key = json['key'],
-      pwd = json['pwd'],
       title = json['title'],
       location = Location.fromJson(json['location']),
       begin = DateFormat("yyyy-MM-dd HH:mm").parse(json['begin'], true).toLocal(),
@@ -52,7 +50,6 @@ class Slot {
     {
       'id': id,
       'key': key,
-      'pwd': pwd,
       'title': title,
       'location': location?.toJson(),
       'begin': DateFormat("yyyy-MM-dd HH:mm").format(begin.toUtc()),
@@ -64,7 +61,6 @@ class Slot {
   Slot.fromCourse(Course course)
     : this.id = 0,
       this.key = "",
-      this.pwd = "",
       this.title = course.title,
       this.location = null,
       this.begin = DateTime.now(),
@@ -76,7 +72,6 @@ class Slot {
   Slot.fromUser(User user)
     : this.id = 0,
       this.key = "",
-      this.pwd = "",
       this.title = "${user.key}'s individual reservation",
       this.location = null,
       this.begin = DateTime.now(),

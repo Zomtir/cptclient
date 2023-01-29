@@ -55,6 +55,23 @@ Future<bool> class_edit(Session session, Slot slot) async {
   return (response.statusCode == 200);
 }
 
+Future<bool> class_edit_password(Session session, Slot slot, String password) async {
+  if (password.isEmpty) return true;
+
+  final response = await http.post(
+    Uri.http(server.serverURL, '/admin/class_edit', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Token': session.token,
+    },
+    body: utf8.encode(password),
+  );
+
+  return (response.statusCode == 200);
+}
+
 Future<bool> class_delete(Session session, Slot slot) async {
   final response = await http.head(
     Uri.http(server.serverURL, '/admin/class_edit', {

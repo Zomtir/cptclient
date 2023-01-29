@@ -84,7 +84,7 @@ class TermManagementPageState extends State<TermManagementPage> {
             itemBuilder: (User user) {
               return AppUserTile(
                 onTap: (member) => _selectUser(_users.firstWhere((user) => user.id == member.id)),
-                item: user,
+                user: user,
               );
             },
           ),

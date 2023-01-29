@@ -5,7 +5,6 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 
 import 'static/serverUserAdmin.dart' as server;
-import 'static/crypto.dart' as crypto;
 import 'json/session.dart';
 import 'json/user.dart';
 
@@ -24,13 +23,16 @@ class UserAdminPage extends StatefulWidget {
 class UserAdminPageState extends State<UserAdminPage> {
   TextEditingController _ctrlUserKey = TextEditingController();
   TextEditingController _ctrlUserPassword = TextEditingController();
+  bool                  _ctrlUserEnabled = false;
   TextEditingController _ctrlUserFirstname = TextEditingController();
   TextEditingController _ctrlUserLastname = TextEditingController();
+  TextEditingController _ctrlUserIban = TextEditingController();
   TextEditingController _ctrlUserEmail = TextEditingController();
   TextEditingController _ctrlUserPhone = TextEditingController();
-  TextEditingController _ctrlUserAddress = TextEditingController();
+  //TextEditingController _ctrlUserAddress = TextEditingController();
   TextEditingController _ctrlUserBirthday = TextEditingController();
   TextEditingController _ctrlUserGender = TextEditingController();
+  TextEditingController _ctrlUserOrganization = TextEditingController();
 
   UserAdminPageState();
 
@@ -42,16 +44,31 @@ class UserAdminPageState extends State<UserAdminPage> {
 
   void _applyUser() {
     _ctrlUserKey.text = widget.user.key;
+    _ctrlUserEnabled = widget.user.enabled ?? false;
     _ctrlUserFirstname.text = widget.user.firstname;
     _ctrlUserLastname.text = widget.user.lastname;
-    _ctrlUserPassword.text = "";
+    _ctrlUserIban.text = widget.user.iban ?? '';
+    _ctrlUserEmail.text = widget.user.email ?? '';
+    _ctrlUserPhone.text = widget.user.phone ?? '';
+    //_ctrlUserAddress.text = widget.user.address ?? '';
+    _ctrlUserBirthday.text = widget.user.birthday ?? '';
+    _ctrlUserGender.text = widget.user.gender ?? '';
+    _ctrlUserOrganization.text = widget.user.organization_id?.toString() ?? '';
   }
 
   void _gatherUser() {
     widget.user.key = _ctrlUserKey.text;
+    widget.user.enabled = _ctrlUserEnabled;
     widget.user.firstname = _ctrlUserFirstname.text;
     widget.user.lastname = _ctrlUserLastname.text;
-    widget.user.pwd = crypto.hashPassword(_ctrlUserPassword.text, _ctrlUserKey.text);
+
+    widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
+    widget.user.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
+    widget.user.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
+    widget.user.birthday = _ctrlUserBirthday.text.isNotEmpty ? _ctrlUserBirthday.text : null;
+    widget.user.gender = _ctrlUserGender.text.isNotEmpty ? _ctrlUserGender.text : null;
+    widget.user.organization_id = int.tryParse(_ctrlUserOrganization.text);
+    widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
   }
 
   void _submitUser() async {
@@ -63,6 +80,12 @@ class UserAdminPageState extends State<UserAdminPage> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit user')));
       return;
     }
+
+    bool? pwdsuccess = await server.user_edit_password(widget.session, widget.user, _ctrlUserPassword.text);
+    if (pwdsuccess != null && !pwdsuccess)
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User saved, but new password was rejected.')));
+
+    _ctrlUserPassword.text = '';
 
     widget.onUpdate();
     Navigator.pop(context);
@@ -91,7 +114,7 @@ class UserAdminPageState extends State<UserAdminPage> {
               Expanded(
                 child: AppUserTile(
                   onTap: (member) => {},
-                  item: widget.user,
+                  user: widget.user,
                 ),
               ),
               IconButton(
@@ -119,6 +142,13 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
+            info: Text("Account Enabled"),
+            child: Checkbox(
+              value: _ctrlUserEnabled,
+              onChanged: (bool? enabled) => setState(() => _ctrlUserEnabled = enabled!),
+            ),
+          ),
+          AppInfoRow(
             info: Text("First Name"),
             child: TextField(
               maxLines: 1,
@@ -130,6 +160,13 @@ class UserAdminPageState extends State<UserAdminPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserLastname,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("IBAN"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserIban,
             ),
           ),
           AppInfoRow(
@@ -146,13 +183,13 @@ class UserAdminPageState extends State<UserAdminPage> {
               controller: _ctrlUserPhone,
             ),
           ),
-          AppInfoRow(
+/*          AppInfoRow(
             info: Text("Address"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserAddress,
             ),
-          ),
+          ),*/
           AppInfoRow(
             info: Text("Birthday"),
             child: TextField(

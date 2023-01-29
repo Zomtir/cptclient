@@ -10,7 +10,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<Slot?> slot_info(String token) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/casual/slot_info'),
+    Uri.http(server.serverURL, '/slot/slot_info'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ Future<Slot?> slot_info(String token) async {
 
 Future<List<User>> slot_candidates(Session session) async {
   final response = await http.get(
-    Uri.http(server.serverURL, 'slot_candidates'),
+    Uri.http(server.serverURL, '/slot/slot_candidate_list'),
     headers: {
       'Token': session.token,
     },
@@ -38,7 +38,7 @@ Future<List<User>> slot_candidates(Session session) async {
 
 Future<List<User>> slot_participants(Session session) async {
   final response = await http.get(
-    Uri.http(server.serverURL, 'slot_participants'),
+    Uri.http(server.serverURL, '/slot/slot_participant_list'),
     headers: {
       'Token': session.token,
     },
@@ -48,4 +48,30 @@ Future<List<User>> slot_participants(Session session) async {
 
   Iterable l = json.decode(response.body);
   return List<User>.from(l.map((model) => User.fromJson(model)));
+}
+
+Future<bool> slot_participant_add(Session session, User user) async {
+  final response = await http.head(
+    Uri.http(server.serverURL, '/slot/slot_participant_add', {
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> slot_participant_remove(Session session, User user) async {
+  final response = await http.head(
+    Uri.http(server.serverURL, '/slot/slot_participant_remove', {
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
 }
