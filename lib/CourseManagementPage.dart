@@ -17,7 +17,6 @@ import 'static/serverCourseAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/course.dart';
 import 'json/branch.dart';
-import 'json/access.dart';
 import 'json/user.dart';
 
 class CourseManagementPage extends StatefulWidget {
@@ -36,7 +35,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   List<Course> _coursesFiltered = [];
   bool _hideFilters = true;
   bool _isActive = true;
-  DropdownController<Access> _ctrlDropdownAccess = DropdownController<Access>(items: server.cacheAccess);
+  bool _isPublic = true;
   DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
@@ -62,10 +61,10 @@ class CourseManagementPageState extends State<CourseManagementPage> {
     setState(() {
       _coursesFiltered = _courses.where((course) {
         bool activeFilter = course.active == _isActive;
-        bool accessFilter = (_ctrlDropdownAccess.value == null) ? true : (course.access == _ctrlDropdownAccess.value);
+        bool publicFilter = course.public == _isPublic;
         bool branchFilter =
             (_ctrlDropdownBranch.value == null) ? true : (course.branch == _ctrlDropdownBranch.value && course.threshold >= _thresholdRange.start && course.threshold <= _thresholdRange.end);
-        return activeFilter && accessFilter && branchFilter;
+        return activeFilter && publicFilter && branchFilter;
       }).toList();
     });
   }
@@ -125,21 +124,11 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                 ),
               ),
               AppInfoRow(
-                info: Text("Access"),
-                child: AppDropdown<Access>(
-                  controller: _ctrlDropdownAccess,
-                  builder: (Access access) {
-                    return Text(access.title);
-                  },
-                  onChanged: (Access? access) {
-                    _ctrlDropdownAccess.value = access;
-                    _filterCourses();
-                  },
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    _ctrlDropdownAccess.value = null;
+                info: Text("Active"),
+                child: Checkbox(
+                  value: _isPublic,
+                  onChanged: (bool? public) {
+                    _isPublic = public!;
                     _filterCourses();
                   },
                 ),

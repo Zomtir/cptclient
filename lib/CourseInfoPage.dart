@@ -20,7 +20,6 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/branch.dart';
-import 'package:cptclient/json/access.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final Session session;
@@ -40,7 +39,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
   bool                  _ctrlCourseActive = true;
-  DropdownController<Access> _ctrlCourseAccess = DropdownController<Access>(items: server.cacheAccess);
+  bool                  _ctrlCoursePublic = true;
   DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: server.cacheBranches);
   int                        _pickThresholdValue = 0;
 
@@ -129,7 +128,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     _ctrlCourseKey.text = widget.course.key;
     _ctrlCourseTitle.text = widget.course.title;
     _ctrlCourseActive = widget.course.active;
-    _ctrlCourseAccess.value = widget.course.access;
+    _ctrlCoursePublic = widget.course.public;
     _ctrlCourseBranch.value = widget.course.branch;
     _pickThresholdValue = widget.course.threshold;
   }
@@ -138,7 +137,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     widget.course.key = _ctrlCourseKey.text;
     widget.course.title = _ctrlCourseTitle.text;
     widget.course.active = _ctrlCourseActive;
-    widget.course.access = _ctrlCourseAccess.value;
+    widget.course.public = _ctrlCoursePublic;
     widget.course.branch = _ctrlCourseBranch.value;
     widget.course.threshold = _pickThresholdValue;
   }
@@ -267,12 +266,10 @@ class CourseInfoPageState extends State<CourseInfoPage> {
           ),
         ),
         AppInfoRow(
-          info: Text("Access"),
-          child: AppDropdown<Access>(
-            hint: Text("Access"),
-            controller: _ctrlCourseAccess,
-            builder: (Access access) => Text(access.title),
-            onChanged: (Access? access) => setState(() => _ctrlCourseAccess.value = access),
+          info: Text("Public"),
+          child: Checkbox(
+            value: _ctrlCoursePublic,
+            onChanged: (bool? public) =>  setState(() => _ctrlCoursePublic = public!),
           ),
         ),
         AppInfoRow(

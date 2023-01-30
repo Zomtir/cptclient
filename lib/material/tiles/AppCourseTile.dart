@@ -28,7 +28,6 @@ class AppCourseTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("${course.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("${course.access!.title}"),
               Text("Requires level ${course.branch!.key} ${course.threshold}"),
             ],
           ),

@@ -7,7 +7,6 @@ import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
-import 'package:cptclient/json/access.dart';
 import 'package:cptclient/json/credentials.dart';
 
 String serverURL = window.localStorage['ServerURL']!;
@@ -15,7 +14,6 @@ String serverURL = window.localStorage['ServerURL']!;
 List<User> cacheMembers = [];
 List<Location> cacheLocations = [];
 List<Branch> cacheBranches = [];
-List<Access> cacheAccess = [];
 
 Future<bool> loadStatus() async {
   final response;
@@ -38,7 +36,6 @@ Future<bool> loadCache() async {
     // Connection succeeds
     await loadLocations();
     await loadBranches();
-    await loadAccess();
     await Future.delayed(Duration(milliseconds: 200));
     return true;
   }
@@ -46,7 +43,6 @@ Future<bool> loadCache() async {
 
 void refresh() {
   loadMembers();
-  loadAccess();
   loadBranches();
   loadLocations();
 }
@@ -103,23 +99,6 @@ Future<bool> loadBranches() async {
 
   return true;
 }
-
-Future<bool> loadAccess() async {
-  final response = await http.get(
-    Uri.http(serverURL, 'access_list'),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return false;
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  cacheAccess = List<Access>.from(l.map((model) => Access.fromJson(model)));
-
-  return true;
-}
-
 
 Future<bool> loginUser(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return false;

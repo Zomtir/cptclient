@@ -1,23 +1,22 @@
 import 'branch.dart';
-import 'access.dart';
 
 class Course implements Comparable {
   final int id;
   String key;
   String title;
   bool active;
-  Access? access;
+  bool public;
   Branch? branch;
   int threshold;
 
-  Course(this.id, this.key, this.title, this.active, this.access, this.branch, this.threshold);
+  Course(this.id, this.key, this.title, this.active, this.public, this.branch, this.threshold);
 
   Course.fromVoid() :
     this.id = 0,
     this.key = "",
     this.title = "Course Title",
     this.active = true,
-    this.access = null,
+    this.public = true,
     this.branch = null,
     this.threshold = 0;
 
@@ -26,7 +25,7 @@ class Course implements Comparable {
     this.key = "",
     this.title = course.title,
     this.active = course.active,
-    this.access = course.access,
+    this.public = course.public,
     this.branch = course.branch,
     this.threshold = course.threshold;
 
@@ -35,7 +34,7 @@ class Course implements Comparable {
     key = json['key'],
     title = json['title'],
     active = json['active'],
-    access = Access.fromJson(json['access']),
+    public = json['public'],
     branch = Branch.fromJson(json['branch']),
     threshold = json['threshold'];
 
@@ -45,7 +44,7 @@ class Course implements Comparable {
     'key': key,
     'title': title,
     'active': active,
-    'access': access?.toJson(),
+    'public': public,
     'branch': branch?.toJson(),
     'threshold': threshold,
   };
