@@ -1,4 +1,5 @@
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/UserFilter.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -46,74 +47,38 @@ class UserPicker extends StatefulWidget {
 }
 
 class _UserPickerState extends State<UserPicker> {
-  Set<User> usersVisible = {};
-  List<User> usersFiltered = [];
+  List<User> _usersVisible = [];
+  List<User> _usersLimited = [];
 
   TextEditingController _ctrlUserFilter = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    usersVisible = widget.usersAvailable.toSet().difference(widget.usersHidden.toSet());
-    _unfilterUsers();
+    _usersVisible = widget.usersAvailable.toSet().difference(widget.usersHidden.toSet()).toList();
+    _usersVisible.sort();
   }
 
   void _handleSelect(User user) {
-    usersVisible.remove(user);
+    _usersVisible.remove(user);
     setState(() {
-      usersFiltered.remove(user);
+      _usersLimited.remove(user);
     });
     widget.onSelect(user);
   }
 
-  void _filterUsers(String filter) {
+  void _limitUsers(List<User> users) {
     setState(() {
-      usersFiltered = usersVisible.where((User user) {
-        Set<String> fragments = filter.toLowerCase().split(' ').toSet();
-        List<String> searchspace = [user.key, user.firstname, user.lastname];
-
-        for(var fragment in fragments) {
-          bool matchedAny = false;
-          for (var space in searchspace) {
-            matchedAny = matchedAny || space.toLowerCase().contains(fragment);
-          }
-          if (!matchedAny)
-            return false;
-        }
-
-        return true;
-      }).toList();
-    });
-  }
-
-  void _unfilterUsers() {
-    setState(() {
-      usersFiltered = usersVisible.toList();
-      _ctrlUserFilter.clear();
+      _usersLimited = users;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var textfield = TextField(
-      autofocus: true,
-      maxLines: 1,
-      focusNode: FocusNode(),
-      controller: _ctrlUserFilter,
-      onChanged: _filterUsers,
-      //onSubmitted: _submitMember,
-      decoration: InputDecoration(
-        hintText: "Find user",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-        suffixIcon: IconButton(
-          onPressed: _unfilterUsers,
-          icon: Icon(Icons.clear),
-        ),
-      ),
-    );
+    var textfield = UserFilter(users: _usersVisible.toList(), controller: _ctrlUserFilter, onChange: _limitUsers);
 
     var list = AppListView<User>(
-      items: usersFiltered,
+      items: _usersLimited,
       itemBuilder: (User user) {
         return InkWell(
           child: ListTile(
@@ -145,25 +110,3 @@ class _UserPickerState extends State<UserPicker> {
     );
   }
 }
-
-/*
-
-TextField(
-autofocus: true,
-maxLines: 1,
-focusNode: FocusNode(),
-controller: _ctrlMemberFilter,
-onChanged: _filterCandidates,
-onSubmitted: _submitMember,
-decoration: InputDecoration(
-hintText: "Filter member ID",
-suffixIcon: IconButton(
-onPressed: _unfilterCandidates,
-icon: Icon(Icons.clear),
-),
-),
-),
-
-SelectController _ctrlMemberSelect = SelectController();
-SelectController _ctrlParticipantSelect = SelectController();
-*/

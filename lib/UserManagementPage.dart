@@ -1,3 +1,4 @@
+import 'package:cptclient/material/UserFilter.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
@@ -21,6 +22,8 @@ class UserManagementPage extends StatefulWidget {
 
 class UserManagementPageState extends State<UserManagementPage> {
   List<User> _users = [];
+  List<User> _usersLimited = [];
+  TextEditingController _ctrlFilterUser = TextEditingController();
 
   @override
   void initState() {
@@ -33,9 +36,16 @@ class UserManagementPageState extends State<UserManagementPage> {
   }
 
   Future<void> _requestUsers() async {
-    List<User> users = await server.user_list(widget.session);
+    _users = await server.user_list(widget.session);
     setState(() {
-      _users = users;
+      _usersLimited = _users;
+      _ctrlFilterUser.clear();
+    });
+  }
+
+  void _limitUsers(List<User> users) {
+    setState(() {
+      _usersLimited = users;
     });
   }
 
@@ -84,8 +94,13 @@ class UserManagementPageState extends State<UserManagementPage> {
             text: "New user",
             onPressed: _createUser,
           ),
+          UserFilter(
+            users: _users,
+            controller: _ctrlFilterUser,
+            onChange: _limitUsers,
+          ),
           AppListView<User>(
-            items: _users,
+            items: _usersLimited,
             itemBuilder: (User user) {
               return AppUserTile(
                 onTap: (u) => _selectUser(user),

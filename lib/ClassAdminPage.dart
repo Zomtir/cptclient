@@ -188,7 +188,6 @@ class ClassAdminPageState extends State<ClassAdminPage> {
               if (!widget.isDraft) Panel("Personal Invites", Container()),
               if (!widget.isDraft) Panel("Level Invites", Container()),
             ],
-            swipes: 2,
           ),
         ],
       ),
