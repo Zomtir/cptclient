@@ -54,7 +54,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getAvailableCourses() async {
     final response = await http.get(
-      Uri.http(server.serverURL, '/member/course_availiblity'),
+      server.uri('/member/course_availiblity'),
       headers: {
         'Token': widget.session.token,
       },
@@ -71,7 +71,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
 
   Future<void> _getResponsibleCourses() async {
     final response = await http.get(
-      Uri.http(server.serverURL, '/mod/course_responsibility'),
+      server.uri('/mod/course_responsibility'),
       headers: {
         'Token': widget.session.token,
       },

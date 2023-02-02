@@ -9,7 +9,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<List<User>?> course_moderator_list(Session session, int courseID) async {
   final response = await http.get(
-    Uri.http(server.serverURL, 'course_moderator_list', {'course_id': courseID.toString()}),
+    server.uri('course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ Future<List<User>?> course_moderator_list(Session session, int courseID) async {
 
 Future<bool> course_mod(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(server.serverURL, 'course_mod', {
+    server.uri('course_mod', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
     }),
@@ -38,7 +38,7 @@ Future<bool> course_mod(Session session, int courseID, int userID) async {
 
 Future<bool> course_unmod(Session session, int courseID, int userID) async {
   final response = await http.head(
-    Uri.http(server.serverURL, 'course_unmod', {
+    server.uri('course_unmod', {
       'course': courseID.toString(),
       'user' : userID.toString(),
     }),

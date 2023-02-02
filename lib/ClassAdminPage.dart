@@ -53,6 +53,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   }
 
   void _applySlot() {
+    _ctrlSlotKey.text = widget.slot.key;
     _ctrlSlotBegin.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.begin);
     _ctrlSlotEnd.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
@@ -60,10 +61,11 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   }
 
   void _gatherSlot() {
-    widget.slot.location = _ctrlCourseLocation.value;
+    widget.slot.key = _ctrlSlotKey.text;
     widget.slot.begin = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotBegin.text, false);
     widget.slot.end = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotEnd.text, false);
     widget.slot.title = _ctrlSlotTitle.text;
+    widget.slot.location = _ctrlCourseLocation.value;
   }
 
   void _handleSubmit() async {

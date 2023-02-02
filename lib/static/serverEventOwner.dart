@@ -10,7 +10,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<bool> event_edit(Session session, Slot slot) async {
   final response = await http.post(
-    Uri.http(server.serverURL, '/owner/event_edit', {
+    server.uri('/owner/event_edit', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -27,7 +27,7 @@ Future<bool> event_edit_password(Session session, Slot slot, String password) as
   if (password.isEmpty) return true;
 
   final response = await http.post(
-    Uri.http(server.serverURL, '/owner/event_edit_password', {
+    server.uri('/owner/event_edit_password', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -42,7 +42,7 @@ Future<bool> event_edit_password(Session session, Slot slot, String password) as
 
 Future<bool> event_delete(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_edit', {
+    server.uri('/owner/event_edit', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -55,7 +55,7 @@ Future<bool> event_delete(Session session, Slot slot) async {
 
 Future<bool> event_submit(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_submit', {
+    server.uri('/owner/event_submit', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -68,7 +68,7 @@ Future<bool> event_submit(Session session, Slot slot) async {
 
 Future<bool> event_withdraw(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_withdraw', {
+    server.uri('/owner/event_withdraw', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -81,7 +81,7 @@ Future<bool> event_withdraw(Session session, Slot slot) async {
 
 Future<bool> event_cancel(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_cancel', {
+    server.uri('/owner/event_cancel', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -94,7 +94,7 @@ Future<bool> event_cancel(Session session, Slot slot) async {
 
 Future<bool> event_recycle(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_recycle', {
+    server.uri('/owner/event_recycle', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -107,7 +107,7 @@ Future<bool> event_recycle(Session session, Slot slot) async {
 
 Future<List<User>> event_owner_list(Session session, Slot slot) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/owner/event_owner_list', {
+    server.uri('/owner/event_owner_list', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -123,7 +123,7 @@ Future<List<User>> event_owner_list(Session session, Slot slot) async {
 
 Future<bool> event_owner_add(Session session, Slot slot, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_owner_add', {
+    server.uri('/owner/event_owner_add', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),
@@ -137,7 +137,7 @@ Future<bool> event_owner_add(Session session, Slot slot, User user) async {
 
 Future<bool> event_owner_remove(Session session, Slot slot, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/owner/event_owner_remove', {
+    server.uri('/owner/event_owner_remove', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),

@@ -10,7 +10,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<List<Slot>> class_list(Session session, int courseID) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/class_list', {
+    server.uri('/admin/class_list', {
       'course_id': courseID.toString(),
     }),
     headers: {
@@ -27,7 +27,7 @@ Future<List<Slot>> class_list(Session session, int courseID) async {
 
 Future<bool> class_create(Session session, Slot slot) async {
   final response = await http.post(
-    Uri.http(server.serverURL, '/admin/class_create', {
+    server.uri('/admin/class_create', {
       'course_id': slot.course_id.toString(),
     }),
     headers: {
@@ -42,7 +42,7 @@ Future<bool> class_create(Session session, Slot slot) async {
 
 Future<bool> class_edit(Session session, Slot slot) async {
   final response = await http.post(
-    Uri.http(server.serverURL, '/admin/class_edit', {
+    server.uri('/admin/class_edit', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -59,7 +59,7 @@ Future<bool> class_edit_password(Session session, Slot slot, String password) as
   if (password.isEmpty) return true;
 
   final response = await http.post(
-    Uri.http(server.serverURL, '/admin/class_edit', {
+    server.uri('/admin/class_edit', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -74,7 +74,7 @@ Future<bool> class_edit_password(Session session, Slot slot, String password) as
 
 Future<bool> class_delete(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/class_edit', {
+    server.uri('/admin/class_edit', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -87,7 +87,7 @@ Future<bool> class_delete(Session session, Slot slot) async {
 
 Future<List<User>> class_owner_list(Session session, Slot slot) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/class_owner_list', {
+    server.uri('/admin/class_owner_list', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -103,7 +103,7 @@ Future<List<User>> class_owner_list(Session session, Slot slot) async {
 
 Future<bool> class_owner_add(Session session, Slot slot, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/class_owner_add', {
+    server.uri('/admin/class_owner_add', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),
@@ -117,7 +117,7 @@ Future<bool> class_owner_add(Session session, Slot slot, User user) async {
 
 Future<bool> class_owner_remove(Session session, Slot slot, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/class_owner_remove', {
+    server.uri('/admin/class_owner_remove', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),
@@ -131,7 +131,7 @@ Future<bool> class_owner_remove(Session session, Slot slot, User user) async {
 
 Future<List<User>> class_participant_list(Session session, Slot slot) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/class_participant_list', {
+    server.uri('/admin/class_participant_list', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -147,7 +147,7 @@ Future<List<User>> class_participant_list(Session session, Slot slot) async {
 
 Future<bool> class_participant_add(Session session, Slot slot, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/class_participant_add', {
+    server.uri('/admin/class_participant_add', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),
@@ -161,7 +161,7 @@ Future<bool> class_participant_add(Session session, Slot slot, User user) async 
 
 Future<bool> class_participant_remove(Session session, Slot slot, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/class_participant_remove', {
+    server.uri('/admin/class_participant_remove', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),

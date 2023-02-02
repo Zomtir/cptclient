@@ -10,7 +10,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<List<Slot>> event_list(Session session, String status) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/member/event_list', {
+    server.uri('/member/event_list', {
       'status': status,
     }),
     headers: {
@@ -26,7 +26,7 @@ Future<List<Slot>> event_list(Session session, String status) async {
 
 Future<bool> event_create(Session session, Slot slot) async {
   final response = await http.post(
-    Uri.http(server.serverURL, '/member/event_create'),
+    server.uri('/member/event_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -39,7 +39,7 @@ Future<bool> event_create(Session session, Slot slot) async {
 
 Future<bool> event_owner_condition(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/member/event_owner_condition', {
+    server.uri('/member/event_owner_condition', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

@@ -67,7 +67,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     _gatherTeam();
 
     final response = await http.post(
-      Uri.http(server.serverURL, widget.team.id == 0 ? 'team_create' : 'team_edit'),
+      server.uri(widget.team.id == 0 ? 'team_create' : 'team_edit'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Token': widget.session.token,
@@ -87,7 +87,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
 
   void _deleteTeam() async {
     final response = await http.head(
-      Uri.http(server.serverURL, 'team_delete', {'team_id': widget.team.id.toString()}),
+      server.uri('team_delete', {'team_id': widget.team.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },

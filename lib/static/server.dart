@@ -9,7 +9,18 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/credentials.dart';
 
-String serverURL = window.localStorage['ServerURL']!;
+String serverScheme = window.localStorage['ServerScheme']!;
+String serverHost = window.localStorage['ServerHost']!;
+int serverPort = int.tryParse(window.localStorage['ServerPort']!)?? 443;
+
+Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
+  return Uri(
+      scheme: serverScheme,
+      host: serverHost,
+      port: serverPort,
+      path: path,
+      queryParameters: queryParameters);
+}
 
 List<User> cacheMembers = [];
 List<Location> cacheLocations = [];
@@ -19,7 +30,7 @@ Future<bool> loadStatus() async {
   final response;
 
   try {
-    response = await http.head(Uri.http(serverURL, 'status'));
+    response = await http.head(uri('status'));
   } on Exception {
     return false;
   }
@@ -49,7 +60,7 @@ void refresh() {
 
 Future<bool> loadMembers() async {
   final response = await http.get(
-    Uri.http(serverURL, '/member/user_list'),
+    uri('/member/user_list'),
     headers: {
       'Token': window.localStorage['Token']!,
       'Accept': 'application/json; charset=utf-8',
@@ -70,7 +81,7 @@ void unloadMembers() {
 
 Future<bool> loadLocations() async {
   final response = await http.get(
-    Uri.http(serverURL, 'location_list'),
+    uri('location_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },
@@ -86,7 +97,7 @@ Future<bool> loadLocations() async {
 
 Future<bool> loadBranches() async {
   final response = await http.get(
-    Uri.http(serverURL, 'branch_list'),
+    uri('branch_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },
@@ -106,7 +117,7 @@ Future<bool> loginUser(String key, String pwd) async {
   Credential credential = Credential(key, crypto.hashPassword(pwd, key));
 
   final response = await http.post(
-    Uri.http(serverURL, 'user_login'),
+    uri('user_login'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Accept': 'text/plain; charset=utf-8',
@@ -129,7 +140,7 @@ Future<bool> loginSlot(String key, String pwd) async {
   Credential credential = Credential(key, pwd);
 
   final response = await http.post(
-    Uri.http(serverURL, 'slot_login'),
+    uri('slot_login'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Accept': 'text/plain; charset=utf-8',
@@ -150,7 +161,7 @@ Future<bool> loginLocation(String key) async {
   if (key.isEmpty) return false;
 
   final response = await http.get(
-    Uri.http(serverURL, 'location_login', {'location_key': key}),
+    uri('location_login', {'location_key': key}),
     headers: {
       'Accept': 'text/plain; charset=utf-8',
     },

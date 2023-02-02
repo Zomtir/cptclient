@@ -10,7 +10,7 @@ import 'package:cptclient/json/skill.dart';
 
 Future<List<Ranking>> ranking_list(Session session) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/member/ranking_list'),
+    server.uri('/member/ranking_list'),
     headers: {
       'Token': session.token,
     },
@@ -24,7 +24,7 @@ Future<List<Ranking>> ranking_list(Session session) async {
 
 Future<List<Skill>> ranking_summary(Session session) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/member/ranking_summary'),
+    server.uri('/member/ranking_summary'),
     headers: {
       'Token': session.token,
     },

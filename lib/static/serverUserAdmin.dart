@@ -10,7 +10,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<List<User>> user_list(Session session) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/user_list'),
+    server.uri('/admin/user_list'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -25,7 +25,7 @@ Future<List<User>> user_list(Session session) async {
 
 Future<User?> user_detailed(Session session, User user) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/user_detailed', {
+    server.uri('/admin/user_detailed', {
       'user_id' : user.id.toString(),
     }),
     headers: {
@@ -41,7 +41,7 @@ Future<User?> user_detailed(Session session, User user) async {
 
 Future<bool> user_create(Session session, User user) async {
   final response = await http.post(
-    Uri.http(server.serverURL, '/admin/user_create'),
+    server.uri('/admin/user_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -54,7 +54,7 @@ Future<bool> user_create(Session session, User user) async {
 
 Future<bool> user_edit(Session session, User user) async {
   final response = await http.post(
-    Uri.http(server.serverURL,  '/admin/user_edit', {
+    server.uri( '/admin/user_edit', {
       'user_id' : user.id.toString(),
     }),
     headers: {
@@ -72,7 +72,7 @@ Future<bool?> user_edit_password(Session session, User user, String password) as
   if (password.length < 6) return false;
 
   final response = await http.post(
-    Uri.http(server.serverURL, '/admin/user_edit_password', {
+    server.uri('/admin/user_edit_password', {
       'user_id' : user.id.toString(),
     }),
     headers: {
@@ -87,7 +87,7 @@ Future<bool?> user_edit_password(Session session, User user, String password) as
 
 Future<bool> user_delete(Session session, User user) async {
   final response = await http.head(
-    Uri.http(server.serverURL, 'user_delete', {'user_id': user.id.toString()}),
+    server.uri('user_delete', {'user_id': user.id.toString()}),
     headers: {
       'Token': session.token,
     },

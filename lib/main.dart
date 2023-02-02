@@ -9,7 +9,9 @@ import 'MemberLandingPage.dart';
 import 'EnrollPage.dart';
 
 void main() {
-  window.localStorage.putIfAbsent('ServerURL', () => 'localhost:8000');
+  window.localStorage.putIfAbsent('ServerScheme', () => 'http');
+  window.localStorage.putIfAbsent('ServerHost', () => 'localhost');
+  window.localStorage.putIfAbsent('ServerPort', () => '8000');
   window.localStorage.putIfAbsent('Token', () => '');
   window.localStorage.putIfAbsent('AutoLogin', () => 'none');
   window.localStorage.putIfAbsent('DefaultUser', ()=>'');

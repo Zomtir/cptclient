@@ -59,7 +59,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   void _deleteCourse() async {
     final response = await http.head(
-      Uri.http(server.serverURL, 'course_delete', {'course_id': widget.course.id.toString()}),
+      server.uri('course_delete', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
       },
@@ -82,7 +82,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   Future<void> _getCourseSlots() async {
     final response = await http.get(
-      Uri.http(server.serverURL, 'course_slot_list', {'course_id': widget.course.id.toString()}),
+      server.uri('course_slot_list', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -108,7 +108,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
 
   Future<void> _getCourseModerators() async {
     final response = await http.get(
-      Uri.http(server.serverURL, 'course_moderator_list', {'course_id': widget.course.id.toString()}),
+      server.uri('course_moderator_list', {'course_id': widget.course.id.toString()}),
       headers: {
         'Token': widget.session.token,
         'Accept': 'application/json; charset=utf-8',
@@ -146,7 +146,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     _gatherCourse();
 
     final response = await http.post(
-      Uri.http(server.serverURL, widget.course.id == 0 ? 'course_create' : 'course_edit'),
+      server.uri(widget.course.id == 0 ? 'course_create' : 'course_edit'),
       headers: {
         'Token': widget.session.token,
         'Content-Type': 'application/json; charset=utf-8',

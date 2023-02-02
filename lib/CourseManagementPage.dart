@@ -124,7 +124,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                 ),
               ),
               AppInfoRow(
-                info: Text("Active"),
+                info: Text("Public"),
                 child: Checkbox(
                   value: _isPublic,
                   onChanged: (bool? public) {

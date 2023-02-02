@@ -11,7 +11,7 @@ import 'package:cptclient/json/right.dart';
 
 Future<User?> user_info(String token) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/member/user_info'),
+    server.uri('/member/user_info'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -25,7 +25,7 @@ Future<User?> user_info(String token) async {
 
 Future<Right?> right_info(String token) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/member/user_right'),
+    server.uri('/member/user_right'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -39,7 +39,7 @@ Future<Right?> right_info(String token) async {
 
 Future<bool> password_edit(Session session, String password) async {
   final response = await http.post(
-    Uri.http(server.serverURL, '/member/user_password'),
+    server.uri('/member/user_password'),
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
       'Token': session.token,

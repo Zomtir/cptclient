@@ -13,7 +13,9 @@ class ConnectionPage extends StatefulWidget {
 }
 
 class ConnectionPageState extends State<ConnectionPage> {
-  TextEditingController _ctrlServerURL = TextEditingController();
+  TextEditingController _ctrlServerScheme = TextEditingController();
+  TextEditingController _ctrlServerHost = TextEditingController();
+  TextEditingController _ctrlServerPort = TextEditingController();
   TextEditingController _ctrlAutoLogin = TextEditingController();
   TextEditingController _ctrlUser = TextEditingController();
   TextEditingController _ctrlSlot = TextEditingController();
@@ -24,7 +26,9 @@ class ConnectionPageState extends State<ConnectionPage> {
   void initState() {
     super.initState();
 
-    _ctrlServerURL.text = window.localStorage['ServerURL']!;
+    _ctrlServerScheme.text = window.localStorage['ServerScheme']!;
+    _ctrlServerHost.text = window.localStorage['ServerHost']!;
+    _ctrlServerPort.text = window.localStorage['ServerPort']!;
     _ctrlAutoLogin.text = window.localStorage['AutoLogin']!;
     _ctrlUser.text = window.localStorage['DefaultUser']!;
     _ctrlSlot.text = window.localStorage['DefaultSlot']!;
@@ -39,7 +43,7 @@ class ConnectionPageState extends State<ConnectionPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -51,29 +55,49 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: Text("EN"),
           ),
           AppInfoRow(
-            info: Wrap(
-              spacing: 15,
-              children: [
-              Text("Server"),
-              Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
-            ],),
+            info: Text("Server Scheme"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlServerURL,
-              onChanged: (String text) { window.localStorage['ServerURL'] = text; server.serverURL = text; },
+              controller: _ctrlServerScheme,
+              onChanged: (String text) {
+                window.localStorage['ServerScheme'] = text;
+                server.serverScheme = text;
+              },
             ),
-            trailing:
-              IconButton(
-                onPressed: _testConnection,
-                icon: Icon(Icons.refresh),
-              ),
+          ),
+          AppInfoRow(
+            info: Text("Server Host"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlServerHost,
+              onChanged: (String text) {
+                window.localStorage['ServerHost'] = text;
+                server.serverHost = text;
+              },
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Server Port"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlServerPort,
+              onChanged: (String text) {
+                window.localStorage['ServerPort'] = text;
+                server.serverPort = int.tryParse(text) ?? 443;
+              },
+            ),
+          ),
+          AppButton(
+            text: "Test connection",
+            onPressed: _testConnection,
+            trailing: Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
           ),
           AppInfoRow(
             info: Text("Auto Login"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlAutoLogin,
-              onChanged: (String text) => { window.localStorage['AutoLogin'] = text },
+              onChanged: (String text) => {window.localStorage['AutoLogin'] = text},
             ),
           ),
           AppInfoRow(
@@ -81,7 +105,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUser,
-              onChanged: (String text) => { window.localStorage['DefaultUser'] = text },
+              onChanged: (String text) => {window.localStorage['DefaultUser'] = text},
             ),
           ),
           AppInfoRow(
@@ -89,7 +113,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlSlot,
-              onChanged: (String text) => { window.localStorage['DefaultSlot'] = text },
+              onChanged: (String text) => {window.localStorage['DefaultSlot'] = text},
             ),
           ),
           AppInfoRow(
@@ -97,7 +121,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlLocation,
-              onChanged: (String text) => { window.localStorage['DefaultLocation'] = text },
+              onChanged: (String text) => {window.localStorage['DefaultLocation'] = text},
             ),
           ),
           AppButton(

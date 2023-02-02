@@ -11,7 +11,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, String status, User? user) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/event_list', {
+    server.uri('/admin/event_list', {
       'begin': webDate(begin),
       'end': webDate(end),
       'status': status,
@@ -30,7 +30,7 @@ Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Str
 
 Future<bool> event_accept(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/event_accept', {
+    server.uri('/admin/event_accept', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -43,7 +43,7 @@ Future<bool> event_accept(Session session, Slot slot) async {
 
 Future<bool> event_deny(Session session, Slot slot) async {
   final response = await http.head(
-    Uri.http(server.serverURL, '/admin/event_deny', {
+    server.uri('/admin/event_deny', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

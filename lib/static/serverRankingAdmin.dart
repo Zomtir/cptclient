@@ -11,7 +11,7 @@ import 'package:cptclient/json/user.dart';
 
 Future<List<Ranking>> ranking_list(Session session, User? user, Skill? skill) async {
   final response = await http.get(
-    Uri.http(server.serverURL, '/admin/ranking_list', {
+    server.uri('/admin/ranking_list', {
       if (user != null) 'user_id': user.id.toString(),
       if (skill != null) 'branch_id': skill.branch.id,
       if (skill != null) 'min': '0',
