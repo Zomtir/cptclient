@@ -27,12 +27,10 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   }
 
   Future<void> _savePassword() async {
-    if (_ctrlUserPassword.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Kept old password')));
+    if (!await server.put_password(widget.session, _ctrlUserPassword.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password was not changed.')));
       return;
     }
-
-    if (!await server.password_edit(widget.session, _ctrlUserPassword.text)) return;
 
     _ctrlUserPassword.text = '';
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully changed password')));

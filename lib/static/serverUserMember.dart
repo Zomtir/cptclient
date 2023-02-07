@@ -8,6 +8,7 @@ import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/right.dart';
+import 'package:cptclient/json/credential.dart';
 
 Future<User?> user_info(String token) async {
   final response = await http.get(
@@ -37,14 +38,20 @@ Future<Right?> right_info(String token) async {
   return Right.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<bool> password_edit(Session session, String password) async {
+Future<bool> put_password(Session session, String password) async {
+  if (password.isEmpty) return false;
+  if (password.length < 6) return false;
+
+  String salt = crypto.generateSaltHex();
+  Credential credential = Credential(session.user!.key.toString(), crypto.hashPassword(password, salt), salt);
+
   final response = await http.post(
     server.uri('/member/user_password'),
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
+      'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
     },
-    body: crypto.hashPassword(password, session.user!.key),
+    body: json.encode(credential),
   );
 
   return (response.statusCode == 200);

@@ -7,7 +7,7 @@ import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
-import 'package:cptclient/json/credentials.dart';
+import 'package:cptclient/json/credential.dart';
 
 String serverScheme = window.localStorage['ServerScheme']!;
 String serverHost = window.localStorage['ServerHost']!;
@@ -111,10 +111,28 @@ Future<bool> loadBranches() async {
   return true;
 }
 
+Future<String?> getUserSalt(String key) async {
+  final response = await http.get(
+    uri('/user_salt', {
+      'user_key': key,
+    }),
+    headers: {
+      'Accept': 'text/plain; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return utf8.decode(response.bodyBytes);
+}
+
 Future<bool> loginUser(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return false;
 
-  Credential credential = Credential(key, crypto.hashPassword(pwd, key));
+  String? salt = await getUserSalt(key);
+  if (salt == null || salt.isEmpty) return false;
+
+  Credential credential = Credential(key, crypto.hashPassword(pwd, salt), salt);
 
   final response = await http.post(
     uri('user_login'),
@@ -137,7 +155,7 @@ Future<bool> loginUser(String key, String pwd) async {
 Future<bool> loginSlot(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return false;
 
-  Credential credential = Credential(key, pwd);
+  Credential credential = Credential(key, pwd, "");
 
   final response = await http.post(
     uri('slot_login'),
