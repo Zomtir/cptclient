@@ -117,9 +117,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   Future<void> _getCourseModerators() async {
-    List<User>? moderators = await server.course_moderator_list(widget.session, widget.course.id);
-
-    if (moderators == null) return;
+    List<User> moderators = await server.course_moderator_list(widget.session, widget.course.id);
 
     setState(() {
       _moderators = moderators;

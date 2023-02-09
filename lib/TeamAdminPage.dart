@@ -4,25 +4,29 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'material/PanelSwiper.dart';
+import 'material/panels/UserSelectionPanel.dart';
 import 'static/server.dart' as server;
+import 'static/serverTeamAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/team.dart';
+import 'json/user.dart';
 
 class TeamAdminPage extends StatefulWidget {
   final Session session;
   final Team team;
   final void Function() onUpdate;
+  final bool isDraft;
 
-  TeamAdminPage({Key? key, required this.session, required this.team, required this.onUpdate}) : super(key: key);
+  TeamAdminPage({Key? key, required this.session, required this.team, required this.onUpdate, required this.isDraft}) : super(key: key);
 
   @override
   TeamAdminPageState createState() => TeamAdminPageState();
 }
 
 class TeamAdminPageState extends State<TeamAdminPage> {
+  List<User> _members = [];
+
   TextEditingController _ctrlName = TextEditingController();
   TextEditingController _ctrlDescription = TextEditingController();
 
@@ -31,6 +35,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   bool _ctrlRightInventory = false;
   bool _ctrlRightRanking = false;
   bool _ctrlRightTeam = false;
+  bool _ctrlRightTerm = false;
   bool _ctrlRightUser = false;
 
   TeamAdminPageState();
@@ -38,6 +43,11 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   @override
   void initState() {
     super.initState();
+    _update();
+  }
+
+  void _update() {
+    if (!widget.isDraft) _getTeamMemberList();
     _applyTeam();
   }
 
@@ -49,6 +59,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     _ctrlRightInventory = widget.team.right!.admin_inventory;
     _ctrlRightRanking = widget.team.right!.admin_rankings;
     _ctrlRightTeam = widget.team.right!.admin_teams;
+    _ctrlRightTerm = widget.team.right!.admin_term;
     _ctrlRightUser = widget.team.right!.admin_users;
   }
 
@@ -66,34 +77,24 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   void _submitTeam() async {
     _gatherTeam();
 
-    final response = await http.post(
-      server.uri(widget.team.id == 0 ? 'team_create' : 'team_edit'),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-      body: json.encode(widget.team),
-    );
+    bool success;
+    if (widget.isDraft)
+      success = await server.team_create(widget.session, widget.team);
+    else
+      success = await server.team_edit(widget.session, widget.team);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit team')));
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Succeeded to edit team')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited team')));
     widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _deleteTeam() async {
-    final response = await http.head(
-      server.uri('team_delete', {'team_id': widget.team.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
+    if (!await server.team_delete(widget.session, widget.team)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete team')));
       return;
     }
@@ -105,7 +106,48 @@ class TeamAdminPageState extends State<TeamAdminPage> {
 
   void _duplicateTeam() {
     Team _team = Team.fromTeam(widget.team);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeamAdminPage(session: widget.session, team: _team, onUpdate: widget.onUpdate)));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TeamAdminPage(
+          session: widget.session,
+          team: _team,
+          onUpdate: widget.onUpdate,
+          isDraft: true,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _getTeamMemberList() async {
+    List<User> members = await server.team_member_list(widget.session, widget.team.id);
+    members.sort();
+
+    setState(() {
+      _members = members;
+    });
+  }
+
+  void _addMember(User user) async {
+    bool success = await server.team_member_add(widget.session, widget.team.id, user.id);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add member')));
+      return;
+    }
+
+    _getTeamMemberList();
+  }
+
+  void _removeMember(User user) async {
+    bool success = await server.team_member_remove(widget.session, widget.team.id, user.id);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove member')));
+      return;
+    }
+
+    _getTeamMemberList();
   }
 
   @override
@@ -116,7 +158,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
       ),
       body: AppBody(
         children: [
-          if (widget.team.id != 0)
+          if (!widget.isDraft)
             Row(
               children: [
                 Expanded(
@@ -135,68 +177,91 @@ class TeamAdminPageState extends State<TeamAdminPage> {
                 ),
               ],
             ),
-          AppInfoRow(
-            info: Text("Name"),
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlName,
-            ),
-          ),
-          AppInfoRow(
-            info: Text("Description"),
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlDescription,
-            ),
-          ),
-          AppInfoRow(
-            info: Text("Course Edit"),
-            child: Checkbox(
-              value: _ctrlRightCourse,
-              onChanged: (bool? enabled) => setState(() => _ctrlRightCourse = enabled!),
-            ),
-          ),
-          AppInfoRow(
-            info: Text("Event Edit"),
-            child: Checkbox(
-              value: _ctrlRightEvent,
-              onChanged: (bool? enabled) => setState(() => _ctrlRightEvent = enabled!),
-            ),
-          ),
-          AppInfoRow(
-            info: Text("Inventory Edit"),
-            child: Checkbox(
-              value: _ctrlRightInventory,
-              onChanged: (bool? enabled) => setState(() => _ctrlRightInventory = enabled!),
-            ),
-          ),
-          AppInfoRow(
-            info: Text("Ranking Edit"),
-            child: Checkbox(
-              value: _ctrlRightRanking,
-              onChanged: (bool? enabled) => setState(() => _ctrlRightRanking = enabled!),
-            ),
-          ),
-          AppInfoRow(
-            info: Text("Team Edit"),
-            child: Checkbox(
-              value: _ctrlRightTeam,
-              onChanged: (bool? enabled) => setState(() => _ctrlRightTeam = enabled!),
-            ),
-          ),
-          AppInfoRow(
-            info: Text("User Edit"),
-            child: Checkbox(
-              value: _ctrlRightUser,
-              onChanged: (bool? enabled) => setState(() => _ctrlRightUser = enabled!),
-            ),
-          ),
-          AppButton(
-            text: "Save",
-            onPressed: _submitTeam,
-          ),
+          PanelSwiper(panels: [
+            if (!widget.isDraft) Panel("Members", UserSelectionPanel(
+              usersAvailable: server.cacheMembers,
+              usersChosen: _members,
+              onAdd: _addMember,
+              onRemove: _removeMember,
+            )),
+            Panel("Edit", _buildEditPanel()),
+          ]),
         ],
       ),
+    );
+  }
+
+  Widget _buildEditPanel() {
+    return Column(
+      children: [
+        AppInfoRow(
+          info: Text("Name"),
+          child: TextField(
+            maxLines: 1,
+            controller: _ctrlName,
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Description"),
+          child: TextField(
+            maxLines: 1,
+            controller: _ctrlDescription,
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Course Edit"),
+          child: Checkbox(
+            value: _ctrlRightCourse,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightCourse = enabled!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Event Edit"),
+          child: Checkbox(
+            value: _ctrlRightEvent,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightEvent = enabled!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Inventory Edit"),
+          child: Checkbox(
+            value: _ctrlRightInventory,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightInventory = enabled!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Ranking Edit"),
+          child: Checkbox(
+            value: _ctrlRightRanking,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightRanking = enabled!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Team Edit"),
+          child: Checkbox(
+            value: _ctrlRightTeam,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightTeam = enabled!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Term Edit"),
+          child: Checkbox(
+            value: _ctrlRightTerm,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightTerm = enabled!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("User Edit"),
+          child: Checkbox(
+            value: _ctrlRightUser,
+            onChanged: (bool? enabled) => setState(() => _ctrlRightUser = enabled!),
+          ),
+        ),
+        AppButton(
+          text: "Save",
+          onPressed: _submitTeam,
+        ),
+      ],
     );
   }
 }

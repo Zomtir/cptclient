@@ -101,7 +101,7 @@ class MemberLandingPage extends StatelessWidget {
                 text: "Membership\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserManagementPage(session: session))),
               ),
-              if (session.right!.admin_users) AppIconButton(
+              if (session.right!.admin_teams) AppIconButton(
                 image: const AssetImage('assets/icons/icon_teams.png'),
                 text: "Team\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamManagementPage(session: session))),

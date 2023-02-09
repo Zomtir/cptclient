@@ -4,12 +4,9 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'TeamAdminPage.dart';
 
-import 'static/server.dart' as server;
+import 'static/serverTeamAdmin.dart' as server;
 import 'json/session.dart';
 import 'json/team.dart';
 
@@ -23,43 +20,58 @@ class TeamManagementPage extends StatefulWidget {
 }
 
 class TeamManagementPageState extends State<TeamManagementPage> {
-  List <Team> _teams = [];
+  List<Team> _teams = [];
 
   TeamManagementPageState();
 
   @override
   void initState() {
     super.initState();
-    _getTeams();
+    _update();
   }
 
-  Future<void> _getTeams() async {
-    final response = await http.get(
-      server.uri('/admin/team_list'),
-      headers: {
-        'Token': widget.session.token,
-        'Accept': 'application/json; charset=utf-8',
-      },
-    );
+  void _update() {
+    _getTeamList();
+  }
 
-    if (response.statusCode != 200) return;
+  Future<void> _getTeamList() async {
+    List<Team> teams = await server.team_list(widget.session);
 
-    Iterable l = json.decode(utf8.decode(response.bodyBytes));
     setState(() {
-      _teams = List<Team>.from(l.map((model) => Team.fromJson(model)));
+      _teams = teams;
     });
   }
 
   void _selectTeam(Team team) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TeamAdminPage(session: widget.session, team: team, onUpdate: _getTeams)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TeamAdminPage(
+          session: widget.session,
+          team: team,
+          onUpdate: _getTeamList,
+          isDraft: false,
+        ),
+      ),
+    );
   }
 
   void _createTeam() async {
-    _selectTeam(Team.fromVoid());
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TeamAdminPage(
+          session: widget.session,
+          team: Team.fromVoid(),
+          onUpdate: _getTeamList,
+          isDraft: false,
+        ),
+      ),
+    );
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Team Overview"),
@@ -84,5 +96,4 @@ class TeamManagementPageState extends State<TeamManagementPage> {
       ),
     );
   }
-
 }

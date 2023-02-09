@@ -5,67 +5,68 @@ import 'dart:convert';
 
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/json/course.dart';
 
-Future<List<Course>> course_list(Session session, User? user) async {
+Future<List<Team>> team_list(Session session) async {
   final response = await http.get(
-    server.uri('/admin/course_list', {
-      if (user != null) 'mod_id': user.id.toString(),
-    }),
+    server.uri('/admin/team_list'),
     headers: {
       'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
     },
   );
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
-  return List<Course>.from(l.map((model) => Course.fromJson(model)));
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  return List<Team>.from(l.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> course_create(Session session, Course course) async {
+Future<bool> team_create(Session session, Team team) async {
   final response = await http.post(
-    server.uri('/admin/course_create'),
+    server.uri('/admin/team_create'),
     headers: {
-      'Token': session.token,
       'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
     },
-    body: json.encode(course),
+    body: json.encode(team),
   );
 
   return (response.statusCode == 200);
 }
 
-Future<bool> course_edit(Session session, int courseID, Course course) async {
+Future<bool> team_edit(Session session, Team team) async {
   final response = await http.post(
-    server.uri('/admin/course_edit', {
-     'course_id' : courseID.toString(),
+    server.uri('/admin/team_edit', {
+      'team_id': team.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(team),
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> team_delete(Session session, Team team) async {
+  final response = await http.head(
+    server.uri('team_delete', {
+      'team_id': team.id.toString(),
     }),
     headers: {
       'Token': session.token,
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: json.encode(course),
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> course_delete(Session session, int courseID) async {
-  final response = await http.head(
-    server.uri('/admin/course_delete', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
     },
   );
 
   return (response.statusCode == 200);
 }
 
-Future<List<User>> course_moderator_list(Session session, int courseID) async {
+Future<List<User>> team_member_list(Session session, int teamID) async {
   final response = await http.get(
-    server.uri('/admin/course_moderator_list', {'course_id': courseID.toString()}),
+    server.uri('/admin/team_member_list', {'team_id': teamID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -78,10 +79,10 @@ Future<List<User>> course_moderator_list(Session session, int courseID) async {
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> course_moderator_add(Session session, int courseID, int userID) async {
+Future<bool> team_member_add(Session session, int teamID, int userID) async {
   final response = await http.head(
-    server.uri('/admin/course_moderator_add', {
-      'course_id': courseID.toString(),
+    server.uri('/admin/team_member_add', {
+      'team_id': teamID.toString(),
       'user_id' : userID.toString(),
     }),
     headers: {
@@ -92,10 +93,10 @@ Future<bool> course_moderator_add(Session session, int courseID, int userID) asy
   return (response.statusCode == 200);
 }
 
-Future<bool> course_moderator_remove(Session session, int courseID, int userID) async {
+Future<bool> team_member_remove(Session session, int teamID, int userID) async {
   final response = await http.head(
-    server.uri('/admin/course_moderator_remove', {
-      'course_id': courseID.toString(),
+    server.uri('/admin/team_member_remove', {
+      'team_id': teamID.toString(),
       'user_id' : userID.toString(),
     }),
     headers: {
