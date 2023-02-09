@@ -55,27 +55,27 @@ class MemberLandingPage extends StatelessWidget {
             spacing: 5.0,
             children: [
               AppIconButton(
-                icon: Image.asset('icons/icon_calendar.png'),
+                image: const AssetImage('assets/icons/icon_calendar.png'),
                 text: "Calendar",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarPage())),
               ),
               AppIconButton(
-                icon: Image.asset('icons/icon_course.png'),
+                image: const AssetImage('assets/icons/icon_course.png'),
                 text: "Courses",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseOverviewPage(session: session))),
               ),
               AppIconButton(
-                icon: Image.asset('icons/icon_event.png'),
+                image: const AssetImage('assets/icons/icon_event.png'),
                 text: "Events",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewPage(session: session))),
               ),
               AppIconButton(
-                icon: Image.asset('icons/icon_rankings.png'),
+                image: const AssetImage('assets/icons/icon_rankings.png'),
                 text: "Rankings",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingOverviewPage(session: session))),
               ),
               AppIconButton(
-                icon: Image.asset('icons/icon_inventory.png'),
+                image: const AssetImage('icons/icon_inventory.png'),
                 text: "Inventory",
                 onPressed: () => {},
               ),
@@ -92,37 +92,37 @@ class MemberLandingPage extends StatelessWidget {
             spacing: 5.0,
             children: [
               if (session.right!.admin_users) AppIconButton(
-                icon: Image.asset('icons/icon_user.png'),
+                image: const AssetImage('assets/icons/icon_user.png'),
                 text: "User\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserManagementPage(session: session))),
               ),
               if (session.right!.admin_users) AppIconButton(
-                icon: Image.asset('icons/icon_membership.png'),
+                image: const AssetImage('assets/icons/icon_membership.png'),
                 text: "Membership\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserManagementPage(session: session))),
               ),
               if (session.right!.admin_users) AppIconButton(
-                icon: Image.asset('icons/icon_teams.png'),
+                image: const AssetImage('assets/icons/icon_teams.png'),
                 text: "Team\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamManagementPage(session: session))),
               ),
               if (session.right!.admin_rankings) AppIconButton(
-                icon: Image.asset('icons/icon_rankings.png'),
+                image: const AssetImage('assets/icons/icon_rankings.png'),
                 text: "Ranking\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingManagementPage(session: session))),
               ),
               if (session.right!.admin_event) AppIconButton(
-                icon: Image.asset('icons/icon_event.png'),
+                image: const AssetImage('assets/icons/icon_event.png'),
                 text: "Event\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventManagementPage(session: session))),
               ),
               if (session.right!.admin_courses) AppIconButton(
-                icon: Image.asset('icons/icon_course.png'),
+                image: const AssetImage('assets/icons/icon_course.png'),
                 text: "Course\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseManagementPage(session: session))),
               ),
               if (session.right!.admin_inventory) AppIconButton(
-                icon: Image.asset('icons/icon_inventory.png'),
+                image: const AssetImage('assets/icons/icon_inventory.png'),
                 text: "Inventory\nManagement",
                 onPressed: () => {},
               ),

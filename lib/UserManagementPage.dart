@@ -31,19 +31,14 @@ class UserManagementPageState extends State<UserManagementPage> {
     _update();
   }
 
-  void _update() {
-    _requestUsers();
-  }
-
-  Future<void> _requestUsers() async {
+  Future<void> _update() async {
     _users = await server.user_list(widget.session);
-    setState(() {
-      _usersLimited = _users;
-      _ctrlFilterUser.clear();
-    });
+    _ctrlFilterUser.clear();
+    _limitUsers(_users);
   }
 
   void _limitUsers(List<User> users) {
+    users.sort();
     setState(() {
       _usersLimited = users;
     });

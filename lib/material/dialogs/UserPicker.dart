@@ -68,6 +68,7 @@ class _UserPickerState extends State<UserPicker> {
   }
 
   void _limitUsers(List<User> users) {
+    users.sort();
     setState(() {
       _usersLimited = users;
     });
@@ -82,7 +83,7 @@ class _UserPickerState extends State<UserPicker> {
       itemBuilder: (User user) {
         return InkWell(
           child: ListTile(
-            title: Text("${user.firstname} ${user.lastname}"),
+            title: Text("${user.lastname}, ${user.firstname}"),
             subtitle: Text("${user.key}"),
             trailing: IconButton(
               icon: Icon(Icons.add),

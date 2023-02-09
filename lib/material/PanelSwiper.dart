@@ -51,21 +51,17 @@ class _PanelSwiperState extends State<PanelSwiper> {
                 },
               ),
             if (_count > 1)
-              Expanded(
-                child: ClipPath(
-                  clipper: CornerClipper(left: 20, right: -20),
-                  child: Container(
-                    height: 30,
-                    color: Colors.amber,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        setState(() => _index = _indexPrev);
-                        widget.onChange?.call(_index);
-                      },
-                      child: Center(
-                        child: Text(widget.panels[_indexPrev].text, style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
+              ClipPath(
+                clipper: CornerClipper(left: 20, right: -20),
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  color: Colors.amber,
+                  child: RawMaterialButton(
+                    onPressed: () {
+                      setState(() => _index = _indexPrev);
+                      widget.onChange?.call(_index);
+                    },
                   ),
                 ),
               ),
@@ -76,27 +72,23 @@ class _PanelSwiperState extends State<PanelSwiper> {
                   height: 30,
                   color: Colors.amber,
                   child: Center(
-                    child: Text(widget.panels[_index].text, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    child: Text(widget.panels[_index].text, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                   ),
                 ),
               ),
             ),
             if (_count > 1)
-              Expanded(
-                child: ClipPath(
-                  clipper: CornerClipper(left: -20, right: 20),
-                  child: Container(
-                    height: 30,
-                    color: Colors.amber,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        setState(() => _index = _indexNext);
-                        widget.onChange?.call(_index);
-                      },
-                      child: Center(
-                        child: Text(widget.panels[_indexNext].text, style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
+              ClipPath(
+                clipper: CornerClipper(left: -20, right: 20),
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  color: Colors.amber,
+                  child: RawMaterialButton(
+                    onPressed: () {
+                      setState(() => _index = _indexNext);
+                      widget.onChange?.call(_index);
+                    },
                   ),
                 ),
               ),

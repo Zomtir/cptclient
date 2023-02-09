@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppIconButton extends StatelessWidget {
-  final Widget icon;
+  final AssetImage image;
   final String text;
   final VoidCallback onPressed;
 
   const AppIconButton({
     Key? key,
-    required this.icon,
+    required this.image,
     required this.text,
     required this.onPressed,
   }) : super(key: key);
@@ -23,9 +23,10 @@ class AppIconButton extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              child: icon,
+            Image(
               width: 75,
+              alignment: Alignment.center,
+              image: image,
             ),
             Text(text),
           ],

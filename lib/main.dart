@@ -66,10 +66,10 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(
-          'assets/images/splash.png',
+        child: const Image(
           fit: BoxFit.cover,
           alignment: Alignment.center,
+          image: AssetImage('images/splash.png'),
         ),
       ),
     );

@@ -102,6 +102,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
 
   void _requestOwnerList() async {
     List<User> owners = await server.class_owner_list(widget.session, widget.slot);
+    owners.sort();
 
     setState(() {
       _owners = owners;
@@ -120,6 +121,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
 
   void _requestParticipantList() async {
     List<User> participants = await server.class_participant_list(widget.session, widget.slot);
+    participants.sort();
 
     setState(() {
       _participants = participants;
