@@ -12,7 +12,6 @@ import 'dart:convert';
  */
 String hashPassword(String password, String salt) {
   String saltedPassword = "$password|$salt";
-  print(saltedPassword);
   Digest hashedPassword = sha256.convert(utf8.encode(saltedPassword));
   return hashedPassword.toString();
 }
