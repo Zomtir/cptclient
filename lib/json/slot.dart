@@ -9,7 +9,7 @@ import 'user.dart';
 
 enum Status { DRAFT, PENDING, OCCURRING, REJECTED, CANCELED }
 
-class Slot {
+class Slot implements Comparable {
   final int id;
   String key;
   String title;
@@ -80,6 +80,8 @@ class Slot {
       this.course_id = null,
       this.owners = [user];
 
-  // TODO The user ID is not picked up server side anyway,
-  // but should be eventually if an admin should be able to create user reservations
+  @override
+  int compareTo(other) {
+    return this.begin.compareTo(other.begin);
+  }
 }

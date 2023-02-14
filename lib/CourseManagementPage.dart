@@ -53,6 +53,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
 
   Future<void> _requestCourses(User? user) async {
     _courses = await server.course_list(widget.session, user);
+    _courses.sort();
     setState(() => _ctrlDropdownModerators.value = user);
     _filterCourses();
   }

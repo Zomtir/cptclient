@@ -80,6 +80,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   Future<void> _getCourseSlots() async {
     List<Slot> slots = await server.class_list(widget.session, widget.course.id);
+    slots.sort();
 
     setState(() {
       _slots = slots;
@@ -118,6 +119,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   Future<void> _getCourseModerators() async {
     List<User> moderators = await server.course_moderator_list(widget.session, widget.course.id);
+    moderators.sort();
 
     setState(() {
       _moderators = moderators;
