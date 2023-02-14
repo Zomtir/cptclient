@@ -75,7 +75,7 @@ class MemberLandingPage extends StatelessWidget {
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingOverviewPage(session: session))),
               ),
               AppIconButton(
-                image: const AssetImage('icons/icon_inventory.png'),
+                image: const AssetImage('assets/icons/icon_inventory.png'),
                 text: "Inventory",
                 onPressed: () => {},
               ),
