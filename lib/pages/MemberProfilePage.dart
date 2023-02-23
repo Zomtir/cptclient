@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 
-import 'static/serverUserMember.dart' as server;
+import '../static/serverUserMember.dart' as server;
 
-import 'json/session.dart';
+import '../json/session.dart';
 
 class MemberProfilePage extends StatefulWidget {
   final Session session;

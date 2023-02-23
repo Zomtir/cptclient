@@ -11,13 +11,13 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 
 import 'CourseAdminPage.dart';
 
-import 'static/server.dart' as server;
-import 'static/serverCourseAdmin.dart' as server;
+import '../static/server.dart' as server;
+import '../static/serverCourseAdmin.dart' as server;
 
-import 'json/session.dart';
-import 'json/course.dart';
-import 'json/branch.dart';
-import 'json/user.dart';
+import '../json/session.dart';
+import '../json/course.dart';
+import '../json/branch.dart';
+import '../json/user.dart';
 
 class CourseManagementPage extends StatefulWidget {
   final Session session;

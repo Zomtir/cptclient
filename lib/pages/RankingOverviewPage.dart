@@ -4,10 +4,10 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/tiles/AppSkillTile.dart';
 
-import 'static/serverRankingMember.dart' as server;
-import 'json/session.dart';
-import 'json/ranking.dart';
-import 'json/skill.dart';
+import 'package:cptclient/static/serverRankingMember.dart' as server;
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/skill.dart';
 
 class RankingOverviewPage extends StatefulWidget {
   final Session session;

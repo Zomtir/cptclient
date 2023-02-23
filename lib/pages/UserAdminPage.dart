@@ -4,9 +4,9 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 
-import 'static/serverUserAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/user.dart';
+import '../static/serverUserAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/user.dart';
 
 class UserAdminPage extends StatefulWidget {
   final Session session;

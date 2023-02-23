@@ -7,10 +7,10 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'EventDetailPage.dart';
 
-import 'static/serverEventMember.dart' as server;
-import 'static/serverEventOwner.dart' as server;
-import 'json/session.dart';
-import 'json/slot.dart';
+import '../static/serverEventMember.dart' as server;
+import '../static/serverEventOwner.dart' as server;
+import '../json/session.dart';
+import '../json/slot.dart';
 
 class EventOverviewPage extends StatefulWidget {
   final Session session;

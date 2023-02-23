@@ -6,9 +6,9 @@ import 'package:cptclient/material/AppButton.dart';
 
 import 'UserAdminPage.dart';
 
-import 'static/serverUserAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/user.dart';
+import 'package:cptclient/static/serverUserAdmin.dart' as server;
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 
 class TermManagementPage extends StatefulWidget {
   final Session session;

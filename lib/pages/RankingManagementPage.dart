@@ -9,12 +9,12 @@ import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 
-import 'static/server.dart' as server;
-import 'static/serverRankingAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/ranking.dart';
-import 'json/branch.dart';
-import 'json/user.dart';
+import '../static/server.dart' as server;
+import '../static/serverRankingAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/ranking.dart';
+import '../json/branch.dart';
+import '../json/user.dart';
 
 import 'RankingAdminPage.dart';
 

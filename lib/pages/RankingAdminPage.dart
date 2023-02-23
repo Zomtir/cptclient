@@ -12,11 +12,11 @@ import 'package:intl/intl.dart';
 
 import 'dart:convert';
 
-import 'static/server.dart' as server;
-import 'json/session.dart';
-import 'json/ranking.dart';
-import 'json/user.dart';
-import 'json/branch.dart';
+import '../static/server.dart' as server;
+import '../json/session.dart';
+import '../json/ranking.dart';
+import '../json/user.dart';
+import '../json/branch.dart';
 
 class RankingAdminPage extends StatefulWidget {
   final Session session;

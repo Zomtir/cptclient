@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppIconButton.dart';
 
-import 'static/server.dart' as server;
-import 'static/navigation.dart' as navi;
-import 'json/session.dart';
+import '../static/server.dart' as server;
+import '../static/navigation.dart' as navi;
+import '../json/session.dart';
 
 import 'CalendarPage.dart';
 import 'MemberProfilePage.dart';

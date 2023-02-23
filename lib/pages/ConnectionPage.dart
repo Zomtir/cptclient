@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppInfoRow.dart';
 
 import "package:universal_html/html.dart";
 
-import 'static/server.dart' as server;
+import '../static/server.dart' as server;
 
 class ConnectionPage extends StatefulWidget {
   @override

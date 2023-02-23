@@ -11,16 +11,16 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'ClassAdminPage.dart';
 
-import 'material/panels/UserSelectionPanel.dart';
-import 'static/server.dart' as server;
-import 'static/serverCourseAdmin.dart' as server;
-import 'static/serverClassAdmin.dart' as server;
+import '../material/panels/UserSelectionPanel.dart';
+import '../static/server.dart' as server;
+import '../static/serverCourseAdmin.dart' as server;
+import '../static/serverClassAdmin.dart' as server;
 
-import 'json/session.dart';
-import 'json/course.dart';
-import 'json/slot.dart';
-import 'json/user.dart';
-import 'json/branch.dart';
+import '../json/session.dart';
+import '../json/course.dart';
+import '../json/slot.dart';
+import '../json/user.dart';
+import '../json/branch.dart';
 
 class CourseAdminPage extends StatefulWidget {
   final Session session;

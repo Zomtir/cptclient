@@ -7,9 +7,9 @@ import 'package:cptclient/material/tiles/AppUserTile.dart';
 
 import 'UserAdminPage.dart';
 
-import 'static/serverUserAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/user.dart';
+import '../static/serverUserAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/user.dart';
 
 class UserManagementPage extends StatefulWidget {
   final Session session;

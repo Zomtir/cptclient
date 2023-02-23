@@ -4,8 +4,8 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
-import 'json/session.dart';
-import 'json/slot.dart';
+import '../json/session.dart';
+import '../json/slot.dart';
 
 class ClassMemberPage extends StatefulWidget {
   final Session session;

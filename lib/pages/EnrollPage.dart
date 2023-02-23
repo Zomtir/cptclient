@@ -5,10 +5,10 @@ import 'package:cptclient/material/AppBody.dart';
 
 import 'package:intl/intl.dart';
 
-import 'static/navigation.dart' as navi;
-import 'static/serverSlotCasual.dart' as server;
-import 'json/session.dart';
-import 'json/user.dart';
+import '../static/navigation.dart' as navi;
+import '../static/serverSlotCasual.dart' as server;
+import '../json/session.dart';
+import '../json/user.dart';
 
 class EnrollPage extends StatefulWidget {
   final Session session;

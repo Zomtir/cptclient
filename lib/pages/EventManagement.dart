@@ -12,13 +12,13 @@ import 'package:cptclient/material/dialogs/DatePicker.dart';
 
 import 'EventDetailPage.dart';
 
-import 'static/format.dart';
-import 'static/server.dart' as server;
-import 'static/serverEventAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/slot.dart';
-import 'json/location.dart';
-import 'json/user.dart';
+import '../static/format.dart';
+import '../static/server.dart' as server;
+import '../static/serverEventAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/slot.dart';
+import '../json/location.dart';
+import '../json/user.dart';
 
 class EventManagementPage extends StatefulWidget {
   final Session session;

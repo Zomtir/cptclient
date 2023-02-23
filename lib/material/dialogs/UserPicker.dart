@@ -56,7 +56,7 @@ class _UserPickerState extends State<UserPicker> {
   void initState() {
     super.initState();
     _usersVisible = widget.usersAvailable.toSet().difference(widget.usersHidden.toSet()).toList();
-    _usersVisible.sort();
+    _limitUsers(_usersVisible);
   }
 
   void _handleSelect(User user) {

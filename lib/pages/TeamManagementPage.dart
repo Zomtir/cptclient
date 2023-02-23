@@ -6,9 +6,9 @@ import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
 import 'TeamAdminPage.dart';
 
-import 'static/serverTeamAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/team.dart';
+import '../static/serverTeamAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/team.dart';
 
 class TeamManagementPage extends StatefulWidget {
   final Session session;

@@ -13,11 +13,11 @@ import 'dart:convert';
 
 import 'CourseInfoPage.dart';
 
-import 'static/server.dart' as server;
+import '../static/server.dart' as server;
 
-import 'json/session.dart';
-import 'json/course.dart';
-import 'json/branch.dart';
+import '../json/session.dart';
+import '../json/course.dart';
+import '../json/branch.dart';
 
 class CourseOverviewPage extends StatefulWidget {
   final Session session;

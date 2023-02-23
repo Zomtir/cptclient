@@ -3,10 +3,10 @@ import "package:universal_html/html.dart";
 
 import 'static/navigation.dart' as navi;
 
-import 'ConnectionPage.dart';
-import 'LandingPage.dart';
-import 'MemberLandingPage.dart';
-import 'EnrollPage.dart';
+import 'pages/ConnectionPage.dart';
+import 'pages/LandingPage.dart';
+import 'pages/MemberLandingPage.dart';
+import 'pages/EnrollPage.dart';
 
 void main() {
   window.localStorage.putIfAbsent('ServerScheme', () => 'http');

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'material/AppButton.dart';
+import '../material/AppButton.dart';
 
 import "package:universal_html/html.dart";
 
-import 'static/server.dart' as server;
-import 'static/navigation.dart' as navi;
+import '../static/server.dart' as server;
+import '../static/navigation.dart' as navi;
 
 import 'ConnectionPage.dart';
 import 'CreditPage.dart';

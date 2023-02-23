@@ -10,12 +10,12 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:intl/intl.dart';
 
-import 'static/server.dart' as server;
-import 'static/serverClassAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/slot.dart';
-import 'json/location.dart';
-import 'json/user.dart';
+import '../static/server.dart' as server;
+import '../static/serverClassAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/slot.dart';
+import '../json/location.dart';
+import '../json/user.dart';
 
 class ClassAdminPage extends StatefulWidget {
   final Session session;

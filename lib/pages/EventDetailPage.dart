@@ -12,13 +12,13 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:intl/intl.dart';
 
-import 'static/server.dart' as server;
-import 'static/serverEventMember.dart' as server;
-import 'static/serverEventOwner.dart' as server;
-import 'json/session.dart';
-import 'json/slot.dart';
-import 'json/location.dart';
-import 'json/user.dart';
+import '../static/server.dart' as server;
+import '../static/serverEventMember.dart' as server;
+import '../static/serverEventOwner.dart' as server;
+import '../json/session.dart';
+import '../json/slot.dart';
+import '../json/location.dart';
+import '../json/user.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Session session;

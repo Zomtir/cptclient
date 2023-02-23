@@ -4,13 +4,13 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
-import 'material/PanelSwiper.dart';
-import 'material/panels/UserSelectionPanel.dart';
-import 'static/server.dart' as server;
-import 'static/serverTeamAdmin.dart' as server;
-import 'json/session.dart';
-import 'json/team.dart';
-import 'json/user.dart';
+import '../material/PanelSwiper.dart';
+import '../material/panels/UserSelectionPanel.dart';
+import '../static/server.dart' as server;
+import '../static/serverTeamAdmin.dart' as server;
+import '../json/session.dart';
+import '../json/team.dart';
+import '../json/user.dart';
 
 class TeamAdminPage extends StatefulWidget {
   final Session session;
