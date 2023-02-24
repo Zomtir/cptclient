@@ -91,7 +91,7 @@ Future<bool?> user_edit_password(Session session, User user, String password) as
 
 Future<bool> user_delete(Session session, User user) async {
   final response = await http.head(
-    server.uri('user_delete', {
+    server.uri('/admin/user_delete', {
       'user_id': user.id.toString(),
     }),
     headers: {

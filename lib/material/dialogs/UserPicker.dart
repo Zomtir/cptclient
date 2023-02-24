@@ -89,6 +89,7 @@ class _UserPickerState extends State<UserPicker> {
               icon: Icon(Icons.add),
               onPressed: () => _handleSelect(user),
             ),
+            dense: true,
           ),
         );
       },
@@ -104,7 +105,10 @@ class _UserPickerState extends State<UserPicker> {
           children: [
             AppButton(text: "Close", onPressed: () => Navigator.pop(context)),
             textfield,
-            list,
+            SizedBox(
+              height: 400,
+              child: list,
+            ),
           ],
         ),
       ),
