@@ -50,6 +50,8 @@ class SlotDetailPageState extends State<EventDetailPage> {
 
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
+  List<User> _owners = [];
+
   SlotDetailPageState();
 
   @override
@@ -57,7 +59,6 @@ class SlotDetailPageState extends State<EventDetailPage> {
     super.initState();
 
     _applySlot();
-    widget.slot.owners = [];
     _requestSlotOwners();
   }
 
@@ -122,9 +123,10 @@ class SlotDetailPageState extends State<EventDetailPage> {
 
   void _requestSlotOwners() async {
     List<User> owners = await server.event_owner_list(widget.session, widget.slot);
+    owners.sort();
 
     setState(() {
-      widget.slot.owners = owners;
+      _owners = owners;
     });
   }
 

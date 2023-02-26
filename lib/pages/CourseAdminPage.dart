@@ -74,8 +74,8 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   }
 
   void _duplicateCourse() {
-    Course _course = Course.fromCourse(widget.course);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: _course, onUpdate: _update, isDraft: true)));
+    Course course = Course.fromCourse(widget.course);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, isDraft: true)));
   }
 
   Future<void> _getCourseSlots() async {
@@ -93,6 +93,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       MaterialPageRoute(
         builder: (context) => ClassAdminPage(
           session: widget.session,
+          courseID: widget.course.id,
           slot: slot,
           onUpdate: _getCourseSlots,
           isDraft: false,
@@ -109,6 +110,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       MaterialPageRoute(
         builder: (context) => ClassAdminPage(
           session: widget.session,
+          courseID: widget.course.id,
           slot: slot,
           onUpdate: _getCourseSlots,
           isDraft: true,

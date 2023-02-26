@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
-import 'package:cptclient/json/user.dart';
 
 Future<List<Slot>> event_list(Session session, String status) async {
   final response = await http.get(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/json/skill.dart';
 
+import '../design/AppDecoration.dart';
+
 class AppSkillTile extends StatelessWidget {
   final Skill skill;
 
@@ -15,14 +17,7 @@ class AppSkillTile extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 2.0),
         padding: const EdgeInsets.symmetric(vertical: 4.0),
-        decoration: BoxDecoration(
-          color: Colors.white60,
-          border: Border.all(
-            color: Colors.amber,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(9),
-        ),
+        decoration: AppDecoration(),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

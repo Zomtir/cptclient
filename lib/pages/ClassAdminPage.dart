@@ -19,13 +19,14 @@ import '../json/user.dart';
 
 class ClassAdminPage extends StatefulWidget {
   final Session session;
+  final int courseID;
   final Slot slot;
   final void Function() onUpdate;
   final bool isDraft;
   final bool isModerator = false;
   final bool isAdmin = false;
 
-  ClassAdminPage({Key? key, required this.session, required this.slot, required this.onUpdate, required this.isDraft}) : super(key: key);
+  ClassAdminPage({Key? key, required this.session, required this.courseID, required this.slot, required this.onUpdate, required this.isDraft}) : super(key: key);
 
   @override
   ClassAdminPageState createState() => ClassAdminPageState();
@@ -71,7 +72,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   void _handleSubmit() async {
     _gatherSlot();
 
-    bool success = widget.isDraft ? await server.class_create(widget.session, widget.slot) : await server.class_edit(widget.session, widget.slot);
+    bool success = widget.isDraft ? await server.class_create(widget.session, widget.courseID, widget.slot) : await server.class_edit(widget.session, widget.slot);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to modify slot')));
@@ -96,8 +97,19 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   }
 
   void _duplicateSlot() {
-    Slot _slot = Slot.fromSlot(widget.slot);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ClassAdminPage(session: widget.session, slot: _slot, onUpdate: widget.onUpdate, isDraft: true)));
+    Slot slot = Slot.fromSlot(widget.slot);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClassAdminPage(
+          session: widget.session,
+          courseID: widget.courseID,
+          slot: slot,
+          onUpdate: widget.onUpdate,
+          isDraft: true,
+        ),
+      ),
+    );
   }
 
   void _requestOwnerList() async {
@@ -167,17 +179,6 @@ class ClassAdminPageState extends State<ClassAdminPage> {
           //Text(widget.slot.status!.toString()),
           PanelSwiper(
             panels: [
-              Panel("Edit", _buildEditPanel()),
-              if (!widget.isDraft)
-                Panel(
-                  "Owners",
-                  UserSelectionPanel(
-                    usersAvailable: server.cacheMembers,
-                    usersChosen: _owners,
-                    onAdd: _submitOwnerAddition,
-                    onRemove: _submitOwnerRemoval,
-                  ),
-                ),
               if (!widget.isDraft)
                 Panel(
                   "Participants",
@@ -188,9 +189,20 @@ class ClassAdminPageState extends State<ClassAdminPage> {
                     onRemove: _submitParticipantRemoval,
                   ),
                 ),
+              if (!widget.isDraft)
+                Panel(
+                  "Owners",
+                  UserSelectionPanel(
+                    usersAvailable: server.cacheMembers,
+                    usersChosen: _owners,
+                    onAdd: _submitOwnerAddition,
+                    onRemove: _submitOwnerRemoval,
+                  ),
+                ),
               if (!widget.isDraft) Panel("Group Invites", Container()),
               if (!widget.isDraft) Panel("Personal Invites", Container()),
               if (!widget.isDraft) Panel("Level Invites", Container()),
+              Panel("Edit", _buildEditPanel()),
             ],
           ),
         ],

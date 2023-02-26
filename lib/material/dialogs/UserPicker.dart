@@ -2,9 +2,10 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/UserFilter.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/AppBody.dart';
 
 import 'package:cptclient/json/user.dart';
+
+import '../AppDialog.dart';
 
 void showUserPicker({
   required BuildContext context,
@@ -13,7 +14,7 @@ void showUserPicker({
   required Function(User) onSelect,
 
 }) async {
-  Widget dialog = UserPicker(
+  Widget picker = UserPicker(
     usersAvailable: usersAvailable,
     usersHidden: usersHidden,
     onSelect: onSelect,
@@ -23,8 +24,8 @@ void showUserPicker({
     context: context,
     useSafeArea: false,
     builder: (BuildContext context) {
-      return AppBody(
-        children: [dialog],
+      return AppDialog(
+        child: picker,
       );
     },
   );
@@ -95,23 +96,14 @@ class _UserPickerState extends State<UserPicker> {
       },
     );
 
-    return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      clipBehavior: Clip.antiAlias,
-      child: Container(
-        height: 500,
-        width: 430,
-        child: Column(
-          children: [
-            AppButton(text: "Close", onPressed: () => Navigator.pop(context)),
-            textfield,
-            SizedBox(
-              height: 400,
-              child: list,
-            ),
-          ],
-        ),
-      ),
+    return ListView(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      children: [
+        AppButton(text: "Close", onPressed: () => Navigator.pop(context)),
+        textfield,
+        list,
+      ],
     );
   }
 }

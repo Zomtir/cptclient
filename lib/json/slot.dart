@@ -18,11 +18,9 @@ class Slot implements Comparable {
   DateTime end;
   Status? status;
   bool autologin = false;
-  int? course_id;
-  List<User>? owners;
   //final String description;
 
-  Slot(this.id, this.key, this.title, this.location, this.begin, this.end, {this.course_id, this.owners});
+  Slot(this.id, this.key, this.title, this.location, this.begin, this.end);
 
   Slot.fromSlot(Slot slot)
       : this.id = 0,
@@ -31,9 +29,7 @@ class Slot implements Comparable {
         this.location = slot.location,
         this.begin = slot.begin,
         this.end = slot.end,
-        this.status = slot.status,
-        this.course_id = slot.course_id,
-        this.owners = slot.owners;
+        this.status = slot.status;
 
   Slot.fromJson(Map<String, dynamic> json)
     : id = json['id'],
@@ -42,9 +38,7 @@ class Slot implements Comparable {
       location = Location.fromJson(json['location']),
       begin = DateFormat("yyyy-MM-dd HH:mm").parse(json['begin'], true).toLocal(),
       end = DateFormat("yyyy-MM-dd HH:mm").parse(json['end'], true).toLocal(),
-      status = Status.values.firstWhere((x) => describeEnum(x) == json['status']),
-      course_id = json['course_id'],
-      owners = json['user_id']?.map((data) => User.fromJson(data)).toList();
+      status = Status.values.firstWhere((x) => describeEnum(x) == json['status']);
 
   Map<String, dynamic> toJson() =>
     {
@@ -54,8 +48,7 @@ class Slot implements Comparable {
       'location': location?.toJson(),
       'begin': DateFormat("yyyy-MM-dd HH:mm").format(begin.toUtc()),
       'end': DateFormat("yyyy-MM-dd HH:mm").format(end.toUtc()),
-      'status': status.toString(),
-      'course_id': course_id
+      'status': status.toString()
     };
 
   Slot.fromCourse(Course course)
@@ -65,9 +58,7 @@ class Slot implements Comparable {
       this.location = null,
       this.begin = DateTime.now(),
       this.end = DateTime.now().add(Duration(hours: 1)),
-      this.status = null,
-      this.course_id = course.id,
-      this.owners = null;
+      this.status = null;
 
   Slot.fromUser(User user)
     : this.id = 0,
@@ -76,9 +67,7 @@ class Slot implements Comparable {
       this.location = null,
       this.begin = DateTime.now(),
       this.end = DateTime.now().add(Duration(hours: 1)),
-      this.status = null,
-      this.course_id = null,
-      this.owners = [user];
+      this.status = null;
 
   @override
   int compareTo(other) {

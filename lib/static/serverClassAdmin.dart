@@ -25,10 +25,10 @@ Future<List<Slot>> class_list(Session session, int courseID) async {
   return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
 }
 
-Future<bool> class_create(Session session, Slot slot) async {
+Future<bool> class_create(Session session, int course_id, Slot slot) async {
   final response = await http.post(
     server.uri('/admin/class_create', {
-      'course_id': slot.course_id.toString(),
+      'course_id': course_id.toString(),
     }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
