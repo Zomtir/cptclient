@@ -159,8 +159,6 @@ class EventManagementPageState extends State<EventManagementPage> {
     DateTime? newDateBegin = await showAppDatePicker(
       context: context,
       initialDate: _dateBegin,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
     );
 
     if (newDateBegin == null) return;

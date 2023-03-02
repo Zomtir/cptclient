@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'design/AppDecoration.dart';
+import 'design/AppBoxDecoration.dart';
 
 class AppDialog extends StatelessWidget {
   final Widget child;
+  final double maxWidth;
 
-  const AppDialog({required this.child});
+  const AppDialog({required this.child, this.maxWidth = 600});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +17,9 @@ class AppDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600),
+            constraints: BoxConstraints(maxWidth: maxWidth),
             child: Container(
-              decoration: const AppDecoration(),
+              decoration: const AppBoxDecoration(),
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               margin: const EdgeInsets.symmetric(vertical: 16.0),
               child: child,

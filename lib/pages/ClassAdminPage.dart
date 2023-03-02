@@ -1,3 +1,5 @@
+import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/panels/UserSelectionPanel.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
@@ -7,8 +9,6 @@ import 'package:cptclient/material/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-
-import 'package:intl/intl.dart';
 
 import '../static/server.dart' as server;
 import '../static/serverClassAdmin.dart' as server;
@@ -36,8 +36,8 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   TextEditingController _ctrlSlotKey = TextEditingController();
   TextEditingController _ctrlSlotPassword = TextEditingController();
   TextEditingController _ctrlSlotTitle = TextEditingController();
-  TextEditingController _ctrlSlotBegin = TextEditingController();
-  TextEditingController _ctrlSlotEnd = TextEditingController();
+  DateTimeController _ctrlSlotBegin = DateTimeController(DateTime.now());
+  DateTimeController _ctrlSlotEnd = DateTimeController(DateTime.now());
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
   List<User> _owners = [];
@@ -55,16 +55,16 @@ class ClassAdminPageState extends State<ClassAdminPage> {
 
   void _applySlot() {
     _ctrlSlotKey.text = widget.slot.key;
-    _ctrlSlotBegin.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.begin);
-    _ctrlSlotEnd.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.end);
+    _ctrlSlotBegin.dateTime = widget.slot.begin;
+    _ctrlSlotEnd.dateTime = widget.slot.end;
     _ctrlSlotTitle.text = widget.slot.title;
     _ctrlCourseLocation.value = widget.slot.location;
   }
 
   void _gatherSlot() {
     widget.slot.key = _ctrlSlotKey.text;
-    widget.slot.begin = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotBegin.text, false);
-    widget.slot.end = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotEnd.text, false);
+    widget.slot.begin = _ctrlSlotBegin.dateTime;
+    widget.slot.end = _ctrlSlotEnd.dateTime;
     widget.slot.title = _ctrlSlotTitle.text;
     widget.slot.location = _ctrlCourseLocation.value;
   }
@@ -257,15 +257,13 @@ class ClassAdminPageState extends State<ClassAdminPage> {
         ),
         AppInfoRow(
           info: Text("Start Time"),
-          child: TextField(
-            maxLines: 1,
+          child: DateTimeEdit(
             controller: _ctrlSlotBegin,
           ),
         ),
         AppInfoRow(
           info: Text("End Time"),
-          child: TextField(
-            maxLines: 1,
+          child: DateTimeEdit(
             controller: _ctrlSlotEnd,
           ),
         ),

@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:cptclient/material/AppBody.dart';
 
 import 'dart:math';
+
+import '../AppDialog.dart';
 
 Future<DateTime?> showAppDatePicker({
   required BuildContext context,
   DateTime? initialDate,
-  required DateTime firstDate,
-  required DateTime lastDate,
+  DateTime? firstDate,
+  DateTime? lastDate,
 }) async {
   initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now());
 
-  Widget dialog = DatePicker(
+  Widget picker = DatePicker(
     initialDate: initialDate,
-    firstDate: firstDate,
-    lastDate: lastDate,
+    firstDate: firstDate ?? DateTime(2000),
+    lastDate: lastDate ?? DateTime(2100),
   );
 
   assert(
-    !lastDate.isBefore(firstDate),
+    (lastDate ?? DateTime(2100)).isAfter(firstDate ?? DateTime(2000)),
     'lastDate $lastDate must be on or after firstDate $firstDate.',
   );
   assert(
-    !initialDate.isBefore(firstDate),
+    initialDate.isAfter(firstDate ?? DateTime(2000)),
     'initialDate $initialDate must be on or after firstDate $firstDate.',
   );
   assert(
-    !initialDate.isAfter(lastDate),
+    initialDate.isBefore(lastDate ?? DateTime(2100)),
     'initialDate $initialDate must be on or before lastDate $lastDate.',
   );
 
@@ -34,8 +35,9 @@ Future<DateTime?> showAppDatePicker({
     context: context,
     useSafeArea: false,
     builder: (BuildContext context) {
-      return AppBody(
-        children: [dialog],
+      return AppDialog(
+        child: picker,
+        maxWidth: 470,
       );
     },
   );
@@ -222,58 +224,42 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
 
+    List<String> weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+
     final Widget calendar = Container(
       width: 350,
       height: 360,
       child: GridView.count(
         crossAxisCount: 7,
-        children: _buildCalenderList(context),
+        children: List.generate(7, (index) {
+              return Center(
+                child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
+              );
+            }) +
+            List.generate(_firstDayOffset, (index) {
+              return Center();
+            }) +
+            List.generate(_monthlyDays, (index) {
+              return Center(
+                child: TextButton(
+                  onPressed: () => _handleDayPick(index + 1),
+                  child: Text(
+                    '${index + 1}',
+                    textScaleFactor: 1.6,
+                    style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
+                  ),
+                ),
+              );
+            }),
       ),
     );
 
-    return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      clipBehavior: Clip.antiAlias,
-      child: Container(
-        height: 500,
-        width: 430,
-        child: Column(
-          children: [
-            actions,
-            form,
-            calendar,
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        actions,
+        form,
+        calendar,
+      ],
     );
-  }
-
-  List<Widget> _buildCalenderList(BuildContext context) {
-    List<String> weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-
-    List<Center> lcHeader = List.generate(7, (index) {
-      return Center(
-        child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
-      );
-    });
-
-    List<Center> lcSpacer = List.generate(_firstDayOffset, (index) {
-      return Center();
-    });
-
-    List<Center> lcDates = List.generate(_monthlyDays, (index) {
-      return Center(
-        child: TextButton(
-          onPressed: () => _handleDayPick(index + 1),
-          child: Text(
-            '${index + 1}',
-            textScaleFactor: 1.6,
-            style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
-          ),
-        ),
-      );
-    });
-
-    return lcHeader + lcSpacer + lcDates;
   }
 }
