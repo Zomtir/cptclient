@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:cptclient/material/DateTimeController.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cptclient/material/AppBody.dart';
@@ -10,6 +13,7 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 
+import '../material/DateTimeEdit.dart';
 import 'EventDetailPage.dart';
 
 import '../static/format.dart';
@@ -30,8 +34,8 @@ class EventManagementPage extends StatefulWidget {
 }
 
 class EventManagementPageState extends State<EventManagementPage> {
-  DateTime _dateBegin = DateTime.now();
-  DateTime _dateEnd = DateTime.now().add(Duration(days: 30));
+  DateTimeController _ctrlDateBegin = DateTimeController(DateUtils.dateOnly(DateTime.now()));
+  DateTimeController _ctrlDateEnd = DateTimeController(DateUtils.dateOnly(DateTime.now().add(Duration(days: 30))));
 
   List<Slot> _events = [];
   List<Slot> _eventsFiltered = [];
@@ -53,7 +57,7 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   Future<void> _requestSlots() async {
-    _events = await server.event_list(widget.session, _dateBegin, _dateEnd, _panelStatus[_panelIndex], _ctrlDropdownUser.value);
+    _events = await server.event_list(widget.session, _ctrlDateBegin.dateTime, _ctrlDateBegin.dateTime, _panelStatus[_panelIndex], _ctrlDropdownUser.value);
     _filterReservations();
   }
 
@@ -103,25 +107,11 @@ class EventManagementPageState extends State<EventManagementPage> {
         children: <Widget>[
           AppInfoRow(
             info: Text("Begin Date"),
-            child: TextButton(
-              child: Text(niceDate(_dateBegin)),
-              onPressed: _pickDateBegin,
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: _pickDateBegin,
-            ),
+            child: DateTimeEdit(controller: _ctrlDateBegin, onUpdate: _pickDateBegin, hideTime: true),
           ),
           AppInfoRow(
             info: Text("End Date"),
-            child: TextButton(
-              child: Text(niceDate(_dateEnd)),
-              onPressed: _pickDateEnd,
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: _pickDateEnd,
-            ),
+            child: DateTimeEdit(controller: _ctrlDateEnd, onUpdate: _pickDateEnd, hideTime: true),
           ),
           AppInfoRow(
             info: Text("User"),
@@ -155,46 +145,30 @@ class EventManagementPageState extends State<EventManagementPage> {
     );
   }
 
-  Future _pickDateBegin() async {
-    DateTime? newDateBegin = await showAppDatePicker(
-      context: context,
-      initialDate: _dateBegin,
-    );
+  Future _pickDateBegin(DateTime newDateBegin) async {
+    DateTime newDateEnd = _ctrlDateEnd.dateTime;
 
-    if (newDateBegin == null) return;
+    if (newDateEnd.isBefore(newDateBegin)) newDateEnd = newDateBegin;
 
-    DateTime newDateEnd = _dateEnd;
-
-    if (_dateEnd.isBefore(newDateBegin)) newDateEnd = newDateBegin;
-
-    if (_dateEnd.isAfter(newDateBegin.add(Duration(days: _filterDaysMax)))) newDateEnd = newDateBegin.add(Duration(days: _filterDaysMax));
+    if (newDateEnd.isAfter(newDateBegin.add(Duration(days: _filterDaysMax)))) newDateEnd = newDateBegin.add(Duration(days: _filterDaysMax));
 
     setState(() {
-      _dateBegin = newDateBegin;
-      _dateEnd = newDateEnd;
+      _ctrlDateBegin.dateTime = newDateBegin;
+      _ctrlDateEnd.dateTime = newDateEnd;
     });
     _requestSlots();
   }
 
-  Future _pickDateEnd() async {
-    DateTime? newDateEnd = await showAppDatePicker(
-      context: context,
-      initialDate: _dateEnd,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
+  Future _pickDateEnd(DateTime newDateEnd) async {
+    DateTime newDateBegin = _ctrlDateBegin.dateTime;
 
-    if (newDateEnd == null) return;
+    if (newDateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
 
-    DateTime newDateBegin = _dateBegin;
-
-    if (_dateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
-
-    if (_dateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
+    if (newDateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
 
     setState(() {
-      _dateBegin = newDateBegin;
-      _dateEnd = newDateEnd;
+      _ctrlDateBegin.dateTime = newDateBegin;
+      _ctrlDateEnd.dateTime = newDateEnd;
     });
     _requestSlots();
   }

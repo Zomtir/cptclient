@@ -9,9 +9,10 @@ import 'dialogs/TimePicker.dart';
 
 class DateTimeEdit extends StatefulWidget {
   final DateTimeController controller;
-  final void Function(DateTime?)? onUpdate;
+  final void Function(DateTime)? onUpdate;
+  final bool hideTime;
 
-  const DateTimeEdit({super.key, required this.controller, this.onUpdate});
+  const DateTimeEdit({super.key, required this.controller, this.onUpdate, this.hideTime = false});
 
   @override
   State<DateTimeEdit> createState() => _DateTimeEditState();
@@ -65,7 +66,7 @@ class _DateTimeEditState extends State<DateTimeEdit> {
           ),
           onTap: () => _handleDateChange(context),
         ),
-        InkWell(
+        if (!widget.hideTime) InkWell(
           child: Container(
             margin: const EdgeInsets.all(2.0),
             padding: const EdgeInsets.all(4.0),

@@ -37,7 +37,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   TextEditingController _ctrlSlotPassword = TextEditingController();
   TextEditingController _ctrlSlotTitle = TextEditingController();
   DateTimeController _ctrlSlotBegin = DateTimeController(DateTime.now());
-  DateTimeController _ctrlSlotEnd = DateTimeController(DateTime.now());
+  DateTimeController _ctrlSlotEnd = DateTimeController(DateTime.now().add(Duration(hours: 1)));
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
   List<User> _owners = [];
