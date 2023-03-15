@@ -171,34 +171,34 @@ class _TimePickerState extends State<TimePicker> {
     );
 
     final Widget clock = Container(
-      width: 400,
-      height: 400,
+      width: 350,
+      height: 350,
       child: Stack(
         children: [
           CustomPaint(
-            size: Size(400, 400),
+            size: Size(350, 350),
             painter: ClockPainer(_selectedTime.hour, _selectedTime.minute),
           ),
           for (var i = 0; i < 60; i += 5)
             buildWatchNumbers(
-              175 * sin(i / 60 * 2 * pi),
-              175 * -cos(i / 60 * 2 * pi),
+              150 * sin(i / 60 * 2 * pi),
+              150 * -cos(i / 60 * 2 * pi),
               i.toString(),
               Colors.blue.withOpacity(0.5),
               () => _handleMinutePick(i),
             ),
           for (var i = 0; i < 12; i++)
             buildWatchNumbers(
-              125 * sin(i / 12 * 2 * pi),
-              125 * -cos(i / 12 * 2 * pi),
+              100 * sin(i / 12 * 2 * pi),
+              100 * -cos(i / 12 * 2 * pi),
               i.toString(),
               Colors.red.withOpacity(0.5),
               () => _handleHourPick(i),
             ),
           for (var i = 12; i < 24; i++)
             buildWatchNumbers(
-              90 * sin(i / 12 * 2 * pi),
-              90 * -cos(i / 12 * 2 * pi),
+              65 * sin(i / 12 * 2 * pi),
+              65 * -cos(i / 12 * 2 * pi),
               i.toString(),
               Colors.red.withOpacity(0.5),
               () => _handleHourPick(i),
@@ -218,10 +218,10 @@ class _TimePickerState extends State<TimePicker> {
 
   Positioned buildWatchNumbers(double left, double top, String label, Color color, VoidCallback onPressed) {
     return Positioned(
-      left: 185 + left,
-      top: 185 + top,
-      width: 30,
-      height: 30,
+      left: 162 + left,
+      top: 162 + top,
+      width: 26,
+      height: 26,
       child: InkWell(
         onTap: onPressed,
         child: Container(
@@ -239,10 +239,10 @@ class ClockPainer extends CustomPainter {
   final double hx, hy, mx, my;
 
   ClockPainer(int hour, int minute)
-      : hx = sin(hour / 12 * 2 * pi) * ((hour > 11) ? 70 : 105),
-        hy = -cos(hour / 12 * 2 * pi) * ((hour > 11) ? 70 : 105),
-        mx = 140 * sin(minute / 60 * 2 * pi),
-        my = 140 * -cos(minute / 60 * 2 * pi);
+      : hx = sin(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
+        hy = -cos(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
+        mx = sin(minute / 60 * 2 * pi) * 115,
+        my = -cos(minute / 60 * 2 * pi) * 115;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -251,7 +251,7 @@ class ClockPainer extends CustomPainter {
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
-    canvas.drawCircle(Offset(200, 200), 150, paint);
+    canvas.drawCircle(Offset(175, 175), 125, paint);
 
     drawPointer(canvas, Offset(hx, hy), Colors.red.withOpacity(0.5), 10);
     drawPointer(canvas, Offset(mx, my), Colors.blue.withOpacity(0.5), 6);
@@ -259,8 +259,8 @@ class ClockPainer extends CustomPainter {
 
   void drawPointer(Canvas canvas, Offset offset, Color color, double width) {
     final points = [
-      Offset(200, 200),
-      Offset(200, 200) + offset,
+      Offset(175, 175),
+      Offset(175, 175) + offset,
     ];
 
     final paint = Paint()
