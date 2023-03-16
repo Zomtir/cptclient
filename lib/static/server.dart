@@ -30,7 +30,7 @@ Future<bool> loadStatus() async {
   final response;
 
   try {
-    response = await http.head(uri('status'));
+    response = await http.head(uri('status')).timeout(const Duration(seconds: 3));
   } on Exception {
     return false;
   }

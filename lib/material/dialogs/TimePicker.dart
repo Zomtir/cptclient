@@ -171,34 +171,30 @@ class _TimePickerState extends State<TimePicker> {
     );
 
     final Widget clock = Container(
-      width: 350,
-      height: 350,
+      width: 300,
+      height: 300,
       child: Stack(
         children: [
           CustomPaint(
-            size: Size(350, 350),
-            painter: ClockPainer(_selectedTime.hour, _selectedTime.minute),
+            painter: ClockPainter(_selectedTime.hour, _selectedTime.minute),
           ),
           for (var i = 0; i < 60; i += 5)
             buildWatchNumbers(
-              150 * sin(i / 60 * 2 * pi),
-              150 * -cos(i / 60 * 2 * pi),
+              Offset(138 * sin(i / 60 * 2 * pi), 138 * -cos(i / 60 * 2 * pi)),
               i.toString(),
               Colors.blue.withOpacity(0.5),
               () => _handleMinutePick(i),
             ),
           for (var i = 0; i < 12; i++)
             buildWatchNumbers(
-              100 * sin(i / 12 * 2 * pi),
-              100 * -cos(i / 12 * 2 * pi),
+              Offset(100 * sin(i / 12 * 2 * pi), 100 * -cos(i / 12 * 2 * pi)),
               i.toString(),
               Colors.red.withOpacity(0.5),
               () => _handleHourPick(i),
             ),
           for (var i = 12; i < 24; i++)
             buildWatchNumbers(
-              65 * sin(i / 12 * 2 * pi),
-              65 * -cos(i / 12 * 2 * pi),
+              Offset(65 * sin(i / 12 * 2 * pi), 65 * -cos(i / 12 * 2 * pi)),
               i.toString(),
               Colors.red.withOpacity(0.5),
               () => _handleHourPick(i),
@@ -216,12 +212,12 @@ class _TimePickerState extends State<TimePicker> {
     );
   }
 
-  Positioned buildWatchNumbers(double left, double top, String label, Color color, VoidCallback onPressed) {
+  Positioned buildWatchNumbers(Offset position, String label, Color color, VoidCallback onPressed, {Offset center = const Offset(150, 150), double radius = 24}) {
     return Positioned(
-      left: 162 + left,
-      top: 162 + top,
-      width: 26,
-      height: 26,
+      left: center.dx - radius / 2 + position.dx,
+      top: center.dy - radius / 2 + position.dy,
+      width: radius,
+      height: radius,
       child: InkWell(
         onTap: onPressed,
         child: Container(
@@ -235,10 +231,10 @@ class _TimePickerState extends State<TimePicker> {
   }
 }
 
-class ClockPainer extends CustomPainter {
+class ClockPainter extends CustomPainter {
   final double hx, hy, mx, my;
 
-  ClockPainer(int hour, int minute)
+  ClockPainter(int hour, int minute)
       : hx = sin(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
         hy = -cos(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
         mx = sin(minute / 60 * 2 * pi) * 115,
@@ -246,21 +242,22 @@ class ClockPainer extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    Offset center = Offset(150, 150);
     final paint = Paint()
       ..color = Colors.grey
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
-    canvas.drawCircle(Offset(175, 175), 125, paint);
+    canvas.drawCircle(center, 120, paint);
 
-    drawPointer(canvas, Offset(hx, hy), Colors.red.withOpacity(0.5), 10);
-    drawPointer(canvas, Offset(mx, my), Colors.blue.withOpacity(0.5), 6);
+    drawPointer(canvas, center, Offset(hx, hy), Colors.red.withOpacity(0.5), 10);
+    drawPointer(canvas, center, Offset(mx, my), Colors.blue.withOpacity(0.5), 6);
   }
 
-  void drawPointer(Canvas canvas, Offset offset, Color color, double width) {
+  void drawPointer(Canvas canvas, Offset center, Offset offset, Color color, double width) {
     final points = [
-      Offset(175, 175),
-      Offset(175, 175) + offset,
+      center,
+      center + offset,
     ];
 
     final paint = Paint()
@@ -275,5 +272,4 @@ class ClockPainer extends CustomPainter {
   bool shouldRepaint(CustomPainter old) {
     return false;
   }
-
 }
