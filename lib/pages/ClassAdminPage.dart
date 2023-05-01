@@ -36,8 +36,8 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   TextEditingController _ctrlSlotKey = TextEditingController();
   TextEditingController _ctrlSlotPassword = TextEditingController();
   TextEditingController _ctrlSlotTitle = TextEditingController();
-  DateTimeController _ctrlSlotBegin = DateTimeController(DateTime.now());
-  DateTimeController _ctrlSlotEnd = DateTimeController(DateTime.now().add(Duration(hours: 1)));
+  DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
+  DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
   List<User> _owners = [];
@@ -55,16 +55,16 @@ class ClassAdminPageState extends State<ClassAdminPage> {
 
   void _applySlot() {
     _ctrlSlotKey.text = widget.slot.key;
-    _ctrlSlotBegin.dateTime = widget.slot.begin;
-    _ctrlSlotEnd.dateTime = widget.slot.end;
+    _ctrlSlotBegin.setDateTime(widget.slot.begin);
+    _ctrlSlotEnd.setDateTime(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
     _ctrlCourseLocation.value = widget.slot.location;
   }
 
   void _gatherSlot() {
     widget.slot.key = _ctrlSlotKey.text;
-    widget.slot.begin = _ctrlSlotBegin.dateTime;
-    widget.slot.end = _ctrlSlotEnd.dateTime;
+    widget.slot.begin = _ctrlSlotBegin.getDateTime()!;
+    widget.slot.end = _ctrlSlotEnd.getDateTime()!;
     widget.slot.title = _ctrlSlotTitle.text;
     widget.slot.location = _ctrlCourseLocation.value;
   }

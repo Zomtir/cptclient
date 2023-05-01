@@ -6,12 +6,10 @@ import '../AppDialog.dart';
 
 Future<TimeOfDay?> showAppTimePicker({
   required BuildContext context,
-  DateTime? initialDateTime,
+  required TimeOfDay initialTime,
 }) async {
-  initialDateTime = initialDateTime ?? DateTime.now();
-
   Widget picker = TimePicker(
-    initialDateTime: initialDateTime,
+    initialTime: initialTime,
   );
 
   return showDialog<TimeOfDay>(
@@ -29,8 +27,8 @@ Future<TimeOfDay?> showAppTimePicker({
 class TimePicker extends StatefulWidget {
   TimePicker({
     super.key,
-    required DateTime initialDateTime,
-  }) : initialTime = TimeOfDay.fromDateTime(initialDateTime);
+    required this.initialTime,
+  });
 
   final TimeOfDay initialTime;
 

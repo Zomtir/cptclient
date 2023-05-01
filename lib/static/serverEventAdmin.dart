@@ -12,8 +12,8 @@ import 'package:cptclient/json/user.dart';
 Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, String status, User? user) async {
   final response = await http.get(
     server.uri('/admin/event_list', {
-      'begin': webDate(begin),
-      'end': webDate(end),
+      'begin': formatNullWebDate(begin),
+      'end': formatNullWebDate(end),
       'status': status,
       if (user != null) 'user_id': user.id.toString(),
     }),

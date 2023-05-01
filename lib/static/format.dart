@@ -23,10 +23,26 @@ String niceDateTime(DateTime dt) {
   return DateFormat("dd MMM yyyy HH:mm").format(dt);
 }
 
-String webDate(DateTime dt) {
-  return DateFormat("yyyy-MM-dd").format(dt.toUtc());
+String? formatNullWebDateTime(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").format(dt.toUtc());
 }
 
-String webDateTime(DateTime dt) {
-  return DateFormat("yyyy-MM-dd-HH-mm").format(dt.toUtc());
+DateTime? parseNullWebDateTime(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").parse(dt, true).toLocal();
+}
+
+String? formatNullWebDate(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt.toUtc());
+}
+
+DateTime? parseWebDate(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true).toLocal();
+}
+
+String? formatNullInt(int? i) {
+  return i == null ? null : i.toString();
+}
+
+int? parseNullInt(String? i) {
+  return i == null ? null : int.tryParse(i);
 }

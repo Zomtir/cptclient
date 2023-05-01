@@ -1,3 +1,6 @@
+import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/material/DateTimeEdit.dart';
+import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -26,13 +29,21 @@ class UserAdminPageState extends State<UserAdminPage> {
   bool                  _ctrlUserEnabled = false;
   TextEditingController _ctrlUserFirstname = TextEditingController();
   TextEditingController _ctrlUserLastname = TextEditingController();
-  TextEditingController _ctrlUserIban = TextEditingController();
+  TextEditingController _ctrlUserAddress = TextEditingController();
   TextEditingController _ctrlUserEmail = TextEditingController();
   TextEditingController _ctrlUserPhone = TextEditingController();
-  //TextEditingController _ctrlUserAddress = TextEditingController();
-  TextEditingController _ctrlUserBirthday = TextEditingController();
+  TextEditingController _ctrlUserIban = TextEditingController();
+  DateTimeController    _ctrlUserBirthday = DateTimeController();
+  TextEditingController _ctrlUserBirthlocation = TextEditingController();
+  TextEditingController _ctrlUserNationality = TextEditingController();
   TextEditingController _ctrlUserGender = TextEditingController();
-  TextEditingController _ctrlUserOrganization = TextEditingController();
+  TextEditingController _ctrlUserFederationNumber = TextEditingController();
+  DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
+  DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();
+  DateTimeController    _ctrlUserFederationResidency = DateTimeController();
+  TextEditingController _ctrlUserDataDeclaration = TextEditingController();
+  TextEditingController _ctrlUserDataDisclaimer = TextEditingController();
+  TextEditingController _ctrlUserNote = TextEditingController();
 
   UserAdminPageState();
 
@@ -47,13 +58,21 @@ class UserAdminPageState extends State<UserAdminPage> {
     _ctrlUserEnabled = widget.user.enabled ?? false;
     _ctrlUserFirstname.text = widget.user.firstname;
     _ctrlUserLastname.text = widget.user.lastname;
-    _ctrlUserIban.text = widget.user.iban ?? '';
+    _ctrlUserAddress.text = widget.user.address ?? '';
     _ctrlUserEmail.text = widget.user.email ?? '';
     _ctrlUserPhone.text = widget.user.phone ?? '';
-    //_ctrlUserAddress.text = widget.user.address ?? '';
-    _ctrlUserBirthday.text = widget.user.birthday ?? '';
+    _ctrlUserIban.text = widget.user.iban ?? '';
+    _ctrlUserBirthday.setDateTime(widget.user.birthday);
+    _ctrlUserBirthlocation.text = widget.user.birthlocation ?? '';
     _ctrlUserGender.text = widget.user.gender ?? '';
-    _ctrlUserOrganization.text = widget.user.organization_id?.toString() ?? '';
+    _ctrlUserNationality.text = widget.user.nationality ?? '';
+    _ctrlUserFederationNumber.text = widget.user.federationNumber?.toString() ?? '';
+    _ctrlUserFederationPermissionSolo.setDateTime(widget.user.federationPermissionSolo);
+    _ctrlUserFederationPermissionTeam.setDateTime(widget.user.federationPermissionTeam);
+    _ctrlUserFederationResidency.setDateTime(widget.user.federationResidency);
+    _ctrlUserDataDeclaration.text = widget.user.dataDeclaration?.toString() ?? '';
+    _ctrlUserDataDisclaimer.text = widget.user.dataDisclaimer ?? '';
+    _ctrlUserNote.text = widget.user.note ?? '';
   }
 
   void _gatherUser() {
@@ -61,14 +80,21 @@ class UserAdminPageState extends State<UserAdminPage> {
     widget.user.enabled = _ctrlUserEnabled;
     widget.user.firstname = _ctrlUserFirstname.text;
     widget.user.lastname = _ctrlUserLastname.text;
-
-    widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
+    widget.user.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
     widget.user.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
     widget.user.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
-    widget.user.birthday = _ctrlUserBirthday.text.isNotEmpty ? _ctrlUserBirthday.text : null;
-    widget.user.gender = _ctrlUserGender.text.isNotEmpty ? _ctrlUserGender.text : null;
-    widget.user.organization_id = int.tryParse(_ctrlUserOrganization.text);
     widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
+    widget.user.birthday = _ctrlUserBirthday.getDateTime();
+    widget.user.birthlocation = _ctrlUserBirthlocation.text.isNotEmpty ? _ctrlUserBirthlocation.text : null;
+    widget.user.gender = _ctrlUserGender.text.isNotEmpty ? _ctrlUserGender.text : null;
+    widget.user.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
+    widget.user.federationNumber = parseNullInt(_ctrlUserFederationNumber.text);
+    widget.user.federationPermissionSolo = _ctrlUserFederationPermissionSolo.getDateTime();
+    widget.user.federationPermissionTeam = _ctrlUserFederationPermissionTeam.getDateTime();
+    widget.user.federationResidency = _ctrlUserFederationResidency.getDateTime();
+    widget.user.dataDeclaration = parseNullInt(_ctrlUserDataDeclaration.text);
+    widget.user.dataDisclaimer = _ctrlUserDataDisclaimer.text.isNotEmpty ? _ctrlUserDataDeclaration.text : null;
+    widget.user.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
   }
 
   void _submitUser() async {
@@ -143,9 +169,12 @@ class UserAdminPageState extends State<UserAdminPage> {
           ),
           AppInfoRow(
             info: Text("Account Enabled"),
-            child: Checkbox(
-              value: _ctrlUserEnabled,
-              onChanged: (bool? enabled) => setState(() => _ctrlUserEnabled = enabled!),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Checkbox(
+                value: _ctrlUserEnabled,
+                onChanged: (bool? enabled) => setState(() => _ctrlUserEnabled = enabled!),
+              ),
             ),
           ),
           AppInfoRow(
@@ -163,10 +192,10 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("IBAN"),
+            info: Text("Address"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlUserIban,
+              controller: _ctrlUserAddress,
             ),
           ),
           AppInfoRow(
@@ -183,18 +212,33 @@ class UserAdminPageState extends State<UserAdminPage> {
               controller: _ctrlUserPhone,
             ),
           ),
-/*          AppInfoRow(
-            info: Text("Address"),
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUserAddress,
-            ),
-          ),*/
           AppInfoRow(
-            info: Text("Birthday"),
+            info: Text("IBAN"),
             child: TextField(
               maxLines: 1,
+              controller: _ctrlUserIban,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Date of Birth"),
+            child: DateTimeEdit(
+              nullable: true,
+              dateOnly: true,
               controller: _ctrlUserBirthday,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Location of Birth"),
+            child: TextField(
+              maxLines: 4,
+              controller: _ctrlUserBirthlocation,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Nationality"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserNationality,
             ),
           ),
           AppInfoRow(
@@ -202,6 +246,58 @@ class UserAdminPageState extends State<UserAdminPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserGender,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Federation Number"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserFederationNumber,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Solo Participation\nPermission Date"),
+            child: DateTimeEdit(
+              nullable: true,
+              dateOnly: true,
+              controller: _ctrlUserFederationPermissionSolo,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Team Participation\nPermission Date"),
+            child: DateTimeEdit(
+              nullable: true,
+              dateOnly: true,
+              controller: _ctrlUserFederationPermissionTeam,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Moving Date to\nResidency in Federation"),
+            child: DateTimeEdit(
+              nullable: true,
+              dateOnly: true,
+              controller: _ctrlUserFederationResidency,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Data Declaration Version"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserDataDeclaration,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Data Declaration Disclaimer"),
+            child: TextField(
+              maxLines: 8,
+              controller: _ctrlUserDataDisclaimer,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Notes"),
+            child: TextField(
+              maxLines: 8,
+              controller: _ctrlUserNote,
             ),
           ),
           AppButton(
