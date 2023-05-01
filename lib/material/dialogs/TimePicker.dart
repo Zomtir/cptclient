@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'dart:math';
 
+import '../AppButton.dart';
 import '../AppDialog.dart';
+import '../NumberSelector.dart';
 
 Future<TimeOfDay?> showAppTimePicker({
   required BuildContext context,
@@ -100,70 +102,33 @@ class _TimePickerState extends State<TimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final String cancelText = "Cancel";
-    final String confirmText = "Ok";
-
-    final Widget actions = Container(
-      alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 10, top: 10),
-            child: TextButton(
-              onPressed: _handleCancel,
-              child: Text(cancelText),
-            ),
-          ),
-          Spacer(),
-          Container(
-            margin: EdgeInsets.only(right: 10, top: 10),
-            child: TextButton(
-              onPressed: _handleOk,
-              child: Text(confirmText),
-            ),
-          ),
-        ],
-      ),
-    );
-
     final Widget form = Container(
       alignment: AlignmentDirectional.center,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton(onPressed: () => _handleHourJump(-1), icon: Icon(Icons.chevron_left)),
-          SizedBox(
-            width: 60,
-            child: Focus(
-              child: TextField(
-                maxLines: 1,
+          Column(
+            children: [
+              Text(
+                "Hour",
+                style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
-                controller: _ctrlHour,
               ),
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _parseTimeFields();
-              },
-            ),
+              NumberSelector(controller: _ctrlHour, onChange: _handleHourJump),
+            ],
           ),
-          IconButton(onPressed: () => _handleHourJump(1), icon: Icon(Icons.chevron_right)),
           SizedBox(width: 5),
-          IconButton(onPressed: () => _handleMinuteJump(-1), icon: Icon(Icons.chevron_left)),
-          SizedBox(
-            width: 50,
-            child: Focus(
-              child: TextField(
-                maxLines: 1,
+          Column(
+            children: [
+              Text(
+                "Minute",
+                style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
-                controller: _ctrlMinute,
               ),
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _parseTimeFields();
-              },
-            ),
+              NumberSelector(controller: _ctrlMinute, onChange: _handleMinuteJump),
+            ],
           ),
-          IconButton(onPressed: () => _handleMinuteJump(1), icon: Icon(Icons.chevron_right)),
         ],
       ),
     );
@@ -201,11 +166,30 @@ class _TimePickerState extends State<TimePicker> {
       ),
     );
 
+    final Widget actions = Container(
+      alignment: AlignmentDirectional.center,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: <Widget>[
+          AppButton(
+            onPressed: _handleCancel,
+            text: "Cancel",
+          ),
+          Spacer(),
+          AppButton(
+            onPressed: _handleOk,
+            text: "Ok",
+          ),
+        ],
+      ),
+    );
+
     return Column(
       children: [
-        actions,
         form,
+        SizedBox(height: 10),
         clock,
+        actions,
       ],
     );
   }

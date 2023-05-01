@@ -1,8 +1,10 @@
+import 'package:cptclient/material/NumberSelector.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math';
 
 import '../AppDialog.dart';
+import '../AppButton.dart';
 
 Future<DateTime?> showAppDatePicker({
   required BuildContext context,
@@ -140,86 +142,43 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final String cancelText = "Cancel";
-    final String confirmText = "Ok";
-
-    final Widget actions = Container(
-      alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 10, top: 10),
-            child: TextButton(
-              onPressed: _handleCancel,
-              child: Text(cancelText),
-            ),
-          ),
-          Spacer(),
-          Container(
-            margin: EdgeInsets.only(right: 10, top: 10),
-            child: TextButton(
-              onPressed: _handleOk,
-              child: Text(confirmText),
-            ),
-          ),
-        ],
-      ),
-    );
-
     final Widget form = Container(
       alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton(onPressed: () => _handleYearJump(-1), icon: Icon(Icons.chevron_left)),
-          SizedBox(
-            width: 60,
-            child: Focus(
-              child: TextField(
-                maxLines: 1,
+          Column(
+            children: [
+              Text(
+                "Year",
+                style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
-                controller: _ctrlYear,
               ),
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _parseDateFields();
-              },
-            ),
+              NumberSelector(controller: _ctrlYear, onChange: _handleYearJump),
+            ],
           ),
-          IconButton(onPressed: () => _handleYearJump(1), icon: Icon(Icons.chevron_right)),
           SizedBox(width: 5),
-          IconButton(onPressed: () => _handleMonthJump(-1), icon: Icon(Icons.chevron_left)),
-          SizedBox(
-            width: 50,
-            child: Focus(
-              child: TextField(
-                maxLines: 1,
+          Column(
+            children: [
+              Text(
+                "Month",
+                style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
-                controller: _ctrlMonth,
               ),
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _parseDateFields();
-              },
-            ),
+              NumberSelector(controller: _ctrlMonth, onChange: _handleMonthJump),
+            ],
           ),
-          IconButton(onPressed: () => _handleMonthJump(1), icon: Icon(Icons.chevron_right)),
           SizedBox(width: 5),
-          IconButton(onPressed: () => _handleDayJump(-1), icon: Icon(Icons.chevron_left)),
-          SizedBox(
-            width: 50,
-            child: Focus(
-              child: TextField(
-                maxLines: 1,
+          Column(
+            children: [
+              Text(
+                "Day",
+                style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
-                controller: _ctrlDay,
               ),
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _parseDateFields();
-              },
-            ),
+              NumberSelector(controller: _ctrlDay, onChange: _handleDayJump),
+            ],
           ),
-          IconButton(onPressed: () => _handleDayJump(1), icon: Icon(Icons.chevron_right)),
         ],
       ),
     );
@@ -254,12 +213,32 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
 
+    final Widget actions = Container(
+      alignment: AlignmentDirectional.center,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: <Widget>[
+          AppButton(
+            onPressed: _handleCancel,
+            text: "Cancel",
+          ),
+          Spacer(),
+          AppButton(
+            onPressed: _handleOk,
+            text: "Ok",
+          ),
+        ],
+      ),
+    );
+
     return Column(
       children: [
-        actions,
         form,
         calendar,
+        actions,
       ],
     );
   }
+
 }
+
