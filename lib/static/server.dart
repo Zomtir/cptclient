@@ -144,6 +144,7 @@ Future<bool> loginUser(String key, String pwd) async {
   );
 
   if (response.statusCode == 200) {
+    window.localStorage['Session'] = 'user';
     window.localStorage['Token'] = response.body;
     return true;
   } else {
@@ -167,10 +168,31 @@ Future<bool> loginSlot(String key, String pwd) async {
   );
 
   if (response.statusCode == 200) {
+    window.localStorage['Session'] = 'slot';
     window.localStorage['Token'] = response.body;
     return true;
   } else {
     print("Slot login error: ${response.headers["error-uri"]} error: ${response.headers["error-message"]}");
+    return false;
+  }
+}
+
+Future<bool> loginCourse(String key) async {
+  if (key.isEmpty) return false;
+
+  final response = await http.get(
+    uri('course_login', {'course_key': key}),
+    headers: {
+      'Accept': 'text/plain; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    window.localStorage['Session'] = 'slot';
+    window.localStorage['Token'] = response.body;
+    return true;
+  } else {
+    print("Course login error: ${response.headers["error-uri"]} error: ${response.headers["error-message"]}");
     return false;
   }
 }
@@ -186,6 +208,7 @@ Future<bool> loginLocation(String key) async {
   );
 
   if (response.statusCode == 200) {
+    window.localStorage['Session'] = 'slot';
     window.localStorage['Token'] = response.body;
     return true;
   } else {

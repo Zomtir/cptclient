@@ -12,10 +12,11 @@ void main() {
   window.localStorage.putIfAbsent('ServerScheme', () => 'http');
   window.localStorage.putIfAbsent('ServerHost', () => 'localhost');
   window.localStorage.putIfAbsent('ServerPort', () => '8000');
+  window.localStorage.putIfAbsent('Session', () => '');
   window.localStorage.putIfAbsent('Token', () => '');
-  window.localStorage.putIfAbsent('AutoLogin', () => 'none');
   window.localStorage.putIfAbsent('DefaultUser', ()=>'');
   window.localStorage.putIfAbsent('DefaultSlot', ()=>'');
+  window.localStorage.putIfAbsent('DefaultCourse', ()=>'');
   window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
 
   runApp(MaterialApp(

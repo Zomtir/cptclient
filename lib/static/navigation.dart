@@ -47,6 +47,7 @@ void loginSlot() async {
 }
 
 void logout() async {
+  window.localStorage['Session'] = "";
   window.localStorage['Token'] = "";
   session = null;
   server.unloadMembers();

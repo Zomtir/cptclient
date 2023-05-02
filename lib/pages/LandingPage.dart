@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
-import '../material/AppButton.dart';
+import 'package:cptclient/material/AppButton.dart';
 
 import "package:universal_html/html.dart";
 
@@ -22,6 +22,7 @@ class LandingPageState extends State<LandingPage> {
   TextEditingController _ctrlUserPasswd = TextEditingController();
   TextEditingController _ctrlSlotLogin = TextEditingController();
   TextEditingController _ctrlSlotPasswd = TextEditingController();
+  TextEditingController _ctrlCourseLogin = TextEditingController();
   TextEditingController _ctrlLocationLogin = TextEditingController();
 
   @override
@@ -30,9 +31,12 @@ class LandingPageState extends State<LandingPage> {
 
     _ctrlUserLogin.text = window.localStorage['DefaultUser']!;
     _ctrlSlotLogin.text = window.localStorage['DefaultSlot']!;
+    _ctrlCourseLogin.text = window.localStorage['DefaultCourse']!;
     _ctrlLocationLogin.text = window.localStorage['DefaultLocation']!;
+  }
 
-    /*switch (window.localStorage['AutoLogin']!) {
+  void _reconnect() async {
+    /*switch (window.localStorage['Session']!) {
       case 'slot':
         navi.confirmSlot();
         break;
@@ -63,6 +67,14 @@ class LandingPageState extends State<LandingPage> {
     if (success) navi.loginSlot();
   }
 
+  void _loginCourse() async {
+    bool success = await server.loginCourse(_ctrlCourseLogin.text);
+
+    _ctrlCourseLogin.text = window.localStorage['DefaultCourse']!;
+
+    if (success) navi.loginSlot();
+  }
+
   void _loginLocation() async {
     bool success = await server.loginLocation(_ctrlLocationLogin.text);
 
@@ -89,6 +101,15 @@ class LandingPageState extends State<LandingPage> {
         ],
       ),
       body: AppBody(children: [
+        if (window.localStorage['Session']!.isNotEmpty) AppButton(
+          text: "Resume Session",
+          onPressed: _reconnect,
+        ),
+        if (window.localStorage['Session']!.isNotEmpty) Divider(
+          height: 30,
+          thickness: 5,
+          color: Colors.black,
+        ),
         TextField(
           maxLines: 1,
           controller: _ctrlUserLogin,
@@ -164,6 +185,31 @@ class LandingPageState extends State<LandingPage> {
         AppButton(
           text: "Slot Login",
           onPressed: _loginSlot,
+        ),
+        Divider(
+          height: 30,
+          thickness: 5,
+          color: Colors.black,
+        ),
+        TextFormField(
+          autofocus: true,
+          maxLines: 1,
+          controller: _ctrlCourseLogin,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+            labelText: "Course Key",
+            hintText: "Only alphanumeric characters",
+            suffixIcon: IconButton(
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () => _ctrlCourseLogin.clear(),
+              icon: Icon(Icons.clear),
+            ),
+          ),
+        ),
+        AppButton(
+          text: "Course Login",
+          onPressed: _loginCourse,
         ),
         Divider(
           height: 30,

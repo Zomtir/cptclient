@@ -1,5 +1,5 @@
-import 'package:cptclient/material/AppButton.dart';
 import 'package:flutter/material.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 
@@ -16,9 +16,9 @@ class ConnectionPageState extends State<ConnectionPage> {
   TextEditingController _ctrlServerScheme = TextEditingController();
   TextEditingController _ctrlServerHost = TextEditingController();
   TextEditingController _ctrlServerPort = TextEditingController();
-  TextEditingController _ctrlAutoLogin = TextEditingController();
   TextEditingController _ctrlUser = TextEditingController();
   TextEditingController _ctrlSlot = TextEditingController();
+  TextEditingController _ctrlCourse = TextEditingController();
   TextEditingController _ctrlLocation = TextEditingController();
   bool _serverOnline = false;
 
@@ -29,9 +29,9 @@ class ConnectionPageState extends State<ConnectionPage> {
     _ctrlServerScheme.text = window.localStorage['ServerScheme']!;
     _ctrlServerHost.text = window.localStorage['ServerHost']!;
     _ctrlServerPort.text = window.localStorage['ServerPort']!;
-    _ctrlAutoLogin.text = window.localStorage['AutoLogin']!;
     _ctrlUser.text = window.localStorage['DefaultUser']!;
     _ctrlSlot.text = window.localStorage['DefaultSlot']!;
+    _ctrlCourse.text = window.localStorage['DefaultCourse']!;
     _ctrlLocation.text = window.localStorage['DefaultLocation']!;
 
     _testConnection();
@@ -88,17 +88,16 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppButton(
-            text: "Test connection",
+            text: "Test",
             onPressed: _testConnection,
             trailing: Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
           ),
-          AppInfoRow(
-            info: Text("Auto Login"),
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlAutoLogin,
-              onChanged: (String text) => {window.localStorage['AutoLogin'] = text},
-            ),
+          AppButton(
+            text: "Reconnect",
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+              Navigator.pushReplacementNamed(context, '/');
+            },
           ),
           AppInfoRow(
             info: Text("Default User Key"),
@@ -117,19 +116,20 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
+            info: Text("Default Course Key"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlCourse,
+              onChanged: (String text) => {window.localStorage['DefaultCourse'] = text},
+            ),
+          ),
+          AppInfoRow(
             info: Text("Default Location Key"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlLocation,
               onChanged: (String text) => {window.localStorage['DefaultLocation'] = text},
             ),
-          ),
-          AppButton(
-            text: "Reconnect",
-            onPressed: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-              Navigator.pushReplacementNamed(context, '/');
-            },
           ),
         ],
       ),

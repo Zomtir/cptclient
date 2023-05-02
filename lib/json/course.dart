@@ -49,6 +49,8 @@ class Course implements Comparable {
     'threshold': threshold,
   };
 
+  MapEntry<String, String> toEntry() => MapEntry(key, title);
+
   bool operator == (other) => other is Course && id == other.id;
   int get hashCode => id.hashCode;
 
