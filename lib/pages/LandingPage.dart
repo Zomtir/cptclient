@@ -35,18 +35,17 @@ class LandingPageState extends State<LandingPage> {
     _ctrlLocationLogin.text = window.localStorage['DefaultLocation']!;
   }
 
-  void _reconnect() async {
-    /*switch (window.localStorage['Session']!) {
-      case 'slot':
-        navi.confirmSlot();
-        break;
-      case 'location':
-        _loginLocation();
-        break;
+  void _resume() async {
+    switch (window.localStorage['Session']!) {
       case 'user':
         navi.loginUser();
         break;
-    }*/
+      case 'slot':
+        navi.loginSlot();
+        break;
+      default:
+        break;
+    }
   }
 
   void _loginUser() async {
@@ -103,7 +102,7 @@ class LandingPageState extends State<LandingPage> {
       body: AppBody(children: [
         if (window.localStorage['Session']!.isNotEmpty) AppButton(
           text: "Resume Session",
-          onPressed: _reconnect,
+          onPressed: _resume,
         ),
         if (window.localStorage['Session']!.isNotEmpty) Divider(
           height: 30,
