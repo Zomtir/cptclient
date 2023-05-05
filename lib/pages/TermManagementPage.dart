@@ -69,7 +69,7 @@ class TermManagementPageState extends State<TermManagementPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("User Administration"),
+        title: Text("Term Administration"),
       ),
       body: AppBody(
         children: <Widget>[
@@ -82,9 +82,11 @@ class TermManagementPageState extends State<TermManagementPage> {
           AppListView(
             items: _users,
             itemBuilder: (User user) {
-              return AppUserTile(
-                onTap: (member) => _selectUser(_users.firstWhere((user) => user.id == member.id)),
-                user: user,
+              return InkWell(
+                onTap: () => _selectUser(user),
+                child: AppUserTile(
+                  user: user,
+                ),
               );
             },
           ),

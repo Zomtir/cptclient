@@ -5,7 +5,8 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
 import '../material/PanelSwiper.dart';
-import '../material/panels/UserSelectionPanel.dart';
+import '../material/panels/SelectionPanel.dart';
+import '../material/tiles/AppUserTile.dart';
 import '../static/server.dart' as server;
 import '../static/serverTeamAdmin.dart' as server;
 import '../json/session.dart';
@@ -163,8 +164,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
               children: [
                 Expanded(
                   child: AppTeamTile(
-                    onTap: (team) => {},
-                    item: widget.team,
+                    team: widget.team,
                   ),
                 ),
                 IconButton(
@@ -178,11 +178,13 @@ class TeamAdminPageState extends State<TeamAdminPage> {
               ],
             ),
           PanelSwiper(panels: [
-            if (!widget.isDraft) Panel("Members", UserSelectionPanel(
-              usersAvailable: server.cacheMembers,
-              usersChosen: _members,
+            if (!widget.isDraft) Panel("Members", SelectionPanel<User>(
+              available: server.cacheMembers,
+              chosen: _members,
               onAdd: _addMember,
               onRemove: _removeMember,
+              filter: filterUsers,
+              builder: (User user) => AppUserTile(user: user),
             )),
             Panel("Edit", _buildEditPanel()),
           ]),

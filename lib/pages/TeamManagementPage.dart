@@ -86,9 +86,11 @@ class TeamManagementPageState extends State<TeamManagementPage> {
           AppListView(
             items: _teams,
             itemBuilder: (Team team) {
-              return AppTeamTile(
-                onTap: _selectTeam,
-                item: team,
+              return InkWell(
+                onTap: () => _selectTeam(team),
+                child: AppTeamTile(
+                  team: team,
+                ),
               );
             },
           ),

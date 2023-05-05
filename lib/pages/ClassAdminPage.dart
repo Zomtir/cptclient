@@ -1,6 +1,5 @@
 import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:cptclient/material/panels/UserSelectionPanel.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
@@ -10,6 +9,8 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
+import '../material/panels/SelectionPanel.dart';
+import '../material/tiles/AppUserTile.dart';
 import '../static/server.dart' as server;
 import '../static/serverClassAdmin.dart' as server;
 import '../json/session.dart';
@@ -182,21 +183,25 @@ class ClassAdminPageState extends State<ClassAdminPage> {
               if (!widget.isDraft)
                 Panel(
                   "Participants",
-                  UserSelectionPanel(
-                    usersAvailable: server.cacheMembers,
-                    usersChosen: _participants,
+                  SelectionPanel<User>(
+                    available: server.cacheMembers,
+                    chosen: _participants,
                     onAdd: _submitParticipantAddition,
                     onRemove: _submitParticipantRemoval,
+                    filter: filterUsers,
+                    builder: (User user) => AppUserTile(user: user),
                   ),
                 ),
               if (!widget.isDraft)
                 Panel(
                   "Owners",
-                  UserSelectionPanel(
-                    usersAvailable: server.cacheMembers,
-                    usersChosen: _owners,
+                  SelectionPanel<User>(
+                    available: server.cacheMembers,
+                    chosen: _owners,
                     onAdd: _submitOwnerAddition,
                     onRemove: _submitOwnerRemoval,
+                    filter: filterUsers,
+                    builder: (User user) => AppUserTile(user: user),
                   ),
                 ),
               if (!widget.isDraft) Panel("Group Invites", Container()),

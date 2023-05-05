@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'AppTile.dart';
+import '../RoundBox.dart';
 
 import 'package:cptclient/json/course.dart';
 
 class AppCourseTile extends StatelessWidget {
   final Course course;
-  final Function(Course)? onTap;
 
   const AppCourseTile({
     Key? key,
     required this.course,
-    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppTile<Course>(
-      onTap: onTap,
-      item: course,
+    return RoundBox(
       child: Row(
         children: [
           Padding(

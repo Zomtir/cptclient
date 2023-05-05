@@ -9,13 +9,13 @@ class AppBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 600),
+        constraints: BoxConstraints(maxWidth: 600),
         child: ListView(
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.all(8.0),
           children: children,
-          ),
         ),
+      ),
     );
   }
 }

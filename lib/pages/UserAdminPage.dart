@@ -139,7 +139,6 @@ class UserAdminPageState extends State<UserAdminPage> {
             children: [
               Expanded(
                 child: AppUserTile(
-                  onTap: (member) => {},
                   user: widget.user,
                 ),
               ),

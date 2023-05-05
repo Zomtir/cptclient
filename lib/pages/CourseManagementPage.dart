@@ -173,9 +173,11 @@ class CourseManagementPageState extends State<CourseManagementPage> {
           AppListView<Course>(
             items: _coursesFiltered,
             itemBuilder: (Course course) {
-              return AppCourseTile(
-                onTap: _selectCourse,
-                course: course,
+              return InkWell(
+                onTap: () => _selectCourse(course),
+                child: AppCourseTile(
+                  course: course,
+                ),
               );
             },
           ),

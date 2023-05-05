@@ -170,9 +170,11 @@ class RankingManagementPageState extends State<RankingManagementPage> {
           AppListView<Ranking>(
             items: _rankingsFiltered,
             itemBuilder: (Ranking ranking) {
-              return AppRankingTile(
-                onTap: _selectRanking,
-                ranking: ranking,
+              return InkWell(
+                onTap: () => _selectRanking(ranking),
+                child: AppRankingTile(
+                  ranking: ranking,
+                ),
               );
             },
           ),

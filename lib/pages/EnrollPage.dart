@@ -1,10 +1,9 @@
-import 'package:cptclient/material/panels/UserSelectionPanel.dart';
 import 'package:flutter/material.dart';
-
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
-import 'package:intl/intl.dart';
-
+import '../material/panels/SelectionPanel.dart';
+import '../material/tiles/AppUserTile.dart';
 import '../static/navigation.dart' as navi;
 import '../static/serverSlotCasual.dart' as server;
 import '../json/session.dart';
@@ -14,8 +13,7 @@ class EnrollPage extends StatefulWidget {
   final Session session;
 
   EnrollPage({Key? key, required this.session}) : super(key: key) {
-    if (session.token == "" || session.slot == null)
-      navi.logout();
+    if (session.token == "" || session.slot == null) navi.logout();
   }
 
   @override
@@ -34,8 +32,7 @@ class EnrollPageState extends State<EnrollPage> {
     _update();
   }
 
-  void _update() async
-  {
+  void _update() async {
     candidates = await server.slot_candidates(widget.session);
     participants = await server.slot_participants(widget.session);
 
@@ -45,23 +42,23 @@ class EnrollPageState extends State<EnrollPage> {
     });
   }
 
-  void _enrolMember(User user) async {
+  void _addParticipant(User user) async {
     if (!await server.slot_participant_add(widget.session, user)) return;
 
     _update();
   }
 
-  void _dimissMember(User user) async {
+  void _removeParticipant(User user) async {
     if (!await server.slot_participant_remove(widget.session, user)) return;
 
     _update();
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Enroll for this slot"),
+        title: Text("Slot Participation"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
@@ -71,41 +68,17 @@ class EnrollPageState extends State<EnrollPage> {
       ),
       body: AppBody(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("[${widget.session.slot!.id.toString()}] ${widget.session.slot!.title}",
-                style: TextStyle(fontWeight: FontWeight.bold),),
-            ]
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.schedule),
-              Text("${DateFormat("yyyy-MM-dd HH:mm").format(widget.session.slot!.begin)} - ${DateFormat("yyyy-MM-dd HH:mm").format(widget.session.slot!.end)}"),
-            ]
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.room),
-              Text(widget.session.slot!.location!.title),
-            ],
-          ),
-          Divider(
-            height: 30,
-            thickness: 5,
-            color: Colors.black,
-          ),
-          UserSelectionPanel(
-            usersAvailable: candidates,
-            usersChosen: participants,
-            onAdd: _enrolMember,
-            onRemove: _dimissMember,
+          AppSlotTile(slot: widget.session.slot!),
+          SelectionPanel<User>(
+            available: candidates,
+            chosen: participants,
+            onAdd: _addParticipant,
+            onRemove: _removeParticipant,
+            filter: filterUsers,
+            builder: (User user) => AppUserTile(user: user),
           ),
         ],
       ),
     );
   }
-
 }

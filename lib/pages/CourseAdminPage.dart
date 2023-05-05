@@ -8,13 +8,17 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import '../json/team.dart';
+import '../material/panels/SelectionPanel.dart';
 
+import '../material/tiles/AppTeamTile.dart';
+import '../material/tiles/AppUserTile.dart';
 import 'ClassAdminPage.dart';
 
-import '../material/panels/UserSelectionPanel.dart';
 import '../static/server.dart' as server;
 import '../static/serverCourseAdmin.dart' as server;
 import '../static/serverClassAdmin.dart' as server;
+import '../static/serverTeamMember.dart' as server;
 
 import '../json/session.dart';
 import '../json/course.dart';
@@ -38,6 +42,9 @@ class CourseAdminPageState extends State<CourseAdminPage> {
   List<Slot> _slots = [];
   List<User> _moderators = [];
 
+  List<Team> _teamsAvailable = [];
+  List<Team> _teamsChosen = [];
+
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
   bool _ctrlCourseActive = true;
@@ -55,8 +62,10 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   void _update() {
     if (!widget.isDraft) _getCourseSlots();
-    if (!widget.isDraft) _getCourseModerators();
-
+    if (!widget.isDraft) _getModerators();
+    if (!widget.isDraft) _getTeamsAvailable();
+    if (!widget.isDraft) _getTeamsChosen();
+    
     _applyCourse();
   }
 
@@ -119,7 +128,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
     );
   }
 
-  Future<void> _getCourseModerators() async {
+  Future<void> _getModerators() async {
     List<User> moderators = await server.course_moderator_list(widget.session, widget.course.id);
     moderators.sort();
 
@@ -136,7 +145,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       return;
     }
 
-    _getCourseModerators();
+    _getModerators();
   }
 
   void _removeModerator(User user) async {
@@ -147,7 +156,47 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       return;
     }
 
-    _getCourseModerators();
+    _getModerators();
+  }
+
+  Future<void> _getTeamsAvailable() async {
+    List<Team> teams = await server.team_list(widget.session);
+    teams.sort();
+
+    setState(() {
+      _teamsAvailable = teams;
+    });
+  }
+
+  Future<void> _getTeamsChosen() async {
+    List<Team> teams = await server.course_teaminvite_list(widget.session, widget.course.id);
+    teams.sort();
+
+    setState(() {
+      _teamsChosen = teams;
+    });
+  }
+
+  void _addTeam(Team team) async {
+    bool success = await server.course_teaminvite_add(widget.session, widget.course.id, team.id);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add team')));
+      return;
+    }
+
+    _getTeamsChosen();
+  }
+
+  void _removeTeam(Team team) async {
+    bool success = await server.course_teaminvite_remove(widget.session, widget.course.id, team.id);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove team')));
+      return;
+    }
+
+    _getTeamsChosen();
   }
 
   void _applyCourse() {
@@ -200,7 +249,6 @@ class CourseAdminPageState extends State<CourseAdminPage> {
               children: [
                 Expanded(
                   child: AppCourseTile(
-                    onTap: (course) => {},
                     course: widget.course,
                   ),
                 ),
@@ -218,11 +266,21 @@ class CourseAdminPageState extends State<CourseAdminPage> {
             ),
           PanelSwiper(panels: [
             if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
-            if (!widget.isDraft) Panel("Moderators", UserSelectionPanel(
-              usersAvailable: server.cacheMembers,
-              usersChosen: _moderators,
+            if (!widget.isDraft) Panel("Moderators", SelectionPanel<User>(
+              available: server.cacheMembers,
+              chosen: _moderators,
               onAdd: _addModerator,
               onRemove: _removeModerator,
+              filter: filterUsers,
+              builder: (User user) => AppUserTile(user: user),
+            )),
+            if (!widget.isDraft) Panel("Team Invites", SelectionPanel<Team>(
+              available: _teamsAvailable,
+              chosen: _teamsChosen,
+              onAdd: _addTeam,
+              onRemove: _removeTeam,
+              filter: filterTeams,
+              builder: (Team team) => AppTeamTile(team: team),
             )),
             if (widget.session.right!.admin_courses) Panel("Edit", buildEditPanel()),
           ]),

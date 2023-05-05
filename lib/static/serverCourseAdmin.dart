@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cptclient/json/team.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -97,6 +98,49 @@ Future<bool> course_moderator_remove(Session session, int courseID, int userID) 
     server.uri('/admin/course_moderator_remove', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<Team>> course_teaminvite_list(Session session, int courseID) async {
+  final response = await http.get(
+    server.uri('/admin/course_teaminvite_list', {'course_id': courseID.toString()}),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<Team>.from(list.map((model) => Team.fromJson(model)));
+}
+
+Future<bool> course_teaminvite_add(Session session, int courseID, int teamID) async {
+  final response = await http.head(
+    server.uri('/admin/course_teaminvite_add', {
+      'course_id': courseID.toString(),
+      'team_id' : teamID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> course_teaminvite_remove(Session session, int courseID, int teamID) async {
+  final response = await http.head(
+    server.uri('/admin/course_teaminvite_remove', {
+      'course_id': courseID.toString(),
+      'team_id' : teamID.toString(),
     }),
     headers: {
       'Token': session.token,

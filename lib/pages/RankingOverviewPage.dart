@@ -66,7 +66,6 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
             items: _rankings,
             itemBuilder: (Ranking ranking) {
               return AppRankingTile(
-                onTap: (ranking) => {},
                 ranking: ranking,
               );
             },

@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:core';
+
 import 'package:cptclient/static/format.dart';
 
 class User implements Comparable {
@@ -95,4 +97,23 @@ class User implements Comparable {
 
     return this.key.compareTo(other.key);
   }
+}
+
+List<User> filterUsers(List<User> users, String filter) {
+  List<User> filtered = users.where((User user) {
+    Set<String> fragments = filter.toLowerCase().split(' ').toSet();
+    List<String> searchspace = [user.key, user.firstname, user.lastname];
+
+    for (var fragment in fragments) {
+      bool matchedAny = false;
+      for (var space in searchspace) {
+        matchedAny = matchedAny || space.toLowerCase().contains(fragment);
+      }
+      if (!matchedAny) return false;
+    }
+
+    return true;
+  }).toList();
+
+  return filtered;
 }

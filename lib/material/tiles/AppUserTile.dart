@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cptclient/json/user.dart';
 
-import 'AppTile.dart';
+import '../RoundBox.dart';
 
 class AppUserTile extends StatelessWidget {
   final User user;
-  final Function(User)? onTap;
 
   const AppUserTile({
     Key? key,
     required this.user,
-    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppTile<User>(
-        onTap: onTap,
-        item: user,
+    return RoundBox(
         child: Row(
           children: [
             Padding(

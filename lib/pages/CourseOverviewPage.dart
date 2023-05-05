@@ -127,9 +127,11 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
     return AppListView(
       items: _owncourses,
       itemBuilder: (Course course) {
-        return AppCourseTile(
-          onTap: _selectCourse,
-          course: course,
+        return InkWell(
+          onTap: () => _selectCourse(course),
+          child: AppCourseTile(
+            course: course,
+          ),
         );
       },
     );
@@ -204,9 +206,11 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
         AppListView<Course>(
           items: _coursesFiltered,
           itemBuilder: (Course course) {
-            return AppCourseTile(
-              onTap: _selectCourse,
-              course: course,
+            return InkWell(
+              onTap: () => _selectCourse(course),
+              child: AppCourseTile(
+                course: course,
+              ),
             );
           },
         ),

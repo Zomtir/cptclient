@@ -12,20 +12,21 @@ class AppDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white.withOpacity(0.3),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxWidth),
-            child: Container(
-              decoration: const AppBoxDecoration(),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              margin: const EdgeInsets.symmetric(vertical: 16.0),
-              child: child,
-            ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: [
+              Container(
+                decoration: const AppBoxDecoration(),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                margin: const EdgeInsets.all(5.0),
+                child: child,
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

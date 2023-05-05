@@ -25,7 +25,7 @@ class Team implements Comparable {
       : id = json['id'],
         name = json['name'],
         description = json['description'],
-        right = Right.fromJson(json['right']);
+        right = (json['right'] == null) ? null : Right.fromJson(json['right']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -42,4 +42,23 @@ class Team implements Comparable {
   int compareTo(other) {
     return this.name.compareTo(other.name);
   }
+}
+
+List<Team> filterTeams(List<Team> teams, String filter) {
+  List<Team> filtered = teams.where((Team team) {
+    Set<String> fragments = filter.toLowerCase().split(' ').toSet();
+    List<String> searchspace = [team.name, team.description];
+
+    for (var fragment in fragments) {
+      bool matchedAny = false;
+      for (var space in searchspace) {
+        matchedAny = matchedAny || space.toLowerCase().contains(fragment);
+      }
+      if (!matchedAny) return false;
+    }
+
+    return true;
+  }).toList();
+
+  return filtered;
 }

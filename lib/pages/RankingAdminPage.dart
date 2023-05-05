@@ -138,7 +138,6 @@ class RankingAdminPageState extends State<RankingAdminPage> {
             children: [
               Expanded(
                 child: AppRankingTile(
-                  onTap: (ranking) => {},
                   ranking: widget.ranking,
                 ),
               ),

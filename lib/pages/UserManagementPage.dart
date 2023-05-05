@@ -1,4 +1,4 @@
-import 'package:cptclient/material/UserFilter.dart';
+import 'package:cptclient/material/TextFilter.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
@@ -89,17 +89,20 @@ class UserManagementPageState extends State<UserManagementPage> {
             text: "New user",
             onPressed: _createUser,
           ),
-          UserFilter(
-            users: _users,
+          TextFilter(
+            items: _users,
             controller: _ctrlFilterUser,
             onChange: _limitUsers,
+            filter: filterUsers,
           ),
           AppListView<User>(
             items: _usersLimited,
             itemBuilder: (User user) {
-              return AppUserTile(
-                onTap: (u) => _selectUser(user),
-                user: user,
+              return InkWell(
+                onTap: () => _selectUser(user),
+                child: AppUserTile(
+                  user: user,
+                ),
               );
             },
           ),

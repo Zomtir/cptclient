@@ -176,7 +176,6 @@ class CourseInfoPageState extends State<CourseInfoPage> {
             children: [
               Expanded(
                 child: AppCourseTile(
-                  onTap: (course) => {},
                   course: widget.course,
                 ),
               ),
