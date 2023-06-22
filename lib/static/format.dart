@@ -35,7 +35,7 @@ String? formatNullWebDate(DateTime? dt) {
   return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt.toUtc());
 }
 
-DateTime? parseWebDate(String? dt) {
+DateTime? parseNullWebDate(String? dt) {
   return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true).toLocal();
 }
 
@@ -45,4 +45,8 @@ String? formatNullInt(int? i) {
 
 int? parseNullInt(String? i) {
   return i == null ? null : int.tryParse(i);
+}
+
+int? convertNullInt(int? i) {
+  return i == null ? null : i;
 }

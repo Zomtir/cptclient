@@ -33,8 +33,8 @@ class User implements Comparable {
   User.fromVoid()
       : id = 0,
         key = "",
-        firstname = "First Name",
-        lastname = "Last Name";
+        firstname = "",
+        lastname = "";
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -46,15 +46,15 @@ class User implements Comparable {
         email = json['email'],
         phone = json['phone'],
         iban = json['iban'],
-        birthday = parseWebDate(json['birthday']),
+        birthday = parseNullWebDate(json['birthday']),
         birthlocation = json['birthlocation'],
         nationality = json['nationality'],
         gender = json['gender'],
-        federationNumber = parseNullInt(json['federationNumber']),
-        federationPermissionSolo = parseWebDate(json['federationPermissionSolo']),
-        federationPermissionTeam = parseWebDate(json['federationPermissionTeam']),
+        federationNumber = convertNullInt(json['federationNumber']),
+        federationPermissionSolo = parseNullWebDate(json['federationPermissionSolo']),
+        federationPermissionTeam = parseNullWebDate(json['federationPermissionTeam']),
         federationResidency = json['federationResidency'],
-        dataDeclaration = parseNullInt(json['dataDeclaration']),
+        dataDeclaration = convertNullInt(json['dataDeclaration']),
         dataDisclaimer = json['dataDisclaimer'],
         note = json['note'];
 
@@ -72,11 +72,11 @@ class User implements Comparable {
         'birthlocation': birthlocation,
         'nationality': nationality,
         'gender': gender,
-        'federationNumber': formatNullInt(federationNumber),
+        'federationNumber': federationNumber,
         'federationPermissionSolo': formatNullWebDate(federationPermissionSolo),
         'federationPermissionTeam': formatNullWebDate(federationPermissionTeam),
         'federationResidency': formatNullWebDate(federationResidency),
-        'dataDeclaration': formatNullInt(dataDeclaration),
+        'dataDeclaration': dataDeclaration,
         'dataDisclaimer': dataDisclaimer,
         'note': note
       };

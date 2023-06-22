@@ -100,6 +100,16 @@ class UserAdminPageState extends State<UserAdminPage> {
   void _submitUser() async {
     _gatherUser();
 
+    if (widget.user.firstname.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('First name is mandatory')));
+      return;
+    }
+
+    if (widget.user.lastname.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Last name is mandatory')));
+      return;
+    }
+
     bool success = widget.isDraft ? await server.user_create(widget.session, widget.user) : await server.user_edit(widget.session, widget.user);
 
     if (!success) {
@@ -109,7 +119,7 @@ class UserAdminPageState extends State<UserAdminPage> {
 
     bool? pwdsuccess = await server.user_edit_password(widget.session, widget.user, _ctrlUserPassword.text);
     if (pwdsuccess != null && !pwdsuccess)
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User saved, but new password was rejected.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('The user was saved, but the new password was rejected.')));
 
     _ctrlUserPassword.text = '';
 
@@ -177,14 +187,14 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("First Name"),
+            info: Text("First Name *"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserFirstname,
             ),
           ),
           AppInfoRow(
-            info: Text("Last Name"),
+            info: Text("Last Name *"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserLastname,
