@@ -16,16 +16,16 @@ Future<DateTime?> showAppDatePicker({
 
   Widget picker = DatePicker(
     initialDate: initialDate,
-    firstDate: firstDate ?? DateTime(2000),
+    firstDate: firstDate ?? DateTime(1900),
     lastDate: lastDate ?? DateTime(2100),
   );
 
   assert(
-    (lastDate ?? DateTime(2100)).isAfter(firstDate ?? DateTime(2000)),
+    (lastDate ?? DateTime(2100)).isAfter(firstDate ?? DateTime(1900)),
     'lastDate $lastDate must be on or after firstDate $firstDate.',
   );
   assert(
-    initialDate.isAfter(firstDate ?? DateTime(2000)),
+    initialDate.isAfter(firstDate ?? DateTime(1900)),
     'initialDate $initialDate must be on or after firstDate $firstDate.',
   );
   assert(

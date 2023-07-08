@@ -1,6 +1,4 @@
 {
-  "userInvalidFirstname": "Invalid First Name",
-  "@userInvalidFirstname": {
-    "description": "The first name is mandatory"
-  }
+  "userInvalidFirstname": "Ungültiger Vorname",
+  "userInvalidLastname": "Ungültiger Nachname"
 }

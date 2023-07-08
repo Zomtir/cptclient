@@ -9,11 +9,18 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.6.0+1
 
 environment:
-
   sdk: ^2.18.0
-  flutter: ^2.4.0-0.pre
 
 dependencies:
+
+  # Flutter
+  flutter:
+    sdk: flutter
+
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+
   # Fetch data from the internet
   http: ^0.13.3
 
@@ -21,7 +28,7 @@ dependencies:
   crypto: ^3.0.0
 
   # Date & Time
-  intl: ^0.18.0
+  intl: any
 
   # Local storage
   universal_html: ^2.0.8
@@ -34,8 +41,9 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
-# The following section is specific to Flutter
 flutter:
+  # Custom localization
+  generate: true
 
   # Material Icons font
   uses-material-design: true
