@@ -1,7 +1,6 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import "package:universal_html/html.dart";
 
 import 'static/navigation.dart' as navi;
 
@@ -11,16 +10,6 @@ import 'pages/MemberLandingPage.dart';
 import 'pages/EnrollPage.dart';
 
 void main() {
-  window.localStorage.putIfAbsent('ServerScheme', () => 'http');
-  window.localStorage.putIfAbsent('ServerHost', () => 'localhost');
-  window.localStorage.putIfAbsent('ServerPort', () => '8000');
-  window.localStorage.putIfAbsent('Session', () => '');
-  window.localStorage.putIfAbsent('Token', () => '');
-  window.localStorage.putIfAbsent('DefaultUser', ()=>'');
-  window.localStorage.putIfAbsent('DefaultSlot', ()=>'');
-  window.localStorage.putIfAbsent('DefaultCourse', ()=>'');
-  window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
-
   runApp(MaterialApp(
     title: 'CPT Client',
     localizationsDelegates: [

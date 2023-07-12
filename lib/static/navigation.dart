@@ -2,6 +2,8 @@ library navigation;
 
 import 'package:flutter/material.dart';
 
+import 'package:yaml/yaml.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import "package:universal_html/html.dart"; // TODO go back to dart:html?
 
 import 'package:cptclient/static/server.dart' as server;
@@ -17,7 +19,20 @@ Session? session;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
 
-void connect() async {
+Future<void> connect() async {
+  final configString = await rootBundle.loadString('cptclient.yaml');
+  final dynamic configMap = loadYaml(configString);
+
+  window.localStorage.putIfAbsent('ServerScheme', () => configMap['ServerScheme']);
+  window.localStorage.putIfAbsent('ServerHost', () => configMap['ServerHost']);
+  window.localStorage.putIfAbsent('ServerPort', () => configMap['ServerPort']);
+  window.localStorage.putIfAbsent('Session', () => '');
+  window.localStorage.putIfAbsent('Token', () => '');
+  window.localStorage.putIfAbsent('DefaultUser', ()=>'');
+  window.localStorage.putIfAbsent('DefaultSlot', ()=>'');
+  window.localStorage.putIfAbsent('DefaultCourse', ()=>'');
+  window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
+
   if (await server.loadStatus()) {
     await server.loadCache();
     gotoRoute('/login');
@@ -26,7 +41,7 @@ void connect() async {
   }
 }
 
-void loginUser() async {
+Future<void> loginUser() async {
   if (await server.loadStatus()) {
     if (await confirmUser()) {
       gotoRoute('/user');
@@ -36,7 +51,7 @@ void loginUser() async {
   }
 }
 
-void loginSlot() async {
+Future<void> loginSlot() async {
   if (await server.loadStatus()) {
     if (await confirmSlot()) {
       gotoRoute('/slot');
@@ -46,7 +61,7 @@ void loginSlot() async {
   }
 }
 
-void logout() async {
+Future<void> logout() async {
   window.localStorage['Session'] = "";
   window.localStorage['Token'] = "";
   session = null;

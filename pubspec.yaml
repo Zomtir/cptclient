@@ -30,8 +30,11 @@ dependencies:
   # Date & Time
   intl: any
 
-  # Local storage
+  # Local storage (browser)
   universal_html: ^2.0.8
+
+  # Global storage (yaml)
+  yaml: any
 
 dev_dependencies:
 
@@ -50,5 +53,6 @@ flutter:
 
   # Local assets
   assets:
+    - cptclient.yaml
     - assets/images/
     - assets/icons/
