@@ -16,10 +16,9 @@ import '../json/user.dart';
 class TeamAdminPage extends StatefulWidget {
   final Session session;
   final Team team;
-  final void Function() onUpdate;
   final bool isDraft;
 
-  TeamAdminPage({Key? key, required this.session, required this.team, required this.onUpdate, required this.isDraft}) : super(key: key);
+  TeamAdminPage({Key? key, required this.session, required this.team, required this.isDraft}) : super(key: key);
 
   @override
   TeamAdminPageState createState() => TeamAdminPageState();
@@ -90,7 +89,6 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited team')));
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -101,7 +99,6 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted team')));
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -113,7 +110,6 @@ class TeamAdminPageState extends State<TeamAdminPage> {
         builder: (context) => TeamAdminPage(
           session: widget.session,
           team: _team,
-          onUpdate: widget.onUpdate,
           isDraft: true,
         ),
       ),

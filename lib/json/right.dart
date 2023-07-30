@@ -32,7 +32,6 @@ class Right {
       : admin_courses = json['admin_courses'],
         admin_event = json['admin_event'],
         admin_inventory = json['admin_inventory'],
-
         admin_rankings = json['admin_rankings'],
         admin_teams = json['admin_teams'],
         admin_term = json['admin_term'],
@@ -40,7 +39,7 @@ class Right {
 
   Map<String, dynamic> toJson() => {
         'admin_courses': admin_courses,
-    'admin_event': admin_event,
+        'admin_event': admin_event,
         'admin_inventory': admin_inventory,
         'admin_rankings': admin_rankings,
         'admin_teams': admin_teams,

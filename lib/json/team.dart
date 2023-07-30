@@ -13,7 +13,8 @@ class Team implements Comparable {
   Team.fromVoid()
       : id = 0,
         name = "",
-        description = "";
+        description = "",
+        right = Right();
 
   Team.fromTeam(Team team)
       : this.id = 0,

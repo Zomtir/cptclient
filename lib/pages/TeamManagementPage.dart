@@ -42,32 +42,19 @@ class TeamManagementPageState extends State<TeamManagementPage> {
     });
   }
 
-  void _selectTeam(Team team) {
-    Navigator.push(
+  Future<void> _selectTeam(Team team, bool isDraft) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TeamAdminPage(
           session: widget.session,
           team: team,
-          onUpdate: _getTeamList,
-          isDraft: false,
+          isDraft: isDraft,
         ),
       ),
     );
-  }
 
-  void _createTeam() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TeamAdminPage(
-          session: widget.session,
-          team: Team.fromVoid(),
-          onUpdate: _getTeamList,
-          isDraft: false,
-        ),
-      ),
-    );
+    _update();
   }
 
   @override
@@ -81,13 +68,13 @@ class TeamManagementPageState extends State<TeamManagementPage> {
           AppButton(
             leading: Icon(Icons.add),
             text: "New team",
-            onPressed: _createTeam,
+            onPressed: () => _selectTeam(Team.fromVoid(), true),
           ),
           AppListView(
             items: _teams,
             itemBuilder: (Team team) {
               return InkWell(
-                onTap: () => _selectTeam(team),
+                onTap: () => _selectTeam(team, false),
                 child: AppTeamTile(
                   team: team,
                 ),
