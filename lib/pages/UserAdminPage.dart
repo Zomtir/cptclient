@@ -102,12 +102,12 @@ class UserAdminPageState extends State<UserAdminPage> {
     _gatherUser();
 
     if (widget.user.firstname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.userInvalidFirstname)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
     if (widget.user.lastname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.userInvalidLastname)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
@@ -188,21 +188,21 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("First Name *"),
+            info: Text("${AppLocalizations.of(context)!.userFirstname} *"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserFirstname,
             ),
           ),
           AppInfoRow(
-            info: Text("Last Name *"),
+            info: Text("${AppLocalizations.of(context)!.userLastname} *"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserLastname,
             ),
           ),
           AppInfoRow(
-            info: Text("Address"),
+            info: Text(AppLocalizations.of(context)!.userAddress),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserAddress,
@@ -259,14 +259,14 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Federation Number"),
+            info: Text(AppLocalizations.of(context)!.userFederationNumber),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserFederationNumber,
             ),
           ),
           AppInfoRow(
-            info: Text("Solo Participation\nPermission Date"),
+            info: Text(AppLocalizations.of(context)!.userParicipationDateSolo),
             child: DateTimeEdit(
               nullable: true,
               dateOnly: true,
@@ -274,7 +274,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Team Participation\nPermission Date"),
+            info: Text(AppLocalizations.of(context)!.userParicipationDateTeam),
             child: DateTimeEdit(
               nullable: true,
               dateOnly: true,

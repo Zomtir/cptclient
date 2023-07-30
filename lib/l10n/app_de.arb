@@ -2,6 +2,11 @@
   "submissionFail": "Übermittlung der Information fehlgeschlagen",
   "submissionSuccess": "Übermittlung der Information erfolgreich",
   "submissionSuccessExceptPassword": "Übermittlung der Information teilweise erfolgreich; Passwort abgelehnt",
-  "userInvalidFirstname": "Ungültiger Vorname",
-  "userInvalidLastname": "Ungültiger Nachname"
+  "userFirstname": "Vorname",
+  "userLastname": "Nachname",
+  "userAddress": "Adresse",
+  "userFederationNumber": "Verbandsnummer",
+  "userParicipationDateSolo": "Einzel-\nStartrecht",
+  "userParicipationDateTeam": "Mannschafts-\nStartrecht",
+  "isInvalid": "ist ungültig"
 }

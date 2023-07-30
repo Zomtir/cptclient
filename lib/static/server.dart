@@ -148,7 +148,7 @@ Future<bool> loginUser(String key, String pwd) async {
     window.localStorage['Token'] = response.body;
     return true;
   } else {
-    print("User login error: ${response.headers["error-uri"]} error: ${response.headers["error-message"]}");
+    print("User login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
     return false;
   }
 }
@@ -172,7 +172,7 @@ Future<bool> loginSlot(String key, String pwd) async {
     window.localStorage['Token'] = response.body;
     return true;
   } else {
-    print("Slot login error: ${response.headers["error-uri"]} error: ${response.headers["error-message"]}");
+    print("Slot login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
     return false;
   }
 }
@@ -192,7 +192,7 @@ Future<bool> loginCourse(String key) async {
     window.localStorage['Token'] = response.body;
     return true;
   } else {
-    print("Course login error: ${response.headers["error-uri"]} error: ${response.headers["error-message"]}");
+    print("Course login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
     return false;
   }
 }
@@ -212,7 +212,7 @@ Future<bool> loginLocation(String key) async {
     window.localStorage['Token'] = response.body;
     return true;
   } else {
-    print("Location login error: ${response.headers["error-uri"]} error: ${response.headers["error-message"]}");
+    print("Location login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
     return false;
   }
 }

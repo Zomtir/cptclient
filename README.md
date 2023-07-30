@@ -4,14 +4,20 @@ This is the client application for connecting to cptserver. CPT stands for Cours
 
 ## Getting Started
 
-Should work out of the box right now, if the cptserver is running. The server IP/Port has to be adapted.
+Should work out of the box, if the cptserver is running. The server details have to be adapted in `cptclient.yaml`.
+
+```
+flutter gen-l10n
+flutter build web
+```
 
 ## TODO
-- Calendar
+- Make calendar functional
 - Mailing/chat/notification support
-- Opening Times
-- Holidays / Block Dates Ranges
-- Group Management
+- Slot reservation time limitations
+  - Add opening dates / hours (e.g 9:00 to 22:00)
+  - Add closing dates / hours (holidays)
+- Group management
 
 ## Wishlist
-- Compability for NFC login
+- Compatibility for NFC login
