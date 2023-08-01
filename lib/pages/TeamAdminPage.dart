@@ -7,7 +7,7 @@ import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import '../material/PanelSwiper.dart';
 import '../material/panels/SelectionPanel.dart';
 import '../material/tiles/AppUserTile.dart';
-import '../static/server.dart' as server;
+import '../static/serverUserMember.dart' as server;
 import '../static/serverTeamAdmin.dart' as server;
 import '../json/session.dart';
 import '../json/team.dart';
@@ -25,7 +25,8 @@ class TeamAdminPage extends StatefulWidget {
 }
 
 class TeamAdminPageState extends State<TeamAdminPage> {
-  List<User> _members = [];
+  List<User> _memberPool = [];
+  List<User> _memberList = [];
 
   TextEditingController _ctrlName = TextEditingController();
   TextEditingController _ctrlDescription = TextEditingController();
@@ -47,6 +48,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   }
 
   void _update() {
+    if (!widget.isDraft) _getTeamMemberPool();
     if (!widget.isDraft) _getTeamMemberList();
     _applyTeam();
   }
@@ -102,26 +104,36 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     Navigator.pop(context);
   }
 
-  void _duplicateTeam() {
-    Team _team = Team.fromTeam(widget.team);
-    Navigator.pushReplacement(
+  Future<void> _duplicateTeam() async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TeamAdminPage(
           session: widget.session,
-          team: _team,
+          team: Team.fromTeam(widget.team),
           isDraft: true,
         ),
       ),
     );
+
+    Navigator.pop(context);
+  }
+
+  Future<void> _getTeamMemberPool() async {
+    List<User> users = await server.user_list(widget.session);
+    users.sort();
+
+    setState(() {
+      _memberPool = users;
+    });
   }
 
   Future<void> _getTeamMemberList() async {
-    List<User> members = await server.team_member_list(widget.session, widget.team.id);
-    members.sort();
+    List<User> users = await server.team_member_list(widget.session, widget.team.id);
+    users.sort();
 
     setState(() {
-      _members = members;
+      _memberList = users;
     });
   }
 
@@ -175,8 +187,8 @@ class TeamAdminPageState extends State<TeamAdminPage> {
             ),
           PanelSwiper(panels: [
             if (!widget.isDraft) Panel("Members", SelectionPanel<User>(
-              available: server.cacheMembers,
-              chosen: _members,
+              available: _memberPool,
+              chosen: _memberList,
               onAdd: _addMember,
               onRemove: _removeMember,
               filter: filterUsers,

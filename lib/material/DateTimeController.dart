@@ -1,5 +1,6 @@
 import 'package:cptclient/static/extensions.dart';
 import "package:flutter/material.dart";
+import 'package:intl/intl.dart';
 
 class DateTimeController<T> {
   DateTime? _dateTime;
@@ -18,12 +19,32 @@ class DateTimeController<T> {
     return _dateTime;
   }
 
+  void tryParseDate(String text) {
+    DateTime date;
+    try {
+      date = DateFormat("yyyy-MM-dd").parse(text);
+    } on FormatException {
+      return;
+    }
+    _dateTime = _dateTime?.applyDate(date);
+  }
+
   void setDate(DateTime date) {
     _dateTime = _dateTime?.applyDate(date);
   }
 
   DateTime getDate() {
     return _dateTime ?? DateTime.now();
+  }
+
+  void tryParseTime(String text) {
+    DateTime date;
+    try {
+      date = DateFormat("HH:mm").parse(text);
+    } on FormatException {
+      return;
+    }
+    _dateTime = _dateTime?.applyTime(TimeOfDay.fromDateTime(date));
   }
 
   void setTime(TimeOfDay time) {

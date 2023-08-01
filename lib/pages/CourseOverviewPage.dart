@@ -11,7 +11,7 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'CourseInfoPage.dart';
+import 'CourseMemberPage.dart';
 
 import '../static/server.dart' as server;
 
@@ -29,15 +29,15 @@ class CourseOverviewPage extends StatefulWidget {
 }
 
 class CourseOverviewPageState extends State<CourseOverviewPage> {
-  List <Course> _owncourses = [];
-  List <Course> _modcourses = [];
-  List <Course> _coursesFiltered = [];
-  bool          _hideFilters = true;
+  List<Course> _owncourses = [];
+  List<Course> _modcourses = [];
+  List<Course> _coursesFiltered = [];
+  bool _hideFilters = true;
 
-  bool                       _isActive = true;
-  bool                       _isPublic = true;
+  bool _isActive = true;
+  bool _isPublic = true;
   DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
-  RangeValues                _thresholdRange = RangeValues(0, 10);
+  RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseOverviewPageState();
 
@@ -90,34 +90,39 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
       _coursesFiltered = _modcourses.where((course) {
         bool activeFilter = course.active == _isActive;
         bool publicFilter = course.public == _isPublic;
-        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (
-          course.branch == _ctrlDropdownBranch.value &&
-          course.threshold >= _thresholdRange.start &&
-          course.threshold <= _thresholdRange.end
-        );
+        bool branchFilter =
+            (_ctrlDropdownBranch.value == null) ? true : (course.branch == _ctrlDropdownBranch.value && course.threshold >= _thresholdRange.start && course.threshold <= _thresholdRange.end);
         return activeFilter && publicFilter && branchFilter;
       }).toList();
     });
   }
 
-  void _selectCourse(Course course) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseInfoPage(session: widget.session, course: course, onUpdate: _update)));
+  Future<void> _selectCourse(Course course, bool isDraft) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseMemberPage(
+          session: widget.session,
+          course: course,
+          isDraft: isDraft,
+        ),
+      ),
+    );
+    _update();
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Your Courses"),
       ),
       body: AppBody(
         children: [
-          PanelSwiper(
-              panels: [
-                Panel("Available", _buildOwnCoursePanel()),
-                Panel("Moderated", _buildModCoursePanel()),
-              ]
-          ),
+          PanelSwiper(panels: [
+            Panel("Available", _buildOwnCoursePanel()),
+            Panel("Moderated", _buildModCoursePanel()),
+          ]),
         ],
       ),
     );
@@ -128,7 +133,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
       items: _owncourses,
       itemBuilder: (Course course) {
         return InkWell(
-          onTap: () => _selectCourse(course),
+          onTap: () => _selectCourse(course, false),
           child: AppCourseTile(
             course: course,
           ),
@@ -143,8 +148,8 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
       children: <Widget>[
         TextButton.icon(
           icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-          label: _hideFilters ? Text('Show Filters') : Text ('Hide Filters'),
-          onPressed: () => setState (() => _hideFilters = !_hideFilters),
+          label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
+          onPressed: () => setState(() => _hideFilters = !_hideFilters),
         ),
         CollapseWidget(
           collapse: _hideFilters,
@@ -173,7 +178,9 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
               info: Text("Branch"),
               child: AppDropdown<Branch>(
                 controller: _ctrlDropdownBranch,
-                builder: (Branch branch) {return Text(branch.title);},
+                builder: (Branch branch) {
+                  return Text(branch.title);
+                },
                 onChanged: (Branch? branch) {
                   _ctrlDropdownBranch.value = branch;
                   _filterCourses();
@@ -198,7 +205,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
                   _thresholdRange = values;
                   _filterCourses();
                 },
-                labels: RangeLabels("${_thresholdRange.start}","${_thresholdRange.end}"),
+                labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
               ),
             ),
           ],
@@ -207,7 +214,7 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
           items: _coursesFiltered,
           itemBuilder: (Course course) {
             return InkWell(
-              onTap: () => _selectCourse(course),
+              onTap: () => _selectCourse(course, false),
               child: AppCourseTile(
                 course: course,
               ),
@@ -217,6 +224,4 @@ class CourseOverviewPageState extends State<CourseOverviewPage> {
       ],
     );
   }
-
-
 }

@@ -157,7 +157,6 @@ class _DatePickerState extends State<DatePicker> {
               NumberSelector(controller: _ctrlYear, onChange: _handleYearJump),
             ],
           ),
-          SizedBox(width: 5),
           Column(
             children: [
               Text(
@@ -168,7 +167,6 @@ class _DatePickerState extends State<DatePicker> {
               NumberSelector(controller: _ctrlMonth, onChange: _handleMonthJump),
             ],
           ),
-          SizedBox(width: 5),
           Column(
             children: [
               Text(

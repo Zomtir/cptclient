@@ -65,7 +65,6 @@ Future<void> logout() async {
   window.localStorage['Session'] = "";
   window.localStorage['Token'] = "";
   session = null;
-  server.unloadMembers();
 
   if (await server.loadStatus()) {
     await server.loadCache();
@@ -78,19 +77,18 @@ Future<void> logout() async {
 Future<bool> confirmUser() async {
   if (window.localStorage['Token']! == "") return false;
 
-  User? user = await server.user_info(window.localStorage['Token']!);
-  if (user == null) return false;
-
-  Right? right = await server.right_info(window.localStorage['Token']!);
-  if (right == null) return false;
-
   session = Session(
     window.localStorage['Token']!,
-    user: user,
-    right: right,
   );
 
-  server.loadMembers();
+  User? user = await server.user_info(session!);
+  if (user == null) return false;
+  session!.user = user;
+
+  Right? right = await server.right_info(session!);
+  if (right == null) return false;
+  session!.right = right;
+
   return true;
 }
 

@@ -1,8 +1,8 @@
+import 'package:cptclient/material/design/AppInputDecoration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'DateTimeController.dart';
-import 'design/AppSelectDecoration.dart';
 import 'dialogs/DatePicker.dart';
 import 'dialogs/TimePicker.dart';
 
@@ -12,16 +12,21 @@ class DateTimeEdit extends StatefulWidget {
   final bool nullable;
   final bool dateOnly;
 
-  const DateTimeEdit({super.key, required this.controller, this.onUpdate, this.nullable = false, this.dateOnly = false});
+  DateTimeEdit({super.key, required this.controller, this.onUpdate, this.nullable = false, this.dateOnly = false});
 
   @override
   State<DateTimeEdit> createState() => _DateTimeEditState();
 }
 
 class _DateTimeEditState extends State<DateTimeEdit> {
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController timeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    dateController.text = DateFormat("yyyy-MM-dd").format(widget.controller.getDate());
+    timeController.text = DateFormat("HH:mm").format(widget.controller.getDate());
   }
 
   void _handleDateChange(BuildContext context) async {
@@ -33,6 +38,7 @@ class _DateTimeEditState extends State<DateTimeEdit> {
 
     setState(() {
       widget.controller.setDate(date);
+      dateController.text = DateFormat("yyyy-MM-dd").format(widget.controller.getDate());
     });
 
     widget.onUpdate?.call(widget.controller.getDateTime()!);
@@ -47,6 +53,7 @@ class _DateTimeEditState extends State<DateTimeEdit> {
 
     setState(() {
       widget.controller.setTime(time);
+      timeController.text = DateFormat("HH:mm").format(widget.controller.getDate());
     });
 
     widget.onUpdate?.call(widget.controller.getDateTime()!);
@@ -60,27 +67,48 @@ class _DateTimeEditState extends State<DateTimeEdit> {
           Checkbox(
             value: !widget.controller.isNull(),
             onChanged: (bool? enabled) => setState(() {
-              widget.controller.setDateTime( (enabled != null && enabled) ? DateTime.now() : null);
+              widget.controller.setDateTime((enabled != null && enabled) ? DateTime.now() : null);
             }),
           ),
-        if (!widget.controller.isNull()) InkWell(
-          child: Container(
-            margin: const EdgeInsets.all(2.0),
-            padding: const EdgeInsets.all(4.0),
-            decoration: const AppSelectDecoration(),
-            child: Text(DateFormat("yyyy-MM-dd").format(widget.controller.getDate())),
-          ),
-          onTap: () => _handleDateChange(context),
-        ),
-        if (!widget.dateOnly && !widget.controller.isNull())
-          InkWell(
-            child: Container(
-              margin: const EdgeInsets.all(2.0),
-              padding: const EdgeInsets.all(4.0),
-              decoration: const AppSelectDecoration(),
-              child: Text(DateFormat("HH:mm").format(widget.controller.getDate())),
+        if (!widget.controller.isNull())
+          SizedBox(
+            width: 120,
+            height: 40,
+            child: TextField(
+              controller: dateController,
+              maxLines: 1,
+              onChanged: (String text) {
+                setState(() {
+                  widget.controller.tryParseDate(text);
+                });
+              },
+              decoration: AppInputDecoration(),
             ),
-            onTap: () => _handleTimeChange(context),
+          ),
+        if (!widget.controller.isNull())
+          IconButton(
+            icon: Icon(Icons.calendar_month),
+            onPressed: () => _handleDateChange(context),
+          ),
+        if (!widget.dateOnly && !widget.controller.isNull())
+          SizedBox(
+            width: 120,
+            height: 40,
+            child: TextField(
+              controller: timeController,
+              maxLines: 1,
+              onChanged: (String text) {
+                setState(() {
+                  widget.controller.tryParseTime(text);
+                });
+              },
+              decoration: AppInputDecoration(),
+            ),
+          ),
+        if (!widget.dateOnly && !widget.controller.isNull())
+          IconButton(
+            icon: Icon(Icons.access_time),
+            onPressed: () => _handleTimeChange(context),
           ),
       ],
     );

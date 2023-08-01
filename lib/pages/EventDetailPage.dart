@@ -6,7 +6,6 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
@@ -23,7 +22,6 @@ import '../json/user.dart';
 class EventDetailPage extends StatefulWidget {
   final Session session;
   final Slot slot;
-  final void Function() onUpdate;
   final bool isDraft;
   final bool isOwner;
   final bool isAdmin;
@@ -32,7 +30,6 @@ class EventDetailPage extends StatefulWidget {
     Key? key,
     required this.session,
     required this.slot,
-    required this.onUpdate,
     required this.isDraft,
     required this.isOwner,
     required this.isAdmin,
@@ -62,22 +59,23 @@ class SlotDetailPageState extends State<EventDetailPage> {
     _requestSlotOwners();
   }
 
-  void _duplicateSlot() {
+  Future<void> _duplicateSlot() async {
     Slot _slot = Slot.fromSlot(widget.slot);
     _slot.status = Status.DRAFT;
-    Navigator.pushReplacement(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventDetailPage(
           session: widget.session,
           slot: _slot,
-          onUpdate: widget.onUpdate,
           isDraft: true,
           isOwner: true,
           isAdmin: widget.isAdmin,
         ),
       ),
     );
+
+    Navigator.pop(context);
   }
 
   void _applySlot() {
@@ -107,7 +105,6 @@ class SlotDetailPageState extends State<EventDetailPage> {
     await server.event_edit_password(widget.session, widget.slot, _ctrlSlotPassword.text);
     _ctrlSlotPassword.text = '';
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -117,7 +114,6 @@ class SlotDetailPageState extends State<EventDetailPage> {
       return;
     }
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 

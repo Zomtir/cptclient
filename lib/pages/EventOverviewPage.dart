@@ -55,38 +55,40 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     setState(() {});
   }
 
-  void _createEvent() async {
+  Future<void> _createEvent() async {
     Slot slot = Slot.fromUser(widget.session.user!);
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventDetailPage(
           session: widget.session,
           slot: slot,
-          onUpdate: _getIndividualSlots,
           isDraft: true,
           isOwner: true,
           isAdmin: false,
         ),
       ),
     );
+
+    _getIndividualSlots();
   }
 
   void _selectIndividualSlot(Slot slot) async {
     bool isOwner = await server.event_owner_condition(widget.session, slot);
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventDetailPage(
           session: widget.session,
           slot: slot,
-          onUpdate: _getIndividualSlots,
           isDraft: false,
           isOwner: isOwner,
           isAdmin: false,
         ),
       ),
     );
+
+    _getIndividualSlots();
   }
 
   Future<void> _submitSlot(Slot slot) async {

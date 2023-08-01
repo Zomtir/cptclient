@@ -53,7 +53,7 @@ Future<bool> team_edit(Session session, Team team) async {
 
 Future<bool> team_delete(Session session, Team team) async {
   final response = await http.head(
-    server.uri('team_delete', {
+    server.uri('/admin/team_delete', {
       'team_id': team.id.toString(),
     }),
     headers: {

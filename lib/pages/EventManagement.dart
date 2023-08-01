@@ -14,6 +14,7 @@ import '../material/DateTimeEdit.dart';
 import 'EventDetailPage.dart';
 
 import '../static/server.dart' as server;
+import '../static/serverUserMember.dart' as server;
 import '../static/serverEventAdmin.dart' as server;
 import '../json/session.dart';
 import '../json/slot.dart';
@@ -41,7 +42,7 @@ class EventManagementPageState extends State<EventManagementPage> {
   int _panelIndex = 0;
   List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
 
-  DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: server.cacheMembers);
+  DropdownController<User> _ctrlDropdownOwner = DropdownController<User>(items: []);
   DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: server.cacheLocations);
 
   EventManagementPageState();
@@ -49,11 +50,21 @@ class EventManagementPageState extends State<EventManagementPage> {
   @override
   void initState() {
     super.initState();
+    _requestOwnerFilter();
     _requestSlots();
   }
 
+  Future<void> _requestOwnerFilter() async {
+    List<User> users = await server.user_list(widget.session);
+    users.sort();
+
+    setState(() {
+      _ctrlDropdownOwner.items = users;
+    });
+  }
+
   Future<void> _requestSlots() async {
-    _events = await server.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateBegin.getDate(), _panelStatus[_panelIndex], _ctrlDropdownUser.value);
+    _events = await server.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateBegin.getDate(), _panelStatus[_panelIndex], _ctrlDropdownOwner.value);
     _filterReservations();
   }
 
@@ -67,20 +78,21 @@ class EventManagementPageState extends State<EventManagementPage> {
     });
   }
 
-  void _selectSlot(Slot slot) {
-    Navigator.push(
+  Future<void> _selectSlot(Slot slot) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventDetailPage(
           session: widget.session,
           slot: slot,
-          onUpdate: _requestSlots,
           isDraft: false,
           isOwner: false,
           isAdmin: true,
         ),
       ),
     );
+
+    _requestSlots();
   }
 
   void _acceptReservation(Slot slot) async {
@@ -112,7 +124,7 @@ class EventManagementPageState extends State<EventManagementPage> {
           AppInfoRow(
             info: Text("User"),
             child: AppDropdown<User>(
-              controller: _ctrlDropdownUser,
+              controller: _ctrlDropdownOwner,
               builder: (User user) {
                 return Text("${user.firstname} ${user.lastname}");
               },
@@ -170,7 +182,7 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   void _pickMember(User? member) {
-    setState(() => _ctrlDropdownUser.value = member);
+    setState(() => _ctrlDropdownOwner.value = member);
     _requestSlots();
   }
 

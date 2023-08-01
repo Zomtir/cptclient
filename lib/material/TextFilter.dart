@@ -32,7 +32,7 @@ class TextFilter<T> extends StatelessWidget {
       controller: controller,
       onChanged: _filter,
       decoration: InputDecoration(
-        hintText: "Find user",
+        hintText: "Find entry",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
         suffixIcon: IconButton(
           onPressed: _unfilter,

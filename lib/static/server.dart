@@ -4,7 +4,6 @@ import "package:universal_html/html.dart"; // TODO go back to dart:html?
 import 'package:http/http.dart' as http;
 
 import 'package:cptclient/static/crypto.dart' as crypto;
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/credential.dart';
@@ -22,7 +21,6 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
       queryParameters: queryParameters);
 }
 
-List<User> cacheMembers = [];
 List<Location> cacheLocations = [];
 List<Branch> cacheBranches = [];
 
@@ -53,30 +51,8 @@ Future<bool> loadCache() async {
 }
 
 void refresh() {
-  loadMembers();
   loadBranches();
   loadLocations();
-}
-
-Future<bool> loadMembers() async {
-  final response = await http.get(
-    uri('/member/user_list'),
-    headers: {
-      'Token': window.localStorage['Token']!,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return false;
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  cacheMembers = List<User>.from(l.map((model) => User.fromJson(model)));
-
-  return true;
-}
-
-void unloadMembers() {
-  cacheMembers = [];
 }
 
 Future<bool> loadLocations() async {

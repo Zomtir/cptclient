@@ -26,3 +26,40 @@ Future<List<Ranking>> ranking_list(Session session, User? user, Skill? skill) as
   Iterable l = json.decode(response.body);
   return List<Ranking>.from(l.map((model) => Ranking.fromJson(model)));
 }
+
+Future<bool> ranking_create(Session session, Ranking ranking) async {
+  final response = await http.post(
+    server.uri('ranking_create'),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(ranking),
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> ranking_edit(Session session, Ranking ranking) async {
+  final response = await http.post(
+    server.uri('ranking_edit'),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(ranking),
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> ranking_delete(Session session, Ranking ranking) async {
+  final response = await http.head(
+    server.uri('ranking_delete', {'ranking': ranking.id.toString()}),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}

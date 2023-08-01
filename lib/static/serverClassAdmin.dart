@@ -85,6 +85,22 @@ Future<bool> class_delete(Session session, Slot slot) async {
   return (response.statusCode == 200);
 }
 
+Future<List<User>> class_owner_pool(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/admin/class_owner_pool', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
 Future<List<User>> class_owner_list(Session session, Slot slot) async {
   final response = await http.get(
     server.uri('/admin/class_owner_list', {
@@ -127,6 +143,22 @@ Future<bool> class_owner_remove(Session session, Slot slot, User user) async {
   );
 
   return (response.statusCode == 200);
+}
+
+Future<List<User>> class_participant_pool(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/admin/class_participant_pool', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> class_participant_list(Session session, Slot slot) async {

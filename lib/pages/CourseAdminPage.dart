@@ -16,6 +16,7 @@ import '../material/tiles/AppUserTile.dart';
 import 'ClassAdminPage.dart';
 
 import '../static/server.dart' as server;
+import '../static/serverUserMember.dart' as server;
 import '../static/serverCourseAdmin.dart' as server;
 import '../static/serverClassAdmin.dart' as server;
 import '../static/serverTeamMember.dart' as server;
@@ -29,10 +30,9 @@ import '../json/branch.dart';
 class CourseAdminPage extends StatefulWidget {
   final Session session;
   final Course course;
-  final void Function() onUpdate;
   final bool isDraft;
 
-  CourseAdminPage({Key? key, required this.session, required this.course, required this.onUpdate, required this.isDraft}) : super(key: key);
+  CourseAdminPage({Key? key, required this.session, required this.course, required this.isDraft}) : super(key: key);
 
   @override
   CourseAdminPageState createState() => CourseAdminPageState();
@@ -40,7 +40,8 @@ class CourseAdminPage extends StatefulWidget {
 
 class CourseAdminPageState extends State<CourseAdminPage> {
   List<Slot> _slots = [];
-  List<User> _moderators = [];
+  List<User> _moderatorPool = [];
+  List<User> _moderatorList = [];
 
   List<Team> _teamsAvailable = [];
   List<Team> _teamsChosen = [];
@@ -62,10 +63,11 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   void _update() {
     if (!widget.isDraft) _getCourseSlots();
-    if (!widget.isDraft) _getModerators();
+    if (!widget.isDraft) _getModeratorPool();
+    if (!widget.isDraft) _getModeratorList();
     if (!widget.isDraft) _getTeamsAvailable();
     if (!widget.isDraft) _getTeamsChosen();
-    
+
     _applyCourse();
   }
 
@@ -78,13 +80,22 @@ class CourseAdminPageState extends State<CourseAdminPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted course')));
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
-  void _duplicateCourse() {
-    Course course = Course.fromCourse(widget.course);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, isDraft: true)));
+  Future<void> _duplicateCourse() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseAdminPage(
+          session: widget.session,
+          course: Course.fromCourse(widget.course),
+          isDraft: true,
+        ),
+      ),
+    );
+
+    Navigator.pop(context);
   }
 
   Future<void> _getCourseSlots() async {
@@ -96,44 +107,37 @@ class CourseAdminPageState extends State<CourseAdminPage> {
     });
   }
 
-  void _selectCourseSlot(Slot slot) {
-    Navigator.push(
+  Future<void> _selectCourseSlot(Slot slot, bool isDraft) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClassAdminPage(
           session: widget.session,
           courseID: widget.course.id,
           slot: slot,
-          onUpdate: _getCourseSlots,
-          isDraft: false,
+          isDraft: isDraft,
         ),
       ),
     );
+
+    _getCourseSlots();
   }
 
-  void _createCourseSlot() async {
-    Slot slot = Slot.fromCourse(widget.course);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ClassAdminPage(
-          session: widget.session,
-          courseID: widget.course.id,
-          slot: slot,
-          onUpdate: _getCourseSlots,
-          isDraft: true,
-        ),
-      ),
-    );
-  }
-
-  Future<void> _getModerators() async {
-    List<User> moderators = await server.course_moderator_list(widget.session, widget.course.id);
-    moderators.sort();
+  Future<void> _getModeratorPool() async {
+    List<User> users = await server.user_list(widget.session);
+    users.sort();
 
     setState(() {
-      _moderators = moderators;
+      _moderatorPool = users;
+    });
+  }
+
+  Future<void> _getModeratorList() async {
+    List<User> users = await server.course_moderator_list(widget.session, widget.course.id);
+    users.sort();
+
+    setState(() {
+      _moderatorList = users;
     });
   }
 
@@ -145,7 +149,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       return;
     }
 
-    _getModerators();
+    _getModeratorList();
   }
 
   void _removeModerator(User user) async {
@@ -156,7 +160,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       return;
     }
 
-    _getModerators();
+    _getModeratorList();
   }
 
   Future<void> _getTeamsAvailable() async {
@@ -232,7 +236,6 @@ class CourseAdminPageState extends State<CourseAdminPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited course')));
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -266,22 +269,28 @@ class CourseAdminPageState extends State<CourseAdminPage> {
             ),
           PanelSwiper(panels: [
             if (!widget.isDraft) Panel("Slots", _buildSlotPanel()),
-            if (!widget.isDraft) Panel("Moderators", SelectionPanel<User>(
-              available: server.cacheMembers,
-              chosen: _moderators,
-              onAdd: _addModerator,
-              onRemove: _removeModerator,
-              filter: filterUsers,
-              builder: (User user) => AppUserTile(user: user),
-            )),
-            if (!widget.isDraft) Panel("Team Invites", SelectionPanel<Team>(
-              available: _teamsAvailable,
-              chosen: _teamsChosen,
-              onAdd: _addTeam,
-              onRemove: _removeTeam,
-              filter: filterTeams,
-              builder: (Team team) => AppTeamTile(team: team),
-            )),
+            if (!widget.isDraft)
+              Panel(
+                  "Moderators",
+                  SelectionPanel<User>(
+                    available: _moderatorPool,
+                    chosen: _moderatorList,
+                    onAdd: _addModerator,
+                    onRemove: _removeModerator,
+                    filter: filterUsers,
+                    builder: (User user) => AppUserTile(user: user),
+                  )),
+            if (!widget.isDraft)
+              Panel(
+                  "Team Invites",
+                  SelectionPanel<Team>(
+                    available: _teamsAvailable,
+                    chosen: _teamsChosen,
+                    onAdd: _addTeam,
+                    onRemove: _removeTeam,
+                    filter: filterTeams,
+                    builder: (Team team) => AppTeamTile(team: team),
+                  )),
             if (widget.session.right!.admin_courses) Panel("Edit", buildEditPanel()),
           ]),
         ],
@@ -296,13 +305,13 @@ class CourseAdminPageState extends State<CourseAdminPage> {
         AppButton(
           leading: Icon(Icons.add),
           text: "New slot",
-          onPressed: _createCourseSlot,
+          onPressed: () => _selectCourseSlot(Slot.fromCourse(widget.course), true),
         ),
         AppListView<Slot>(
           items: _slots,
           itemBuilder: (Slot slot) {
             return AppSlotTile(
-              onTap: _selectCourseSlot,
+              onTap: (Slot _slot) => _selectCourseSlot(_slot, false),
               slot: slot,
             );
           },

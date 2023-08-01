@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
@@ -12,6 +11,7 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'CourseAdminPage.dart';
 
 import '../static/server.dart' as server;
+import '../static/serverUserMember.dart' as server;
 import '../static/serverCourseAdmin.dart' as server;
 
 import '../json/session.dart';
@@ -30,7 +30,7 @@ class CourseManagementPage extends StatefulWidget {
 
 class CourseManagementPageState extends State<CourseManagementPage> {
   List<Course> _courses = [];
-  DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: server.cacheMembers);
+  DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: []);
 
   List<Course> _coursesFiltered = [];
   bool _hideFilters = true;
@@ -48,7 +48,17 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   }
 
   void _update() {
+    _requestUsers();
     _requestCourses(null);
+  }
+
+  Future<void> _requestUsers() async {
+    List<User> users = await server.user_list(widget.session);
+    users.sort();
+
+    setState(() {
+      _ctrlDropdownModerators.items = users;
+    });
   }
 
   Future<void> _requestCourses(User? user) async {
@@ -70,13 +80,15 @@ class CourseManagementPageState extends State<CourseManagementPage> {
     });
   }
 
-  void _createCourse() async {
-    Course course = Course.fromVoid();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, isDraft: true)));
-  }
+  Future<void> _selectCourse(Course course, bool isDraft) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseAdminPage(session: widget.session, course: course, isDraft: isDraft),
+      ),
+    );
 
-  void _selectCourse(Course course) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAdminPage(session: widget.session, course: course, onUpdate: _update, isDraft: false)));
+    _update();
   }
 
   @override
@@ -104,7 +116,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
           AppButton(
             leading: Icon(Icons.add),
             text: "New course",
-            onPressed: _createCourse,
+            onPressed: () => _selectCourse(Course.fromVoid(), true),
           ),
           TextButton.icon(
             icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
@@ -174,7 +186,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
             items: _coursesFiltered,
             itemBuilder: (Course course) {
               return InkWell(
-                onTap: () => _selectCourse(course),
+                onTap: () => _selectCourse(course, false),
                 child: AppCourseTile(
                   course: course,
                 ),

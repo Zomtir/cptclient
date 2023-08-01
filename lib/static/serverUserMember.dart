@@ -10,11 +10,26 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/credential.dart';
 
-Future<User?> user_info(String token) async {
+Future<List<User>> user_list(Session session) async {
+  final response = await http.get(
+    server.uri('/member/user_list'),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(list.map((model) => User.fromJson(model)));
+}
+
+Future<User?> user_info(Session session) async {
   final response = await http.get(
     server.uri('/member/user_info'),
     headers: {
-      'Token': token,
+      'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
     },
   );
@@ -24,11 +39,11 @@ Future<User?> user_info(String token) async {
   return User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<Right?> right_info(String token) async {
+Future<Right?> right_info(Session session) async {
   final response = await http.get(
     server.uri('/member/user_right'),
     headers: {
-      'Token': token,
+      'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
     },
   );

@@ -35,7 +35,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
   DropdownController<User> _ctrlDropdownJudge = DropdownController<User>(items: []);
   DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
-  RangeValues                _thresholdRange = RangeValues(0, 10);
+  RangeValues _thresholdRange = RangeValues(0, 10);
 
   RankingManagementPageState();
 
@@ -58,26 +58,29 @@ class RankingManagementPageState extends State<RankingManagementPage> {
       _rankingsFiltered = _rankings.where((ranking) {
         bool userFilter = (_ctrlDropdownUser.value == null) ? true : (ranking.user == _ctrlDropdownUser.value);
         bool judgeFilter = (_ctrlDropdownJudge.value == null) ? true : (ranking.judge == _ctrlDropdownJudge.value);
-        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (
-            ranking.branch == _ctrlDropdownBranch.value &&
-            ranking.rank >= _thresholdRange.start &&
-            ranking.rank <= _thresholdRange.end
-        );
+        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (ranking.branch == _ctrlDropdownBranch.value && ranking.rank >= _thresholdRange.start && ranking.rank <= _thresholdRange.end);
         return userFilter && judgeFilter && branchFilter;
       }).toList();
     });
   }
 
-  void _createRanking() async {
-    _selectRanking(Ranking.create());
-  }
+  Future<void> _selectRanking(Ranking ranking, bool isDraft) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RankingAdminPage(
+          session: widget.session,
+          ranking: ranking,
+          isDraft: isDraft,
+        ),
+      ),
+    );
 
-  void _selectRanking(Ranking ranking) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RankingAdminPage(session: widget.session, ranking: ranking, onUpdate: _requestRankings)));
+    _requestRankings();
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Rankings"),
@@ -86,8 +89,8 @@ class RankingManagementPageState extends State<RankingManagementPage> {
         children: <Widget>[
           TextButton.icon(
             icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-            label: _hideFilters ? Text('Show Filters') : Text ('Hide Filters'),
-            onPressed: () => setState (() => _hideFilters = !_hideFilters),
+            label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
+            onPressed: () => setState(() => _hideFilters = !_hideFilters),
           ),
           CollapseWidget(
             collapse: _hideFilters,
@@ -96,7 +99,9 @@ class RankingManagementPageState extends State<RankingManagementPage> {
                 info: Text("User"),
                 child: AppDropdown<User>(
                   controller: _ctrlDropdownUser,
-                  builder: (User user) {return Text(user.key);},
+                  builder: (User user) {
+                    return Text(user.key);
+                  },
                   onChanged: (User? user) {
                     _ctrlDropdownUser.value = user;
                     _filterRankings();
@@ -114,7 +119,9 @@ class RankingManagementPageState extends State<RankingManagementPage> {
                 info: Text("Judge"),
                 child: AppDropdown<User>(
                   controller: _ctrlDropdownJudge,
-                  builder: (User user) {return Text(user.key);},
+                  builder: (User user) {
+                    return Text(user.key);
+                  },
                   onChanged: (User? user) {
                     _ctrlDropdownJudge.value = user;
                     _filterRankings();
@@ -132,7 +139,9 @@ class RankingManagementPageState extends State<RankingManagementPage> {
                 info: Text("Branch"),
                 child: AppDropdown<Branch>(
                   controller: _ctrlDropdownBranch,
-                  builder: (Branch branch) {return Text(branch.title);},
+                  builder: (Branch branch) {
+                    return Text(branch.title);
+                  },
                   onChanged: (Branch? branch) {
                     _ctrlDropdownBranch.value = branch;
                     _filterRankings();
@@ -157,7 +166,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
                     _thresholdRange = values;
                     _filterRankings();
                   },
-                  labels: RangeLabels("${_thresholdRange.start}","${_thresholdRange.end}"),
+                  labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
                 ),
               ),
             ],
@@ -165,13 +174,13 @@ class RankingManagementPageState extends State<RankingManagementPage> {
           AppButton(
             leading: Icon(Icons.add),
             text: "New ranking",
-            onPressed: _createRanking,
+            onPressed: () => _selectRanking(Ranking.create(), true),
           ),
           AppListView<Ranking>(
             items: _rankingsFiltered,
             itemBuilder: (Ranking ranking) {
               return InkWell(
-                onTap: () => _selectRanking(ranking),
+                onTap: () => _selectRanking(ranking, false),
                 child: AppRankingTile(
                   ranking: ranking,
                 ),
@@ -182,5 +191,4 @@ class RankingManagementPageState extends State<RankingManagementPage> {
       ),
     );
   }
-
 }

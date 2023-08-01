@@ -15,35 +15,36 @@ import 'dart:convert';
 import 'ClassMemberPage.dart';
 
 import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/serverCourseMember.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/branch.dart';
 
-class CourseInfoPage extends StatefulWidget {
+class CourseMemberPage extends StatefulWidget {
   final Session session;
   final Course course;
-  final void Function() onUpdate;
+  final bool isDraft;
 
-  CourseInfoPage({Key? key, required this.session, required this.course, required this.onUpdate}) : super(key: key);
+  CourseMemberPage({Key? key, required this.session, required this.course, required this.isDraft}) : super(key: key);
 
   @override
-  CourseInfoPageState createState() => CourseInfoPageState();
+  CourseMemberPageState createState() => CourseMemberPageState();
 }
 
-class CourseInfoPageState extends State<CourseInfoPage> {
-  List <Slot> _slots = [];
-  List <User> _moderators = [];
+class CourseMemberPageState extends State<CourseMemberPage> {
+  List<Slot> _slots = [];
+  List<User> _moderators = [];
 
   TextEditingController _ctrlCourseKey = TextEditingController();
   TextEditingController _ctrlCourseTitle = TextEditingController();
-  bool                  _ctrlCourseActive = true;
-  bool                  _ctrlCoursePublic = true;
+  bool _ctrlCourseActive = true;
+  bool _ctrlCoursePublic = true;
   DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: server.cacheBranches);
-  int                        _pickThresholdValue = 0;
+  int _pickThresholdValue = 0;
 
-  CourseInfoPageState();
+  CourseMemberPageState();
 
   @override
   void initState() {
@@ -71,35 +72,46 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted course')));
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
-  void _duplicateCourse() {
-    Course _course = Course.fromCourse(widget.course);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CourseInfoPage(session: widget.session, course: _course, onUpdate: _update)));
+  Future<void> _duplicateCourse() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseMemberPage(
+          session: widget.session,
+          course: Course.fromCourse(widget.course),
+          isDraft: true,
+        ),
+      ),
+    );
+
+    Navigator.pop(context);
   }
 
   Future<void> _getCourseSlots() async {
-    final response = await http.get(
-      server.uri('course_slot_list', {'course_id': widget.course.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-        'Accept': 'application/json; charset=utf-8',
-      },
-    );
+    List<Slot>? slots = await server.class_list(widget.session, widget.course.id);
 
-    if (response.statusCode != 200) return;
+    if (slots == null)
+      return;
 
-    Iterable l = json.decode(utf8.decode(response.bodyBytes));
-
+    slots.sort();
     setState(() {
-      _slots = List<Slot>.from(l.map((model) => Slot.fromJson(model)));
+      _slots = slots;
     });
   }
 
   void _selectCourseSlot(Slot slot) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ClassMemberPage(session: widget.session, slot: slot, onUpdate: _getCourseSlots, isDraft: false,)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ClassMemberPage(
+                  session: widget.session,
+                  slot: slot,
+                  onUpdate: _getCourseSlots,
+                  isDraft: false,
+                )));
   }
 
   void _createCourseSlot() async {
@@ -160,41 +172,41 @@ class CourseInfoPageState extends State<CourseInfoPage> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited course')));
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Course Details"),
       ),
       body: AppBody(
         children: <Widget>[
-          if (widget.course.id != 0) Row(
-            children: [
-              Expanded(
-                child: AppCourseTile(
-                  course: widget.course,
+          if (widget.course.id != 0)
+            Row(
+              children: [
+                Expanded(
+                  child: AppCourseTile(
+                    course: widget.course,
+                  ),
                 ),
-              ),
-              if (widget.session.right!.admin_courses) IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: _duplicateCourse,
-              ),
-              if (widget.session.right!.admin_courses) IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _deleteCourse,
-              ),
-            ],
-          ),
-          PanelSwiper(
-            panels: [
-              Panel("Slots", _buildSlotPanel()),
-              Panel("Moderators", _buildModeratorPanel()),
-            ]
-          ),
+                if (widget.session.right!.admin_courses)
+                  IconButton(
+                    icon: const Icon(Icons.copy),
+                    onPressed: _duplicateCourse,
+                  ),
+                if (widget.session.right!.admin_courses)
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: _deleteCourse,
+                  ),
+              ],
+            ),
+          PanelSwiper(panels: [
+            Panel("Slots", _buildSlotPanel()),
+            Panel("Moderators", _buildModeratorPanel()),
+          ]),
         ],
       ),
     );
@@ -261,14 +273,14 @@ class CourseInfoPageState extends State<CourseInfoPage> {
           info: Text("Active"),
           child: Checkbox(
             value: _ctrlCourseActive,
-            onChanged: (bool? active) =>  setState(() => _ctrlCourseActive = active!),
+            onChanged: (bool? active) => setState(() => _ctrlCourseActive = active!),
           ),
         ),
         AppInfoRow(
           info: Text("Public"),
           child: Checkbox(
             value: _ctrlCoursePublic,
-            onChanged: (bool? public) =>  setState(() => _ctrlCoursePublic = public!),
+            onChanged: (bool? public) => setState(() => _ctrlCoursePublic = public!),
           ),
         ),
         AppInfoRow(
@@ -291,8 +303,7 @@ class CourseInfoPageState extends State<CourseInfoPage> {
                 setState(() => _pickThresholdValue = value.toInt());
               },
               label: "$_pickThresholdValue",
-            )
-        ),
+            )),
         AppButton(
           text: "Save",
           onPressed: _submitCourse,
@@ -300,5 +311,4 @@ class CourseInfoPageState extends State<CourseInfoPage> {
       ],
     );
   }
-
 }

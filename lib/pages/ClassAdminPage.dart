@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -8,9 +8,9 @@ import 'package:cptclient/material/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
+import 'package:cptclient/material/panels/SelectionPanel.dart';
 
-import '../material/panels/SelectionPanel.dart';
-import '../material/tiles/AppUserTile.dart';
 import '../static/server.dart' as server;
 import '../static/serverClassAdmin.dart' as server;
 import '../json/session.dart';
@@ -22,12 +22,11 @@ class ClassAdminPage extends StatefulWidget {
   final Session session;
   final int courseID;
   final Slot slot;
-  final void Function() onUpdate;
   final bool isDraft;
   final bool isModerator = false;
   final bool isAdmin = false;
 
-  ClassAdminPage({Key? key, required this.session, required this.courseID, required this.slot, required this.onUpdate, required this.isDraft}) : super(key: key);
+  ClassAdminPage({Key? key, required this.session, required this.courseID, required this.slot, required this.isDraft}) : super(key: key);
 
   @override
   ClassAdminPageState createState() => ClassAdminPageState();
@@ -41,8 +40,10 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
   DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
 
-  List<User> _owners = [];
-  List<User> _participants = [];
+  List<User> _ownerPool = [];
+  List<User> _ownerList = [];
+  List<User> _participantPool = [];
+  List<User> _participantList = [];
 
   ClassAdminPageState();
 
@@ -50,7 +51,9 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   void initState() {
     super.initState();
     _applySlot();
+    _requestOwnerPool();
     _requestOwnerList();
+    _requestParticipantPool();
     _requestParticipantList();
   }
 
@@ -83,7 +86,6 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     await server.class_edit_password(widget.session, widget.slot, _ctrlSlotPassword.text);
     _ctrlSlotPassword.text = '';
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -93,32 +95,41 @@ class ClassAdminPageState extends State<ClassAdminPage> {
       return;
     }
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
-  void _duplicateSlot() {
+  Future<void> _duplicateSlot() async {
     Slot slot = Slot.fromSlot(widget.slot);
-    Navigator.pushReplacement(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClassAdminPage(
           session: widget.session,
           courseID: widget.courseID,
           slot: slot,
-          onUpdate: widget.onUpdate,
           isDraft: true,
         ),
       ),
     );
+
+    Navigator.pop(context);
+  }
+
+  void _requestOwnerPool() async {
+    List<User> users = await server.class_owner_pool(widget.session, widget.slot);
+    users.sort();
+
+    setState(() {
+      _ownerPool = users;
+    });
   }
 
   void _requestOwnerList() async {
-    List<User> owners = await server.class_owner_list(widget.session, widget.slot);
-    owners.sort();
+    List<User> users = await server.class_owner_list(widget.session, widget.slot);
+    users.sort();
 
     setState(() {
-      _owners = owners;
+      _ownerList = users;
     });
   }
 
@@ -132,12 +143,21 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     _requestOwnerList();
   }
 
-  void _requestParticipantList() async {
-    List<User> participants = await server.class_participant_list(widget.session, widget.slot);
-    participants.sort();
+  void _requestParticipantPool() async {
+    List<User> users = await server.class_participant_pool(widget.session, widget.slot);
+    users.sort();
 
     setState(() {
-      _participants = participants;
+      _participantPool = users;
+    });
+  }
+
+  void _requestParticipantList() async {
+    List<User> users = await server.class_participant_list(widget.session, widget.slot);
+    users.sort();
+
+    setState(() {
+      _participantList = users;
     });
   }
 
@@ -177,15 +197,14 @@ class ClassAdminPageState extends State<ClassAdminPage> {
                 ),
               ],
             ),
-          //Text(widget.slot.status!.toString()),
           PanelSwiper(
             panels: [
               if (!widget.isDraft)
                 Panel(
                   "Participants",
                   SelectionPanel<User>(
-                    available: server.cacheMembers,
-                    chosen: _participants,
+                    available: _participantPool,
+                    chosen: _participantList,
                     onAdd: _submitParticipantAddition,
                     onRemove: _submitParticipantRemoval,
                     filter: filterUsers,
@@ -196,8 +215,8 @@ class ClassAdminPageState extends State<ClassAdminPage> {
                 Panel(
                   "Owners",
                   SelectionPanel<User>(
-                    available: server.cacheMembers,
-                    chosen: _owners,
+                    available: _ownerPool,
+                    chosen: _ownerList,
                     onAdd: _submitOwnerAddition,
                     onRemove: _submitOwnerRemoval,
                     filter: filterUsers,

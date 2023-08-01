@@ -7,12 +7,11 @@ import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/DropdownController.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-import 'dart:convert';
-
 import '../static/server.dart' as server;
+import '../static/serverUserMember.dart' as server;
+import '../static/serverRankingAdmin.dart' as server;
 import '../json/session.dart';
 import '../json/ranking.dart';
 import '../json/user.dart';
@@ -21,47 +20,36 @@ import '../json/branch.dart';
 class RankingAdminPage extends StatefulWidget {
   final Session session;
   final Ranking ranking;
-  final void Function() onUpdate;
+  final bool isDraft;
 
-  RankingAdminPage({Key? key, required this.session, required this.ranking, required this.onUpdate}) : super(key: key);
+  RankingAdminPage({Key? key, required this.session, required this.ranking, required this.isDraft}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => RankingAdminPageState();
 }
 
 class RankingAdminPageState extends State<RankingAdminPage> {
-  DropdownController<User>    _ctrlRankingUser = DropdownController<User>(items: []);
-  DropdownController<Branch>    _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
-  int                           _rankingLevel = 0;
-  DropdownController<User>    _ctrlRankingJudge = DropdownController<User>(items: []);
-  TextEditingController         _ctrlRankingDate = TextEditingController();
+  DropdownController<User> _ctrlRankingUser = DropdownController<User>(items: []);
+  DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
+  int _rankingLevel = 0;
+  DropdownController<User> _ctrlRankingJudge = DropdownController<User>(items: []);
+  TextEditingController _ctrlRankingDate = TextEditingController();
 
   RankingAdminPageState();
 
   @override
   void initState() {
     super.initState();
-    _applyRanking();
     _getMembers();
+    _applyRanking();
   }
 
   Future<void> _getMembers() async {
-    final response = await http.get(
-      server.uri('/member/user_list'),
-      headers: {
-        'Token': widget.session.token,
-        'Accept': 'application/json; charset=utf-8',
-      },
-    );
-
-    if (response.statusCode != 200) return;
-
-    Iterable list = json.decode(utf8.decode(response.bodyBytes));
-    var members = List<User>.from(list.map((model) => User.fromJson(model)));
+    List<User> users = await server.user_list(widget.session);
 
     setState(() {
-      _ctrlRankingUser.items = members;
-      _ctrlRankingJudge.items = members;
+      _ctrlRankingUser.items = users;
+      _ctrlRankingJudge.items = users;
     });
   }
 
@@ -81,85 +69,86 @@ class RankingAdminPageState extends State<RankingAdminPage> {
     widget.ranking.date = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlRankingDate.text, false);
   }
 
-  void _deleteRanking() async {
-    final response = await http.head(
-      server.uri('ranking_delete', {'ranking': widget.ranking.id.toString()}),
-      headers: {
-        'Token': widget.session.token,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete ranking')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted ranking')));
-    widget.onUpdate();
-    Navigator.pop(context);
-  }
-
-  void _duplicateRanking() {
-    Ranking _ranking = Ranking.fromRanking(widget.ranking);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RankingAdminPage(session: widget.session, ranking: _ranking, onUpdate: widget.onUpdate)));
-  }
-
   void _submitRanking() async {
     _gatherRanking();
 
-    final response = await http.post(
-      server.uri(widget.ranking.id == 0 ? 'ranking_create' : 'ranking_edit'),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Token': widget.session.token,
-      },
-      body: json.encode(widget.ranking),
-    );
+    final success = widget.isDraft ? await server.ranking_create(widget.session, widget.ranking) : await server.ranking_edit(widget.session, widget.ranking);
 
-    if (response.statusCode != 200) {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save ranking')));
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully saved ranking')));
-    widget.onUpdate();
+    Navigator.pop(context);
+  }
+
+  void _deleteRanking() async {
+    final success = await server.ranking_delete(widget.session, widget.ranking);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete ranking')));
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted ranking')));
+    Navigator.pop(context);
+  }
+
+  Future<void> _duplicateRanking() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RankingAdminPage(
+          session: widget.session,
+          ranking: Ranking.fromRanking(widget.ranking),
+          isDraft: true,
+        ),
+      ),
+    );
+
     Navigator.pop(context);
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Ranking"),
       ),
       body: AppBody(
         children: [
-          if (widget.ranking.id != 0) Row(
-            children: [
-              Expanded(
-                child: AppRankingTile(
-                  ranking: widget.ranking,
+          if (widget.ranking.id != 0)
+            Row(
+              children: [
+                Expanded(
+                  child: AppRankingTile(
+                    ranking: widget.ranking,
+                  ),
                 ),
-              ),
-              if (widget.session.right!.admin_rankings) IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: _duplicateRanking,
-              ),
-              if (widget.session.right!.admin_rankings) IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _deleteRanking,
-              ),
-            ],
-          ),
+                if (widget.session.right!.admin_rankings)
+                  IconButton(
+                    icon: const Icon(Icons.copy),
+                    onPressed: _duplicateRanking,
+                  ),
+                if (widget.session.right!.admin_rankings)
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: _deleteRanking,
+                  ),
+              ],
+            ),
           AppInfoRow(
             info: Text("User"),
             child: AppDropdown<User>(
               hint: Text("Select member"),
               controller: _ctrlRankingUser,
-              builder: (User user) {return Text(user.key);},
-              onChanged: (User? member) {
+              builder: (User user) {
+                return Text(user.key);
+              },
+              onChanged: (User? user) {
                 setState(() {
-                  _ctrlRankingUser.value = member;
+                  _ctrlRankingUser.value = user;
                 });
               },
             ),
@@ -168,7 +157,9 @@ class RankingAdminPageState extends State<RankingAdminPage> {
             info: Text("Branch"),
             child: AppDropdown<Branch>(
               controller: _ctrlRankingBranch,
-              builder: (Branch branch) {return Text(branch.title);},
+              builder: (Branch branch) {
+                return Text(branch.title);
+              },
               onChanged: (Branch? branch) {
                 setState(() => _ctrlRankingBranch.value = branch);
               },
@@ -192,7 +183,9 @@ class RankingAdminPageState extends State<RankingAdminPage> {
             child: AppDropdown<User>(
               hint: Text("Select member"),
               controller: _ctrlRankingJudge,
-              builder: (User user) {return Text(user.key);},
+              builder: (User user) {
+                return Text(user.key);
+              },
               onChanged: (User? user) {
                 setState(() {
                   _ctrlRankingJudge.value = user;
@@ -215,5 +208,4 @@ class RankingAdminPageState extends State<RankingAdminPage> {
       ),
     );
   }
-
 }
