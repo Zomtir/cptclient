@@ -22,9 +22,9 @@ Future<Slot?> slot_info(String token) async {
   return Slot.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<List<User>> slot_candidates(Session session) async {
+Future<List<User>> slot_participant_pool(Session session) async {
   final response = await http.get(
-    server.uri('/slot/slot_candidate_list'),
+    server.uri('/slot/slot_participant_pool'),
     headers: {
       'Token': session.token,
     },
@@ -36,7 +36,7 @@ Future<List<User>> slot_candidates(Session session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<List<User>> slot_participants(Session session) async {
+Future<List<User>> slot_participant_list(Session session) async {
   final response = await http.get(
     server.uri('/slot/slot_participant_list'),
     headers: {

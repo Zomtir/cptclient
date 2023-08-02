@@ -59,7 +59,7 @@ Future<bool> class_edit_password(Session session, Slot slot, String password) as
   if (password.isEmpty) return true;
 
   final response = await http.post(
-    server.uri('/admin/class_edit', {
+    server.uri('/admin/class_edit_password', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

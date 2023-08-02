@@ -12,6 +12,7 @@ import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 
 import '../static/server.dart' as server;
+import '../static/serverUserMember.dart' as server;
 import '../static/serverClassAdmin.dart' as server;
 import '../json/session.dart';
 import '../json/slot.dart';
@@ -116,7 +117,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   }
 
   void _requestOwnerPool() async {
-    List<User> users = await server.class_owner_pool(widget.session, widget.slot);
+    List<User> users = await server.user_list(widget.session);
     users.sort();
 
     setState(() {

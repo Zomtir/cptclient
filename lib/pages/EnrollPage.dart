@@ -21,8 +21,8 @@ class EnrollPage extends StatefulWidget {
 }
 
 class EnrollPageState extends State<EnrollPage> {
-  List<User> candidates = [];
-  List<User> participants = [];
+  List<User> _participantPool = [];
+  List<User> _participantList = [];
 
   EnrollPageState();
 
@@ -33,12 +33,12 @@ class EnrollPageState extends State<EnrollPage> {
   }
 
   void _update() async {
-    candidates = await server.slot_candidates(widget.session);
-    participants = await server.slot_participants(widget.session);
+    _participantPool = await server.slot_participant_pool(widget.session);
+    _participantList = await server.slot_participant_list(widget.session);
 
     setState(() {
-      candidates.sort();
-      participants.sort();
+      _participantPool.sort();
+      _participantList.sort();
     });
   }
 
@@ -70,8 +70,8 @@ class EnrollPageState extends State<EnrollPage> {
         children: [
           AppSlotTile(slot: widget.session.slot!),
           SelectionPanel<User>(
-            available: candidates,
-            chosen: participants,
+            available: _participantPool,
+            chosen: _participantList,
             onAdd: _addParticipant,
             onRemove: _removeParticipant,
             filter: filterUsers,
