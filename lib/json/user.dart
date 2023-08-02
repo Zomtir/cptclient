@@ -8,6 +8,7 @@ class User implements Comparable {
   final int id;
   String key;
   bool? enabled;
+  bool? active;
   String firstname;
   String lastname;
   String? address;
@@ -26,9 +27,9 @@ class User implements Comparable {
   String? dataDisclaimer;
   String? note;
 
-  User(this.id, this.key, this.enabled, this.firstname, this.lastname);
+  User(this.id, this.key, this.active, this.firstname, this.lastname);
 
-  User.fromInfo(this.id, this.key, this.firstname, this.lastname) : this.enabled = false;
+  User.fromInfo(this.id, this.key, this.firstname, this.lastname) : this.active = false;
 
   User.fromVoid()
       : id = 0,
@@ -40,6 +41,7 @@ class User implements Comparable {
       : id = json['id'],
         key = json['key'],
         enabled = json['enabled'],
+        active = json['active'],
         firstname = json['firstname'],
         lastname = json['lastname'],
         address = json['address'],
@@ -62,6 +64,7 @@ class User implements Comparable {
         'id': id,
         'key': key,
         'enabled': enabled,
+        'active': active,
         'firstname': firstname,
         'lastname': lastname,
         'address': address,

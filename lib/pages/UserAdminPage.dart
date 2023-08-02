@@ -28,6 +28,7 @@ class UserAdminPageState extends State<UserAdminPage> {
   TextEditingController _ctrlUserKey = TextEditingController();
   TextEditingController _ctrlUserPassword = TextEditingController();
   bool                  _ctrlUserEnabled = false;
+  bool                  _ctrlUserActive = true;
   TextEditingController _ctrlUserFirstname = TextEditingController();
   TextEditingController _ctrlUserLastname = TextEditingController();
   TextEditingController _ctrlUserAddress = TextEditingController();
@@ -57,6 +58,7 @@ class UserAdminPageState extends State<UserAdminPage> {
   void _applyUser() {
     _ctrlUserKey.text = widget.user.key;
     _ctrlUserEnabled = widget.user.enabled ?? false;
+    _ctrlUserActive = widget.user.active ?? false;
     _ctrlUserFirstname.text = widget.user.firstname;
     _ctrlUserLastname.text = widget.user.lastname;
     _ctrlUserAddress.text = widget.user.address ?? '';
@@ -79,6 +81,7 @@ class UserAdminPageState extends State<UserAdminPage> {
   void _gatherUser() {
     widget.user.key = _ctrlUserKey.text;
     widget.user.enabled = _ctrlUserEnabled;
+    widget.user.active = _ctrlUserActive;
     widget.user.firstname = _ctrlUserFirstname.text;
     widget.user.lastname = _ctrlUserLastname.text;
     widget.user.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
@@ -178,12 +181,22 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Account Enabled"),
+            info: Text("Login Enabled"),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Checkbox(
                 value: _ctrlUserEnabled,
                 onChanged: (bool? enabled) => setState(() => _ctrlUserEnabled = enabled!),
+              ),
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Active Participation"),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Checkbox(
+                value: _ctrlUserActive,
+                onChanged: (bool? active) => setState(() => _ctrlUserActive = active!),
               ),
             ),
           ),

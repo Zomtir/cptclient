@@ -73,7 +73,7 @@ class TermManagementPageState extends State<TermManagementPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          // three pages, choose user, users that should be enabled, users that should be disabled
+          // three pages, choose user, users that should be active, users that should be inactive
           AppButton(
             leading: Icon(Icons.add),
             text: "New user",
