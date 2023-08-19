@@ -17,7 +17,6 @@ flutter build web
 - Slot reservation time limitations
   - Add opening dates / hours (e.g 9:00 to 22:00)
   - Add closing dates / hours (holidays)
-- Group management
 
 ## Wishlist
 - Compatibility for NFC login

@@ -243,7 +243,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Date of Birth"),
+            info: Text(AppLocalizations.of(context)!.userBirthday),
             child: DateTimeEdit(
               nullable: true,
               dateOnly: true,
@@ -251,21 +251,21 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Location of Birth"),
+            info: Text(AppLocalizations.of(context)!.userBirthlocation),
             child: TextField(
-              maxLines: 4,
+              maxLines: 1,
               controller: _ctrlUserBirthlocation,
             ),
           ),
           AppInfoRow(
-            info: Text("Nationality"),
+            info: Text(AppLocalizations.of(context)!.userNationality),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserNationality,
             ),
           ),
           AppInfoRow(
-            info: Text("Gender"),
+            info: Text(AppLocalizations.of(context)!.userGender),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserGender,
