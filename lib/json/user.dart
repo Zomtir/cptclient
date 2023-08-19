@@ -19,12 +19,12 @@ class User implements Comparable {
   String? birthlocation;
   String? nationality;
   String? gender;
-  int? federationNumber;
-  DateTime? federationPermissionSolo;
-  DateTime? federationPermissionTeam;
-  DateTime? federationResidency;
-  int? dataDeclaration;
-  String? dataDisclaimer;
+  int? federationnumber;
+  DateTime? federationpermissionsolo;
+  DateTime? federationpermissionteam;
+  DateTime? federationresidency;
+  int? datadeclaration;
+  String? datadisclaimer;
   String? note;
 
   User(this.id, this.key, this.active, this.firstname, this.lastname);
@@ -52,12 +52,12 @@ class User implements Comparable {
         birthlocation = json['birthlocation'],
         nationality = json['nationality'],
         gender = json['gender'],
-        federationNumber = convertNullInt(json['federationNumber']),
-        federationPermissionSolo = parseNullWebDate(json['federationPermissionSolo']),
-        federationPermissionTeam = parseNullWebDate(json['federationPermissionTeam']),
-        federationResidency = json['federationResidency'],
-        dataDeclaration = convertNullInt(json['dataDeclaration']),
-        dataDisclaimer = json['dataDisclaimer'],
+        federationnumber = convertNullInt(json['federationnumber']),
+        federationpermissionsolo = parseNullWebDate(json['federationpermissionsolo']),
+        federationpermissionteam = parseNullWebDate(json['federationpermissionteam']),
+        federationresidency = json['federationresidency'],
+        datadeclaration = convertNullInt(json['datadeclaration']),
+        datadisclaimer = json['datadisclaimer'],
         note = json['note'];
 
   Map<String, dynamic> toJson() => {
@@ -75,12 +75,12 @@ class User implements Comparable {
         'birthlocation': birthlocation,
         'nationality': nationality,
         'gender': gender,
-        'federationNumber': federationNumber,
-        'federationPermissionSolo': formatNullWebDate(federationPermissionSolo),
-        'federationPermissionTeam': formatNullWebDate(federationPermissionTeam),
-        'federationResidency': formatNullWebDate(federationResidency),
-        'dataDeclaration': dataDeclaration,
-        'dataDisclaimer': dataDisclaimer,
+        'federationnumber': federationnumber,
+        'federationpermissionsolo': formatNullWebDate(federationpermissionsolo),
+        'federationpermissionteam': formatNullWebDate(federationpermissionteam),
+        'federationresidency': formatNullWebDate(federationresidency),
+        'datadeclaration': datadeclaration,
+        'datadisclaimer': datadisclaimer,
         'note': note
       };
 

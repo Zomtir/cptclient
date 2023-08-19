@@ -69,12 +69,12 @@ class UserAdminPageState extends State<UserAdminPage> {
     _ctrlUserBirthlocation.text = widget.user.birthlocation ?? '';
     _ctrlUserGender.text = widget.user.gender ?? '';
     _ctrlUserNationality.text = widget.user.nationality ?? '';
-    _ctrlUserFederationNumber.text = widget.user.federationNumber?.toString() ?? '';
-    _ctrlUserFederationPermissionSolo.setDateTime(widget.user.federationPermissionSolo);
-    _ctrlUserFederationPermissionTeam.setDateTime(widget.user.federationPermissionTeam);
-    _ctrlUserFederationResidency.setDateTime(widget.user.federationResidency);
-    _ctrlUserDataDeclaration.text = widget.user.dataDeclaration?.toString() ?? '';
-    _ctrlUserDataDisclaimer.text = widget.user.dataDisclaimer ?? '';
+    _ctrlUserFederationNumber.text = widget.user.federationnumber?.toString() ?? '';
+    _ctrlUserFederationPermissionSolo.setDateTime(widget.user.federationpermissionsolo);
+    _ctrlUserFederationPermissionTeam.setDateTime(widget.user.federationpermissionteam);
+    _ctrlUserFederationResidency.setDateTime(widget.user.federationresidency);
+    _ctrlUserDataDeclaration.text = widget.user.datadeclaration?.toString() ?? '';
+    _ctrlUserDataDisclaimer.text = widget.user.datadisclaimer ?? '';
     _ctrlUserNote.text = widget.user.note ?? '';
   }
 
@@ -92,12 +92,12 @@ class UserAdminPageState extends State<UserAdminPage> {
     widget.user.birthlocation = _ctrlUserBirthlocation.text.isNotEmpty ? _ctrlUserBirthlocation.text : null;
     widget.user.gender = _ctrlUserGender.text.isNotEmpty ? _ctrlUserGender.text : null;
     widget.user.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
-    widget.user.federationNumber = parseNullInt(_ctrlUserFederationNumber.text);
-    widget.user.federationPermissionSolo = _ctrlUserFederationPermissionSolo.getDateTime();
-    widget.user.federationPermissionTeam = _ctrlUserFederationPermissionTeam.getDateTime();
-    widget.user.federationResidency = _ctrlUserFederationResidency.getDateTime();
-    widget.user.dataDeclaration = parseNullInt(_ctrlUserDataDeclaration.text);
-    widget.user.dataDisclaimer = _ctrlUserDataDisclaimer.text.isNotEmpty ? _ctrlUserDataDeclaration.text : null;
+    widget.user.federationnumber = parseNullInt(_ctrlUserFederationNumber.text);
+    widget.user.federationpermissionsolo = _ctrlUserFederationPermissionSolo.getDateTime();
+    widget.user.federationpermissionteam = _ctrlUserFederationPermissionTeam.getDateTime();
+    widget.user.federationresidency = _ctrlUserFederationResidency.getDateTime();
+    widget.user.datadeclaration = parseNullInt(_ctrlUserDataDeclaration.text);
+    widget.user.datadisclaimer = _ctrlUserDataDisclaimer.text.isNotEmpty ? _ctrlUserDataDeclaration.text : null;
     widget.user.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
   }
 
