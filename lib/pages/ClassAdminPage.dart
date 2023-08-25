@@ -39,7 +39,10 @@ class ClassAdminPageState extends State<ClassAdminPage> {
   TextEditingController _ctrlSlotTitle = TextEditingController();
   DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
   DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
-  DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
+  DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: server.cacheLocations);
+  bool _ctrlSlotPublic = false;
+  bool _ctrlSlotObscured = true;
+  TextEditingController _ctrlSlotNote = TextEditingController();
 
   List<User> _ownerPool = [];
   List<User> _ownerList = [];
@@ -63,7 +66,10 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     _ctrlSlotBegin.setDateTime(widget.slot.begin);
     _ctrlSlotEnd.setDateTime(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
-    _ctrlCourseLocation.value = widget.slot.location;
+    _ctrlSlotLocation.value = widget.slot.location;
+    _ctrlSlotPublic = widget.slot.public;
+    _ctrlSlotObscured = widget.slot.obscured;
+    _ctrlSlotNote.text = widget.slot.note;
   }
 
   void _gatherSlot() {
@@ -71,7 +77,10 @@ class ClassAdminPageState extends State<ClassAdminPage> {
     widget.slot.begin = _ctrlSlotBegin.getDateTime()!;
     widget.slot.end = _ctrlSlotEnd.getDateTime()!;
     widget.slot.title = _ctrlSlotTitle.text;
-    widget.slot.location = _ctrlCourseLocation.value;
+    widget.slot.location = _ctrlSlotLocation.value;
+    widget.slot.public = _ctrlSlotPublic;
+    widget.slot.obscured = _ctrlSlotObscured;
+    widget.slot.note = _ctrlSlotNote.text;
   }
 
   void _handleSubmit() async {
@@ -269,13 +278,13 @@ class ClassAdminPageState extends State<ClassAdminPage> {
           info: Text("Location"),
           child: AppDropdown<Location>(
             hint: Text("Select location"),
-            controller: _ctrlCourseLocation,
+            controller: _ctrlSlotLocation,
             builder: (Location location) {
               return Text(location.title);
             },
             onChanged: (Location? location) {
               setState(() {
-                _ctrlCourseLocation.value = location;
+                _ctrlSlotLocation.value = location;
               });
             },
           ),
@@ -290,6 +299,27 @@ class ClassAdminPageState extends State<ClassAdminPage> {
           info: Text("End Time"),
           child: DateTimeEdit(
             controller: _ctrlSlotEnd,
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Public"),
+          child: Checkbox(
+            value: _ctrlSlotPublic,
+            onChanged: (bool? active) => setState(() => _ctrlSlotPublic = active!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Obscured"),
+          child: Checkbox(
+            value: _ctrlSlotObscured,
+            onChanged: (bool? active) => setState(() => _ctrlSlotObscured = active!),
+          ),
+        ),
+        AppInfoRow(
+          info: Text("Notes"),
+          child: TextField(
+            maxLines: 4,
+            controller: _ctrlSlotNote,
           ),
         ),
         AppButton(
