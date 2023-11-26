@@ -6,7 +6,6 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
 import 'package:intl/intl.dart';

@@ -31,7 +31,7 @@ Future<void> connect() async {
   window.localStorage.putIfAbsent('DefaultUser', ()=>'');
   window.localStorage.putIfAbsent('DefaultSlot', ()=>'');
   window.localStorage.putIfAbsent('DefaultCourse', ()=>'');
-  window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
+  window.localStorage.putIfAbsent('LoginLocationCache', ()=>'');
 
   if (await server.loadStatus()) {
     await server.loadCache();

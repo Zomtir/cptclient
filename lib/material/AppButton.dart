@@ -1,3 +1,4 @@
+import 'package:cptclient/material/design/AppButtonHeavyStyle.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -5,6 +6,7 @@ class AppButton extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final VoidCallback onPressed;
+  final ButtonStyle style;
 
   const AppButton({
     Key? key,
@@ -12,6 +14,7 @@ class AppButton extends StatelessWidget {
     required this.onPressed,
     this.leading,
     this.trailing,
+    this.style = const AppButtonHeavyStyle(),
   }) : super(key: key);
 
   @override
@@ -28,13 +31,7 @@ class AppButton extends StatelessWidget {
           ],
         ),
         onPressed: onPressed,
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-            )
-          )
-        )
+        style: style,
       ),
     );
   }
