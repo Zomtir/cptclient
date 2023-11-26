@@ -7,9 +7,6 @@ import "package:universal_html/html.dart";
 import '../static/server.dart' as server;
 import '../static/navigation.dart' as navi;
 
-import 'ConnectionPage.dart';
-import 'CreditPage.dart';
-
 class LoginUserPage extends StatefulWidget {
   LoginUserPage({Key? key}) : super(key: key);
 

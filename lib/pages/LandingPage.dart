@@ -42,7 +42,6 @@ class LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final node = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Course Participation Tracker"),

@@ -8,6 +8,8 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/credential.dart';
 
+import '../json/course.dart';
+
 String serverScheme = window.localStorage['ServerScheme']!;
 String serverHost = window.localStorage['ServerHost']!;
 int serverPort = int.tryParse(window.localStorage['ServerPort']!)?? 443;
@@ -85,6 +87,22 @@ Future<bool> loadBranches() async {
   cacheBranches = List<Branch>.from(l.map((model) => Branch.fromJson(model)));
 
   return true;
+}
+
+Future<List<Course>> receiveCourses() async {
+  final response = await http.get(
+    uri('anon/course_list'),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  List<Course> courses = List<Course>.from(l.map((model) => Course.fromJson(model)));
+
+  return courses;
 }
 
 Future<String?> getUserSalt(String key) async {
