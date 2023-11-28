@@ -10,7 +10,8 @@ import 'CalendarPage.dart';
 import 'MemberProfilePage.dart';
 import 'RankingOverviewPage.dart';
 import 'EventOverviewPage.dart';
-import 'CourseOverviewPage.dart';
+import 'CourseAvailablePage.dart';
+import 'CourseResponsiblePage.dart';
 
 import 'UserManagementPage.dart';
 import 'TeamManagementPage.dart';
@@ -61,8 +62,13 @@ class MemberLandingPage extends StatelessWidget {
               ),
               AppIconButton(
                 image: const AssetImage('assets/icons/icon_course.png'),
-                text: "Courses",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseOverviewPage(session: session))),
+                text: "Available Courses",
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAvailablePage(session: session))),
+              ),
+              AppIconButton(
+                image: const AssetImage('assets/icons/icon_course.png'),
+                text: "Responsible Courses",
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseResponsiblePage(session: session))),
               ),
               AppIconButton(
                 image: const AssetImage('assets/icons/icon_event.png'),

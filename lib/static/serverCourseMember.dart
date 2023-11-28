@@ -6,6 +6,21 @@ import 'dart:convert';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/course.dart';
+
+Future<List<Course>?> course_availiblity(Session session) async {
+  final response = await http.get(
+    server.uri('member/course_availiblity'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<Course>.from(list.map((model) => Course.fromJson(model)));
+}
 
 Future<List<Slot>?> class_list(Session session, int courseID) async {
   final response = await http.get(
