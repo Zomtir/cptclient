@@ -73,6 +73,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     widget.team.right!.admin_event = _ctrlRightEvent;
     widget.team.right!.admin_inventory = _ctrlRightInventory;
     widget.team.right!.admin_teams = _ctrlRightTeam;
+    widget.team.right!.admin_term = _ctrlRightTerm;
     widget.team.right!.admin_users = _ctrlRightUser;
   }
 

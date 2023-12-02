@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:flutter/foundation.dart';
 
 import 'location.dart';
 import 'course.dart';
@@ -41,7 +40,7 @@ class Slot implements Comparable {
       location = Location.fromJson(json['location']),
       begin = DateFormat("yyyy-MM-dd HH:mm").parse(json['begin'], true).toLocal(),
       end = DateFormat("yyyy-MM-dd HH:mm").parse(json['end'], true).toLocal(),
-      status = Status.values.firstWhere((x) => describeEnum(x) == json['status']),
+      status = Status.values.firstWhere((x) => x.name == json['status']),
       public = json['public'],
       obscured = json['obscured'],
       note = json['note'];

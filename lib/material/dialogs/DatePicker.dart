@@ -202,7 +202,7 @@ class _DatePickerState extends State<DatePicker> {
                   onPressed: () => _handleDayPick(index + 1),
                   child: Text(
                     '${index + 1}',
-                    textScaleFactor: 1.6,
+                    textScaler: TextScaler.linear(1.6),
                     style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
                   ),
                 ),

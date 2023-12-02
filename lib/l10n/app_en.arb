@@ -2,6 +2,11 @@
   "submissionFail": "Failed to submit the information",
   "submissionSuccess": "Succeeded to submit the information",
   "submissionSuccessExceptPassword": "Partially succeeded to submit the information; password was denied",
+  "deletionFail": "Failed to delete the entry",
+  "deletionSuccess": "Succeeded to delete the entry",
+  "termUser": "Member",
+  "termBegin": "Date of Entry",
+  "termEnd": "Date of Exit",
   "userFirstname": "First Name",
   "userLastname": "Last Name",
   "userAddress": "Address",
@@ -12,5 +17,10 @@
   "userFederationNumber": "Federation Number",
   "userParicipationDateSolo": "Solo Participation\nPermission Date",
   "userParicipationDateTeam": "Team Participation\nPermission Date",
+  "pageTermManagement": "Administrate Membership Terms",
+  "pageTermEdit": "Edit Membership Terms",
+  "actionSelect": "Select",
+  "actionSave": "Save",
+  "actionNew": "New",
   "isInvalid": "is invalid"
 }

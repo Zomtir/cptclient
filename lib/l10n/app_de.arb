@@ -2,6 +2,11 @@
   "submissionFail": "Übermittlung der Information fehlgeschlagen",
   "submissionSuccess": "Übermittlung der Information erfolgreich",
   "submissionSuccessExceptPassword": "Übermittlung der Information teilweise erfolgreich; Passwort abgelehnt",
+  "deletionFail": "Löschen fehlgeschlage",
+  "deletionSuccess": "Löschen erfolgreich",
+  "termUser": "Mitglied",
+  "termBegin": "Eintrittsdatum",
+  "termEnd": "Austrittsdatum",
   "userFirstname": "Vorname",
   "userLastname": "Nachname",
   "userAddress": "Adresse",
@@ -12,5 +17,10 @@
   "userFederationNumber": "Verbandsnummer",
   "userParicipationDateSolo": "Einzel-\nStartrecht",
   "userParicipationDateTeam": "Mannschafts-\nStartrecht",
+  "pageTermManagement": "Mitgliedschaften verwalten",
+  "pageTermEdit": "Mitgliedschaft bearbeiten",
+  "actionSelect": "Auswählen",
+  "actionSave": "Speichern",
+  "actionNew": "Hinzufügen",
   "isInvalid": "ist ungültig"
 }

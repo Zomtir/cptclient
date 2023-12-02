@@ -1,14 +1,15 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
+import 'package:cptclient/material/tiles/AppTermTile.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 
-import 'UserAdminPage.dart';
+import 'TermEditPage.dart';
 
-import 'package:cptclient/static/serverUserAdmin.dart' as server;
+import 'package:cptclient/static/serverTermAdmin.dart' as server;
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
+import 'package:cptclient/json/term.dart';
 
 class TermManagementPage extends StatefulWidget {
   final Session session;
@@ -20,45 +21,45 @@ class TermManagementPage extends StatefulWidget {
 }
 
 class TermManagementPageState extends State<TermManagementPage> {
-  List<User> _users = [];
+  List<Term> _terms = [];
 
   TermManagementPageState();
 
   @override
   void initState() {
     super.initState();
-    _requestUsers();
+    _update();
   }
 
-  Future<void> _requestUsers() async {
-    List<User> users = await server.user_list(widget.session);
+  Future<void> _update() async {
+    List<Term> terms = await server.term_list(widget.session);
     setState(() {
-      _users = users;
+      _terms = terms;
     });
   }
 
-  void _selectUser(User user) {
+  void _selectTerm(Term term) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserAdminPage(
+        builder: (context) => TermEditPage(
           session: widget.session,
-          user: user,
-          onUpdate: _requestUsers,
+          term: term,
+          onUpdate: _update,
           isDraft: false,
         ),
       ),
     );
   }
 
-  void _createUser() async {
+  void _createTerm() async {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserAdminPage(
+        builder: (context) => TermEditPage(
           session: widget.session,
-          user: User.fromVoid(),
-          onUpdate: _requestUsers,
+          term: Term.fromVoid(),
+          onUpdate: _update,
           isDraft: true,
         ),
       ),
@@ -69,23 +70,23 @@ class TermManagementPageState extends State<TermManagementPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Term Administration"),
+        title: Text(AppLocalizations.of(context)!.pageTermManagement),
       ),
       body: AppBody(
         children: <Widget>[
           // three pages, choose user, users that should be active, users that should be inactive
           AppButton(
             leading: Icon(Icons.add),
-            text: "New user",
-            onPressed: _createUser,
+            text: AppLocalizations.of(context)!.actionNew,
+            onPressed: _createTerm,
           ),
           AppListView(
-            items: _users,
-            itemBuilder: (User user) {
+            items: _terms,
+            itemBuilder: (Term term) {
               return InkWell(
-                onTap: () => _selectUser(user),
-                child: AppUserTile(
-                  user: user,
+                onTap: () => _selectTerm(term),
+                child: AppTermTile(
+                  term: term,
                 ),
               );
             },

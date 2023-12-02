@@ -15,6 +15,7 @@ import 'CourseResponsiblePage.dart';
 
 import 'UserManagementPage.dart';
 import 'TeamManagementPage.dart';
+import 'TermManagementPage.dart';
 import 'RankingManagementPage.dart';
 import 'EventManagement.dart';
 import 'CourseManagementPage.dart';
@@ -102,10 +103,10 @@ class MemberLandingPage extends StatelessWidget {
                 text: "User\nManagement",
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserManagementPage(session: session))),
               ),
-              if (session.right!.admin_users) AppIconButton(
+              if (session.right!.admin_term) AppIconButton(
                 image: const AssetImage('assets/icons/icon_membership.png'),
                 text: "Membership\nManagement",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserManagementPage(session: session))),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TermManagementPage(session: session))),
               ),
               if (session.right!.admin_teams) AppIconButton(
                 image: const AssetImage('assets/icons/icon_teams.png'),

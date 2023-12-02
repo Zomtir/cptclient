@@ -133,7 +133,7 @@ class UserAdminPageState extends State<UserAdminPage> {
 
   void _deleteUser() async {
     if (!await server.user_delete(widget.session, widget.user)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete user')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.deletionFail)));
       return;
     }
 
