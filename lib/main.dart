@@ -23,7 +23,9 @@ void main() {
       Locale('de'), // German
     ],
     theme: ThemeData(
-      primarySwatch: Colors.amber,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 208, 190, 135),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
