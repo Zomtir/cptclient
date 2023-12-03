@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'static/navigation.dart' as navi;
 
 import 'pages/ConnectionPage.dart';
-import 'pages/LandingPage.dart';
+import 'pages/LoginLandingPage.dart';
 import 'pages/MemberLandingPage.dart';
 import 'pages/EnrollPage.dart';
 
@@ -42,10 +42,10 @@ void main() {
     routes: {
       '/': (context) => MainPage(),
       '/config': (context) => ConnectionPage(),
-      '/login': (context) => LandingPage(),
+      '/login': (context) => LoginLandingPage(),
       '/user': (context) {
         if (navi.session == null || navi.session?.user == null) {
-          return LandingPage();
+          return LoginLandingPage();
         } else {
           return MemberLandingPage(session: navi.session!);
         }

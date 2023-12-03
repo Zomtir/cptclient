@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
-import 'package:cptclient/json/user.dart';
 
 Future<List<Term>> term_list(Session session) async {
   final response = await http.get(

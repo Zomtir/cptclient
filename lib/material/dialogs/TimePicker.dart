@@ -1,4 +1,6 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+
 import 'dart:ui';
 import 'dart:math';
 
@@ -50,7 +52,7 @@ class _TimePickerState extends State<TimePicker> {
     _selectTime(widget.initialTime);
   }
 
-  void _handleOk() {
+  void _handleConfirm() {
     if (_selectedTime == widget.initialTime)
       _handleCancel();
     else
@@ -173,12 +175,12 @@ class _TimePickerState extends State<TimePicker> {
         children: <Widget>[
           AppButton(
             onPressed: _handleCancel,
-            text: "Cancel",
+            text: AppLocalizations.of(context)!.actionCancel,
           ),
           Spacer(),
           AppButton(
-            onPressed: _handleOk,
-            text: "Ok",
+            onPressed: _handleConfirm,
+            text: AppLocalizations.of(context)!.actionConfirm,
           ),
         ],
       ),

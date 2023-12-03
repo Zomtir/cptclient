@@ -13,14 +13,14 @@ import 'LoginLocationPage.dart';
 import 'LoginSlotPage.dart';
 import 'LoginUserPage.dart';
 
-class LandingPage extends StatefulWidget {
-  LandingPage({Key? key}) : super(key: key);
+class LoginLandingPage extends StatefulWidget {
+  LoginLandingPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => LandingPageState();
+  State<StatefulWidget> createState() => LoginLandingPageState();
 }
 
-class LandingPageState extends State<LandingPage> {
+class LoginLandingPageState extends State<LoginLandingPage> {
 
   @override
   void initState() {

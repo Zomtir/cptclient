@@ -1,3 +1,5 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
@@ -80,7 +82,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Available Courses"),
+        title: Text(AppLocalizations.of(context)!.pageCourseResponsible),
       ),
       body: AppBody(
         children: [
