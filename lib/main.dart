@@ -31,6 +31,9 @@ void main() {
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         ),
       ),
+      dividerTheme: DividerThemeData(
+        color: Color.fromARGB(255, 208, 190, 135),
+      ),
     ),
     navigatorObservers: [navi.routeObserver],
     // onGenerateRoute: generateRoute,

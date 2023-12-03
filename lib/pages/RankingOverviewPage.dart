@@ -57,11 +57,7 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
               );
             },
           ),
-          Divider(
-            height: 30,
-            thickness: 5,
-            color: Colors.black,
-          ),
+          Divider(),
           AppListView<Ranking>(
             items: _rankings,
             itemBuilder: (Ranking ranking) {

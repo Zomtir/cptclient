@@ -88,11 +88,7 @@ class MemberLandingPage extends StatelessWidget {
               ),
             ],
           ),
-          Divider(
-            height: 30,
-            thickness: 5,
-            color: Colors.black,
-          ),
+          Divider(),
           Wrap(
             alignment: WrapAlignment.center,
             runSpacing: 5.0,

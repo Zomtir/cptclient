@@ -22,5 +22,7 @@
   "actionSelect": "Auswählen",
   "actionSave": "Speichern",
   "actionNew": "Hinzufügen",
+  "actionConfirm": "Bestätigen",
+  "actionCancel": "Abbrechen",
   "isInvalid": "ist ungültig"
 }

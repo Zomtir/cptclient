@@ -41,11 +41,6 @@ class LoginUserPageState extends State<LoginUserPage> {
         title: Text("User Login"),
       ),
       body: AppBody(children: [
-        if (window.localStorage['Session']!.isNotEmpty) Divider(
-          height: 30,
-          thickness: 5,
-          color: Colors.black,
-        ),
         TextField(
           maxLines: 1,
           controller: _ctrlUserLogin,

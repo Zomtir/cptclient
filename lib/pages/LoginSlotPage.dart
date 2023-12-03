@@ -76,11 +76,7 @@ class LoginSlotPageState extends State<LoginSlotPage> {
           text: "Login",
           onPressed: _loginSlot,
         ),
-        Divider(
-          height: 30,
-          thickness: 5,
-          color: Colors.black,
-        ),
+        Divider(),
       ]),
     );
   }

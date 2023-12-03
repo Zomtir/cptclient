@@ -22,5 +22,7 @@
   "actionSelect": "Select",
   "actionSave": "Save",
   "actionNew": "New",
+  "actionConfirm": "Confirm",
+  "actionCancel": "Cancel",
   "isInvalid": "is invalid"
 }

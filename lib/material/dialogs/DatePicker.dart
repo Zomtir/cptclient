@@ -1,10 +1,11 @@
-import 'package:cptclient/material/NumberSelector.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math';
 
-import '../AppDialog.dart';
-import '../AppButton.dart';
+import 'package:cptclient/material/NumberSelector.dart';
+import 'package:cptclient/material/AppDialog.dart';
+import 'package:cptclient/material/AppButton.dart';
 
 Future<DateTime?> showAppDatePicker({
   required BuildContext context,
@@ -78,7 +79,7 @@ class _DatePickerState extends State<DatePicker> {
     _selectDate(widget.initialDate);
   }
 
-  void _handleOk() {
+  void _handleConfirm() {
     if (_selectedDate == widget.initialDate)
       _handleCancel();
     else
@@ -218,12 +219,12 @@ class _DatePickerState extends State<DatePicker> {
         children: <Widget>[
           AppButton(
             onPressed: _handleCancel,
-            text: "Cancel",
+            text: AppLocalizations.of(context)!.actionCancel,
           ),
           Spacer(),
           AppButton(
-            onPressed: _handleOk,
-            text: "Ok",
+            onPressed: _handleConfirm,
+            text: AppLocalizations.of(context)!.actionConfirm,
           ),
         ],
       ),

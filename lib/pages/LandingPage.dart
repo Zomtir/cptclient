@@ -61,11 +61,7 @@ class LandingPageState extends State<LandingPage> {
           text: "Resume Session",
           onPressed: _resume,
         ),
-        if (window.localStorage['Session']!.isNotEmpty) Divider(
-          height: 30,
-          thickness: 5,
-          color: Colors.black,
-        ),
+        if (window.localStorage['Session']!.isNotEmpty) Divider(),
         AppButton(
           text: "User Login",
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
