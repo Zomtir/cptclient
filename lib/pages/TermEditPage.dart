@@ -117,6 +117,7 @@ class TermEditPageState extends State<TermEditPage> {
               ),
             ],
           ),
+          if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.termUser),
             child: Text(_ctrlTermUser == null ? "Unknown" : "[${_ctrlTermUser!.key}] ${_ctrlTermUser!.firstname} ${_ctrlTermUser!.lastname}"),

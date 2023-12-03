@@ -1,3 +1,4 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
@@ -25,7 +26,7 @@ class SelectionPanel<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppButton(text: "Add", onPressed: () => showTilePicker(
+        AppButton(text: AppLocalizations.of(context)!.actionNew, onPressed: () => showTilePicker(
           context: context,
           available: available,
           hidden: chosen,

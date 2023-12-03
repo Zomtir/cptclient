@@ -1,33 +1,26 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 
-import '../material/PanelSwiper.dart';
-import '../material/panels/SelectionPanel.dart';
-import '../material/tiles/AppUserTile.dart';
-import '../static/serverUserMember.dart' as server;
 import '../static/serverTeamAdmin.dart' as server;
 import '../json/session.dart';
 import '../json/team.dart';
-import '../json/user.dart';
 
-class TeamAdminPage extends StatefulWidget {
+class TeamEditPage extends StatefulWidget {
   final Session session;
   final Team team;
   final bool isDraft;
 
-  TeamAdminPage({Key? key, required this.session, required this.team, required this.isDraft}) : super(key: key);
+  TeamEditPage({Key? key, required this.session, required this.team, required this.isDraft}) : super(key: key);
 
   @override
-  TeamAdminPageState createState() => TeamAdminPageState();
+  TeamEditPageState createState() => TeamEditPageState();
 }
 
-class TeamAdminPageState extends State<TeamAdminPage> {
-  List<User> _memberPool = [];
-  List<User> _memberList = [];
-
+class TeamEditPageState extends State<TeamEditPage> {
   TextEditingController _ctrlName = TextEditingController();
   TextEditingController _ctrlDescription = TextEditingController();
 
@@ -39,7 +32,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   bool _ctrlRightTerm = false;
   bool _ctrlRightUser = false;
 
-  TeamAdminPageState();
+  TeamEditPageState();
 
   @override
   void initState() {
@@ -48,8 +41,6 @@ class TeamAdminPageState extends State<TeamAdminPage> {
   }
 
   void _update() {
-    if (!widget.isDraft) _getTeamMemberPool();
-    if (!widget.isDraft) _getTeamMemberList();
     _applyTeam();
   }
 
@@ -109,7 +100,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeamAdminPage(
+        builder: (context) => TeamEditPage(
           session: widget.session,
           team: Team.fromTeam(widget.team),
           isDraft: true,
@@ -120,51 +111,11 @@ class TeamAdminPageState extends State<TeamAdminPage> {
     Navigator.pop(context);
   }
 
-  Future<void> _getTeamMemberPool() async {
-    List<User> users = await server.user_list(widget.session);
-    users.sort();
-
-    setState(() {
-      _memberPool = users;
-    });
-  }
-
-  Future<void> _getTeamMemberList() async {
-    List<User> users = await server.team_member_list(widget.session, widget.team.id);
-    users.sort();
-
-    setState(() {
-      _memberList = users;
-    });
-  }
-
-  void _addMember(User user) async {
-    bool success = await server.team_member_add(widget.session, widget.team.id, user.id);
-
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add member')));
-      return;
-    }
-
-    _getTeamMemberList();
-  }
-
-  void _removeMember(User user) async {
-    bool success = await server.team_member_remove(widget.session, widget.team.id, user.id);
-
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to remove member')));
-      return;
-    }
-
-    _getTeamMemberList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Team Details"),
+        title: Text(AppLocalizations.of(context)!.pageTeamEdit),
       ),
       body: AppBody(
         children: [
@@ -186,17 +137,8 @@ class TeamAdminPageState extends State<TeamAdminPage> {
                 ),
               ],
             ),
-          PanelSwiper(panels: [
-            if (!widget.isDraft) Panel("Members", SelectionPanel<User>(
-              available: _memberPool,
-              chosen: _memberList,
-              onAdd: _addMember,
-              onRemove: _removeMember,
-              filter: filterUsers,
-              builder: (User user) => AppUserTile(user: user),
-            )),
-            Panel("Edit", _buildEditPanel()),
-          ]),
+          if (!widget.isDraft) Divider(),
+          _buildEditPanel(),
         ],
       ),
     );
@@ -269,7 +211,7 @@ class TeamAdminPageState extends State<TeamAdminPage> {
           ),
         ),
         AppButton(
-          text: "Save",
+          text: AppLocalizations.of(context)!.actionSave,
           onPressed: _submitTeam,
         ),
       ],

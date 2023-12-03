@@ -4,10 +4,12 @@ import 'package:cptclient/json/team.dart';
 
 class AppTeamTile extends StatelessWidget {
   final Team team;
+  final List<Widget> trailing;
 
   const AppTeamTile({
     Key? key,
     required this.team,
+    this.trailing = const [],
   }) : super(key: key);
 
   @override
@@ -19,13 +21,16 @@ class AppTeamTile extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Tooltip(message: "${team.id}", child: Icon(Icons.info)),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("${team.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("${team.description}"),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${team.name}", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${team.description}"),
+              ],
+            ),
           ),
+          ...trailing,
         ],
       )
     );

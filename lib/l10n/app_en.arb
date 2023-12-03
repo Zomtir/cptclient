@@ -18,6 +18,8 @@
   "userParicipationDateSolo": "Solo Participation\nPermission Date",
   "userParicipationDateTeam": "Team Participation\nPermission Date",
   "pageUserManagement": "Administrate User Account",
+  "pageTeamMember": "Team Members",
+  "pageTeamEdit": "Edit Team Details",
   "pageTermManagement": "Administrate Membership Terms",
   "pageTermEdit": "Edit Membership Terms",
   "pageTeamManagement": "Administrate Teams",
