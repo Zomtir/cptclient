@@ -1,16 +1,15 @@
-import 'package:cptclient/material/DateTimeController.dart';
 import 'package:flutter/material.dart';
-
+import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 
 import '../material/DateTimeEdit.dart';
+import '../material/FilterToggle.dart';
 import 'EventDetailPage.dart';
 
 import '../static/server.dart' as server;
@@ -36,7 +35,6 @@ class EventManagementPageState extends State<EventManagementPage> {
 
   List<Slot> _events = [];
   List<Slot> _eventsFiltered = [];
-  bool _hideFilters = true;
   final _filterDaysMax = 366;
 
   int _panelIndex = 0;
@@ -187,41 +185,31 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   Widget _buildFilters() {
-    return Column(
+    return FilterToggle(
       children: [
-        TextButton.icon(
-          icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-          label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
-          onPressed: () => setState(() => _hideFilters = !_hideFilters),
+        AppInfoRow(
+          info: Text("Location"),
+          child: AppDropdown<Location>(
+            controller: _ctrlDropdownLocation,
+            builder: (Location location) {
+              return Text(location.key);
+            },
+            onChanged: (Location? location) {
+              _ctrlDropdownLocation.value = location;
+              _filterReservations();
+            },
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              _ctrlDropdownLocation.value = null;
+              _filterReservations();
+            },
+          ),
         ),
-        CollapseWidget(
-          collapse: _hideFilters,
-          children: [
-            AppInfoRow(
-              info: Text("Location"),
-              child: AppDropdown<Location>(
-                controller: _ctrlDropdownLocation,
-                builder: (Location location) {
-                  return Text(location.key);
-                },
-                onChanged: (Location? location) {
-                  _ctrlDropdownLocation.value = location;
-                  _filterReservations();
-                },
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.clear),
-                onPressed: () {
-                  _ctrlDropdownLocation.value = null;
-                  _filterReservations();
-                },
-              ),
-            ),
-            AppInfoRow(
-              info: Text("Show Courses"),
-              child: Text("all/yes/no"),
-            ),
-          ],
+        AppInfoRow(
+          info: Text("Show Courses"),
+          child: Text("all/yes/no"),
         ),
       ],
     );
@@ -234,23 +222,23 @@ class EventManagementPageState extends State<EventManagementPage> {
         AppListView(
           items: _eventsFiltered,
           itemBuilder: (Slot slot) {
-            return Row(
-              children: [
-                Expanded(
-                  child: AppSlotTile(
-                    onTap: _selectSlot,
-                    slot: slot,
-                  ),
+            return InkWell(
+              onTap: () => _selectSlot(slot),
+              child: Expanded(
+                child: AppSlotTile(
+                  slot: slot,
+                  trailing: [
+                    IconButton(
+                      icon: const Icon(Icons.highlight_remove),
+                      onPressed: () => _denyReservation(slot),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.check_circle_outline),
+                      onPressed: () => _acceptReservation(slot),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: const Icon(Icons.highlight_remove),
-                  onPressed: () => _denyReservation(slot),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.check_circle_outline),
-                  onPressed: () => _acceptReservation(slot),
-                ),
-              ],
+              ),
             );
           },
         ),

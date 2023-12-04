@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 
@@ -224,9 +224,11 @@ class CourseMemberPageState extends State<CourseMemberPage> {
         AppListView<Slot>(
           items: _slots,
           itemBuilder: (Slot slot) {
-            return AppSlotTile(
-              onTap: _selectCourseSlot,
-              slot: slot,
+            return InkWell(
+              onTap: () => _selectCourseSlot(slot),
+              child: AppSlotTile(
+                slot: slot,
+              ),
             );
           },
         ),

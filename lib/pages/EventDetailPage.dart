@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
@@ -55,7 +55,7 @@ class SlotDetailPageState extends State<EventDetailPage> {
     super.initState();
 
     _applySlot();
-    _requestSlotOwners();
+    if (!widget.isDraft) _requestSlotOwners();
   }
 
   Future<void> _duplicateSlot() async {
@@ -145,15 +145,10 @@ class SlotDetailPageState extends State<EventDetailPage> {
       ),
       body: AppBody(
         children: [
-          if (widget.slot.id != 0)
-            Row(
-              children: [
-                Expanded(
-                  child: AppSlotTile(
-                    onTap: (slot) => {},
-                    slot: widget.slot,
-                  ),
-                ),
+          if (!widget.isDraft)
+            AppSlotTile(
+              slot: widget.slot,
+              trailing: [
                 IconButton(
                   icon: const Icon(Icons.copy),
                   onPressed: _duplicateSlot,

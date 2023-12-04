@@ -5,7 +5,7 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 

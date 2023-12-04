@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cptclient/json/slot.dart';
 import "package:universal_html/html.dart"; // TODO go back to dart:html?
 import 'package:http/http.dart' as http;
 
@@ -25,6 +26,7 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
 
 List<Location> cacheLocations = [];
 List<Branch> cacheBranches = [];
+List<Status> cacheSlotStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
   final response;
