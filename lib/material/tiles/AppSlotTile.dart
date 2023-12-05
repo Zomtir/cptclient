@@ -32,6 +32,10 @@ class AppSlotTile extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(slot.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
+          ),
           ...trailing,
         ],
       ),

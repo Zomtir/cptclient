@@ -1,8 +1,8 @@
-import 'package:cptclient/material/TextFilter.dart';
+import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 
 import 'UserAdminPage.dart';
@@ -22,8 +22,6 @@ class UserManagementPage extends StatefulWidget {
 
 class UserManagementPageState extends State<UserManagementPage> {
   List<User> _users = [];
-  List<User> _usersLimited = [];
-  TextEditingController _ctrlFilterUser = TextEditingController();
 
   @override
   void initState() {
@@ -32,15 +30,19 @@ class UserManagementPageState extends State<UserManagementPage> {
   }
 
   Future<void> _update() async {
-    _users = await server.user_list(widget.session);
-    _ctrlFilterUser.clear();
-    _limitUsers(_users);
-  }
-
-  void _limitUsers(List<User> users) {
+    print("start");
+    print(_users.length);
+    List<User> users = await server.user_list(widget.session);
     users.sort();
+
     setState(() {
-      _usersLimited = users;
+      _users = users;
+    });
+
+    print("husers");
+    print(_users.length);
+
+    setState(() {
     });
   }
 
@@ -80,31 +82,20 @@ class UserManagementPageState extends State<UserManagementPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("User Administration"),
+        title: Text(AppLocalizations.of(context)!.pageUserManagement),
       ),
       body: AppBody(
         children: <Widget>[
           AppButton(
             leading: Icon(Icons.add),
-            text: "New user",
+            text: AppLocalizations.of(context)!.actionNew,
             onPressed: _createUser,
           ),
-          TextFilter(
-            items: _users,
-            controller: _ctrlFilterUser,
-            onChange: _limitUsers,
+          SearchablePanel<User>(
+            available: _users,
+            onSelect: _selectUser,
             filter: filterUsers,
-          ),
-          AppListView<User>(
-            items: _usersLimited,
-            itemBuilder: (User user) {
-              return InkWell(
-                onTap: () => _selectUser(user),
-                child: AppUserTile(
-                  user: user,
-                ),
-              );
-            },
+            builder: (User user) => AppUserTile(user: user),
           ),
         ],
       ),

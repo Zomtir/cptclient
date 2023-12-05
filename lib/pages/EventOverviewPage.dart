@@ -1,6 +1,6 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -12,7 +12,8 @@ import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 
 import '../material/DropdownController.dart';
 import '../material/FilterToggle.dart';
-import 'EventDetailPage.dart';
+import 'EventOwnersPage.dart';
+import 'EventEditPage.dart';
 
 import '../static/server.dart' as server;
 import '../static/serverEventMember.dart' as server;
@@ -59,12 +60,10 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
           slot: slot,
           isDraft: true,
-          isOwner: true,
-          isAdmin: false,
         ),
       ),
     );
@@ -72,17 +71,28 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     _update();
   }
 
-  void _selectIndividualSlot(Slot slot) async {
-    bool isOwner = await server.event_owner_condition(widget.session, slot);
+  void _handleEventEdit(Slot slot) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
           slot: slot,
           isDraft: false,
-          isOwner: isOwner,
-          isAdmin: false,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
+  void _handleEventOwners(Slot slot) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventOwnersPage(
+          session: widget.session,
+          slot: slot,
         ),
       ),
     );
@@ -91,37 +101,29 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _submitSlot(Slot slot) async {
-    if (!await server.event_submit(widget.session, slot)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to submit slot')));
+    if (!await server.event_submit(widget.session, slot))
       return;
-    }
 
     _update();
   }
 
   Future<void> _withdrawSlot(Slot slot) async {
-    if (!await server.event_withdraw(widget.session, slot)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to withdraw slot')));
+    if (!await server.event_withdraw(widget.session, slot))
       return;
-    }
 
     _update();
   }
 
   Future<void> _cancelSlot(Slot slot) async {
-    if (!await server.event_cancel(widget.session, slot)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to cancel slot')));
+    if (!await server.event_cancel(widget.session, slot))
       return;
-    }
 
     _update();
   }
 
   Future<void> _recycleSlot(Slot slot) async {
-    if (!await server.event_recycle(widget.session, slot)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to recycle slot')));
+    if (!await server.event_recycle(widget.session, slot))
       return;
-    }
 
     _update();
   }
@@ -166,12 +168,9 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           AppListView(
             items: _events,
             itemBuilder: (Slot slot) {
-              return InkWell(
-                onTap: () => _selectIndividualSlot(slot),
-                child: AppSlotTile(
-                  slot: slot,
-                  trailing: _buildTrailing(slot),
-                ),
+              return AppSlotTile(
+                slot: slot,
+                trailing: _buildTrailing(slot),
               );
             },
           )
@@ -183,30 +182,53 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   List<Widget> _buildTrailing(Slot slot) {
     switch (slot.status) {
       case Status.DRAFT:
-        return [IconButton(
-          icon: const Icon(Icons.check),
-          onPressed: () => _submitSlot(slot),
-        )];
-      case Status.OCCURRING:
-        return [IconButton(
-          icon: const Icon(Icons.cancel),
-          onPressed: () => _cancelSlot(slot),
-        )];
+        return [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => _handleEventEdit(slot),
+          ),
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () => _submitSlot(slot),
+          ),
+          PopupMenuButton<VoidCallback>(
+            onSelected: (fn) => fn(),
+            itemBuilder: (context) => [
+              PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Personal Invites')),
+              PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Level Invites')),
+              PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Participants')),
+              PopupMenuItem<VoidCallback>(value: () => _handleEventOwners(slot), child: Text('Owners')),
+            ],
+          ),
+        ];
       case Status.PENDING:
-        return [IconButton(
-          icon: const Icon(Icons.edit),
-          onPressed: () => _withdrawSlot(slot),
-        )];
+        return [
+          IconButton(
+            icon: const Icon(Icons.undo),
+            onPressed: () => _withdrawSlot(slot),
+          )
+        ];
+      case Status.OCCURRING:
+        return [
+          IconButton(
+            icon: const Icon(Icons.cancel_outlined),
+            onPressed: () => _cancelSlot(slot),
+          )
+        ];
       case Status.REJECTED:
-        return [IconButton(
-          icon: const Icon(Icons.settings_backup_restore),
-          onPressed: () => _recycleSlot(slot),
-        )];
+        return [
+          IconButton(
+            icon: const Icon(Icons.settings_backup_restore),
+            onPressed: () => _recycleSlot(slot),
+          )
+        ];
       case Status.CANCELED:
-        return [IconButton(
-          icon: const Icon(Icons.charging_station),
-          onPressed: () => {},
-        )];
+        return [
+          IconButton(
+            icon: const Icon(Icons.charging_station),
+            onPressed: () => {},
+          )
+        ];
       default:
         return [];
     }

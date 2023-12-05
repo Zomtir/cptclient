@@ -26,14 +26,29 @@ class SelectionPanel<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppButton(text: AppLocalizations.of(context)!.actionNew, onPressed: () => showTilePicker(
-          context: context,
-          available: available,
-          hidden: chosen,
-          onSelect: onAdd,
-          filter: filter,
-          builder: builder,
-        )),
+        AppButton(
+          text: AppLocalizations.of(context)!.actionNew,
+          onPressed: () => showTilePicker(
+            context: context,
+            available: available,
+            hidden: chosen,
+            onSelect: onAdd,
+            filter: filter,
+            builder: (T item) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: builder(item),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () => onAdd(item),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
         AppListView<T>(
           items: chosen,
           itemBuilder: (T item) {
@@ -53,5 +68,4 @@ class SelectionPanel<T> extends StatelessWidget {
       ],
     );
   }
-
 }

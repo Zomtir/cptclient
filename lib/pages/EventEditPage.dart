@@ -1,9 +1,8 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-
-import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
@@ -16,46 +15,37 @@ import '../static/serverEventOwner.dart' as server;
 import '../json/session.dart';
 import '../json/slot.dart';
 import '../json/location.dart';
-import '../json/user.dart';
 
-class EventDetailPage extends StatefulWidget {
+class EventEditPage extends StatefulWidget {
   final Session session;
   final Slot slot;
   final bool isDraft;
-  final bool isOwner;
-  final bool isAdmin;
 
-  EventDetailPage({
+  EventEditPage({
     Key? key,
     required this.session,
     required this.slot,
     required this.isDraft,
-    required this.isOwner,
-    required this.isAdmin,
   }) : super(key: key);
 
   @override
-  SlotDetailPageState createState() => SlotDetailPageState();
+  EventEditPageState createState() => EventEditPageState();
 }
 
-class SlotDetailPageState extends State<EventDetailPage> {
+class EventEditPageState extends State<EventEditPage> {
   TextEditingController _ctrlSlotPassword = TextEditingController();
   TextEditingController _ctrlSlotBegin = TextEditingController();
   TextEditingController _ctrlSlotEnd = TextEditingController();
   TextEditingController _ctrlSlotTitle = TextEditingController();
+  DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: server.cacheLocations);
 
-  DropdownController<Location> _ctrlCourseLocation = DropdownController<Location>(items: server.cacheLocations);
-
-  List<User> _owners = [];
-
-  SlotDetailPageState();
+  EventEditPageState();
 
   @override
   void initState() {
     super.initState();
 
     _applySlot();
-    if (!widget.isDraft) _requestSlotOwners();
   }
 
   Future<void> _duplicateSlot() async {
@@ -64,12 +54,10 @@ class SlotDetailPageState extends State<EventDetailPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
           slot: _slot,
           isDraft: true,
-          isOwner: true,
-          isAdmin: widget.isAdmin,
         ),
       ),
     );
@@ -81,11 +69,11 @@ class SlotDetailPageState extends State<EventDetailPage> {
     _ctrlSlotBegin.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.begin);
     _ctrlSlotEnd.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
-    _ctrlCourseLocation.value = widget.slot.location;
+    _ctrlSlotLocation.value = widget.slot.location;
   }
 
   void _gatherSlot() {
-    widget.slot.location = _ctrlCourseLocation.value;
+    widget.slot.location = _ctrlSlotLocation.value;
     widget.slot.begin = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotBegin.text, false);
     widget.slot.end = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotEnd.text, false);
     widget.slot.title = _ctrlSlotTitle.text;
@@ -116,32 +104,11 @@ class SlotDetailPageState extends State<EventDetailPage> {
     Navigator.pop(context);
   }
 
-  void _requestSlotOwners() async {
-    List<User> owners = await server.event_owner_list(widget.session, widget.slot);
-    owners.sort();
-
-    setState(() {
-      _owners = owners;
-    });
-  }
-
-  void _addSlotOwner(User? user) async {
-    if (user == null) return;
-    if (!await server.event_owner_add(widget.session, widget.slot, user)) return;
-    _requestSlotOwners();
-  }
-
-  void _removeSlotOwner(User? user) async {
-    if (user == null) return;
-    if (!await server.event_owner_remove(widget.session, widget.slot, user)) return;
-    _requestSlotOwners();
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Slot configuration"),
+        title: Text(AppLocalizations.of(context)!.pageEventEdit),
       ),
       body: AppBody(
         children: [
@@ -161,74 +128,45 @@ class SlotDetailPageState extends State<EventDetailPage> {
               ],
             ),
           //Text(widget.slot.status!.toString()),
-          PanelSwiper(panels: [
-            Panel("Edit", _buildEditPanel()),
-            if (!widget.isDraft) Panel("Owners", Container()),
-            if (!widget.isDraft) Panel("Participants", Container()),
-            if (!widget.isDraft) Panel("Group Invites", Container()),
-            if (!widget.isDraft) Panel("Personal Invites", Container()),
-            if (!widget.isDraft) Panel("Level Invites", Container()),
-          ]),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEditPanel() {
-    return Column(
-      children: [
-        AppInfoRow(
-          info: Text("Title"),
-          child: TextField(
-            maxLines: 1,
-            controller: _ctrlSlotTitle,
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Password"),
-          child: TextField(
-            obscureText: true,
-            maxLines: 1,
-            controller: _ctrlSlotPassword,
-            decoration: InputDecoration(
-              hintText: "Reset password (leave empty to keep current)",
+          AppInfoRow(
+            info: Text("Title"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlSlotTitle,
             ),
           ),
-        ),
-        AppInfoRow(
-          info: Text("Start Time"),
-          child: TextField(
-            maxLines: 1,
-            controller: _ctrlSlotBegin,
+          AppInfoRow(
+            info: Text("Password"),
+            child: TextField(
+              obscureText: true,
+              maxLines: 1,
+              controller: _ctrlSlotPassword,
+              decoration: InputDecoration(
+                hintText: "Reset password (leave empty to keep current)",
+              ),
+            ),
           ),
-        ),
-        AppInfoRow(
-          info: Text("End Time"),
-          child: TextField(
-            maxLines: 1,
-            controller: _ctrlSlotEnd,
+          AppInfoRow(
+            info: Text("Start Time"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlSlotBegin,
+            ),
           ),
-        ),
-        AppInfoRow(
-          info: Text("Location"),
-          child: AppDropdown<Location>(
-            hint: Text("Select location"),
-            controller: _ctrlCourseLocation,
-            builder: (Location location) {
-              return Text(location.title);
-            },
-            onChanged: (Location? location) {
-              setState(() {
-                _ctrlCourseLocation.value = location;
-              });
-            },
+          AppInfoRow(
+            info: Text("End Time"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlSlotEnd,
+            ),
           ),
-        ),
-        AppButton(
-          text: "Save",
-          onPressed: _handleSubmit,
-        ),
-      ],
+          LocationDropdown(controller: _ctrlSlotLocation, onChanged: ()=>{}),
+          AppButton(
+            text: AppLocalizations.of(context)!.actionSave,
+            onPressed: _handleSubmit,
+          ),
+        ],
+      ),
     );
   }
 }

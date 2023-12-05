@@ -10,7 +10,7 @@ import 'package:cptclient/material/PanelSwiper.dart';
 
 import '../material/DateTimeEdit.dart';
 import '../material/FilterToggle.dart';
-import 'EventDetailPage.dart';
+import 'EventOwnersPage.dart';
 
 import '../static/server.dart' as server;
 import '../static/serverUserMember.dart' as server;
@@ -80,12 +80,9 @@ class EventManagementPageState extends State<EventManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailPage(
+        builder: (context) => EventOwnersPage(
           session: widget.session,
           slot: slot,
-          isDraft: false,
-          isOwner: false,
-          isAdmin: true,
         ),
       ),
     );

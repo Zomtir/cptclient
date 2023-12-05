@@ -1,10 +1,9 @@
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppDialog.dart';
-import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/TextFilter.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 
 import '../AppButton.dart';
@@ -46,14 +45,6 @@ class UserPicker extends StatefulWidget {
 }
 
 class _UserPickerState extends State<UserPicker> {
-  List<User> _usersLimited = [];
-  TextEditingController _ctrlFilterUser = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _limitUsers(widget.users);
-  }
 
   void _handleConfirm(User user) {
     if (user == widget.initialUser)
@@ -66,33 +57,15 @@ class _UserPickerState extends State<UserPicker> {
     Navigator.pop(context, widget.initialUser);
   }
 
-  void _limitUsers(List<User> users) {
-    users.sort();
-    setState(() {
-      _usersLimited = users;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextFilter(
-          items: widget.users,
-          controller: _ctrlFilterUser,
-          onChange: _limitUsers,
+        SearchablePanel<User>(
+          available: widget.users,
+          onSelect: _handleConfirm,
           filter: filterUsers,
-        ),
-        AppListView<User>(
-          items: _usersLimited,
-          itemBuilder: (User user) {
-            return InkWell(
-              onTap: () => _handleConfirm(user),
-              child: AppUserTile(
-                user: user,
-              ),
-            );
-          },
+          builder: (User user) => AppUserTile(user: user),
         ),
         Container(
           alignment: AlignmentDirectional.center,
