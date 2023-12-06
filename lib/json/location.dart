@@ -16,11 +16,14 @@ class Location implements Comparable {
       'title': title,
     };
 
+  @override
   bool operator == (other) => other is Location && id == other.id;
+
+  @override
   int get hashCode => id.hashCode;
 
   @override
   int compareTo(other) {
-    return this.title.compareTo(other.title);
+    return title.compareTo(other.title);
   }
 }

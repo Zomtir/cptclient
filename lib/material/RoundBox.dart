@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class RoundBox extends StatelessWidget {
-  final child;
+  final Widget child;
 
   const RoundBox({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

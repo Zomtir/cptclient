@@ -5,18 +5,14 @@ import 'branch.dart';
 class Skill {
   Branch branch;
   int rank;
-  int min = 0;
-  int max = 0;
+  int min;
+  int max;
 
-  Skill(this.branch, this.rank);
-
-  Skill.threshold(Branch branch, int min, int max)
-      : branch = branch,
-        rank = 0,
-        min = min,
-        max = max;
+  Skill.threshold({required this.branch, this.rank = 0, this.min = 0, this.max = 0});
 
   Skill.fromJson(List<dynamic> json)
       : branch = Branch.fromJson(json[0]),
-        rank = json[1];
+        rank = json[1],
+        min = 0,
+        max = 0;
 }

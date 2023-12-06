@@ -73,14 +73,14 @@ class EventParticipantsPageState extends State<EventParticipantsPage> {
             AppSlotTile(
               slot: widget.slot,
             ),
-      SelectionPanel<User>(
-        available: _users,
-        chosen: _participants,
-        onAdd: _addParticipant,
-        onRemove: _removeParticipant,
-        filter: filterUsers,
-        builder: (User user) => AppUserTile(user: user),
-      ),
+      //SelectionPanel<User>(
+      //  available: _users,
+      // chosen: _participants,
+      //onAdd: _addParticipant,
+      //onRemove: _removeParticipant,
+      //filter: filterUsers,
+      //builder: (User user) => AppUserTile(user: user),
+          //),
         ],
       ),
     );

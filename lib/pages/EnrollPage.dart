@@ -69,14 +69,14 @@ class EnrollPageState extends State<EnrollPage> {
       body: AppBody(
         children: [
           AppSlotTile(slot: widget.session.slot!),
-          SelectionPanel<User>(
-            available: _participantPool,
-            chosen: _participantList,
-            onAdd: _addParticipant,
-            onRemove: _removeParticipant,
-            filter: filterUsers,
-            builder: (User user) => AppUserTile(user: user),
-          ),
+          //SelectionPanel<User>(
+      //  available: _participantPool,
+      //   chosen: _participantList,
+      //     onAdd: _addParticipant,
+      //    onRemove: _removeParticipant,
+      //    filter: filterUsers,
+      //    builder: (User user) => AppUserTile(user: user),
+          //  ),
         ],
       ),
     );

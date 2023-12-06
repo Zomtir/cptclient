@@ -1,58 +1,41 @@
+import 'dart:core';
+import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppListView.dart';
 
 class SearchablePanel<T> extends StatefulWidget {
-  final List<T> items;
-  final Function(T) onSelect;
-  final List<T> Function(List<T>, String) filter;
+  final SelectionData<T> dataModel;
   final Widget Function(T) builder;
 
   SearchablePanel({
-    Key? key,
-    required this.items,
-    required this.onSelect,
-    required this.filter,
+    super.key,
+    required this.dataModel,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
-  SearchablePanelState createState() => new SearchablePanelState<T>();
+  SearchablePanelState createState() => SearchablePanelState<T>();
 }
 
 class SearchablePanelState<T> extends State<SearchablePanel<T>> {
-  List<T> _items = [];
-  List<T> _filtered = [];
   TextEditingController _ctrlFilter = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _items = widget.items;
-    _update();
-  }
-
-  void setItems(List<T> items) {
-    _items = items;
-    print("Child call");
-    print(_items.length);
-    _update();
-  }
-
-  void _update() {
-    setState(() => _filtered = widget.filter(_items, _ctrlFilter.text));
+  List<T> _getItems() {
+    List<T> visibleItems = List<T>.from(widget.dataModel.available.toSet().difference(widget.dataModel.selected.toSet()));
+    return widget.dataModel.filter(visibleItems, _ctrlFilter.text);
   }
 
   void _handleSelect(T item) {
-      widget.onSelect(item);
+      widget.dataModel.onSelect(item);
   }
 
   void _handleClear() {
      _ctrlFilter.clear();
-     _update();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("panel is rebuilt");
     return ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -62,7 +45,7 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
           maxLines: 1,
           focusNode: FocusNode(),
           controller: _ctrlFilter,
-          onChanged: (text) => _update(),
+          //onChanged: (text) => _update(),
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             suffixIcon: IconButton(
@@ -72,7 +55,7 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
           ),
         ),
         AppListView<T>(
-          items: _filtered,
+          items: _getItems(),
           itemBuilder: (T item) {
             return InkWell(
               onTap: () => _handleSelect(item),

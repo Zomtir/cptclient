@@ -56,7 +56,7 @@ void main() {
 }
 
 class MainPage extends StatefulWidget {
-  MainPage({Key? key}) : super(key: key);
+  MainPage({super.key});
 
   @override
   State<StatefulWidget> createState() => MainPageState();

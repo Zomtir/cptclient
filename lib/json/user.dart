@@ -29,7 +29,7 @@ class User implements Comparable {
 
   User(this.id, this.key, this.active, this.firstname, this.lastname);
 
-  User.fromInfo(this.id, this.key, this.firstname, this.lastname) : this.active = false;
+  User.fromInfo(this.id, this.key, this.firstname, this.lastname) : active = false;
 
   User.fromVoid()
       : id = 0,
@@ -84,21 +84,20 @@ class User implements Comparable {
         'note': note
       };
 
+  @override
   bool operator ==(other) => other is User && id == other.id;
 
+  @override
   int get hashCode => id.hashCode;
 
   @override
   int compareTo(other) {
-    int compLast = this.lastname.compareTo(other.lastname);
-
+    int compLast = lastname.compareTo(other.lastname);
     if (compLast != 0) return compLast;
-
-    int compFirst = this.firstname.compareTo(other.firstname);
-
+    int compFirst = firstname.compareTo(other.firstname);
     if (compFirst != 0) return compFirst;
 
-    return this.key.compareTo(other.key);
+    return key.compareTo(other.key);
   }
 }
 

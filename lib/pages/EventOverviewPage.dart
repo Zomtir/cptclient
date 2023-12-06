@@ -21,6 +21,7 @@ import '../static/serverEventOwner.dart' as server;
 import '../json/session.dart';
 import '../json/slot.dart';
 import '../json/location.dart';
+import 'EventParticipantsPage.dart';
 
 class EventOverviewPage extends StatefulWidget {
   final Session session;
@@ -100,6 +101,20 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     _update();
   }
 
+  void _handleEventParticipants(Slot slot) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventParticipantsPage(
+          session: widget.session,
+          slot: slot,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
   Future<void> _submitSlot(Slot slot) async {
     if (!await server.event_submit(widget.session, slot))
       return;
@@ -122,15 +137,16 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _recycleSlot(Slot slot) async {
-    if (!await server.event_recycle(widget.session, slot))
+    if (!await server.event_recycle(widget.session, slot)) {
       return;
+    }
 
     _update();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventOwned),
       ),
@@ -196,7 +212,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
             itemBuilder: (context) => [
               PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Personal Invites')),
               PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Level Invites')),
-              PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Participants')),
+              PopupMenuItem<VoidCallback>(value: () => _handleEventParticipants(slot), child: Text('Participants')),
               PopupMenuItem<VoidCallback>(value: () => _handleEventOwners(slot), child: Text('Owners')),
             ],
           ),

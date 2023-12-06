@@ -17,10 +17,10 @@ class Team implements Comparable {
         right = Right();
 
   Team.fromTeam(Team team)
-      : this.id = 0,
-        this.name = team.name + " (Copy)",
-        this.description = team.description,
-        this.right = (team.right == null) ? null : Right.fromRight(team.right!);
+      : id = 0,
+        name = "${team.name} (Copy)",
+        description = team.description,
+        right = (team.right == null) ? null : Right.fromRight(team.right!);
 
   Team.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -35,13 +35,15 @@ class Team implements Comparable {
         'right': right?.toJson(),
       };
 
+  @override
   bool operator ==(other) => other is Team && id == other.id;
 
+  @override
   int get hashCode => id.hashCode;
 
   @override
   int compareTo(other) {
-    return this.name.compareTo(other.name);
+    return name.compareTo(other.name);
   }
 }
 

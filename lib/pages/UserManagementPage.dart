@@ -1,4 +1,5 @@
 import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -21,28 +22,34 @@ class UserManagementPage extends StatefulWidget {
 }
 
 class UserManagementPageState extends State<UserManagementPage> {
-  List<User> _users = [];
-  GlobalKey<SearchablePanelState<User>> _panelKey = GlobalKey<SearchablePanelState<User>>();
+  late SelectionData<User> _userData;
 
   @override
   void initState() {
     super.initState();
+
+    _userData = SelectionData<User>(
+        available: [],
+        selected: [],
+        onSelect: _selectUser,
+        onDeselect: (user)=>{},
+        filter: filterUsers
+    );
+
     _update();
   }
 
   Future<void> _update() async {
     print("start");
-    print(_users.length);
+    print(_userData.available.length);
     List<User> users = await server.user_list(widget.session);
     users.sort();
 
-    setState(() {
-      _users = users;
-      _panelKey.currentState?.setItems(_users);
-    });
+    _userData.available = users;
+    _userData.notifyListeners();
 
-    print("husers");
-    print(_users.length);
+    print("end");
+    print(_userData.available.length);
   }
 
   void _selectUser(User user) async {
@@ -91,10 +98,7 @@ class UserManagementPageState extends State<UserManagementPage> {
             onPressed: _createUser,
           ),
           SearchablePanel<User>(
-            key: _panelKey,
-            items: [],
-            onSelect: _selectUser,
-            filter: filterUsers,
+            dataModel: _userData,
             builder: (User user) => AppUserTile(user: user),
           ),
         ],

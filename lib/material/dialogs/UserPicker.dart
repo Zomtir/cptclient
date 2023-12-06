@@ -1,4 +1,5 @@
 import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -45,12 +46,27 @@ class UserPicker extends StatefulWidget {
 }
 
 class _UserPickerState extends State<UserPicker> {
+  late SelectionData<User> _userData;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _userData = SelectionData<User>(
+        available: widget.users,
+        selected: [],
+        onSelect: _handleConfirm,
+        onDeselect: (user)=>{},
+        filter: filterUsers
+    );
+  }
 
   List<User> _handleConfirm(User user) {
-    if (user == widget.initialUser)
+    if (user == widget.initialUser) {
       _handleCancel();
-    else
+    } else {
       Navigator.pop(context, user);
+    }
 
     return widget.users;
   }
@@ -64,9 +80,7 @@ class _UserPickerState extends State<UserPicker> {
     return Column(
       children: [
         SearchablePanel<User>(
-          items: widget.users,
-          onSelect: _handleConfirm,
-          filter: filterUsers,
+          dataModel: _userData,
           builder: (User user) => AppUserTile(user: user),
         ),
         Container(

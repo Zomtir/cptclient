@@ -31,12 +31,14 @@ class Term implements Comparable {
         'end': formatNullWebDate(end),
       };
 
+  @override
   bool operator ==(other) => other is Term && id == other.id;
 
+  @override
   int get hashCode => id.hashCode;
 
   @override
   int compareTo(other) {
-    return (this.begin ?? DateTime(0)).compareTo(other.begin ?? DateTime(0));
+    return (begin ?? DateTime(0)).compareTo(other.begin ?? DateTime(0));
   }
 }

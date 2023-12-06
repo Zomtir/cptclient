@@ -53,10 +53,11 @@ class _TimePickerState extends State<TimePicker> {
   }
 
   void _handleConfirm() {
-    if (_selectedTime == widget.initialTime)
+    if (_selectedTime == widget.initialTime) {
       _handleCancel();
-    else
+    } else {
       Navigator.pop(context, _selectedTime);
+    }
   }
 
   void _handleCancel() {

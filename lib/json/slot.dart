@@ -1,10 +1,11 @@
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:intl/intl.dart';
 
 import 'location.dart';
 import 'course.dart';
 import 'user.dart';
-
-// ignore_for_file: non_constant_identifier_names
 
 enum Status { DRAFT, PENDING, OCCURRING, REJECTED, CANCELED }
 
@@ -23,15 +24,15 @@ class Slot implements Comparable {
   Slot(this.id, this.key, this.title, this.location, this.begin, this.end, this.public, this.obscured, this.note);
 
   Slot.fromSlot(Slot slot)
-      : this.id = 0,
-        this.key = "",
-        this.title = slot.title,
-        this.location = slot.location,
-        this.begin = slot.begin,
-        this.end = slot.end,
-        this.status = slot.status,
-        this.public = slot.public,
-        this.obscured = slot.obscured;
+      : id = 0,
+        key = "",
+        title = slot.title,
+        location = slot.location,
+        begin = slot.begin,
+        end = slot.end,
+        status = slot.status,
+        public = slot.public,
+        obscured = slot.obscured;
 
   Slot.fromJson(Map<String, dynamic> json)
     : id = json['id'],
@@ -60,29 +61,29 @@ class Slot implements Comparable {
     };
 
   Slot.fromCourse(Course course)
-    : this.id = 0,
-      this.key = "",
-      this.title = course.title,
-      this.location = null,
-      this.begin = DateTime.now(),
-      this.end = DateTime.now().add(Duration(hours: 1)),
-      this.status = null,
-      this.public = true,
-      this.obscured = false;
+    : id = 0,
+      key = "",
+      title = course.title,
+      location = null,
+      begin = DateTime.now(),
+      end = DateTime.now().add(Duration(hours: 1)),
+      status = null,
+      public = true,
+      obscured = false;
 
   Slot.fromUser(User user)
-    : this.id = 0,
-      this.key = "",
-      this.title = "${user.key}'s individual reservation",
-      this.location = null,
-      this.begin = DateTime.now(),
-      this.end = DateTime.now().add(Duration(hours: 1)),
-      this.status = null,
-      this.public = false,
-      this.obscured = true;
+    : id = 0,
+      key = "",
+      title = "${user.key}'s individual reservation",
+      location = null,
+      begin = DateTime.now(),
+      end = DateTime.now().add(Duration(hours: 1)),
+      status = null,
+      public = false,
+      obscured = true;
 
   @override
   int compareTo(other) {
-    return this.begin.compareTo(other.begin);
+    return begin.compareTo(other.begin);
   }
 }

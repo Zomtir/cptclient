@@ -177,7 +177,7 @@ class CourseMemberPageState extends State<CourseMemberPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Course Details"),
       ),

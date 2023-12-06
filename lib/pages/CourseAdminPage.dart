@@ -241,6 +241,11 @@ class CourseAdminPageState extends State<CourseAdminPage> {
 
   @override
   Widget build(BuildContext context) {
+    return Container();
+  }
+  /*
+  @override
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text("Course Details"),
@@ -297,7 +302,7 @@ class CourseAdminPageState extends State<CourseAdminPage> {
       ),
     );
   }
-
+*/
   Widget _buildSlotPanel() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -28,20 +28,20 @@ class SelectItem extends StatefulWidget {
   final VoidCallback onConfirmed;
 
   const SelectItem({
-    Key? key,
+    super.key,
     required this.child,
     required this.onSelected,
     required this.onConfirmed,
-  }) : super(key: key);
+  });
 
   @override
-  _SelectItemState createState() => new _SelectItemState();
+  _SelectItemState createState() => _SelectItemState();
 }
 
 class _SelectItemState extends State<SelectItem> {
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTap: () {
         widget.onSelected();
       },

@@ -18,12 +18,15 @@ class Branch implements Comparable {
     'title': title,
   };
 
+  @override
   bool operator == (other) => other is Branch && id == other.id;
+
+  @override
   int get hashCode => id.hashCode;
 
   @override
   int compareTo(other) {
-    return this.title.compareTo(other.title);
+    return title.compareTo(other.title);
   }
 
 }

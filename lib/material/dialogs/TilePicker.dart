@@ -1,3 +1,4 @@
+import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,7 @@ import 'package:cptclient/material/AppDialog.dart';
 
 void showTilePicker<T>({
   required BuildContext context,
-  required List<T> available,
-  List<T> hidden = const [],
-  required Function(T) onSelect,
-  required List<T> Function(List<T>, String) filter,
+  required SelectionData<T> dataModel,
   required Widget Function(T) builder,
 }) async {
   return showDialog(
@@ -21,9 +19,7 @@ void showTilePicker<T>({
           children: [
             AppButton(text: AppLocalizations.of(context)!.actionClose, onPressed: () => Navigator.pop(context),),
             SearchablePanel(
-              items: List<T>.from(available.toSet().difference(hidden.toSet())),
-              onSelect: onSelect,
-              filter: filter,
+              dataModel: dataModel,
               builder: builder,
             )
           ],

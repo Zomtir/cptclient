@@ -1,5 +1,5 @@
-import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
+import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -17,25 +17,31 @@ class EventOwnersPage extends StatefulWidget {
   final Slot slot;
 
   EventOwnersPage({
-    Key? key,
+    super.key,
     required this.session,
     required this.slot,
-  }) : super(key: key);
+  });
 
   @override
   EventOwnersPageState createState() => EventOwnersPageState();
 }
 
 class EventOwnersPageState extends State<EventOwnersPage> {
-  List<User> _users = [];
-  List<User> _owners = [];
-  GlobalKey<SearchablePanelState<User>> _keyPanelOwner = GlobalKey<SearchablePanelState<User>>();
+  late SelectionData<User> _ownerData;
 
   EventOwnersPageState();
 
   @override
   void initState() {
     super.initState();
+
+    _ownerData = SelectionData<User>(
+        available: [],
+        selected: [],
+        onSelect: _addSlotOwner,
+        onDeselect: _removeSlotOwner,
+        filter: filterUsers
+    );
 
     _update();
   }
@@ -47,16 +53,8 @@ class EventOwnersPageState extends State<EventOwnersPage> {
     List<User> owners = await server.event_owner_list(widget.session, widget.slot);
     owners.sort();
 
-    setState(() {
-      _users = users;
-      _owners = owners;
-      _keyPanelOwner.currentState?.setItems(List<User>.from(_users.toSet().difference(_owners.toSet())));
-    });
-
-    print("Parent page update");
-    print(_owners.length);
-    print("selection");
-    print(List<User>.from(_users.toSet().difference(_owners.toSet())).length);
+    _ownerData.available = users;
+    _ownerData.selected = owners;
   }
 
   void _addSlotOwner(User? user) async {
@@ -73,7 +71,7 @@ class EventOwnersPageState extends State<EventOwnersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventOwners),
       ),
@@ -83,12 +81,7 @@ class EventOwnersPageState extends State<EventOwnersPage> {
             slot: widget.slot,
           ),
           SelectionPanel<User>(
-            key: _keyPanelOwner,
-            available: _users,
-            chosen: _owners,
-            onAdd: _addSlotOwner,
-            onRemove: _removeSlotOwner,
-            filter: filterUsers,
+            dataModel: _ownerData,
             builder: (User user) => AppUserTile(user: user),
           ),
         ],

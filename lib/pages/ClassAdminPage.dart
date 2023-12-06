@@ -183,7 +183,12 @@ class ClassAdminPageState extends State<ClassAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Container();
+  }
+/*
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
         title: Text("Slot configuration"),
       ),
@@ -243,7 +248,7 @@ class ClassAdminPageState extends State<ClassAdminPage> {
       ),
     );
   }
-
+*/
   Widget _buildEditPanel() {
     return Column(
       children: [

@@ -89,14 +89,14 @@ class TeamMemberPageState extends State<TeamMemberPage> {
           AppTeamTile(
             team: widget.team,
           ),
-          SelectionPanel<User>(
-            available: _memberPool,
-            chosen: _memberList,
-            onAdd: _addMember,
-            onRemove: _removeMember,
-            filter: filterUsers,
-            builder: (User user) => AppUserTile(user: user),
-          ),
+      //SelectionPanel<User>(
+      //    available: _memberPool,
+      //    chosen: _memberList,
+      //    onAdd: _addMember,
+      //    onRemove: _removeMember,
+      //    filter: filterUsers,
+      //    builder: (User user) => AppUserTile(user: user),
+          //  ),
         ],
       ),
     );
