@@ -18,24 +18,25 @@ class SearchablePanel<T> extends StatefulWidget {
 }
 
 class SearchablePanelState<T> extends State<SearchablePanel<T>> {
-  TextEditingController _ctrlFilter = TextEditingController();
+  List<T> _items = [];
+  final TextEditingController _ctrlFilter = TextEditingController();
 
   List<T> _getItems() {
-    List<T> visibleItems = List<T>.from(widget.dataModel.available.toSet().difference(widget.dataModel.selected.toSet()));
-    return widget.dataModel.filter(visibleItems, _ctrlFilter.text);
+    _items = List<T>.from(widget.dataModel.available.toSet().difference(widget.dataModel.selected.toSet()));
+    _items = widget.dataModel.filter(_items, _ctrlFilter.text);
+    return _items;
   }
 
   void _handleSelect(T item) {
-      widget.dataModel.onSelect(item);
+    widget.dataModel.onSelect(item);
   }
 
   void _handleClear() {
-     _ctrlFilter.clear();
+    _ctrlFilter.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("panel is rebuilt");
     return ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -45,7 +46,7 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
           maxLines: 1,
           focusNode: FocusNode(),
           controller: _ctrlFilter,
-          //onChanged: (text) => _update(),
+          onChanged: (text) => setState(() {/* The filter will be applied during rebuild */}),
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             suffixIcon: IconButton(
@@ -54,12 +55,17 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
             ),
           ),
         ),
-        AppListView<T>(
-          items: _getItems(),
-          itemBuilder: (T item) {
-            return InkWell(
-              onTap: () => _handleSelect(item),
-              child: widget.builder(item),
+        ListenableBuilder(
+          listenable: widget.dataModel,
+          builder: (BuildContext context, Widget? child) {
+            return AppListView<T>(
+              items: _getItems(),
+              itemBuilder: (T item) {
+                return InkWell(
+                  onTap: () => _handleSelect(item),
+                  child: widget.builder(item),
+                );
+              },
             );
           },
         ),

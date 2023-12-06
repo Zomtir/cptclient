@@ -40,16 +40,11 @@ class UserManagementPageState extends State<UserManagementPage> {
   }
 
   Future<void> _update() async {
-    print("start");
-    print(_userData.available.length);
     List<User> users = await server.user_list(widget.session);
     users.sort();
 
     _userData.available = users;
     _userData.notifyListeners();
-
-    print("end");
-    print(_userData.available.length);
   }
 
   void _selectUser(User user) async {
@@ -86,7 +81,7 @@ class UserManagementPageState extends State<UserManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageUserManagement),
       ),

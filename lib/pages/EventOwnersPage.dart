@@ -55,6 +55,7 @@ class EventOwnersPageState extends State<EventOwnersPage> {
 
     _ownerData.available = users;
     _ownerData.selected = owners;
+    _ownerData.notifyListeners();
   }
 
   void _addSlotOwner(User? user) async {

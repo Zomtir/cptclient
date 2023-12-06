@@ -33,10 +33,10 @@ class EventOverviewPage extends StatefulWidget {
 }
 
 class EventOverviewPageState extends State<EventOverviewPage> {
-  DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
-  DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
-  DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -1)));
-  DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
+  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
+  final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
 
   List<Slot> _events = [];
 
