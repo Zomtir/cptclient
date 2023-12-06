@@ -46,11 +46,13 @@ class UserPicker extends StatefulWidget {
 
 class _UserPickerState extends State<UserPicker> {
 
-  void _handleConfirm(User user) {
+  List<User> _handleConfirm(User user) {
     if (user == widget.initialUser)
       _handleCancel();
     else
       Navigator.pop(context, user);
+
+    return widget.users;
   }
 
   void _handleCancel() {
@@ -62,7 +64,7 @@ class _UserPickerState extends State<UserPicker> {
     return Column(
       children: [
         SearchablePanel<User>(
-          available: widget.users,
+          items: widget.users,
           onSelect: _handleConfirm,
           filter: filterUsers,
           builder: (User user) => AppUserTile(user: user),

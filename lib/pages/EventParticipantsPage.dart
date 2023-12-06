@@ -34,7 +34,6 @@ class EventParticipantsPageState extends State<EventParticipantsPage> {
   @override
   void initState() {
     super.initState();
-
     _update();
   }
 

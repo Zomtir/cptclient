@@ -21,7 +21,7 @@ void showTilePicker<T>({
           children: [
             AppButton(text: AppLocalizations.of(context)!.actionClose, onPressed: () => Navigator.pop(context),),
             SearchablePanel(
-              available: List<T>.from(available.toSet().difference(hidden.toSet())),
+              items: List<T>.from(available.toSet().difference(hidden.toSet())),
               onSelect: onSelect,
               filter: filter,
               builder: builder,

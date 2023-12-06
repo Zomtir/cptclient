@@ -22,6 +22,7 @@ class UserManagementPage extends StatefulWidget {
 
 class UserManagementPageState extends State<UserManagementPage> {
   List<User> _users = [];
+  GlobalKey<SearchablePanelState<User>> _panelKey = GlobalKey<SearchablePanelState<User>>();
 
   @override
   void initState() {
@@ -37,13 +38,11 @@ class UserManagementPageState extends State<UserManagementPage> {
 
     setState(() {
       _users = users;
+      _panelKey.currentState?.setItems(_users);
     });
 
     print("husers");
     print(_users.length);
-
-    setState(() {
-    });
   }
 
   void _selectUser(User user) async {
@@ -92,7 +91,8 @@ class UserManagementPageState extends State<UserManagementPage> {
             onPressed: _createUser,
           ),
           SearchablePanel<User>(
-            available: _users,
+            key: _panelKey,
+            items: [],
             onSelect: _selectUser,
             filter: filterUsers,
             builder: (User user) => AppUserTile(user: user),

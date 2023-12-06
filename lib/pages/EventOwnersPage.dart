@@ -1,3 +1,4 @@
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class EventOwnersPage extends StatefulWidget {
 class EventOwnersPageState extends State<EventOwnersPage> {
   List<User> _users = [];
   List<User> _owners = [];
+  GlobalKey<SearchablePanelState<User>> _keyPanelOwner = GlobalKey<SearchablePanelState<User>>();
 
   EventOwnersPageState();
 
@@ -48,9 +50,13 @@ class EventOwnersPageState extends State<EventOwnersPage> {
     setState(() {
       _users = users;
       _owners = owners;
+      _keyPanelOwner.currentState?.setItems(List<User>.from(_users.toSet().difference(_owners.toSet())));
     });
 
-    print("Debug- Change is triggered");
+    print("Parent page update");
+    print(_owners.length);
+    print("selection");
+    print(List<User>.from(_users.toSet().difference(_owners.toSet())).length);
   }
 
   void _addSlotOwner(User? user) async {
@@ -77,6 +83,7 @@ class EventOwnersPageState extends State<EventOwnersPage> {
             slot: widget.slot,
           ),
           SelectionPanel<User>(
+            key: _keyPanelOwner,
             available: _users,
             chosen: _owners,
             onAdd: _addSlotOwner,
