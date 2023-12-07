@@ -48,6 +48,8 @@
   "actionClose": "Schließen",
   "actionShowFilter": "Filter anzeigen",
   "actionHideFilter": "Filter verstecken",
+  "responseSuccess": "Erfolgreich",
+  "responseFail": "Fehlgeschlagen",
   "labelCalendar": "Kalender",
   "labelCourse": "Kurs",
   "labelEvent": "Veranstaltung",

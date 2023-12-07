@@ -6,7 +6,7 @@ class AppButtonHeavyStyle extends ButtonStyle {
           backgroundColor: const MaterialStatePropertyAll(Color(0xD1BE87)),
           shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(18)),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
             ),
           ),
         );

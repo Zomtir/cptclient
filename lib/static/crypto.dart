@@ -16,8 +16,21 @@ String hashPassword(String password, String salt) {
   return hashedPassword.toString();
 }
 
+Random _random = Random.secure();
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+
+String assembleSlotKey() {
+  return "${generateString(3)}-${generateString(3)}-${generateString(3)}";
+}
+
+String generateString(int length) {
+  return String.fromCharCodes(Iterable.generate(
+    length,
+    (_) => _chars.codeUnitAt(_random.nextInt(_chars.length)),
+  ));
+}
+
 String generateSaltHex() {
-  Random random = Random.secure();
   // 128 bits, 16 * 8 bytes (u8), 32 characters, 2 hex chars per byte
-  return List<String>.generate(16, (i) => random.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
+  return List<String>.generate(16, (i) => _random.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cptclient/static/crypto.dart';
 import 'package:intl/intl.dart';
 
 import 'location.dart';
@@ -25,7 +26,7 @@ class Slot implements Comparable {
 
   Slot.fromSlot(Slot slot)
       : id = 0,
-        key = "",
+        key = assembleSlotKey(),
         title = slot.title,
         location = slot.location,
         begin = slot.begin,
@@ -62,7 +63,7 @@ class Slot implements Comparable {
 
   Slot.fromCourse(Course course)
     : id = 0,
-      key = "",
+      key = assembleSlotKey(),
       title = course.title,
       location = null,
       begin = DateTime.now(),
@@ -73,7 +74,7 @@ class Slot implements Comparable {
 
   Slot.fromUser(User user)
     : id = 0,
-      key = "",
+      key = assembleSlotKey(),
       title = "${user.key}'s individual reservation",
       location = null,
       begin = DateTime.now(),

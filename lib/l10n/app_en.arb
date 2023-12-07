@@ -48,6 +48,8 @@
   "actionClose": "Close",
   "actionShowFilter": "Show Filter",
   "actionHideFilter": "Hide Filter",
+  "responseSuccess": "Success",
+  "responseFail": "Failed",
   "labelCalendar": "Calendar",
   "labelCourse": "Course",
   "labelEvent": "Event",

@@ -13,7 +13,7 @@ import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import '../material/DropdownController.dart';
 import '../material/FilterToggle.dart';
 import 'EventOwnersPage.dart';
-import 'EventEditPage.dart';
+import 'SlotEditPage.dart';
 
 import '../static/server.dart' as server;
 import '../static/serverEventMember.dart' as server;
@@ -61,10 +61,29 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => SlotEditPage(
           session: widget.session,
           slot: slot,
           isDraft: true,
+          onSubmit: server.event_create,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
+  Future<void> _duplicateSlot(Slot slot) async {
+    Slot _slot = Slot.fromSlot(slot);
+    _slot.status = Status.DRAFT;
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SlotEditPage(
+          session: widget.session,
+          slot: _slot,
+          isDraft: true,
+          onSubmit: server.event_create,
         ),
       ),
     );
@@ -76,10 +95,13 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => SlotEditPage(
           session: widget.session,
           slot: slot,
           isDraft: false,
+          onSubmit: server.event_edit,
+          onPasswordChange: server.event_edit_password,
+          onDelete: server.event_delete,
         ),
       ),
     );
@@ -116,22 +138,19 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _submitSlot(Slot slot) async {
-    if (!await server.event_submit(widget.session, slot))
-      return;
+    if (!await server.event_submit(widget.session, slot)) return;
 
     _update();
   }
 
   Future<void> _withdrawSlot(Slot slot) async {
-    if (!await server.event_withdraw(widget.session, slot))
-      return;
+    if (!await server.event_withdraw(widget.session, slot)) return;
 
     _update();
   }
 
   Future<void> _cancelSlot(Slot slot) async {
-    if (!await server.event_cancel(widget.session, slot))
-      return;
+    if (!await server.event_cancel(widget.session, slot)) return;
 
     _update();
   }
@@ -214,6 +233,12 @@ class EventOverviewPageState extends State<EventOverviewPage> {
               PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Level Invites')),
               PopupMenuItem<VoidCallback>(value: () => _handleEventParticipants(slot), child: Text('Participants')),
               PopupMenuItem<VoidCallback>(value: () => _handleEventOwners(slot), child: Text('Owners')),
+              PopupMenuItem<VoidCallback>(
+                value: () => _duplicateSlot(slot),
+                child: Row(
+                  children: [const Icon(Icons.copy), Text('Duplicate')],
+                ),
+              ),
             ],
           ),
         ];

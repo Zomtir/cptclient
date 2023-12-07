@@ -14,12 +14,12 @@ class PanelSwiper extends StatefulWidget {
   final int swipes;
   final Function(int index)? onChange;
 
-  PanelSwiper({Key? key, required this.panels, this.swipes = 0, this.onChange}) : super(key: key) {
-    if (panels.length == 0) throw ("SwipePanel needs at least one entry for the label and panel.");
+  PanelSwiper({super.key, required this.panels, this.swipes = 0, this.onChange}) {
+    if (panels.isEmpty) throw ("SwipePanel needs at least one entry for the label and panel.");
   }
 
   @override
-  _PanelSwiperState createState() => new _PanelSwiperState();
+  _PanelSwiperState createState() => _PanelSwiperState();
 }
 
 class _PanelSwiperState extends State<PanelSwiper> {

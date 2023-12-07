@@ -9,12 +9,12 @@ import 'AppDropdown.dart';
 
 class LocationDropdown extends StatelessWidget {
   final DropdownController<Location> controller;
-  final void Function() onChanged;
+  final void Function()? onChanged;
 
   LocationDropdown({
     super.key,
     required this.controller,
-    required this.onChanged,
+    this.onChanged,
   });
 
   @override
@@ -28,14 +28,14 @@ class LocationDropdown extends StatelessWidget {
         },
         onChanged: (Location? location) {
           controller.value = location;
-          onChanged();
+          onChanged?.call();
         },
       ),
       trailing: IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
           controller.value = null;
-          onChanged();
+          onChanged?.call();
         },
       ),
     );

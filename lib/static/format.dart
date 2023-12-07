@@ -3,7 +3,6 @@ library format;
 import 'package:intl/intl.dart';
 
 String compressDate(DateTime begin, DateTime end) {
-
   String strBegin = DateFormat("dd MMM yyyy HH:mm").format(begin);
   String strEnd;
 
