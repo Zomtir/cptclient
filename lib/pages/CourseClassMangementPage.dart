@@ -6,6 +6,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/pages/SlotParticipantPage.dart';
 import 'package:cptclient/static/server_class_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
@@ -46,6 +47,20 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
     });
   }
 
+  Future<void> _createClass() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SlotEditPage(
+          session: widget.session,
+          slot: Slot.fromCourse(widget.course),
+          isDraft: true,
+          onSubmit: (Session session, Slot slot) => api_admin.class_create(session, widget.course.id, slot),
+        ),
+      ),
+    );
+  }
+
   Future<void> _selectCourseSlot(Slot slot, bool isDraft) async {
     await Navigator.push(
       context,
@@ -77,7 +92,7 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
           AppButton(
             leading: Icon(Icons.add),
             text: AppLocalizations.of(context)!.actionNew,
-            onPressed: () => _selectCourseSlot(Slot.fromCourse(widget.course), true),
+            onPressed: _createClass,
           ),
           AppListView<Slot>(
             items: _slots,

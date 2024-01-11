@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/static/server_team_admin.dart' as server;
+import 'package:cptclient/static/server_team_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +45,7 @@ class TeamMemberPageState extends State<TeamMemberPage> {
     List<User> users = await server.user_list(widget.session);
     users.sort();
 
-    List<User> members = await server.team_member_list(widget.session, widget.team.id);
+    List<User> members = await api_admin.team_member_list(widget.session, widget.team.id);
     members.sort();
 
     _memberData.available = users;
@@ -54,12 +54,12 @@ class TeamMemberPageState extends State<TeamMemberPage> {
   }
 
   void _addMember(User user) async {
-    if (await server.team_member_add(widget.session, widget.team.id, user.id)) return;
+    if (await api_admin.team_member_add(widget.session, widget.team.id, user.id)) return;
     _update();
   }
 
   void _removeMember(User user) async {
-    if(await server.team_member_remove(widget.session, widget.team.id, user.id)) return;
+    if(await api_admin.team_member_remove(widget.session, widget.team.id, user.id)) return;
     _update();
   }
 

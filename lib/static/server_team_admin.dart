@@ -23,7 +23,7 @@ Future<List<Team>> team_list(Session session) async {
   return List<Team>.from(l.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> team_create(Session session, Team team) async {
+Future<int?> team_create(Session session, Team team) async {
   final response = await http.post(
     server.uri('/admin/team_create'),
     headers: {
@@ -33,7 +33,10 @@ Future<bool> team_create(Session session, Team team) async {
     body: json.encode(team),
   );
 
-  return (response.statusCode == 200);
+  if (response.statusCode != 200) return null;
+
+
+  return int.tryParse(utf8.decode(response.bodyBytes));
 }
 
 Future<bool> team_edit(Session session, Team team) async {

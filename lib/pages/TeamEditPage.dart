@@ -72,7 +72,7 @@ class TeamEditPageState extends State<TeamEditPage> {
 
     bool success;
     if (widget.isDraft) {
-      success = await server.team_create(widget.session, widget.team);
+      success = await server.team_create(widget.session, widget.team) != null;
     } else {
       success = await server.team_edit(widget.session, widget.team);
     }
@@ -96,21 +96,6 @@ class TeamEditPageState extends State<TeamEditPage> {
     Navigator.pop(context);
   }
 
-  Future<void> _duplicateTeam() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TeamEditPage(
-          session: widget.session,
-          team: Team.fromTeam(widget.team),
-          isDraft: true,
-        ),
-      ),
-    );
-
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,10 +111,6 @@ class TeamEditPageState extends State<TeamEditPage> {
                   child: AppTeamTile(
                     team: widget.team,
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.copy),
-                  onPressed: _duplicateTeam,
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete),
