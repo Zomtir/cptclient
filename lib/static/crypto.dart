@@ -1,9 +1,9 @@
 library crypto;
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'dart:convert';
 
 /* Am more secure / expensive client hashing method than sha256 is recommended
  * Examples:

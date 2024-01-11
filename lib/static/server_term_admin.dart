@@ -1,11 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<List<Term>> term_list(Session session) async {
   final response = await http.get(

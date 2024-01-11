@@ -1,27 +1,23 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/CollapseWidget.dart';
+import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/CollapseWidget.dart';
+import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-
-import 'CourseMemberPage.dart';
-
-import '../static/server.dart' as server;
-import '../static/serverCourseModerator.dart' as server;
-
-import '../json/session.dart';
-import '../json/course.dart';
-import '../json/branch.dart';
+import 'package:cptclient/pages/CourseModeratorPage.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_course_moderator.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseResponsiblePage extends StatefulWidget {
   final Session session;
 
-  CourseResponsiblePage({Key? key, required this.session}) : super(key: key);
+  CourseResponsiblePage({super.key, required this.session});
 
   @override
   CourseResponsiblePageState createState() => CourseResponsiblePageState();
@@ -33,8 +29,8 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
   bool _hideFilters = true;
 
   bool _isActive = true;
-  bool _isPublic = true;
-  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final bool _isPublic = true;
+  final DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseResponsiblePageState();
@@ -68,7 +64,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            CourseMemberPage(
+            CourseModeratorPage(
               session: widget.session,
               course: course,
               isDraft: isDraft,
@@ -80,7 +76,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCourseResponsible),
       ),

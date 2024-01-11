@@ -1,20 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-
+import 'package:cptclient/pages/ConnectionPage.dart';
+import 'package:cptclient/pages/CreditPage.dart';
+import 'package:cptclient/pages/LoginCoursePage.dart';
+import 'package:cptclient/pages/LoginLocationPage.dart';
+import 'package:cptclient/pages/LoginSlotPage.dart';
+import 'package:cptclient/pages/LoginUserPage.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
 
-import '../static/navigation.dart' as navi;
-
-import 'ConnectionPage.dart';
-import 'CreditPage.dart';
-import 'LoginCoursePage.dart';
-import 'LoginLocationPage.dart';
-import 'LoginSlotPage.dart';
-import 'LoginUserPage.dart';
-
 class LoginLandingPage extends StatefulWidget {
-  LoginLandingPage({Key? key}) : super(key: key);
+  LoginLandingPage({super.key});
 
   @override
   State<StatefulWidget> createState() => LoginLandingPageState();

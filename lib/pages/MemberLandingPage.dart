@@ -1,41 +1,37 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppIconButton.dart';
-
-import '../material/AppButton.dart';
-import '../material/AppModuleSection.dart';
-import '../static/server.dart' as server;
-import '../static/navigation.dart' as navi;
-import '../json/session.dart';
-
-import 'CalendarPage.dart';
-import 'MemberProfilePage.dart';
-import 'RankingOverviewPage.dart';
-import 'EventOverviewPage.dart';
-import 'CourseAvailablePage.dart';
-import 'CourseResponsiblePage.dart';
-
-import 'UserManagementPage.dart';
-import 'TeamManagementPage.dart';
-import 'TermManagementPage.dart';
-import 'RankingManagementPage.dart';
-import 'EventManagement.dart';
-import 'CourseManagementPage.dart';
+import 'package:cptclient/material/AppModuleSection.dart';
+import 'package:cptclient/pages/CalendarPage.dart';
+import 'package:cptclient/pages/CourseAvailablePage.dart';
+import 'package:cptclient/pages/CourseManagementPage.dart';
+import 'package:cptclient/pages/CourseResponsiblePage.dart';
+import 'package:cptclient/pages/EventManagement.dart';
+import 'package:cptclient/pages/EventOwnershipPage.dart';
+import 'package:cptclient/pages/MemberProfilePage.dart';
+import 'package:cptclient/pages/RankingManagementPage.dart';
+import 'package:cptclient/pages/RankingOverviewPage.dart';
+import 'package:cptclient/pages/TeamManagementPage.dart';
+import 'package:cptclient/pages/TermManagementPage.dart';
+import 'package:cptclient/pages/UserManagementPage.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberLandingPage extends StatelessWidget {
   final Session session;
 
-  MemberLandingPage({Key? key, required this.session}) : super(key: key) {
+  MemberLandingPage({super.key, required this.session}) {
     if (session.user == null) {
-      throw new Exception("The member landing page requires a logged-in user.");
+      throw Exception("The member landing page requires a logged-in user.");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Welcome ${session.user!.firstname}"),
         actions: <Widget>[

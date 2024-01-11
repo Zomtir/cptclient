@@ -1,28 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/CollapseWidget.dart';
+import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/CollapseWidget.dart';
+import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-
-import 'CourseAdminPage.dart';
-
-import '../static/server.dart' as server;
-import '../static/serverUserMember.dart' as server;
-import '../static/serverCourseAdmin.dart' as server;
-
-import '../json/session.dart';
-import '../json/course.dart';
-import '../json/branch.dart';
-import '../json/user.dart';
+import 'package:cptclient/pages/CourseClassMangementPage.dart';
+import 'package:cptclient/pages/CourseEditPage.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_course_admin.dart' as server;
+import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:flutter/material.dart';
 
 class CourseManagementPage extends StatefulWidget {
   final Session session;
 
-  CourseManagementPage({Key? key, required this.session}) : super(key: key);
+  CourseManagementPage({super.key, required this.session});
 
   @override
   CourseManagementPageState createState() => CourseManagementPageState();
@@ -30,13 +28,13 @@ class CourseManagementPage extends StatefulWidget {
 
 class CourseManagementPageState extends State<CourseManagementPage> {
   List<Course> _courses = [];
-  DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: []);
+  final DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: []);
 
   List<Course> _coursesFiltered = [];
   bool _hideFilters = true;
   bool _isActive = true;
   bool _isPublic = true;
-  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseManagementPageState();
@@ -84,7 +82,41 @@ class CourseManagementPageState extends State<CourseManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseAdminPage(session: widget.session, course: course, isDraft: isDraft),
+        builder: (context) => CourseClassManagementPage(session: widget.session, course: course, isDraft: isDraft),
+      ),
+    );
+
+    _update();
+  }
+
+  Future<void> _createCourse() async {
+    Course course = Course.fromVoid();
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseEditPage(
+          session: widget.session,
+          course: course,
+          isDraft: true,
+          onSubmit: server.course_create,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
+  Future<void> _duplicateCourse(Course course) async {
+    Course _course = Course.fromCourse(course);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseEditPage(
+          session: widget.session,
+          course: _course,
+          isDraft: true,
+          onSubmit: server.course_create,
+        ),
       ),
     );
 
@@ -93,7 +125,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Course Management"),
       ),

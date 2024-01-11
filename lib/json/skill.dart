@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'branch.dart';
+import 'package:cptclient/json/branch.dart';
 
 class Skill {
   Branch branch;

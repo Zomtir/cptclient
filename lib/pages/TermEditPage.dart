@@ -1,18 +1,17 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/term.dart';
+import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/dialogs/UserPicker.dart';
 import 'package:cptclient/material/tiles/AppTermTile.dart';
-
-import '../json/user.dart';
-import 'package:cptclient/static/serverTermAdmin.dart' as server;
-import 'package:cptclient/static/serverUserMember.dart' as server;
-import '../json/session.dart';
-import '../json/term.dart';
-import '../material/dialogs/UserPicker.dart';
+import 'package:cptclient/static/server_term_admin.dart' as server;
+import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TermEditPage extends StatefulWidget {
   final Session session;
@@ -20,7 +19,7 @@ class TermEditPage extends StatefulWidget {
   final void Function() onUpdate;
   final bool isDraft;
 
-  TermEditPage({Key? key, required this.session, required this.term, required this.onUpdate, required this.isDraft}) : super(key: key);
+  TermEditPage({super.key, required this.session, required this.term, required this.onUpdate, required this.isDraft});
 
   @override
   TermEditPageState createState() => TermEditPageState();
@@ -28,8 +27,8 @@ class TermEditPage extends StatefulWidget {
 
 class TermEditPageState extends State<TermEditPage> {
   User?                    _ctrlTermUser;
-  DateTimeController       _ctrlTermBegin = DateTimeController();
-  DateTimeController       _ctrlTermEnd = DateTimeController();
+  final DateTimeController       _ctrlTermBegin = DateTimeController();
+  final DateTimeController       _ctrlTermEnd = DateTimeController();
 
   TermEditPageState();
 
@@ -98,7 +97,7 @@ class TermEditPageState extends State<TermEditPage> {
 
   @override
   Widget build (BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTermEdit),
       ),

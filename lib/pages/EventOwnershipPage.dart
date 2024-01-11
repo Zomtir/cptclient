@@ -1,32 +1,30 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/material/DateTimeEdit.dart';
+import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
-
-import '../material/DropdownController.dart';
-import '../material/FilterToggle.dart';
-import 'EventOwnersPage.dart';
-import 'SlotEditPage.dart';
-
-import '../static/server.dart' as server;
-import '../static/serverEventMember.dart' as server;
-import '../static/serverEventOwner.dart' as server;
-import '../json/session.dart';
-import '../json/slot.dart';
-import '../json/location.dart';
-import 'EventParticipantsPage.dart';
+import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/pages/EventOwnersPage.dart';
+import 'package:cptclient/pages/SlotEditPage.dart';
+import 'package:cptclient/pages/SlotParticipantPage.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_event_owner.dart' as api_owner;
+import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventOverviewPage extends StatefulWidget {
   final Session session;
 
-  EventOverviewPage({Key? key, required this.session}) : super(key: key);
+  EventOverviewPage({super.key, required this.session});
 
   @override
   State<StatefulWidget> createState() => EventOverviewPageState();
@@ -49,7 +47,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Slot> events = await server.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlLocation.value, _ctrlStatus.value);
+    List<Slot> events = await api_regular.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlLocation.value, _ctrlStatus.value);
 
     setState(() {
       _events = events;
@@ -65,7 +63,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           session: widget.session,
           slot: slot,
           isDraft: true,
-          onSubmit: server.event_create,
+          onSubmit: api_regular.event_create,
         ),
       ),
     );
@@ -83,7 +81,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           session: widget.session,
           slot: _slot,
           isDraft: true,
-          onSubmit: server.event_create,
+          onSubmit: api_regular.event_create,
         ),
       ),
     );
@@ -99,9 +97,9 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           session: widget.session,
           slot: slot,
           isDraft: false,
-          onSubmit: server.event_edit,
-          onPasswordChange: server.event_edit_password,
-          onDelete: server.event_delete,
+          onSubmit: api_owner.event_edit,
+          onPasswordChange: api_owner.event_edit_password,
+          onDelete: api_owner.event_delete,
         ),
       ),
     );
@@ -127,9 +125,12 @@ class EventOverviewPageState extends State<EventOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventParticipantsPage(
+        builder: (context) => SlotParticipantPage(
           session: widget.session,
           slot: slot,
+          onCallParticipantList: api_owner.event_participant_list,
+          onCallParticipantAdd: api_owner.event_participant_add,
+          onCallParticipantRemove: api_owner.event_participant_remove,
         ),
       ),
     );
@@ -138,25 +139,25 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _submitSlot(Slot slot) async {
-    if (!await server.event_submit(widget.session, slot)) return;
+    if (!await api_owner.event_submit(widget.session, slot)) return;
 
     _update();
   }
 
   Future<void> _withdrawSlot(Slot slot) async {
-    if (!await server.event_withdraw(widget.session, slot)) return;
+    if (!await api_owner.event_withdraw(widget.session, slot)) return;
 
     _update();
   }
 
   Future<void> _cancelSlot(Slot slot) async {
-    if (!await server.event_cancel(widget.session, slot)) return;
+    if (!await api_owner.event_cancel(widget.session, slot)) return;
 
     _update();
   }
 
   Future<void> _recycleSlot(Slot slot) async {
-    if (!await server.event_recycle(widget.session, slot)) {
+    if (!await api_owner.event_recycle(widget.session, slot)) {
       return;
     }
 

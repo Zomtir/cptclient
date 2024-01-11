@@ -9,13 +9,13 @@ class AppButton extends StatelessWidget {
   final ButtonStyle style;
 
   const AppButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.leading,
     this.trailing,
     this.style = const AppButtonHeavyStyle(),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

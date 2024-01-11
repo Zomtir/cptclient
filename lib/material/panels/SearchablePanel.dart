@@ -1,7 +1,8 @@
 import 'dart:core';
+
+import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
-import 'package:cptclient/material/AppListView.dart';
 
 class SearchablePanel<T> extends StatefulWidget {
   final SelectionData<T> dataModel;

@@ -1,21 +1,19 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/team.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
-
-import 'TeamEditPage.dart';
-import 'TeamMemberPage.dart';
-
-import '../static/serverTeamAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/team.dart';
+import 'package:cptclient/pages/TeamEditPage.dart';
+import 'package:cptclient/pages/TeamMemberPage.dart';
+import 'package:cptclient/static/server_team_admin.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TeamManagementPage extends StatefulWidget {
   final Session session;
 
-  TeamManagementPage({Key? key, required this.session}) : super(key: key);
+  TeamManagementPage({super.key, required this.session});
 
   @override
   TeamManagementPageState createState() => TeamManagementPageState();
@@ -71,7 +69,7 @@ class TeamManagementPageState extends State<TeamManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTeamManagement),
       ),

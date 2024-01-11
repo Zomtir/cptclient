@@ -1,11 +1,10 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
-
 import 'dart:math';
 
-import 'package:cptclient/material/NumberSelector.dart';
-import 'package:cptclient/material/AppDialog.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppDialog.dart';
+import 'package:cptclient/material/NumberSelector.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<DateTime?> showAppDatePicker({
   required BuildContext context,
@@ -69,9 +68,9 @@ class _DatePickerState extends State<DatePicker> {
   int _monthlyDays = 0;
   int _firstDayOffset = 0;
 
-  TextEditingController _ctrlYear = TextEditingController();
-  TextEditingController _ctrlMonth = TextEditingController();
-  TextEditingController _ctrlDay = TextEditingController();
+  final TextEditingController _ctrlYear = TextEditingController();
+  final TextEditingController _ctrlMonth = TextEditingController();
+  final TextEditingController _ctrlDay = TextEditingController();
 
   @override
   void initState() {
@@ -80,10 +79,11 @@ class _DatePickerState extends State<DatePicker> {
   }
 
   void _handleConfirm() {
-    if (_selectedDate == widget.initialDate)
+    if (_selectedDate == widget.initialDate) {
       _handleCancel();
-    else
+    } else {
       Navigator.pop(context, _selectedDate);
+    }
   }
 
   void _handleCancel() {

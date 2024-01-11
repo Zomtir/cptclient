@@ -1,24 +1,22 @@
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/course.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/design/AppButtonLightStyle.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
 
-import '../json/course.dart';
-import '../material/AppListView.dart';
-import '../material/design/AppButtonLightStyle.dart';
-import '../static/server.dart' as server;
-import '../static/navigation.dart' as navi;
-
 class LoginCoursePage extends StatefulWidget {
-  LoginCoursePage({Key? key}) : super(key: key);
+  LoginCoursePage({super.key});
 
   @override
   State<StatefulWidget> createState() => LoginCoursePageState();
 }
 
 class LoginCoursePageState extends State<LoginCoursePage> {
-  TextEditingController _ctrlLogin = TextEditingController();
+  final TextEditingController _ctrlLogin = TextEditingController();
   List<Course> _cache = [];
 
   @override

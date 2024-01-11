@@ -1,9 +1,9 @@
-import 'package:cptclient/structs/SelectionData.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/structs/SelectionData.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectionPanel<T> extends StatefulWidget {
   final SelectionData<T> dataModel;

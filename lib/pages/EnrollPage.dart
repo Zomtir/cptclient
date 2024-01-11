@@ -1,18 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-
-import '../material/panels/SelectionPanel.dart';
-import '../material/tiles/AppUserTile.dart';
-import '../static/navigation.dart' as navi;
-import '../static/serverSlotCasual.dart' as server;
-import '../json/session.dart';
-import '../json/user.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/server_slot_service.dart' as server;
+import 'package:flutter/material.dart';
 
 class EnrollPage extends StatefulWidget {
   final Session session;
 
-  EnrollPage({Key? key, required this.session}) : super(key: key) {
+  EnrollPage({super.key, required this.session}) {
     if (session.token == "" || session.slot == null) navi.logout();
   }
 
@@ -56,7 +53,7 @@ class EnrollPageState extends State<EnrollPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Slot Participation"),
         actions: <Widget>[

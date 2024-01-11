@@ -1,22 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
 
-import '../static/server.dart' as server;
-import '../static/navigation.dart' as navi;
-
 class LoginUserPage extends StatefulWidget {
-  LoginUserPage({Key? key}) : super(key: key);
+  LoginUserPage({super.key});
 
   @override
   State<StatefulWidget> createState() => LoginUserPageState();
 }
 
 class LoginUserPageState extends State<LoginUserPage> {
-  TextEditingController _ctrlUserLogin = TextEditingController();
-  TextEditingController _ctrlUserPasswd = TextEditingController();
+  final TextEditingController _ctrlUserLogin = TextEditingController();
+  final TextEditingController _ctrlUserPasswd = TextEditingController();
 
   @override
   void initState() {

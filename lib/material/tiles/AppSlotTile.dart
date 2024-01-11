@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:cptclient/static/format.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/RoundBox.dart';
+import 'package:cptclient/static/format.dart';
+import 'package:flutter/material.dart';
 
 class AppSlotTile extends StatelessWidget {
   final Slot slot;
   final List<Widget> trailing;
 
   const AppSlotTile({
-    Key? key,
+    super.key,
     required this.slot,
     this.trailing = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,22 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
 
-import '../static/server.dart' as server;
-import '../static/navigation.dart' as navi;
-
 class LoginSlotPage extends StatefulWidget {
-  LoginSlotPage({Key? key}) : super(key: key);
+  LoginSlotPage({super.key});
 
   @override
   State<StatefulWidget> createState() => LoginSlotPageState();
 }
 
 class LoginSlotPageState extends State<LoginSlotPage> {
-  TextEditingController _ctrlSlotLogin = TextEditingController();
-  TextEditingController _ctrlSlotPasswd = TextEditingController();
+  final TextEditingController _ctrlSlotLogin = TextEditingController();
+  final TextEditingController _ctrlSlotPasswd = TextEditingController();
 
   @override
   void initState() {

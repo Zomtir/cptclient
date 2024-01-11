@@ -2,7 +2,7 @@
 
 import 'package:cptclient/json/user.dart';
 
-import '../static/format.dart';
+import 'package:cptclient/static/format.dart';
 
 class Term implements Comparable {
   final int id;

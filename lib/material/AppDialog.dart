@@ -1,6 +1,5 @@
+import 'package:cptclient/material/design/AppBoxDecoration.dart';
 import 'package:flutter/material.dart';
-
-import 'design/AppBoxDecoration.dart';
 
 class AppDialog extends StatelessWidget {
   final Widget child;

@@ -1,4 +1,4 @@
-import 'branch.dart';
+import 'package:cptclient/json/branch.dart';
 
 class Course implements Comparable {
   final int id;

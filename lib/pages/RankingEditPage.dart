@@ -1,39 +1,36 @@
-import 'package:flutter/material.dart';
-
+import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
-
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/tiles/AppRankingTile.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_ranking_admin.dart' as server;
+import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../static/server.dart' as server;
-import '../static/serverUserMember.dart' as server;
-import '../static/serverRankingAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/ranking.dart';
-import '../json/user.dart';
-import '../json/branch.dart';
 
 class RankingAdminPage extends StatefulWidget {
   final Session session;
   final Ranking ranking;
   final bool isDraft;
 
-  RankingAdminPage({Key? key, required this.session, required this.ranking, required this.isDraft}) : super(key: key);
+  RankingAdminPage({super.key, required this.session, required this.ranking, required this.isDraft});
 
   @override
   State<StatefulWidget> createState() => RankingAdminPageState();
 }
 
 class RankingAdminPageState extends State<RankingAdminPage> {
-  DropdownController<User> _ctrlRankingUser = DropdownController<User>(items: []);
-  DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<User> _ctrlRankingUser = DropdownController<User>(items: []);
+  final DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
   int _rankingLevel = 0;
-  DropdownController<User> _ctrlRankingJudge = DropdownController<User>(items: []);
-  TextEditingController _ctrlRankingDate = TextEditingController();
+  final DropdownController<User> _ctrlRankingJudge = DropdownController<User>(items: []);
+  final TextEditingController _ctrlRankingDate = TextEditingController();
 
   RankingAdminPageState();
 
@@ -112,7 +109,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Ranking"),
       ),

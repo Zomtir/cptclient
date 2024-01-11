@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:flutter/material.dart';
 
 class CreditPage extends StatelessWidget {
   @override
   Widget build (BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Credits"),
       ),

@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/json/ranking.dart';
 import 'package:cptclient/static/format.dart';
+import 'package:flutter/material.dart';
 
 class AppRankingTile extends StatelessWidget {
   final Ranking ranking;
 
   const AppRankingTile({
-    Key? key,
+    super.key,
     required this.ranking,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

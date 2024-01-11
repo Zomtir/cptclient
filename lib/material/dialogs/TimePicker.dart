@@ -1,12 +1,11 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
-
-import 'dart:ui';
 import 'dart:math';
+import 'dart:ui';
 
-import '../AppButton.dart';
-import '../AppDialog.dart';
-import '../NumberSelector.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppDialog.dart';
+import 'package:cptclient/material/NumberSelector.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<TimeOfDay?> showAppTimePicker({
   required BuildContext context,
@@ -43,8 +42,8 @@ class TimePicker extends StatefulWidget {
 class _TimePickerState extends State<TimePicker> {
   late TimeOfDay _selectedTime;
 
-  TextEditingController _ctrlHour = TextEditingController();
-  TextEditingController _ctrlMinute = TextEditingController();
+  final TextEditingController _ctrlHour = TextEditingController();
+  final TextEditingController _ctrlMinute = TextEditingController();
 
   @override
   void initState() {
@@ -254,7 +253,7 @@ class ClockPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter old) {
+  bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
 }

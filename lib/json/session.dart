@@ -1,6 +1,6 @@
-import 'user.dart';
-import 'slot.dart';
-import 'right.dart';
+import 'package:cptclient/json/right.dart';
+import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/user.dart';
 
 class Session {
   final String token;

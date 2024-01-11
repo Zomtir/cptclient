@@ -1,16 +1,15 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:cptclient/static/format.dart';
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-
-import '../static/serverUserAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/user.dart';
+import 'package:cptclient/static/format.dart';
+import 'package:cptclient/static/server_user_admin.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserAdminPage extends StatefulWidget {
   final Session session;
@@ -18,34 +17,34 @@ class UserAdminPage extends StatefulWidget {
   final void Function() onUpdate;
   final bool isDraft;
 
-  UserAdminPage({Key? key, required this.session, required this.user, required this.onUpdate, required this.isDraft}) : super(key: key);
+  UserAdminPage({super.key, required this.session, required this.user, required this.onUpdate, required this.isDraft});
 
   @override
   UserAdminPageState createState() => UserAdminPageState();
 }
 
 class UserAdminPageState extends State<UserAdminPage> {
-  TextEditingController _ctrlUserKey = TextEditingController();
-  TextEditingController _ctrlUserPassword = TextEditingController();
+  final TextEditingController _ctrlUserKey = TextEditingController();
+  final TextEditingController _ctrlUserPassword = TextEditingController();
   bool                  _ctrlUserEnabled = false;
   bool                  _ctrlUserActive = true;
-  TextEditingController _ctrlUserFirstname = TextEditingController();
-  TextEditingController _ctrlUserLastname = TextEditingController();
-  TextEditingController _ctrlUserAddress = TextEditingController();
-  TextEditingController _ctrlUserEmail = TextEditingController();
-  TextEditingController _ctrlUserPhone = TextEditingController();
-  TextEditingController _ctrlUserIban = TextEditingController();
-  DateTimeController    _ctrlUserBirthday = DateTimeController();
-  TextEditingController _ctrlUserBirthlocation = TextEditingController();
-  TextEditingController _ctrlUserNationality = TextEditingController();
-  TextEditingController _ctrlUserGender = TextEditingController();
-  TextEditingController _ctrlUserFederationNumber = TextEditingController();
-  DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
-  DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();
-  DateTimeController    _ctrlUserFederationResidency = DateTimeController();
-  TextEditingController _ctrlUserDataDeclaration = TextEditingController();
-  TextEditingController _ctrlUserDataDisclaimer = TextEditingController();
-  TextEditingController _ctrlUserNote = TextEditingController();
+  final TextEditingController _ctrlUserFirstname = TextEditingController();
+  final TextEditingController _ctrlUserLastname = TextEditingController();
+  final TextEditingController _ctrlUserAddress = TextEditingController();
+  final TextEditingController _ctrlUserEmail = TextEditingController();
+  final TextEditingController _ctrlUserPhone = TextEditingController();
+  final TextEditingController _ctrlUserIban = TextEditingController();
+  final DateTimeController    _ctrlUserBirthday = DateTimeController();
+  final TextEditingController _ctrlUserBirthlocation = TextEditingController();
+  final TextEditingController _ctrlUserNationality = TextEditingController();
+  final TextEditingController _ctrlUserGender = TextEditingController();
+  final TextEditingController _ctrlUserFederationNumber = TextEditingController();
+  final DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
+  final DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();
+  final DateTimeController    _ctrlUserFederationResidency = DateTimeController();
+  final TextEditingController _ctrlUserDataDeclaration = TextEditingController();
+  final TextEditingController _ctrlUserDataDisclaimer = TextEditingController();
+  final TextEditingController _ctrlUserNote = TextEditingController();
 
   UserAdminPageState();
 
@@ -122,8 +121,9 @@ class UserAdminPageState extends State<UserAdminPage> {
     }
 
     bool? pwdsuccess = await server.user_edit_password(widget.session, widget.user, _ctrlUserPassword.text);
-    if (pwdsuccess != null && !pwdsuccess)
+    if (pwdsuccess != null && !pwdsuccess) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionSuccessExceptPassword)));
+    }
 
     _ctrlUserPassword.text = '';
 
@@ -143,7 +143,7 @@ class UserAdminPageState extends State<UserAdminPage> {
 
   @override
   Widget build (BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("User Details"),
       ),

@@ -1,15 +1,13 @@
 import 'dart:convert';
 
-import 'package:cptclient/json/slot.dart';
-import "package:universal_html/html.dart"; // TODO go back to dart:html?
-import 'package:http/http.dart' as http;
-
-import 'package:cptclient/static/crypto.dart' as crypto;
-import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
-
-import '../json/course.dart';
+import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/static/crypto.dart' as crypto;
+import 'package:http/http.dart' as http;
+import "package:universal_html/html.dart"; // TODO go back to dart:html?
 
 String serverScheme = window.localStorage['ServerScheme']!;
 String serverHost = window.localStorage['ServerHost']!;
@@ -29,7 +27,7 @@ List<Branch> cacheBranches = [];
 List<Status> cacheSlotStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
-  final response;
+  final http.Response response;
 
   try {
     response = await http.head(uri('status')).timeout(const Duration(seconds: 3));

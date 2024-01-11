@@ -1,19 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-
-import 'CourseMemberPage.dart';
-
-import '../static/serverCourseMember.dart' as server;
-
-import '../json/session.dart';
-import '../json/course.dart';
+import 'package:cptclient/pages/CourseModeratorPage.dart';
+import 'package:cptclient/static/server_course_regular.dart' as server;
+import 'package:flutter/material.dart';
 
 class CourseAvailablePage extends StatefulWidget {
   final Session session;
 
-  CourseAvailablePage({Key? key, required this.session}) : super(key: key);
+  CourseAvailablePage({super.key, required this.session});
 
   @override
   CourseAvailablePageState createState() => CourseAvailablePageState();
@@ -31,7 +28,7 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
   }
 
   void _update() async {
-    List<Course>? courses = await server.course_availiblity(widget.session);
+    List<Course>? courses = await server.course_availability(widget.session);
     setState(() => _courses = courses!);
   }
 
@@ -39,7 +36,7 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseMemberPage(
+        builder: (context) => CourseModeratorPage(
           session: widget.session,
           course: course,
           isDraft: isDraft,
@@ -51,7 +48,7 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Available Courses"),
       ),

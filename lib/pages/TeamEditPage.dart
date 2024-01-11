@@ -1,28 +1,27 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/team.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
-
-import '../static/serverTeamAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/team.dart';
+import 'package:cptclient/static/server_team_admin.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TeamEditPage extends StatefulWidget {
   final Session session;
   final Team team;
   final bool isDraft;
 
-  TeamEditPage({Key? key, required this.session, required this.team, required this.isDraft}) : super(key: key);
+  TeamEditPage({super.key, required this.session, required this.team, required this.isDraft});
 
   @override
   TeamEditPageState createState() => TeamEditPageState();
 }
 
 class TeamEditPageState extends State<TeamEditPage> {
-  TextEditingController _ctrlName = TextEditingController();
-  TextEditingController _ctrlDescription = TextEditingController();
+  final TextEditingController _ctrlName = TextEditingController();
+  final TextEditingController _ctrlDescription = TextEditingController();
 
   bool _ctrlRightCourse = false;
   bool _ctrlRightEvent = false;
@@ -72,10 +71,11 @@ class TeamEditPageState extends State<TeamEditPage> {
     _gatherTeam();
 
     bool success;
-    if (widget.isDraft)
+    if (widget.isDraft) {
       success = await server.team_create(widget.session, widget.team);
-    else
+    } else {
       success = await server.team_edit(widget.session, widget.team);
+    }
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit team')));
@@ -113,7 +113,7 @@ class TeamEditPageState extends State<TeamEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTeamEdit),
       ),

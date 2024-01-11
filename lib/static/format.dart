@@ -6,10 +6,11 @@ String compressDate(DateTime begin, DateTime end) {
   String strBegin = DateFormat("dd MMM yyyy HH:mm").format(begin);
   String strEnd;
 
-  if (begin.day == end.day)
+  if (begin.day == end.day) {
     strEnd = DateFormat("HH:mm").format(end);
-  else
+  } else {
     strEnd = DateFormat("dd MMM yyyy HH:mm").format(end);
+  }
 
   return "$strBegin - $strEnd";
 }
@@ -39,7 +40,7 @@ DateTime? parseNullWebDate(String? dt) {
 }
 
 String? formatNullInt(int? i) {
-  return i == null ? null : i.toString();
+  return i?.toString();
 }
 
 int? parseNullInt(String? i) {
@@ -47,5 +48,5 @@ int? parseNullInt(String? i) {
 }
 
 int? convertNullInt(int? i) {
-  return i == null ? null : i;
+  return i;
 }

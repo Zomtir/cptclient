@@ -29,8 +29,8 @@ class CollapseWidgetState extends State<CollapseWidget> with SingleTickerProvide
   }
 
   @override
-  void didUpdateWidget(CollapseWidget _widget) {
-    super.didUpdateWidget(_widget);
+  void didUpdateWidget(CollapseWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
     widget.collapse ? _ctrlAnimation.reverse() : _ctrlAnimation.forward();
   }
 

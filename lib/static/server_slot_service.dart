@@ -1,16 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<Slot?> slot_info(String token) async {
   final response = await http.get(
-    server.uri('/slot/slot_info'),
+    server.uri('/service/slot_info'),
     headers: {
       'Token': token,
       'Accept': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ Future<Slot?> slot_info(String token) async {
 
 Future<List<User>> slot_participant_pool(Session session) async {
   final response = await http.get(
-    server.uri('/slot/slot_participant_pool'),
+    server.uri('/service/slot_participant_pool'),
     headers: {
       'Token': session.token,
     },
@@ -38,7 +38,7 @@ Future<List<User>> slot_participant_pool(Session session) async {
 
 Future<List<User>> slot_participant_list(Session session) async {
   final response = await http.get(
-    server.uri('/slot/slot_participant_list'),
+    server.uri('/service/slot_participant_list'),
     headers: {
       'Token': session.token,
     },
@@ -52,7 +52,7 @@ Future<List<User>> slot_participant_list(Session session) async {
 
 Future<bool> slot_participant_add(Session session, User user) async {
   final response = await http.head(
-    server.uri('/slot/slot_participant_add', {
+    server.uri('/service/slot_participant_add', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -65,7 +65,7 @@ Future<bool> slot_participant_add(Session session, User user) async {
 
 Future<bool> slot_participant_remove(Session session, User user) async {
   final response = await http.head(
-    server.uri('/slot/slot_participant_remove', {
+    server.uri('/service/slot_participant_remove', {
       'user_id': user.id.toString(),
     }),
     headers: {

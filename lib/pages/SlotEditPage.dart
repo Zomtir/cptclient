@@ -1,18 +1,17 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/material/DateTimeEdit.dart';
+import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-
-import 'package:intl/intl.dart';
-
-import '../static/server.dart' as server;
-import '../json/session.dart';
-import '../json/slot.dart';
-import '../json/location.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SlotEditPage extends StatefulWidget {
   final Session session;
@@ -39,12 +38,12 @@ class SlotEditPage extends StatefulWidget {
 class SlotEditPageState extends State<SlotEditPage> {
   final TextEditingController _ctrlSlotKey = TextEditingController();
   final TextEditingController _ctrlSlotPassword = TextEditingController();
-  final TextEditingController _ctrlSlotBegin = TextEditingController();
-  final TextEditingController _ctrlSlotEnd = TextEditingController();
+  final DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
+  final DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
   final TextEditingController _ctrlSlotTitle = TextEditingController();
   final DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: server.cacheLocations);
   bool _ctrlSlotPublic = false;
-  bool _ctrlSlotObscured = true;
+  bool _ctrlSlotScrutable = true;
   final TextEditingController _ctrlSlotNote = TextEditingController();
 
   SlotEditPageState();
@@ -58,23 +57,23 @@ class SlotEditPageState extends State<SlotEditPage> {
 
   void _applySlot() {
     _ctrlSlotKey.text = widget.slot.key;
-    _ctrlSlotBegin.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.begin);
-    _ctrlSlotEnd.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.slot.end);
+    _ctrlSlotBegin.setDateTime(widget.slot.begin);
+    _ctrlSlotEnd.setDateTime(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
     _ctrlSlotLocation.value = widget.slot.location;
     _ctrlSlotPublic = widget.slot.public;
-    _ctrlSlotObscured = widget.slot.obscured;
+    _ctrlSlotScrutable = widget.slot.scrutable;
     _ctrlSlotNote.text = widget.slot.note;
   }
 
   void _gatherSlot() {
     widget.slot.key = _ctrlSlotKey.text;
     widget.slot.location = _ctrlSlotLocation.value;
-    widget.slot.begin = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotBegin.text, false);
-    widget.slot.end = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlSlotEnd.text, false);
+    widget.slot.begin = _ctrlSlotBegin.getDateTime()!;
+    widget.slot.end = _ctrlSlotEnd.getDateTime()!;
     widget.slot.title = _ctrlSlotTitle.text;
     widget.slot.public = _ctrlSlotPublic;
-    widget.slot.obscured = _ctrlSlotObscured;
+    widget.slot.scrutable = _ctrlSlotScrutable;
     widget.slot.note = _ctrlSlotNote.text;
   }
 
@@ -136,15 +135,13 @@ class SlotEditPageState extends State<SlotEditPage> {
           ),
           AppInfoRow(
             info: Text("Start Time"),
-            child: TextField(
-              maxLines: 1,
+            child: DateTimeEdit(
               controller: _ctrlSlotBegin,
             ),
           ),
           AppInfoRow(
             info: Text("End Time"),
-            child: TextField(
-              maxLines: 1,
+            child: DateTimeEdit(
               controller: _ctrlSlotEnd,
             ),
           ),
@@ -160,10 +157,10 @@ class SlotEditPageState extends State<SlotEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Obscured"),
+            info: Text("Scrutable"),
             child: Checkbox(
-              value: _ctrlSlotObscured,
-              onChanged: (bool? active) => setState(() => _ctrlSlotObscured = active!),
+              value: _ctrlSlotScrutable,
+              onChanged: (bool? active) => setState(() => _ctrlSlotScrutable = active!),
             ),
           ),
           AppInfoRow(

@@ -1,21 +1,19 @@
-import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/structs/SelectionData.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-
-import 'UserAdminPage.dart';
-
-import '../static/serverUserAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/user.dart';
+import 'package:cptclient/pages/UserAdminPage.dart';
+import 'package:cptclient/static/server_user_admin.dart' as server;
+import 'package:cptclient/structs/SelectionData.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserManagementPage extends StatefulWidget {
   final Session session;
 
-  UserManagementPage({Key? key, required this.session}) : super(key: key);
+  UserManagementPage({super.key, required this.session});
 
   @override
   UserManagementPageState createState() => UserManagementPageState();

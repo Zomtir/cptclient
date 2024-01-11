@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppListView<T> extends StatelessWidget {
   const AppListView({
-    Key? key,
+    super.key,
     required this.items,
     required this.itemBuilder,
-  }) : super(key: key);
+  });
 
   final List<T>? items;
   final Widget Function(T) itemBuilder;

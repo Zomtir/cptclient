@@ -1,27 +1,24 @@
-import 'package:flutter/material.dart';
-
+import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
-
-import '../static/server.dart' as server;
-import '../static/serverRankingAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/ranking.dart';
-import '../json/branch.dart';
-import '../json/user.dart';
-
-import 'RankingAdminPage.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/tiles/AppRankingTile.dart';
+import 'package:cptclient/pages/RankingEditPage.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_ranking_admin.dart' as server;
+import 'package:flutter/material.dart';
 
 class RankingManagementPage extends StatefulWidget {
   final Session session;
 
-  RankingManagementPage({Key? key, required this.session}) : super(key: key);
+  RankingManagementPage({super.key, required this.session});
 
   @override
   State<StatefulWidget> createState() => RankingManagementPageState();
@@ -32,9 +29,9 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   List<Ranking> _rankingsFiltered = [];
   bool _hideFilters = true;
 
-  DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
-  DropdownController<User> _ctrlDropdownJudge = DropdownController<User>(items: []);
-  DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
+  final DropdownController<User> _ctrlDropdownJudge = DropdownController<User>(items: []);
+  final DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   RankingManagementPageState();
@@ -81,7 +78,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Rankings"),
       ),

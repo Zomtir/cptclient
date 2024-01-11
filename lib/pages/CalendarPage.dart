@@ -34,7 +34,7 @@ class CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build (BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Calendar"),
       ),

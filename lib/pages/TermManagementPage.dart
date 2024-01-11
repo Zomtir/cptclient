@@ -1,20 +1,18 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppTermTile.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-
-import 'TermEditPage.dart';
-
-import 'package:cptclient/static/serverTermAdmin.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
+import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/tiles/AppTermTile.dart';
+import 'package:cptclient/pages/TermEditPage.dart';
+import 'package:cptclient/static/server_term_admin.dart' as server;
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TermManagementPage extends StatefulWidget {
   final Session session;
 
-  TermManagementPage({Key? key, required this.session}) : super(key: key);
+  TermManagementPage({super.key, required this.session});
 
   @override
   TermManagementPageState createState() => TermManagementPageState();
@@ -68,7 +66,7 @@ class TermManagementPageState extends State<TermManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTermManagement),
       ),

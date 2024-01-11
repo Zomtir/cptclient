@@ -1,16 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'server.dart' as server;
-import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<List<Ranking>> ranking_list(Session session) async {
   final response = await http.get(
-    server.uri('/member/ranking_list'),
+    server.uri('/regular/ranking_list'),
     headers: {
       'Token': session.token,
     },
@@ -24,7 +24,7 @@ Future<List<Ranking>> ranking_list(Session session) async {
 
 Future<List<Skill>> ranking_summary(Session session) async {
   final response = await http.get(
-    server.uri('/member/ranking_summary'),
+    server.uri('/regular/ranking_summary'),
     headers: {
       'Token': session.token,
     },

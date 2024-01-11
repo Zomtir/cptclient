@@ -1,13 +1,11 @@
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cptclient/pages/ConnectionPage.dart';
+import 'package:cptclient/pages/EnrollPage.dart';
+import 'package:cptclient/pages/LoginLandingPage.dart';
+import 'package:cptclient/pages/MemberLandingPage.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
-
-import 'static/navigation.dart' as navi;
-
-import 'pages/ConnectionPage.dart';
-import 'pages/LoginLandingPage.dart';
-import 'pages/MemberLandingPage.dart';
-import 'pages/EnrollPage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MaterialApp(

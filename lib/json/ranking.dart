@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:intl/intl.dart';
-import 'branch.dart';
-import 'user.dart';
 
 class Ranking {
   final int id;

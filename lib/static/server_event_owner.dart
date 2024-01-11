@@ -1,12 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<bool> event_edit(Session session, Slot slot) async {
   final response = await http.post(
@@ -138,6 +138,50 @@ Future<bool> event_owner_add(Session session, Slot slot, User user) async {
 Future<bool> event_owner_remove(Session session, Slot slot, User user) async {
   final response = await http.head(
     server.uri('/owner/event_owner_remove', {
+      'slot_id': slot.id.toString(),
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_participant_list(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/owner/event_participant_list', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
+Future<bool> event_participant_add(Session session, Slot slot, User user) async {
+  final response = await http.head(
+    server.uri('/owner/event_participant_add', {
+      'slot_id': slot.id.toString(),
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_participant_remove(Session session, Slot slot, User user) async {
+  final response = await http.head(
+    server.uri('/owner/event_participant_remove', {
       'slot_id': slot.id.toString(),
       'user_id': user.id.toString(),
     }),

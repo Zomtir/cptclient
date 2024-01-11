@@ -1,24 +1,22 @@
-import 'package:cptclient/material/AppListView.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/location.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-
+import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/design/AppButtonLightStyle.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
 
-import '../material/design/AppButtonLightStyle.dart';
-import '../static/server.dart' as server;
-import '../static/navigation.dart' as navi;
-import 'package:cptclient/json/location.dart';
-
 class LoginLocationPage extends StatefulWidget {
-  LoginLocationPage({Key? key}) : super(key: key);
+  LoginLocationPage({super.key});
 
   @override
   State<StatefulWidget> createState() => LoginLocationPageState();
 }
 
 class LoginLocationPageState extends State<LoginLocationPage> {
-  TextEditingController _ctrlLogin = TextEditingController();
+  final TextEditingController _ctrlLogin = TextEditingController();
   List<Location> _cache = [];
 
   @override

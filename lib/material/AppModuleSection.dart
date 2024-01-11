@@ -5,10 +5,10 @@ class AppModuleSection extends StatelessWidget {
   final String text;
 
   const AppModuleSection({
-    Key? key,
+    super.key,
     required this.image,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

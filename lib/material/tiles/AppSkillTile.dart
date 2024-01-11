@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/json/skill.dart';
-
-import '../RoundBox.dart';
+import 'package:cptclient/material/RoundBox.dart';
+import 'package:flutter/material.dart';
 
 class AppSkillTile extends StatelessWidget {
   final Skill skill;
 
   const AppSkillTile({
-    Key? key,
+    super.key,
     required this.skill,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

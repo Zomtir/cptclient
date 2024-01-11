@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/RoundBox.dart';
 import 'package:cptclient/json/team.dart';
+import 'package:cptclient/material/RoundBox.dart';
+import 'package:flutter/material.dart';
 
 class AppTeamTile extends StatelessWidget {
   final Team team;
   final List<Widget> trailing;
 
   const AppTeamTile({
-    Key? key,
+    super.key,
     required this.team,
     this.trailing = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

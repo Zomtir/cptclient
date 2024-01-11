@@ -1,5 +1,5 @@
+import 'package:cptclient/material/DropdownController.dart';
 import 'package:flutter/material.dart';
-import '../DropdownController.dart';
 
 class AppDropdown<T> extends StatelessWidget {
   final DropdownController<T> controller;

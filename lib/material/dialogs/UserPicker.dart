@@ -1,13 +1,11 @@
-import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/structs/SelectionData.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
-
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppDialog.dart';
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-
-import '../AppButton.dart';
+import 'package:cptclient/structs/SelectionData.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<User?> showAppUserPicker({
   required BuildContext context,

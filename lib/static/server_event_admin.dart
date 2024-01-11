@@ -1,13 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'format.dart';
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/format.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, String status, User? owner) async {
   final response = await http.get(

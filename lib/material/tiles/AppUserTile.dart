@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:cptclient/json/user.dart';
-
-import '../RoundBox.dart';
+import 'package:cptclient/material/RoundBox.dart';
+import 'package:flutter/material.dart';
 
 class AppUserTile extends StatelessWidget {
   final User user;
 
   const AppUserTile({
-    Key? key,
+    super.key,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,11 @@ class AppIconButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const AppIconButton({
-    Key? key,
+    super.key,
     required this.image,
     required this.text,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,9 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
-
+import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/json/slot.dart';
-
-import 'AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatusDropdown extends StatelessWidget {
   final DropdownController<Status> controller;

@@ -1,13 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<List<Ranking>> ranking_list(Session session, User? user, Skill? skill) async {
   final response = await http.get(

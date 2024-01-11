@@ -1,18 +1,17 @@
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppRankingTile.dart';
 import 'package:cptclient/material/tiles/AppSkillTile.dart';
-
-import 'package:cptclient/static/serverRankingMember.dart' as server;
-import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/ranking.dart';
-import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/static/server_ranking_regular.dart' as server;
+import 'package:flutter/material.dart';
 
 class RankingOverviewPage extends StatefulWidget {
   final Session session;
 
-  RankingOverviewPage({Key? key, required this.session}) : super(key: key);
+  RankingOverviewPage({super.key, required this.session});
 
   @override
   State<StatefulWidget> createState() => RankingOverviewPageState();
@@ -43,7 +42,7 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
 
   @override
   Widget build (BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Rankings"),
       ),

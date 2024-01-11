@@ -1,47 +1,45 @@
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
-
-import '../material/DateTimeEdit.dart';
-import '../material/FilterToggle.dart';
-import 'EventOwnersPage.dart';
-
-import '../static/server.dart' as server;
-import '../static/serverUserMember.dart' as server;
-import '../static/serverEventAdmin.dart' as server;
-import '../json/session.dart';
-import '../json/slot.dart';
-import '../json/location.dart';
-import '../json/user.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/pages/EventOwnersPage.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_event_admin.dart' as server;
+import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:flutter/material.dart';
 
 class EventManagementPage extends StatefulWidget {
   final Session session;
 
-  EventManagementPage({Key? key, required this.session}) : super(key: key);
+  EventManagementPage({super.key, required this.session});
 
   @override
   State<StatefulWidget> createState() => EventManagementPageState();
 }
 
 class EventManagementPageState extends State<EventManagementPage> {
-  DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -1)));
-  DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -1)));
+  final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
 
   List<Slot> _events = [];
   List<Slot> _eventsFiltered = [];
   final _filterDaysMax = 366;
 
   int _panelIndex = 0;
-  List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
+  final List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
 
-  DropdownController<User> _ctrlDropdownOwner = DropdownController<User>(items: []);
-  DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<User> _ctrlDropdownOwner = DropdownController<User>(items: []);
+  final DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: server.cacheLocations);
 
   EventManagementPageState();
 
@@ -102,7 +100,7 @@ class EventManagementPageState extends State<EventManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Event Management"),
       ),

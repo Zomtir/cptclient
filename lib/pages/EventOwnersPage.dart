@@ -1,16 +1,15 @@
-import 'package:cptclient/material/panels/SelectionPanel.dart';
-import 'package:cptclient/structs/SelectionData.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-
-import '../static/serverUserMember.dart' as server;
-import '../static/serverEventOwner.dart' as server;
-import '../json/session.dart';
-import '../json/slot.dart';
-import '../json/user.dart';
+import 'package:cptclient/static/server_event_owner.dart' as server;
+import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:cptclient/structs/SelectionData.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventOwnersPage extends StatefulWidget {
   final Session session;

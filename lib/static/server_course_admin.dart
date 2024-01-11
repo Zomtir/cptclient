@@ -1,13 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:cptclient/json/team.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/team.dart';
+import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/message.dart';
+import 'package:cptclient/static/server.dart' as server;
+import 'package:http/http.dart' as http;
 
 Future<List<Course>> course_list(Session session, User? user) async {
   final response = await http.get(
@@ -35,7 +36,9 @@ Future<bool> course_create(Session session, Course course) async {
     body: json.encode(course),
   );
 
-  return (response.statusCode == 200);
+  bool success = (response.statusCode == 200);
+  messageSuccess(success);
+  return success;
 }
 
 Future<bool> course_edit(Session session, int courseID, Course course) async {

@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-
+import 'package:cptclient/static/server.dart' as server;
+import 'package:flutter/material.dart';
 import "package:universal_html/html.dart";
-
-import '../static/server.dart' as server;
 
 class ConnectionPage extends StatefulWidget {
   @override
@@ -13,13 +11,13 @@ class ConnectionPage extends StatefulWidget {
 }
 
 class ConnectionPageState extends State<ConnectionPage> {
-  TextEditingController _ctrlServerScheme = TextEditingController();
-  TextEditingController _ctrlServerHost = TextEditingController();
-  TextEditingController _ctrlServerPort = TextEditingController();
-  TextEditingController _ctrlUser = TextEditingController();
-  TextEditingController _ctrlSlot = TextEditingController();
-  TextEditingController _ctrlCourse = TextEditingController();
-  TextEditingController _ctrlLocation = TextEditingController();
+  final TextEditingController _ctrlServerScheme = TextEditingController();
+  final TextEditingController _ctrlServerHost = TextEditingController();
+  final TextEditingController _ctrlServerPort = TextEditingController();
+  final TextEditingController _ctrlUser = TextEditingController();
+  final TextEditingController _ctrlSlot = TextEditingController();
+  final TextEditingController _ctrlCourse = TextEditingController();
+  final TextEditingController _ctrlLocation = TextEditingController();
   bool _serverOnline = false;
 
   @override

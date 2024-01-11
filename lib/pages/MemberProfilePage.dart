@@ -1,22 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-
-import '../static/serverUserMember.dart' as server;
-
-import '../json/session.dart';
+import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:flutter/material.dart';
 
 class MemberProfilePage extends StatefulWidget {
   final Session session;
 
-  MemberProfilePage({Key? key, required this.session}) : super(key: key);
+  MemberProfilePage({super.key, required this.session});
 
   @override
   MemberProfilePageState createState() => MemberProfilePageState();
 }
 
 class MemberProfilePageState extends State<MemberProfilePage> {
-  TextEditingController _ctrlUserPassword = TextEditingController();
+  final TextEditingController _ctrlUserPassword = TextEditingController();
 
   MemberProfilePageState();
 
@@ -38,7 +36,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
 
   @override
   Widget build (BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("User Profile"),
       ),

@@ -35,10 +35,10 @@ class SelectItem extends StatefulWidget {
   });
 
   @override
-  _SelectItemState createState() => _SelectItemState();
+  SelectItemState createState() => SelectItemState();
 }
 
-class _SelectItemState extends State<SelectItem> {
+class SelectItemState extends State<SelectItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

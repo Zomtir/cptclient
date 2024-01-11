@@ -1,7 +1,6 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:flutter/material.dart';
-
-import 'CollapseWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterToggle extends StatefulWidget {
   final List<Widget> children;

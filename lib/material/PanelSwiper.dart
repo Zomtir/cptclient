@@ -19,10 +19,10 @@ class PanelSwiper extends StatefulWidget {
   }
 
   @override
-  _PanelSwiperState createState() => _PanelSwiperState();
+  PanelSwiperState createState() => PanelSwiperState();
 }
 
-class _PanelSwiperState extends State<PanelSwiper> {
+class PanelSwiperState extends State<PanelSwiper> {
   int _index = 0;
   int _count = 0;
 
@@ -35,8 +35,8 @@ class _PanelSwiperState extends State<PanelSwiper> {
 
   @override
   Widget build(BuildContext context) {
-    int _indexPrev = (_index - 1) % _count;
-    int _indexNext = (_index + 1) % _count;
+    int indexPrev = (_index - 1) % _count;
+    int indexNext = (_index + 1) % _count;
 
     return Column(
       children: [
@@ -46,7 +46,7 @@ class _PanelSwiperState extends State<PanelSwiper> {
               IconButton(
                 icon: Icon(Icons.arrow_left),
                 onPressed: () {
-                  setState(() => _index = _indexPrev);
+                  setState(() => _index = indexPrev);
                   widget.onChange?.call(_index);
                 },
               ),
@@ -59,7 +59,7 @@ class _PanelSwiperState extends State<PanelSwiper> {
                   color: Colors.amber,
                   child: RawMaterialButton(
                     onPressed: () {
-                      setState(() => _index = _indexPrev);
+                      setState(() => _index = indexPrev);
                       widget.onChange?.call(_index);
                     },
                   ),
@@ -86,7 +86,7 @@ class _PanelSwiperState extends State<PanelSwiper> {
                   color: Colors.amber,
                   child: RawMaterialButton(
                     onPressed: () {
-                      setState(() => _index = _indexNext);
+                      setState(() => _index = indexNext);
                       widget.onChange?.call(_index);
                     },
                   ),
@@ -96,7 +96,7 @@ class _PanelSwiperState extends State<PanelSwiper> {
               IconButton(
                 icon: Icon(Icons.arrow_right),
                 onPressed: () {
-                  setState(() => _index = _indexNext);
+                  setState(() => _index = indexNext);
                   widget.onChange?.call(_index);
                 },
               ),

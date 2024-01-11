@@ -1,10 +1,9 @@
+import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/design/AppInputDecoration.dart';
+import 'package:cptclient/material/dialogs/DatePicker.dart';
+import 'package:cptclient/material/dialogs/TimePicker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import 'DateTimeController.dart';
-import 'dialogs/DatePicker.dart';
-import 'dialogs/TimePicker.dart';
 
 class DateTimeEdit extends StatefulWidget {
   final DateTimeController controller;
