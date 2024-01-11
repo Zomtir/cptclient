@@ -7,6 +7,7 @@ import 'package:cptclient/pages/CalendarPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseManagementPage.dart';
 import 'package:cptclient/pages/CourseResponsiblePage.dart';
+import 'package:cptclient/pages/EventAvailablePage.dart';
 import 'package:cptclient/pages/EventManagement.dart';
 import 'package:cptclient/pages/EventOwnershipPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
@@ -94,8 +95,12 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.labelEvent,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwned,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewPage(session: session))),
+            text: AppLocalizations.of(context)!.pageEventAvailable,
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventAvailablePage(session: session))),
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventOwnership,
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOwnershipPage(session: session))),
           ),
           if (session.right!.admin_event)
             AppButton(

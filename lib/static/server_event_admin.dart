@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
@@ -9,12 +10,13 @@ import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, String status, User? owner) async {
+Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Status? status, Location? location, User? owner) async {
   final response = await http.get(
     server.uri('/admin/event_list', {
       'begin': formatNullWebDate(begin),
       'end': formatNullWebDate(end),
-      'status': status,
+      if (status != null) 'status': status.name,
+      if (location != null) 'location_id': location.id.toString(),
       if (owner != null) 'owner_id': owner.id.toString(),
     }),
     headers: {

@@ -11,12 +11,15 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
+import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/EventOwnersPage.dart';
 import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_event_admin.dart' as server;
-import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:cptclient/static/server_event_admin.dart' as api_admin;
+import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventManagementPage extends StatefulWidget {
   final Session session;
@@ -28,18 +31,14 @@ class EventManagementPage extends StatefulWidget {
 }
 
 class EventManagementPageState extends State<EventManagementPage> {
-  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -1)));
+  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
   final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<User> _ctrlOwner = DropdownController<User>(items: []);
 
   List<Slot> _events = [];
-  List<Slot> _eventsFiltered = [];
   final _filterDaysMax = 366;
-
-  int _panelIndex = 0;
-  final List<String> _panelStatus = ['PENDING', 'OCCURRING', 'REJECTED', 'CANCELED'];
-
-  final DropdownController<User> _ctrlDropdownOwner = DropdownController<User>(items: []);
-  final DropdownController<Location> _ctrlDropdownLocation = DropdownController<Location>(items: server.cacheLocations);
 
   EventManagementPageState();
 
@@ -47,30 +46,23 @@ class EventManagementPageState extends State<EventManagementPage> {
   void initState() {
     super.initState();
     _requestOwnerFilter();
-    _requestSlots();
+    _update();
   }
 
-  Future<void> _requestOwnerFilter() async {
-    List<User> users = await server.user_list(widget.session);
-    users.sort();
+  Future<void> _update() async {
+    List<Slot> events = await api_admin.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlStatus.value, _ctrlLocation.value, _ctrlOwner.value);
 
     setState(() {
-      _ctrlDropdownOwner.items = users;
+      _events = events;
     });
   }
 
-  Future<void> _requestSlots() async {
-    _events = await server.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateBegin.getDate(), _panelStatus[_panelIndex], _ctrlDropdownOwner.value);
-    _filterReservations();
-  }
+  Future<void> _requestOwnerFilter() async {
+    List<User> users = await api_regular.user_list(widget.session);
+    users.sort();
 
-  void _filterReservations() {
     setState(() {
-      _eventsFiltered = _events.where((reservation) {
-        bool locationFilter = (_ctrlDropdownLocation.value == null) ? true : (reservation.location == _ctrlDropdownLocation.value);
-        bool courseFilter = true; // TODO actually implement this (Any, onlyCourse, onlyEvent)
-        return locationFilter && courseFilter;
-      }).toList();
+      _ctrlOwner.items = users;
     });
   }
 
@@ -85,65 +77,17 @@ class EventManagementPageState extends State<EventManagementPage> {
       ),
     );
 
-    _requestSlots();
+    _update();
   }
 
   void _acceptReservation(Slot slot) async {
-    if (!await server.event_accept(widget.session, slot)) return;
-    _requestSlots();
+    if (!await api_admin.event_accept(widget.session, slot)) return;
+    _update();
   }
 
   void _denyReservation(Slot slot) async {
-    if (!await server.event_deny(widget.session, slot)) return;
-    _requestSlots();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Event Management"),
-      ),
-      body: AppBody(
-        children: <Widget>[
-          AppInfoRow(
-            info: Text("Begin Date"),
-            child: DateTimeEdit(controller: _ctrlDateBegin, onUpdate: _pickDateBegin, dateOnly: true),
-          ),
-          AppInfoRow(
-            info: Text("End Date"),
-            child: DateTimeEdit(controller: _ctrlDateEnd, onUpdate: _pickDateEnd, dateOnly: true),
-          ),
-          AppInfoRow(
-            info: Text("User"),
-            child: AppDropdown<User>(
-              controller: _ctrlDropdownOwner,
-              builder: (User user) {
-                return Text("${user.firstname} ${user.lastname}");
-              },
-              onChanged: _pickMember,
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () => _pickMember(null),
-            ),
-          ),
-          PanelSwiper(
-            swipes: 0,
-            onChange: (int index) {
-              _panelIndex = index;
-              _requestSlots();
-            },
-            panels: [
-              Panel("Pending", _buildSlotPendingPanel()),
-              Panel("Occurring", _buildSlotPendingPanel()),
-              Panel("Rejected", _buildSlotPendingPanel()),
-              Panel("Canceled", _buildSlotPendingPanel()),
-            ],
-          ),
-        ],
-      ),
-    );
+    if (!await api_admin.event_deny(widget.session, slot)) return;
+    _update();
   }
 
   Future _pickDateBegin(DateTime newDateBegin) async {
@@ -157,7 +101,7 @@ class EventManagementPageState extends State<EventManagementPage> {
       _ctrlDateBegin.setDateTime(newDateBegin);
       _ctrlDateEnd.setDateTime(newDateEnd);
     });
-    _requestSlots();
+    _update();
   }
 
   Future _pickDateEnd(DateTime newDateEnd) async {
@@ -171,73 +115,89 @@ class EventManagementPageState extends State<EventManagementPage> {
       _ctrlDateBegin.setDateTime(newDateBegin);
       _ctrlDateEnd.setDateTime(newDateEnd);
     });
-    _requestSlots();
+    _update();
   }
 
   void _pickMember(User? member) {
-    setState(() => _ctrlDropdownOwner.value = member);
-    _requestSlots();
+    setState(() => _ctrlOwner.value = member);
+    _update();
   }
 
-  Widget _buildFilters() {
-    return FilterToggle(
-      children: [
-        AppInfoRow(
-          info: Text("Location"),
-          child: AppDropdown<Location>(
-            controller: _ctrlDropdownLocation,
-            builder: (Location location) {
-              return Text(location.key);
-            },
-            onChanged: (Location? location) {
-              _ctrlDropdownLocation.value = location;
-              _filterReservations();
-            },
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              _ctrlDropdownLocation.value = null;
-              _filterReservations();
-            },
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Show Courses"),
-          child: Text("all/yes/no"),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSlotPendingPanel() {
-    return Column(
-      children: [
-        _buildFilters(),
-        AppListView(
-          items: _eventsFiltered,
-          itemBuilder: (Slot slot) {
-            return InkWell(
-              onTap: () => _selectSlot(slot),
-              child: Expanded(
-                child: AppSlotTile(
-                  slot: slot,
-                  trailing: [
-                    IconButton(
-                      icon: const Icon(Icons.highlight_remove),
-                      onPressed: () => _denyReservation(slot),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.check_circle_outline),
-                      onPressed: () => _acceptReservation(slot),
-                    ),
-                  ],
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Event Management"),
+      ),
+      body: AppBody(
+        children: <Widget>[
+          FilterToggle(
+            children: [
+              AppInfoRow(
+                info: Text(AppLocalizations.of(context)!.slotBegin),
+                child: DateTimeEdit(controller: _ctrlDateBegin, onUpdate: (date) => _update(), dateOnly: true),
+              ),
+              AppInfoRow(
+                info: Text(AppLocalizations.of(context)!.slotEnd),
+                child: DateTimeEdit(controller: _ctrlDateEnd, onUpdate: (date) => _update(), dateOnly: true),
+              ),
+              LocationDropdown(
+                controller: _ctrlLocation,
+                onChanged: _update,
+              ),
+              StatusDropdown(
+                controller: _ctrlStatus,
+                onChanged: _update,
+              ),
+              AppInfoRow(
+                info: Text("User"),
+                child: AppDropdown<User>(
+                  controller: _ctrlOwner,
+                  builder: (User user) {
+                    return Text("${user.firstname} ${user.lastname}");
+                  },
+                  onChanged: _pickMember,
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () => _pickMember(null),
                 ),
               ),
-            );
-          },
-        ),
-      ],
+              AppInfoRow(
+                info: Text("Show Courses"),
+                child: Text("all/yes/no"),
+              ),
+            ],
+          ),
+          AppListView(
+            items: _events,
+            itemBuilder: (Slot slot) {
+              return AppSlotTile(
+                slot: slot,
+                trailing: _buildTrailing(slot),
+              );
+            },
+          )
+        ],
+      ),
     );
+  }
+
+  List<Widget> _buildTrailing(Slot slot) {
+    switch (slot.status) {
+      case Status.PENDING:
+        return [
+          IconButton(
+            icon: const Icon(Icons.highlight_remove),
+            onPressed: () => _denyReservation(slot),
+          ),
+          IconButton(
+            icon: const Icon(Icons.check_circle_outline),
+            onPressed: () => _acceptReservation(slot),
+          ),
+        ];
+      default:
+        return [];
+    }
   }
 }

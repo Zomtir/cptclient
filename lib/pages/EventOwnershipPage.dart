@@ -12,6 +12,7 @@ import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/pages/EventOwnersPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/pages/SlotParticipantPage.dart';
@@ -21,16 +22,16 @@ import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EventOverviewPage extends StatefulWidget {
+class EventOwnershipPage extends StatefulWidget {
   final Session session;
 
-  EventOverviewPage({super.key, required this.session});
+  EventOwnershipPage({super.key, required this.session});
 
   @override
-  State<StatefulWidget> createState() => EventOverviewPageState();
+  State<StatefulWidget> createState() => EventOwnershipPageState();
 }
 
-class EventOverviewPageState extends State<EventOverviewPage> {
+class EventOwnershipPageState extends State<EventOwnershipPage> {
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
   final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
@@ -38,7 +39,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
 
   List<Slot> _events = [];
 
-  EventOverviewPageState();
+  EventOwnershipPageState();
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Slot> events = await api_regular.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlLocation.value, _ctrlStatus.value);
+    List<Slot> events = await api_owner.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlStatus.value, _ctrlLocation.value);
 
     setState(() {
       _events = events;
@@ -82,6 +83,20 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           slot: _slot,
           isDraft: true,
           onSubmit: api_regular.event_create,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
+  void _handleEventSelect(Slot slot) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventInfoPage(
+          session: widget.session,
+          slot: slot,
         ),
       ),
     );
@@ -168,7 +183,7 @@ class EventOverviewPageState extends State<EventOverviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageEventOwned),
+        title: Text(AppLocalizations.of(context)!.pageEventOwnership),
       ),
       body: AppBody(
         children: [
@@ -204,9 +219,12 @@ class EventOverviewPageState extends State<EventOverviewPage> {
           AppListView(
             items: _events,
             itemBuilder: (Slot slot) {
-              return AppSlotTile(
-                slot: slot,
-                trailing: _buildTrailing(slot),
+              return InkWell(
+                onTap: () => _handleEventSelect(slot),
+                child: AppSlotTile(
+                  slot: slot,
+                  trailing: _buildTrailing(slot),
+                ),
               );
             },
           )

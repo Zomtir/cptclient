@@ -1,3 +1,4 @@
+import 'package:cptclient/material/design/AppInputDecoration.dart';
 import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/EnrollPage.dart';
 import 'package:cptclient/pages/LoginLandingPage.dart';
@@ -31,6 +32,13 @@ void main() {
       ),
       dividerTheme: DividerThemeData(
         color: Color.fromARGB(255, 208, 190, 135),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          borderSide: BorderSide(color: Colors.amber, width: 2),
+        ),
+        isDense: true,
       ),
     ),
     navigatorObservers: [navi.routeObserver],

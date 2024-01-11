@@ -9,6 +9,7 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/SlotParticipantPage.dart';
 import 'package:cptclient/static/server_class_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseClassManagementPage extends StatefulWidget {
   final Session session;
@@ -66,7 +67,7 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Details"),
+        title: Text("Course Class Management"),
       ),
       body: AppBody(
         children: <Widget>[
@@ -75,7 +76,7 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
           ),
           AppButton(
             leading: Icon(Icons.add),
-            text: "New slot",
+            text: AppLocalizations.of(context)!.actionNew,
             onPressed: () => _selectCourseSlot(Slot.fromCourse(widget.course), true),
           ),
           AppListView<Slot>(

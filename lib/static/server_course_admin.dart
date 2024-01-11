@@ -10,10 +10,12 @@ import 'package:cptclient/static/message.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Course>> course_list(Session session, User? user) async {
+Future<List<Course>> course_list(Session session, User? user, bool? active, bool? public) async {
   final response = await http.get(
     server.uri('/admin/course_list', {
       if (user != null) 'mod_id': user.id.toString(),
+      if (active != null) 'active': active.toString(),
+      if (public != null) 'public': public.toString(),
     }),
     headers: {
       'Token': session.token,

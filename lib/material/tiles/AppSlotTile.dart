@@ -19,7 +19,7 @@ class AppSlotTile extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(.0),
             child: Tooltip(message: "[${slot.id}] ${slot.key}", child: Icon(Icons.info)),
           ),
           Expanded(
@@ -29,12 +29,9 @@ class AppSlotTile extends StatelessWidget {
                 Text("${slot.title}", style: TextStyle(fontWeight: FontWeight.bold)),
                 Text("${slot.location!.title}"),
                 Text(compressDate(slot.begin, slot.end), style: TextStyle(color: Colors.black54)),
+                Text(slot.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(slot.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
           ),
           ...trailing,
         ],

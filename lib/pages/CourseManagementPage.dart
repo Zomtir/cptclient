@@ -8,6 +8,8 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/FilterToggle.dart';
+import 'package:cptclient/material/Tribox.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseClassMangementPage.dart';
@@ -28,26 +30,19 @@ class CourseManagementPage extends StatefulWidget {
 
 class CourseManagementPageState extends State<CourseManagementPage> {
   List<Course> _courses = [];
-  final DropdownController<User> _ctrlDropdownModerators = DropdownController<User>(items: []);
-
-  List<Course> _coursesFiltered = [];
-  bool _hideFilters = true;
-  bool _isActive = true;
-  bool _isPublic = true;
-  final DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
-  RangeValues _thresholdRange = RangeValues(0, 10);
+  final DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
+  bool? _ctrlPublic;
+  bool? _ctrlActive;
+  final DropdownController<Branch> _ctrlBranch = DropdownController<Branch>(items: server.cacheBranches);
+  RangeValues _ctrlThresholdRange = RangeValues(0, 10);
 
   CourseManagementPageState();
 
   @override
   void initState() {
     super.initState();
-    _update();
-  }
-
-  void _update() {
     _requestUsers();
-    _requestCourses(null);
+    _update();
   }
 
   Future<void> _requestUsers() async {
@@ -55,27 +50,13 @@ class CourseManagementPageState extends State<CourseManagementPage> {
     users.sort();
 
     setState(() {
-      _ctrlDropdownModerators.items = users;
+      _ctrlModerator.items = users;
     });
   }
 
-  Future<void> _requestCourses(User? user) async {
-    _courses = await server.course_list(widget.session, user);
-    _courses.sort();
-    setState(() => _ctrlDropdownModerators.value = user);
-    _filterCourses();
-  }
-
-  void _filterCourses() {
-    setState(() {
-      _coursesFiltered = _courses.where((course) {
-        bool activeFilter = course.active == _isActive;
-        bool publicFilter = course.public == _isPublic;
-        bool branchFilter =
-            (_ctrlDropdownBranch.value == null) ? true : (course.branch == _ctrlDropdownBranch.value && course.threshold >= _thresholdRange.start && course.threshold <= _thresholdRange.end);
-        return activeFilter && publicFilter && branchFilter;
-      }).toList();
-    });
+  Future<void> _update() async {
+    _courses = await server.course_list(widget.session, _ctrlModerator.value, _ctrlActive, _ctrlPublic);
+    setState(() => _courses.sort());
   }
 
   Future<void> _selectCourse(Course course, bool isDraft) async {
@@ -131,91 +112,91 @@ class CourseManagementPageState extends State<CourseManagementPage> {
       ),
       body: AppBody(
         children: [
-          AppInfoRow(
-            info: Text("User"),
-            child: AppDropdown<User>(
-              controller: _ctrlDropdownModerators,
-              builder: (User user) {
-                return Text(user.key);
-              },
-              onChanged: (User? user) => _requestCourses(user),
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () => _requestCourses(null),
-            ),
-          ),
           AppButton(
             leading: Icon(Icons.add),
             text: "New course",
             onPressed: () => _selectCourse(Course.fromVoid(), true),
           ),
-          TextButton.icon(
-            icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-            label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
-            onPressed: () => setState(() => _hideFilters = !_hideFilters),
-          ),
-          CollapseWidget(
-            collapse: _hideFilters,
+          FilterToggle(
             children: [
               AppInfoRow(
+                info: Text("Moderator"),
+                child: AppDropdown<User>(
+                  controller: _ctrlModerator,
+                  builder: (User user) {
+                    return Text(user.key);
+                  },
+                  onChanged: (User? user) {
+                    setState(() => _ctrlModerator.value = user);
+                    _update();
+                  },
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() => _ctrlModerator.value = null);
+                    _update();
+                  },
+                ),
+              ),
+              AppInfoRow(
                 info: Text("Active"),
-                child: Checkbox(
-                  value: _isActive,
+                child: Tribox(
+                  value: _ctrlActive,
                   onChanged: (bool? active) {
-                    _isActive = active!;
-                    _filterCourses();
+                    setState(() => _ctrlActive = active);
+                    _update();
                   },
                 ),
               ),
               AppInfoRow(
                 info: Text("Public"),
-                child: Checkbox(
-                  value: _isPublic,
+                child: Tribox(
+                  value: _ctrlPublic,
                   onChanged: (bool? public) {
-                    _isPublic = public!;
-                    _filterCourses();
+                    setState(() => _ctrlPublic = public);
+                    _update();
                   },
                 ),
               ),
               AppInfoRow(
                 info: Text("Branch"),
                 child: AppDropdown<Branch>(
-                  controller: _ctrlDropdownBranch,
+                  controller: _ctrlBranch,
                   builder: (Branch branch) {
                     return Text(branch.title);
                   },
                   onChanged: (Branch? branch) {
-                    _ctrlDropdownBranch.value = branch;
-                    _filterCourses();
+                    _ctrlBranch.value = branch;
+                    _update();
                   },
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
-                    _ctrlDropdownBranch.value = null;
-                    _filterCourses();
+                    _ctrlBranch.value = null;
+                    _update();
                   },
                 ),
               ),
               AppInfoRow(
                 info: Text("Thresholds"),
                 child: RangeSlider(
-                  values: _thresholdRange,
+                  values: _ctrlThresholdRange,
                   min: 0,
                   max: 10,
                   divisions: 10,
                   onChanged: (RangeValues values) {
-                    _thresholdRange = values;
-                    _filterCourses();
+                    _ctrlThresholdRange = values;
+                    _update();
                   },
-                  labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
+                  labels: RangeLabels("${_ctrlThresholdRange.start}", "${_ctrlThresholdRange.end}"),
                 ),
               ),
             ],
           ),
           AppListView<Course>(
-            items: _coursesFiltered,
+            items: _courses,
             itemBuilder: (Course course) {
               return InkWell(
                 onTap: () => _selectCourse(course, false),

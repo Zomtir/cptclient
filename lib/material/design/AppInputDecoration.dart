@@ -7,5 +7,6 @@ class AppInputDecoration extends InputDecoration {
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             borderSide: BorderSide(color: Colors.amber, width: 2),
           ),
+          isDense: true,
         );
 }

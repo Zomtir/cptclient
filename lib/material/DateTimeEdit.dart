@@ -69,46 +69,62 @@ class _DateTimeEditState extends State<DateTimeEdit> {
               widget.controller.setDateTime((enabled != null && enabled) ? DateTime.now() : null);
             }),
           ),
-        if (!widget.controller.isNull())
-          SizedBox(
-            width: 120,
-            height: 40,
-            child: TextField(
-              controller: dateController,
-              maxLines: 1,
-              onChanged: (String text) {
-                setState(() {
-                  widget.controller.tryParseDate(text);
-                });
-              },
-              decoration: AppInputDecoration(),
-            ),
+        Expanded(
+          child: Column(
+            children: [
+              if (!widget.controller.isNull())
+                Container(
+                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: Row(
+                    //mainAxisSize: MainAxisSize.min,
+                    //
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: dateController,
+                          maxLines: 1,
+                          onChanged: (String text) {
+                            setState(() {
+                              widget.controller.tryParseDate(text);
+                            });
+                          },
+                          decoration: AppInputDecoration(),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.calendar_month),
+                        onPressed: () => _handleDateChange(context),
+                      ),
+                    ],
+                  ),
+                ),
+              if (!widget.dateOnly && !widget.controller.isNull())
+                Container(
+                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: timeController,
+                          maxLines: 1,
+                          onChanged: (String text) {
+                            setState(() {
+                              widget.controller.tryParseTime(text);
+                            });
+                          },
+                          decoration: AppInputDecoration(),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.access_time),
+                        onPressed: () => _handleTimeChange(context),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
-        if (!widget.controller.isNull())
-          IconButton(
-            icon: Icon(Icons.calendar_month),
-            onPressed: () => _handleDateChange(context),
-          ),
-        if (!widget.dateOnly && !widget.controller.isNull())
-          SizedBox(
-            width: 120,
-            height: 40,
-            child: TextField(
-              controller: timeController,
-              maxLines: 1,
-              onChanged: (String text) {
-                setState(() {
-                  widget.controller.tryParseTime(text);
-                });
-              },
-              decoration: AppInputDecoration(),
-            ),
-          ),
-        if (!widget.dateOnly && !widget.controller.isNull())
-          IconButton(
-            icon: Icon(Icons.access_time),
-            onPressed: () => _handleTimeChange(context),
-          ),
+        ),
       ],
     );
   }

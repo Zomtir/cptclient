@@ -6,6 +6,7 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseModeratorPage.dart';
 import 'package:cptclient/static/server_course_regular.dart' as server;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseAvailablePage extends StatefulWidget {
   final Session session;
@@ -50,7 +51,7 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Available Courses"),
+        title: Text(AppLocalizations.of(context)!.pageCourseAvailable),
       ),
       body: AppBody(
         children: [
