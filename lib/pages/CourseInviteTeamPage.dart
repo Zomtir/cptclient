@@ -45,7 +45,6 @@ class CourseInviteTeamPageState extends State<CourseInviteTeamPage> {
 
     _teamData.available = teamsAvailable;
     _teamData.selected = teamsSelected;
-    _teamData.notifyListeners();
   }
 
   void _addTeam(Team team) async {

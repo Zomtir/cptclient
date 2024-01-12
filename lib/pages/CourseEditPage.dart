@@ -45,14 +45,8 @@ class CourseEditPageState extends State<CourseEditPage> {
   }
 
   void _deleteCourse() async {
-    bool success = await server.course_delete(widget.session, widget.course.id);
+    if (!await widget.onDelete!(widget.session, widget.course)) return;
 
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete course')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted course')));
     Navigator.pop(context);
   }
 

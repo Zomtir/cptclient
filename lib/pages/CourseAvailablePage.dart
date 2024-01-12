@@ -3,6 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/pages/ClassAvailablePage.dart';
 import 'package:cptclient/pages/CourseModeratorPage.dart';
 import 'package:cptclient/static/server_course_regular.dart' as server;
 import 'package:flutter/material.dart';
@@ -37,10 +38,9 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseModeratorPage(
+        builder: (context) => ClassAvailablePage(
           session: widget.session,
           course: course,
-          isDraft: isDraft,
         ),
       ),
     );

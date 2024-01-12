@@ -53,7 +53,6 @@ class SlotParticipantPageState extends State<SlotParticipantPage> {
 
     _participantData.available = users;
     _participantData.selected = participants;
-    _participantData.notifyListeners();
   }
 
   void _addParticipant(User user) async {

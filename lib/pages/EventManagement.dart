@@ -9,7 +9,6 @@ import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
-import 'package:cptclient/material/PanelSwiper.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
@@ -90,7 +89,7 @@ class EventManagementPageState extends State<EventManagementPage> {
     _update();
   }
 
-  Future _pickDateBegin(DateTime newDateBegin) async {
+  _pickDateBegin(DateTime newDateBegin) {
     DateTime newDateEnd = _ctrlDateEnd.getDateTime()!;
 
     if (newDateEnd.isBefore(newDateBegin)) newDateEnd = newDateBegin;
@@ -101,10 +100,9 @@ class EventManagementPageState extends State<EventManagementPage> {
       _ctrlDateBegin.setDateTime(newDateBegin);
       _ctrlDateEnd.setDateTime(newDateEnd);
     });
-    _update();
   }
 
-  Future _pickDateEnd(DateTime newDateEnd) async {
+  _pickDateEnd(DateTime newDateEnd) {
     DateTime newDateBegin = _ctrlDateBegin.getDateTime()!;
 
     if (newDateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
@@ -115,12 +113,6 @@ class EventManagementPageState extends State<EventManagementPage> {
       _ctrlDateBegin.setDateTime(newDateBegin);
       _ctrlDateEnd.setDateTime(newDateEnd);
     });
-    _update();
-  }
-
-  void _pickMember(User? member) {
-    setState(() => _ctrlOwner.value = member);
-    _update();
   }
 
   @override
@@ -132,22 +124,21 @@ class EventManagementPageState extends State<EventManagementPage> {
       body: AppBody(
         children: <Widget>[
           FilterToggle(
+            onApply: _update,
             children: [
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotBegin),
-                child: DateTimeEdit(controller: _ctrlDateBegin, onUpdate: (date) => _update(), dateOnly: true),
+                child: DateTimeEdit(controller: _ctrlDateBegin, dateOnly: true),
               ),
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotEnd),
-                child: DateTimeEdit(controller: _ctrlDateEnd, onUpdate: (date) => _update(), dateOnly: true),
+                child: DateTimeEdit(controller: _ctrlDateEnd, dateOnly: true),
               ),
               LocationDropdown(
                 controller: _ctrlLocation,
-                onChanged: _update,
               ),
               StatusDropdown(
                 controller: _ctrlStatus,
-                onChanged: _update,
               ),
               AppInfoRow(
                 info: Text("User"),
@@ -156,11 +147,11 @@ class EventManagementPageState extends State<EventManagementPage> {
                   builder: (User user) {
                     return Text("${user.firstname} ${user.lastname}");
                   },
-                  onChanged: _pickMember,
+                  onChanged: (User? user) => setState(() => _ctrlOwner.value = user),
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.clear),
-                  onPressed: () => _pickMember(null),
+                  onPressed: () => setState(() => _ctrlOwner.value = null),
                 ),
               ),
               AppInfoRow(

@@ -50,16 +50,15 @@ class TeamMemberPageState extends State<TeamMemberPage> {
 
     _memberData.available = users;
     _memberData.selected = members;
-    _memberData.notifyListeners();
   }
 
   void _addMember(User user) async {
-    if (await api_admin.team_member_add(widget.session, widget.team.id, user.id)) return;
+    if (!await api_admin.team_member_add(widget.session, widget.team.id, user.id)) return;
     _update();
   }
 
   void _removeMember(User user) async {
-    if(await api_admin.team_member_remove(widget.session, widget.team.id, user.id)) return;
+    if(!await api_admin.team_member_remove(widget.session, widget.team.id, user.id)) return;
     _update();
   }
 

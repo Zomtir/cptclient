@@ -42,7 +42,6 @@ class UserManagementPageState extends State<UserManagementPage> {
     users.sort();
 
     _userData.available = users;
-    _userData.notifyListeners();
   }
 
   void _selectUser(User user) async {

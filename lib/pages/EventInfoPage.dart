@@ -6,6 +6,7 @@ import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// TODO rename to SlotInfoPage and include courseInfo if available
 class EventInfoPage extends StatefulWidget {
   final Session session;
   final Slot slot;

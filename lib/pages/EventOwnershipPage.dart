@@ -193,22 +193,21 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
             onPressed: _createEvent,
           ),
           FilterToggle(
+            onApply: _update,
             children: [
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotBegin),
-                child: DateTimeEdit(controller: _ctrlDateBegin, onUpdate: (date) => _update(), dateOnly: true),
+                child: DateTimeEdit(controller: _ctrlDateBegin, dateOnly: true),
               ),
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotEnd),
-                child: DateTimeEdit(controller: _ctrlDateEnd, onUpdate: (date) => _update(), dateOnly: true),
+                child: DateTimeEdit(controller: _ctrlDateEnd, dateOnly: true),
               ),
               LocationDropdown(
                 controller: _ctrlLocation,
-                onChanged: _update,
               ),
               StatusDropdown(
                 controller: _ctrlStatus,
-                onChanged: _update,
               ),
               AppInfoRow(
                 info: Text("Show Courses"),

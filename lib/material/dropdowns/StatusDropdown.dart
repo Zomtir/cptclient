@@ -7,12 +7,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatusDropdown extends StatelessWidget {
   final DropdownController<Status> controller;
-  final void Function() onChanged;
+  final void Function()? onChanged;
 
   StatusDropdown({
     super.key,
     required this.controller,
-    required this.onChanged,
+    this.onChanged,
   });
 
   @override
@@ -26,14 +26,14 @@ class StatusDropdown extends StatelessWidget {
         },
         onChanged: (Status? status) {
           controller.value = status;
-          onChanged();
+          onChanged?.call();
         },
       ),
       trailing: IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
           controller.value = null;
-          onChanged();
+          onChanged?.call();
         },
       ),
     );

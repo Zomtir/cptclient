@@ -4,8 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterToggle extends StatefulWidget {
   final List<Widget> children;
+  final VoidCallback? onApply;
 
-  FilterToggle({required this.children});
+  FilterToggle({required this.children, required this.onApply});
 
   @override
   FilterToggleState createState() => FilterToggleState();
@@ -18,12 +19,33 @@ class FilterToggleState extends State<FilterToggle> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextButton.icon(
-          icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-          label: _hideFilters ? Text(AppLocalizations.of(context)!.actionShowFilter) : Text(AppLocalizations.of(context)!.actionHideFilter),
-          onPressed: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-            setState(() => _hideFilters = !_hideFilters);},
+        Row(
+          children: [
+            if (_hideFilters) Expanded(
+              child: TextButton.icon(
+                icon: Icon(Icons.keyboard_arrow_down),
+                label: Text("${AppLocalizations.of(context)!.labelFilter} ${AppLocalizations.of(context)!.actionShow}"),
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  setState(() => _hideFilters = false);
+                },
+              ),
+            ),
+            if (!_hideFilters) Expanded(
+              child: TextButton.icon(
+                icon: Icon(Icons.keyboard_arrow_up),
+                label: Text("${AppLocalizations.of(context)!.labelFilter} ${AppLocalizations.of(context)!.actionHide}"),
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  setState(() => _hideFilters = true);},
+              ),
+            ),
+            TextButton.icon(
+              icon: Icon(Icons.refresh),
+              label: Text(AppLocalizations.of(context)!.actionApply),
+              onPressed: widget.onApply,
+            ),
+          ],
         ),
         CollapseWidget(
           collapse: _hideFilters,

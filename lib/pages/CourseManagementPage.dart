@@ -6,11 +6,11 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/Tribox.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/dropdowns/RankingDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseClassMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
@@ -18,6 +18,7 @@ import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_course_admin.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseManagementPage extends StatefulWidget {
   final Session session;
@@ -33,8 +34,8 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   final DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
   bool? _ctrlPublic;
   bool? _ctrlActive;
-  final DropdownController<Branch> _ctrlBranch = DropdownController<Branch>(items: server.cacheBranches);
-  RangeValues _ctrlThresholdRange = RangeValues(0, 10);
+  DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
+  RangeValues _ctrlRankingRange = RangeValues(0, 10);
 
   CourseManagementPageState();
 
@@ -59,11 +60,11 @@ class CourseManagementPageState extends State<CourseManagementPage> {
     setState(() => _courses.sort());
   }
 
-  Future<void> _selectCourse(Course course, bool isDraft) async {
+  Future<void> _selectCourse(Course course) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseClassManagementPage(session: widget.session, course: course, isDraft: isDraft),
+        builder: (context) => CourseClassManagementPage(session: widget.session, course: course, isDraft: false),
       ),
     );
 
@@ -114,84 +115,47 @@ class CourseManagementPageState extends State<CourseManagementPage> {
         children: [
           AppButton(
             leading: Icon(Icons.add),
-            text: "New course",
-            onPressed: () => _selectCourse(Course.fromVoid(), true),
+            text: AppLocalizations.of(context)!.actionNew,
+            onPressed: _createCourse,
           ),
           FilterToggle(
+            onApply: _update,
             children: [
               AppInfoRow(
-                info: Text("Moderator"),
+                info: Text(AppLocalizations.of(context)!.courseModerator),
                 child: AppDropdown<User>(
                   controller: _ctrlModerator,
                   builder: (User user) {
                     return Text(user.key);
                   },
-                  onChanged: (User? user) {
-                    setState(() => _ctrlModerator.value = user);
-                    _update();
-                  },
+                  onChanged: (User? user) => setState(() => _ctrlModerator.value = user),
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() => _ctrlModerator.value = null);
-                    _update();
-                  },
+                  onPressed: () => setState(() => _ctrlModerator.value = null),
                 ),
               ),
               AppInfoRow(
-                info: Text("Active"),
+                info: Text(AppLocalizations.of(context)!.courseActive),
                 child: Tribox(
                   value: _ctrlActive,
-                  onChanged: (bool? active) {
-                    setState(() => _ctrlActive = active);
-                    _update();
-                  },
+                  onChanged: (bool? active) => setState(() => _ctrlActive = active),
                 ),
               ),
               AppInfoRow(
-                info: Text("Public"),
+                info: Text(AppLocalizations.of(context)!.coursePublic),
                 child: Tribox(
                   value: _ctrlPublic,
-                  onChanged: (bool? public) {
-                    setState(() => _ctrlPublic = public);
-                    _update();
-                  },
+                  onChanged: (bool? public) => setState(() => _ctrlPublic = public),
                 ),
               ),
-              AppInfoRow(
-                info: Text("Branch"),
-                child: AppDropdown<Branch>(
-                  controller: _ctrlBranch,
-                  builder: (Branch branch) {
-                    return Text(branch.title);
-                  },
-                  onChanged: (Branch? branch) {
-                    _ctrlBranch.value = branch;
-                    _update();
-                  },
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    _ctrlBranch.value = null;
-                    _update();
-                  },
-                ),
-              ),
-              AppInfoRow(
-                info: Text("Thresholds"),
-                child: RangeSlider(
-                  values: _ctrlThresholdRange,
-                  min: 0,
-                  max: 10,
-                  divisions: 10,
-                  onChanged: (RangeValues values) {
-                    _ctrlThresholdRange = values;
-                    _update();
-                  },
-                  labels: RangeLabels("${_ctrlThresholdRange.start}", "${_ctrlThresholdRange.end}"),
-                ),
+              RankingDropdown(
+                controller: _ctrlRankingBranch,
+                range: _ctrlRankingRange,
+                onChanged: (Branch? branch, RangeValues range) => setState(() {
+                  _ctrlRankingBranch.value = branch;
+                  _ctrlRankingRange = range;
+                }),
               ),
             ],
           ),
@@ -199,7 +163,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
             items: _courses,
             itemBuilder: (Course course) {
               return InkWell(
-                onTap: () => _selectCourse(course, false),
+                onTap: () => _selectCourse(course),
                 child: AppCourseTile(
                   course: course,
                 ),

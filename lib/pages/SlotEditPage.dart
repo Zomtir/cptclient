@@ -7,7 +7,6 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/design/AppInputDecoration.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/static/server.dart' as server;
@@ -94,9 +93,7 @@ class SlotEditPageState extends State<SlotEditPage> {
   }
 
   void _deleteSlot() async {
-    bool success = await widget.onDelete!(widget.session, widget.slot);
-
-    if (!success) return;
+    if (!await widget.onDelete!(widget.session, widget.slot)) return;
 
     Navigator.pop(context);
   }
