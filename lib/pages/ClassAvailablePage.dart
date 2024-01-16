@@ -2,7 +2,6 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
@@ -63,7 +62,7 @@ class ClassAvailablePageState extends State<ClassAvailablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Class Management"),
+        title: Text(AppLocalizations.of(context)!.pageClassAvailable),
       ),
       body: AppBody(
         children: <Widget>[

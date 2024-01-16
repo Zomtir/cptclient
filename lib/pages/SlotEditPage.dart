@@ -79,8 +79,13 @@ class SlotEditPageState extends State<SlotEditPage> {
 
   void _handleSubmit() async {
     _gatherSlot();
-    bool success = await widget.onSubmit(widget.session, widget.slot);
-    if (!success) return;
+
+    if (widget.slot.location == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Location is required.')));
+      return;
+    }
+
+    if (!await widget.onSubmit(widget.session, widget.slot)) return;
 
     Navigator.pop(context);
   }

@@ -55,7 +55,11 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
           session: widget.session,
           slot: Slot.fromCourse(widget.course),
           isDraft: true,
-          onSubmit: (Session session, Slot slot) => api_admin.class_create(session, widget.course.id, slot),
+          onSubmit: (Session session, Slot slot) async {
+            if (!await api_admin.class_create(session, widget.course.id, slot)) return false;
+            _update();
+            return true;
+          },
         ),
       ),
     );

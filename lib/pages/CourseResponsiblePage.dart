@@ -4,8 +4,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseModeratorPage.dart';
@@ -25,11 +25,9 @@ class CourseResponsiblePage extends StatefulWidget {
 
 class CourseResponsiblePageState extends State<CourseResponsiblePage> {
   List<Course> _courses = [];
-  List<Course> _coursesFiltered = [];
-  bool _hideFilters = true;
 
   bool _isActive = true;
-  final bool _isPublic = true;
+  bool _isPublic = true;
   final DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
@@ -42,21 +40,9 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
   }
 
   void _update() async {
-    List<Course>? courses = await server.course_responsibility(widget.session);
-    _courses = courses!;
-    _filterCourses();
-  }
+    List<Course> courses = await server.course_responsibility(widget.session, _isActive, _isPublic);
 
-  void _filterCourses() {
-    setState(() {
-      _coursesFiltered = _courses.where((course) {
-        bool activeFilter = course.active == _isActive;
-        bool publicFilter = course.public == _isPublic;
-        bool branchFilter =
-        (_ctrlDropdownBranch.value == null) ? true : (course.branch == _ctrlDropdownBranch.value && course.threshold >= _thresholdRange.start && course.threshold <= _thresholdRange.end);
-        return activeFilter && publicFilter && branchFilter;
-      }).toList();
-    });
+    setState(() => _courses = courses);
   }
 
   Future<void> _selectCourse(Course course, bool isDraft) async {
@@ -85,13 +71,8 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TextButton.icon(
-                icon: _hideFilters ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
-                label: _hideFilters ? Text('Show Filters') : Text('Hide Filters'),
-                onPressed: () => setState(() => _hideFilters = !_hideFilters),
-              ),
-              CollapseWidget(
-                collapse: _hideFilters,
+              FilterToggle(
+                onApply: _update,
                 children: [
                   AppInfoRow(
                     info: Text("Active"),
@@ -99,7 +80,6 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                       value: _isActive,
                       onChanged: (bool? active) {
                         _isActive = active!;
-                        _filterCourses();
                       },
                     ),
                   ),
@@ -108,8 +88,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                     child: Checkbox(
                       value: _isPublic,
                       onChanged: (bool? public) {
-                        _isActive = public!;
-                        _filterCourses();
+                        _isPublic = public!;
                       },
                     ),
                   ),
@@ -122,14 +101,12 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                       },
                       onChanged: (Branch? branch) {
                         _ctrlDropdownBranch.value = branch;
-                        _filterCourses();
                       },
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.clear),
                       onPressed: () {
                         _ctrlDropdownBranch.value = null;
-                        _filterCourses();
                       },
                     ),
                   ),
@@ -142,7 +119,6 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                       divisions: 10,
                       onChanged: (RangeValues values) {
                         _thresholdRange = values;
-                        _filterCourses();
                       },
                       labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
                     ),
@@ -150,7 +126,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                 ],
               ),
               AppListView<Course>(
-                items: _coursesFiltered,
+                items: _courses,
                 itemBuilder: (Course course) {
                   return InkWell(
                     onTap: () => _selectCourse(course, false),

@@ -4,7 +4,6 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassAvailablePage.dart';
-import 'package:cptclient/pages/CourseModeratorPage.dart';
 import 'package:cptclient/static/server_course_regular.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

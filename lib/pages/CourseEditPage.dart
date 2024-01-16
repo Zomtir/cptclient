@@ -55,8 +55,6 @@ class CourseEditPageState extends State<CourseEditPage> {
     _ctrlCourseTitle.text = widget.course.title;
     _ctrlCourseActive = widget.course.active;
     _ctrlCoursePublic = widget.course.public;
-    _ctrlCourseBranch.value = widget.course.branch;
-    _pickThresholdValue = widget.course.threshold;
   }
 
   void _gatherCourse() {
@@ -64,8 +62,6 @@ class CourseEditPageState extends State<CourseEditPage> {
     widget.course.title = _ctrlCourseTitle.text;
     widget.course.active = _ctrlCourseActive;
     widget.course.public = _ctrlCoursePublic;
-    widget.course.branch = _ctrlCourseBranch.value;
-    widget.course.threshold = _pickThresholdValue;
   }
 
   void _submitCourse() async {

@@ -1,42 +1,32 @@
-import 'package:cptclient/json/branch.dart';
-
 class Course implements Comparable {
   final int id;
   String key;
   String title;
   bool active;
   bool public;
-  Branch? branch;
-  int threshold;
 
-  Course(this.id, this.key, this.title, this.active, this.public, this.branch, this.threshold);
+  Course(this.id, this.key, this.title, this.active, this.public);
 
   Course.fromVoid() :
     id = 0,
     key = "",
     title = "Course Title",
     active = true,
-    public = true,
-    branch = null,
-    threshold = 0;
+    public = true;
 
   Course.fromCourse(Course course) :
     id = 0,
     key = "",
     title = course.title,
     active = course.active,
-    public = course.public,
-    branch = course.branch,
-    threshold = course.threshold;
+    public = course.public;
 
   Course.fromJson(Map<String, dynamic> json) :
     id = json['id'],
     key = json['key'],
     title = json['title'],
     active = json['active'],
-    public = json['public'],
-    branch = Branch.fromJson(json['branch']),
-    threshold = json['threshold'];
+    public = json['public'];
 
   Map<String, dynamic> toJson() =>
   {
@@ -45,8 +35,6 @@ class Course implements Comparable {
     'title': title,
     'active': active,
     'public': public,
-    'branch': branch?.toJson(),
-    'threshold': threshold,
   };
 
   MapEntry<String, String> toEntry() => MapEntry(key, title);
