@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zomtir.cptclient">
+    package="link.zomtir.cptclient">
    <application
         android:label="cptclient"
         android:icon="@mipmap/ic_launcher">

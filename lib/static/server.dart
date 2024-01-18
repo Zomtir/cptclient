@@ -7,7 +7,7 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
-import "package:universal_html/html.dart"; // TODO go back to dart:html?
+import 'dart:html';
 
 String serverScheme = window.localStorage['ServerScheme']!;
 String serverHost = window.localStorage['ServerHost']!;

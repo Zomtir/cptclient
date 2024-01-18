@@ -8,7 +8,7 @@ import 'package:cptclient/pages/LoginSlotPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
-import "package:universal_html/html.dart";
+import 'dart:html';
 
 class LoginLandingPage extends StatefulWidget {
   LoginLandingPage({super.key});

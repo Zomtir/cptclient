@@ -31,10 +31,11 @@ dependencies:
   intl: any
 
   # Local storage (browser)
-  universal_html: ^2.0.8
+  #universal_html: ^2.0.8
 
   # Global storage (yaml)
   yaml: any
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
 

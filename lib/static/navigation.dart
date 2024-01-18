@@ -1,5 +1,8 @@
 library navigation;
 
+#import 'dart:html';
+//import "package:universal_html/html.dart"; // alternative to import 'dart:html';
+
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
@@ -9,7 +12,6 @@ import 'package:cptclient/static/server_slot_service.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import "package:universal_html/html.dart"; // TODO go back to dart:html?
 import 'package:yaml/yaml.dart';
 
 Session? session;
@@ -21,7 +23,7 @@ Future<void> connect() async {
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 
-  window.localStorage.putIfAbsent('ServerScheme', () => configMap['ServerScheme']);
+  localStorage.putIfAbsent('ServerScheme', () => configMap['ServerScheme']);
   window.localStorage.putIfAbsent('ServerHost', () => configMap['ServerHost']);
   window.localStorage.putIfAbsent('ServerPort', () => configMap['ServerPort']);
   window.localStorage.putIfAbsent('Session', () => '');

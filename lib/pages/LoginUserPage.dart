@@ -3,7 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
-import "package:universal_html/html.dart";
+import 'dart:html';
 
 class LoginUserPage extends StatefulWidget {
   LoginUserPage({super.key});

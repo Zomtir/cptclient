@@ -3,7 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
-import "package:universal_html/html.dart";
+import 'dart:html';
 
 class ConnectionPage extends StatefulWidget {
   @override
