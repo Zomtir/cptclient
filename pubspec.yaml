@@ -22,7 +22,7 @@ dependencies:
     sdk: flutter
 
   # Fetch data from the internet
-  http: ^1.1.2
+  http: ^1.2.0
 
   # Hash the password
   crypto: ^3.0.0
