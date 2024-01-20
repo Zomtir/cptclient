@@ -14,7 +14,7 @@ class AppListView<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     if (items == null) return Container();
     return ListView.builder(
-      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: items!.length,
       itemBuilder: (context, index) {

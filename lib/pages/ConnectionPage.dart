@@ -3,7 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
-import 'dart:html';
+import "package:universal_html/html.dart" as html;
 
 class ConnectionPage extends StatefulWidget {
   @override
@@ -24,13 +24,13 @@ class ConnectionPageState extends State<ConnectionPage> {
   void initState() {
     super.initState();
 
-    _ctrlServerScheme.text = window.localStorage['ServerScheme']!;
-    _ctrlServerHost.text = window.localStorage['ServerHost']!;
-    _ctrlServerPort.text = window.localStorage['ServerPort']!;
-    _ctrlUser.text = window.localStorage['DefaultUser']!;
-    _ctrlSlot.text = window.localStorage['DefaultSlot']!;
-    _ctrlCourse.text = window.localStorage['DefaultCourse']!;
-    _ctrlLocation.text = window.localStorage['DefaultLocation']!;
+    _ctrlServerScheme.text = html.window.localStorage['ServerScheme']!;
+    _ctrlServerHost.text = html.window.localStorage['ServerHost']!;
+    _ctrlServerPort.text = html.window.localStorage['ServerPort']!;
+    _ctrlUser.text = html.window.localStorage['DefaultUser']!;
+    _ctrlSlot.text = html.window.localStorage['DefaultSlot']!;
+    _ctrlCourse.text = html.window.localStorage['DefaultCourse']!;
+    _ctrlLocation.text = html.window.localStorage['DefaultLocation']!;
 
     _testConnection();
   }
@@ -58,7 +58,7 @@ class ConnectionPageState extends State<ConnectionPage> {
               maxLines: 1,
               controller: _ctrlServerScheme,
               onChanged: (String text) {
-                window.localStorage['ServerScheme'] = text;
+                html.window.localStorage['ServerScheme'] = text;
                 server.serverScheme = text;
               },
             ),
@@ -69,7 +69,7 @@ class ConnectionPageState extends State<ConnectionPage> {
               maxLines: 1,
               controller: _ctrlServerHost,
               onChanged: (String text) {
-                window.localStorage['ServerHost'] = text;
+                html.window.localStorage['ServerHost'] = text;
                 server.serverHost = text;
               },
             ),
@@ -80,7 +80,7 @@ class ConnectionPageState extends State<ConnectionPage> {
               maxLines: 1,
               controller: _ctrlServerPort,
               onChanged: (String text) {
-                window.localStorage['ServerPort'] = text;
+                html.window.localStorage['ServerPort'] = text;
                 server.serverPort = int.tryParse(text) ?? 443;
               },
             ),
@@ -102,7 +102,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUser,
-              onChanged: (String text) => {window.localStorage['DefaultUser'] = text},
+              onChanged: (String text) => {html.window.localStorage['DefaultUser'] = text},
             ),
           ),
           AppInfoRow(
@@ -110,7 +110,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlSlot,
-              onChanged: (String text) => {window.localStorage['DefaultSlot'] = text},
+              onChanged: (String text) => {html.window.localStorage['DefaultSlot'] = text},
             ),
           ),
           AppInfoRow(
@@ -118,7 +118,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlCourse,
-              onChanged: (String text) => {window.localStorage['DefaultCourse'] = text},
+              onChanged: (String text) => {html.window.localStorage['DefaultCourse'] = text},
             ),
           ),
           AppInfoRow(
@@ -126,7 +126,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlLocation,
-              onChanged: (String text) => {window.localStorage['DefaultLocation'] = text},
+              onChanged: (String text) => {html.window.localStorage['DefaultLocation'] = text},
             ),
           ),
         ],

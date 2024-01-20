@@ -3,7 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
-import 'dart:html';
+import "package:universal_html/html.dart" as html;
 
 class LoginSlotPage extends StatefulWidget {
   LoginSlotPage({super.key});
@@ -20,13 +20,13 @@ class LoginSlotPageState extends State<LoginSlotPage> {
   void initState() {
     super.initState();
 
-    _ctrlSlotLogin.text = window.localStorage['DefaultSlot']!;
+    _ctrlSlotLogin.text = html.window.localStorage['DefaultSlot']!;
   }
 
   void _loginSlot() async {
     bool success = await server.loginSlot(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
 
-    _ctrlSlotLogin.text = window.localStorage['DefaultSlot']!;
+    _ctrlSlotLogin.text = html.window.localStorage['DefaultSlot']!;
     _ctrlSlotPasswd.text = "";
 
     if (success) navi.loginSlot();

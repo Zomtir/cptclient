@@ -30,11 +30,13 @@ dependencies:
   # Date & Time
   intl: any
 
-  # Local storage (browser)
-  #universal_html: ^2.0.8
+  # Local Storage
+  universal_html: ^2.2.4
 
   # Global storage (yaml)
   yaml: any
+
+  # More icons
   cupertino_icons: ^1.0.6
 
 dev_dependencies:
@@ -56,5 +58,6 @@ flutter:
   # Local assets
   assets:
     - cptclient.yaml
+    - assets/
     - assets/images/
     - assets/icons/

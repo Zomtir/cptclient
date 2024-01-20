@@ -7,11 +7,11 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
-import 'dart:html';
+import "package:universal_html/html.dart" as html;
 
-String serverScheme = window.localStorage['ServerScheme']!;
-String serverHost = window.localStorage['ServerHost']!;
-int serverPort = int.tryParse(window.localStorage['ServerPort']!)?? 443;
+String serverScheme = html.window.localStorage['ServerScheme']!;
+String serverHost = html.window.localStorage['ServerHost']!;
+int serverPort = int.tryParse(html.window.localStorage['ServerPort']!)?? 443;
 
 Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
   return Uri(
@@ -138,8 +138,8 @@ Future<bool> loginUser(String key, String pwd) async {
   );
 
   if (response.statusCode == 200) {
-    window.localStorage['Session'] = 'user';
-    window.localStorage['Token'] = response.body;
+    html.window.localStorage['Session'] = 'user';
+    html.window.localStorage['Token'] = response.body;
     return true;
   } else {
     print("User login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
@@ -162,8 +162,8 @@ Future<bool> loginSlot(String key, String pwd) async {
   );
 
   if (response.statusCode == 200) {
-    window.localStorage['Session'] = 'slot';
-    window.localStorage['Token'] = response.body;
+    html.window.localStorage['Session'] = 'slot';
+    html.window.localStorage['Token'] = response.body;
     return true;
   } else {
     print("Slot login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
@@ -182,8 +182,8 @@ Future<bool> loginCourse(String key) async {
   );
 
   if (response.statusCode == 200) {
-    window.localStorage['Session'] = 'slot';
-    window.localStorage['Token'] = response.body;
+    html.window.localStorage['Session'] = 'slot';
+    html.window.localStorage['Token'] = response.body;
     return true;
   } else {
     print("Course login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
@@ -202,8 +202,8 @@ Future<bool> loginLocation(String key) async {
   );
 
   if (response.statusCode == 200) {
-    window.localStorage['Session'] = 'slot';
-    window.localStorage['Token'] = response.body;
+    html.window.localStorage['Session'] = 'slot';
+    html.window.localStorage['Token'] = response.body;
     return true;
   } else {
     print("Location login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");

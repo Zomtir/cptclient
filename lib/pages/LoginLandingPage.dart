@@ -8,7 +8,7 @@ import 'package:cptclient/pages/LoginSlotPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
-import 'dart:html';
+import "package:universal_html/html.dart" as html;
 
 class LoginLandingPage extends StatefulWidget {
   LoginLandingPage({super.key});
@@ -25,7 +25,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
   }
 
   void _resume() async {
-    switch (window.localStorage['Session']!) {
+    switch (html.window.localStorage['Session']!) {
       case 'user':
         navi.loginUser();
         break;
@@ -54,11 +54,11 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         ],
       ),
       body: AppBody(children: [
-        if (window.localStorage['Session']!.isNotEmpty) AppButton(
+        if (html.window.localStorage['Session']!.isNotEmpty) AppButton(
           text: "Resume Session",
           onPressed: _resume,
         ),
-        if (window.localStorage['Session']!.isNotEmpty) Divider(),
+        if (html.window.localStorage['Session']!.isNotEmpty) Divider(),
         AppButton(
           text: "User Login",
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),

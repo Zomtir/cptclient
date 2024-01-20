@@ -38,14 +38,10 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
+    return Column(
       children: [
         TextField(
-          autofocus: true,
           maxLines: 1,
-          focusNode: FocusNode(),
           controller: _ctrlFilter,
           onChanged: (text) => setState(() {/* The filter will be applied during rebuild */}),
           decoration: InputDecoration(

@@ -81,7 +81,7 @@ class MainPageState extends State<MainPage> {
         child: const Image(
           fit: BoxFit.cover,
           alignment: Alignment.center,
-          image: AssetImage('images/splash.png'),
+          image: AssetImage('assets/images/splash.png'),
         ),
       ),
     );

@@ -6,7 +6,7 @@ import 'package:cptclient/material/design/AppButtonLightStyle.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
-import 'dart:html';
+import "package:universal_html/html.dart" as html;
 
 class LoginLocationPage extends StatefulWidget {
   LoginLocationPage({super.key});
@@ -23,14 +23,14 @@ class LoginLocationPageState extends State<LoginLocationPage> {
   void initState() {
     super.initState();
 
-    _ctrlLogin.text = window.localStorage['LoginLocationCache']!;
+    _ctrlLogin.text = html.window.localStorage['LoginLocationCache']!;
     _cache = server.cacheLocations;
   }
 
   void _loginLocation() async {
     bool success = await server.loginLocation(_ctrlLogin.text);
 
-    _ctrlLogin.text = window.localStorage['DefaultLocation']!;
+    _ctrlLogin.text = html.window.localStorage['DefaultLocation']!;
 
     if (success) navi.loginSlot();
   }

@@ -3,7 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
-import 'dart:html';
+import "package:universal_html/html.dart" as html;
 
 class LoginUserPage extends StatefulWidget {
   LoginUserPage({super.key});
@@ -20,12 +20,12 @@ class LoginUserPageState extends State<LoginUserPage> {
   void initState() {
     super.initState();
 
-    _ctrlUserLogin.text = window.localStorage['DefaultUser']!;
+    _ctrlUserLogin.text = html.window.localStorage['DefaultUser']!;
   }
   void _loginUser() async {
     bool success = await server.loginUser(_ctrlUserLogin.text, _ctrlUserPasswd.text);
 
-    _ctrlUserLogin.text = window.localStorage['DefaultUser']!;
+    _ctrlUserLogin.text = html.window.localStorage['DefaultUser']!;
     _ctrlUserPasswd.text = "";
 
     if (success) navi.loginUser();
