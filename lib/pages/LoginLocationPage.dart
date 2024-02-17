@@ -23,7 +23,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
   void initState() {
     super.initState();
 
-    _ctrlLogin.text = html.window.localStorage['LoginLocationCache']!;
+    _ctrlLogin.text = html.window.localStorage['DefaultLocation']!;
     _cache = server.cacheLocations;
   }
 
