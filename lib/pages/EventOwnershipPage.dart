@@ -13,8 +13,8 @@ import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/pages/EventOwnersPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
+import 'package:cptclient/pages/SlotOwnerPage.dart';
 import 'package:cptclient/pages/SlotParticipantPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
@@ -73,14 +73,14 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
   }
 
   Future<void> _duplicateSlot(Slot slot) async {
-    Slot _slot = Slot.fromSlot(slot);
-    _slot.status = Status.DRAFT;
+    Slot newSlot = Slot.fromSlot(slot);
+    newSlot.status = Status.DRAFT;
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SlotEditPage(
           session: widget.session,
-          slot: _slot,
+          slot: newSlot,
           isDraft: true,
           onSubmit: api_regular.event_create,
         ),
@@ -126,9 +126,12 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventOwnersPage(
+        builder: (context) => SlotOwnerPage(
           session: widget.session,
           slot: slot,
+          onCallOwnerList: api_owner.event_participant_list,
+          onCallOwnerAdd: api_owner.event_participant_add,
+          onCallOwnerRemove: api_owner.event_participant_remove,
         ),
       ),
     );

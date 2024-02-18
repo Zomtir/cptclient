@@ -5,64 +5,63 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/static/server_event_owner.dart' as api_owner;
-import 'package:cptclient/static/server_user_regular.dart' as api_regular;
+import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EventOwnersPage extends StatefulWidget {
+class SlotOwnerPage extends StatefulWidget {
   final Session session;
   final Slot slot;
+  final Future<List<User>> Function(Session, Slot) onCallOwnerList;
+  final Future<bool> Function(Session, Slot, User) onCallOwnerAdd;
+  final Future<bool> Function(Session, Slot, User) onCallOwnerRemove;
 
-  EventOwnersPage({
+  SlotOwnerPage({
     super.key,
     required this.session,
     required this.slot,
+    required this.onCallOwnerList,
+    required this.onCallOwnerAdd,
+    required this.onCallOwnerRemove,
   });
 
   @override
-  EventOwnersPageState createState() => EventOwnersPageState();
+  SlotOwnerPageState createState() => SlotOwnerPageState();
 }
 
-class EventOwnersPageState extends State<EventOwnersPage> {
+class SlotOwnerPageState extends State<SlotOwnerPage> {
   late SelectionData<User> _ownerData;
 
-  EventOwnersPageState();
+  SlotOwnerPageState();
 
   @override
   void initState() {
     super.initState();
 
-    _ownerData = SelectionData<User>(
-        available: [],
-        selected: [],
-        onSelect: _addSlotOwner,
-        onDeselect: _removeSlotOwner,
-        filter: filterUsers
-    );
+    _ownerData = SelectionData<User>(available: [], selected: [], onSelect: _addOwner, onDeselect: _removeOwner, filter: filterUsers);
 
     _update();
   }
 
   void _update() async {
-    List<User> users = await api_regular.user_list(widget.session);
+    List<User> users = await server.user_list(widget.session);
     users.sort();
 
-    List<User> owners = await api_owner.event_owner_list(widget.session, widget.slot);
+    List<User> owners = await widget.onCallOwnerList(widget.session, widget.slot);
     owners.sort();
 
     _ownerData.available = users;
     _ownerData.selected = owners;
   }
 
-  void _addSlotOwner(User user) async {
-    if (!await api_owner.event_owner_add(widget.session, widget.slot, user)) return;
+  void _addOwner(User user) async {
+    if (!await widget.onCallOwnerAdd(widget.session, widget.slot, user)) return;
     _update();
   }
 
-  void _removeSlotOwner(User user) async {
-    if (!await api_owner.event_owner_remove(widget.session, widget.slot, user)) return;
+  void _removeOwner(User user) async {
+    if (!await widget.onCallOwnerRemove(widget.session, widget.slot, user)) return;
     _update();
   }
 

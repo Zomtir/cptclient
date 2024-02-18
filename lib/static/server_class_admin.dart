@@ -25,6 +25,22 @@ Future<List<Slot>> class_list(Session session, int courseID) async {
   return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
 }
 
+Future<Slot?> class_info(Session session, int slotID) async {
+  final response = await http.get(
+    server.uri('/admin/class_info', {
+      'slot_id': slotID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return Slot.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+}
+
 Future<bool> class_create(Session session, int course_id, Slot slot) async {
   final response = await http.post(
     server.uri('/admin/class_create', {
@@ -74,7 +90,7 @@ Future<bool> class_edit_password(Session session, Slot slot, String password) as
 
 Future<bool> class_delete(Session session, Slot slot) async {
   final response = await http.head(
-    server.uri('/admin/class_edit', {
+    server.uri('/admin/class_delete', {
       'slot_id': slot.id.toString(),
     }),
     headers: {

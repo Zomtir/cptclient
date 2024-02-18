@@ -34,7 +34,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   final DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
   bool? _ctrlPublic;
   bool? _ctrlActive;
-  DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
   RangeValues _ctrlRankingRange = RangeValues(0, 10);
 
   CourseManagementPageState();
@@ -89,13 +89,13 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   }
 
   Future<void> _duplicateCourse(Course course) async {
-    Course _course = Course.fromCourse(course);
+    Course newCourse = Course.fromCourse(course);
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CourseEditPage(
           session: widget.session,
-          course: _course,
+          course: newCourse,
           isDraft: true,
           onSubmit: server.course_create,
         ),

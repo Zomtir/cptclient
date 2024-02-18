@@ -6,8 +6,8 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/pages/ClassDetailPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
-import 'package:cptclient/pages/SlotParticipantPage.dart';
 import 'package:cptclient/static/server_class_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -69,12 +69,9 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotParticipantPage(
+        builder: (context) => ClassDetailPage(
           session: widget.session,
-          slot: slot,
-          onCallParticipantList: api_admin.class_participant_list,
-          onCallParticipantAdd: api_admin.class_participant_add,
-          onCallParticipantRemove: api_admin.class_participant_remove,
+          slotID: slot.id,
         ),
       ),
     );

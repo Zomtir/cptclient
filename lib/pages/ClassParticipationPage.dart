@@ -35,14 +35,8 @@ class ClassMemberPageState extends State<ClassMemberPage> {
       ),
       body: AppBody(
         children: [
-          if (widget.slot.id != 0) Row(
-            children: [
-              Expanded(
-                child: AppSlotTile(
-                  slot: widget.slot,
-                ),
-              ),
-            ],
+          if (!widget.isDraft) AppSlotTile(
+            slot: widget.slot,
           ),
           //Text(widget.slot.status!.toString()),
           Column(

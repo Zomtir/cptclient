@@ -6,10 +6,9 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
-
-import 'format.dart';
 
 Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Status? status, Location? location) async {
   final response = await http.get(
@@ -28,6 +27,22 @@ Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Sta
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
+}
+
+Future<Slot?> event_info(Session session, int slotID) async {
+  final response = await http.get(
+    server.uri('/owner/event_info', {
+      'slot_id': slotID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return Slot.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
 Future<bool> event_edit(Session session, Slot slot) async {

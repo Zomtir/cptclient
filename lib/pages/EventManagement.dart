@@ -13,7 +13,6 @@ import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/pages/EventOwnersPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
@@ -66,10 +65,11 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   Future<void> _selectSlot(Slot slot) async {
+    /*
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventOwnersPage(
+        builder: (context) => SlotOwnerPage(
           session: widget.session,
           slot: slot,
         ),
@@ -77,6 +77,7 @@ class EventManagementPageState extends State<EventManagementPage> {
     );
 
     _update();
+    */
   }
 
   void _acceptReservation(Slot slot) async {
