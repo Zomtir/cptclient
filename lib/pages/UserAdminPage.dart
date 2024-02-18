@@ -246,7 +246,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             info: Text(AppLocalizations.of(context)!.userBirthday),
             child: DateTimeEdit(
               nullable: true,
-              dateOnly: true,
+              showTime: false,
               controller: _ctrlUserBirthday,
             ),
           ),
@@ -282,7 +282,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             info: Text(AppLocalizations.of(context)!.userParicipationDateSolo),
             child: DateTimeEdit(
               nullable: true,
-              dateOnly: true,
+              showTime: false,
               controller: _ctrlUserFederationPermissionSolo,
             ),
           ),
@@ -290,7 +290,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             info: Text(AppLocalizations.of(context)!.userParicipationDateTeam),
             child: DateTimeEdit(
               nullable: true,
-              dateOnly: true,
+              showTime: false,
               controller: _ctrlUserFederationPermissionTeam,
             ),
           ),
@@ -298,7 +298,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             info: Text("Moving Date to\nResidency in Federation"),
             child: DateTimeEdit(
               nullable: true,
-              dateOnly: true,
+              showTime: false,
               controller: _ctrlUserFederationResidency,
             ),
           ),

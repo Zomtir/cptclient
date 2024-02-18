@@ -200,11 +200,11 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
             children: [
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotBegin),
-                child: DateTimeEdit(controller: _ctrlDateBegin, dateOnly: true),
+                child: DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotEnd),
-                child: DateTimeEdit(controller: _ctrlDateEnd, dateOnly: true),
+                child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
               LocationDropdown(
                 controller: _ctrlLocation,

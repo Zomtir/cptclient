@@ -137,7 +137,7 @@ class TermEditPageState extends State<TermEditPage> {
             info: Text(AppLocalizations.of(context)!.termBegin),
             child: DateTimeEdit(
               nullable: true,
-              dateOnly: true,
+              showTime: false,
               controller: _ctrlTermBegin,
             ),
           ),
@@ -145,7 +145,7 @@ class TermEditPageState extends State<TermEditPage> {
             info: Text(AppLocalizations.of(context)!.termEnd),
             child: DateTimeEdit(
               nullable: true,
-              dateOnly: true,
+              showTime: false,
               controller: _ctrlTermEnd,
             ),
           ),

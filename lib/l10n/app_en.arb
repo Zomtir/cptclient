@@ -57,6 +57,7 @@
   "actionSelect": "Select",
   "actionSave": "Save",
   "actionNew": "New",
+  "actionNewBatch": "New (Batch)",
   "actionConfirm": "Confirm",
   "actionCancel": "Cancel",
   "actionClose": "Close",
@@ -78,5 +79,19 @@
   "labelRanking": "Ranking",
   "labelUser": "User",
   "isValid": "is valid",
-  "isInvalid": "is invalid"
+  "isInvalid": "is invalid",
+  "weekdayLongMon": "Monday",
+  "weekdayLongTue": "Tuesday",
+  "weekdayLongWed": "Wednesday",
+  "weekdayLongThu": "Thursday",
+  "weekdayLongFri": "Friday",
+  "weekdayLongSat": "Saturday",
+  "weekdayLongSun": "Sunday",
+  "weekdayShortMon": "Mon",
+  "weekdayShortTue": "Tue",
+  "weekdayShortWed": "Wed",
+  "weekdayShortThu": "Thu",
+  "weekdayShortFri": "Fri",
+  "weekdayShortSat": "Sat",
+  "weekdayShortSun": "Sun"
 }

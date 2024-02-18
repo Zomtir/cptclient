@@ -9,9 +9,10 @@ class DateTimeEdit extends StatefulWidget {
   final DateTimeController controller;
   final void Function(DateTime)? onUpdate;
   final bool nullable;
-  final bool dateOnly;
+  final bool showDate;
+  final bool showTime;
 
-  DateTimeEdit({super.key, required this.controller, this.onUpdate, this.nullable = false, this.dateOnly = false});
+  DateTimeEdit({super.key, required this.controller, this.onUpdate, this.nullable = false, this.showDate = true, this.showTime = true});
 
   @override
   State<DateTimeEdit> createState() => _DateTimeEditState();
@@ -72,7 +73,7 @@ class _DateTimeEditState extends State<DateTimeEdit> {
         Expanded(
           child: Column(
             children: [
-              if (!widget.controller.isNull())
+              if (widget.showDate && !widget.controller.isNull())
                 Container(
                   margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                   child: Row(
@@ -98,7 +99,7 @@ class _DateTimeEditState extends State<DateTimeEdit> {
                     ],
                   ),
                 ),
-              if (!widget.dateOnly && !widget.controller.isNull())
+              if (widget.showTime && !widget.controller.isNull())
                 Container(
                   margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                   child: Row(

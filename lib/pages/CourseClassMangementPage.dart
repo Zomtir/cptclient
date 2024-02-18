@@ -7,6 +7,7 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/ClassDetailPage.dart';
+import 'package:cptclient/pages/SlotCreateBatchPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server_class_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
@@ -65,6 +66,24 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
     );
   }
 
+  Future<void> _createClassBatch() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SlotCreateBatchPage(
+          session: widget.session,
+          slot: Slot.fromCourse(widget.course),
+          isDraft: true,
+          onSubmit: (Session session, Slot slot) async {
+            if (!await api_admin.class_create(session, widget.course.id, slot)) return false;
+            _update();
+            return true;
+          },
+        ),
+      ),
+    );
+  }
+
   Future<void> _selectCourseSlot(Slot slot, bool isDraft) async {
     await Navigator.push(
       context,
@@ -94,6 +113,11 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
             leading: Icon(Icons.add),
             text: AppLocalizations.of(context)!.actionNew,
             onPressed: _createClass,
+          ),
+          AppButton(
+            leading: Icon(Icons.add),
+            text: AppLocalizations.of(context)!.actionNewBatch,
+            onPressed: _createClassBatch,
           ),
           AppListView<Slot>(
             items: _slots,

@@ -1,3 +1,4 @@
+import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -50,7 +51,7 @@ class CalendarPageState extends State<CalendarPage> {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: buildDays(context),
           ),
           Expanded(
@@ -65,7 +66,7 @@ class CalendarPageState extends State<CalendarPage> {
   }
 
   List<Widget> buildDays(BuildContext context) {
-    List<String> weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    List<String> weekdays = getWeekdaysShort(context);
     return List.generate(7, (index) {
       return Center(
         child: Text(

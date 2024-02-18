@@ -57,6 +57,7 @@
   "actionSelect": "Auswählen",
   "actionSave": "Speichern",
   "actionNew": "Hinzufügen",
+  "actionNewBatch": "Hinzufügen im Stapel",
   "actionConfirm": "Bestätigen",
   "actionCancel": "Abbrechen",
   "actionClose": "Schließen",
@@ -78,5 +79,19 @@
   "labelRanking": "Einstufung",
   "labelUser": "Benutzer",
   "isValid": "is korrekt",
-  "isInvalid": "ist ungültig"
+  "isInvalid": "ist ungültig",
+  "weekdayLongMon": "Montag",
+  "weekdayLongTue": "Dienstag",
+  "weekdayLongWed": "Mittwoch",
+  "weekdayLongThu": "Donnerstag",
+  "weekdayLongFri": "Freitag",
+  "weekdayLongSat": "Samstag",
+  "weekdayLongSun": "Sonntag",
+  "weekdayShortMon": "Mo",
+  "weekdayShortTue": "Di",
+  "weekdayShortWed": "Mi",
+  "weekdayShortThu": "Do",
+  "weekdayShortFri": "Fr",
+  "weekdayShortSat": "Sa",
+  "weekdayShortSun": "So"
 }

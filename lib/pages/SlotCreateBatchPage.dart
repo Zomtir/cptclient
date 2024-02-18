@@ -8,12 +8,12 @@ import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SlotMultiCreatePage extends StatefulWidget {
+class SlotCreateBatchPage extends StatefulWidget {
   final Session session;
   final Slot slot;
   final bool isDraft;
@@ -21,7 +21,7 @@ class SlotMultiCreatePage extends StatefulWidget {
   final Future<bool> Function(Session, Slot, String)? onPasswordChange;
   final Future<bool> Function(Session, Slot)? onDelete;
 
-  SlotMultiCreatePage({
+  SlotCreateBatchPage({
     super.key,
     required this.session,
     required this.slot,
@@ -32,21 +32,22 @@ class SlotMultiCreatePage extends StatefulWidget {
   });
 
   @override
-  SlotMultiCreatePageState createState() => SlotMultiCreatePageState();
+  SlotCreateBatchPageState createState() => SlotCreateBatchPageState();
 }
 
-class SlotMultiCreatePageState extends State<SlotMultiCreatePage> {
-  final TextEditingController _ctrlSlotKey = TextEditingController();
-  final TextEditingController _ctrlSlotPassword = TextEditingController();
+class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
   final DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
   final TextEditingController _ctrlSlotTitle = TextEditingController();
   final DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: server.cacheLocations);
   bool _ctrlSlotPublic = false;
   bool _ctrlSlotScrutable = true;
-  final TextEditingController _ctrlSlotNote = TextEditingController();
 
-  SlotMultiCreatePageState();
+  final List<bool> _ctrlBatchDays = List<bool>.filled(7, false);
+  final DateTimeController _ctrlBatchBegin = DateTimeController(dateTime: DateTime.now());
+  final DateTimeController _ctrlBatchEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 7)));
+
+  SlotCreateBatchPageState();
 
   @override
   void initState() {
@@ -56,25 +57,21 @@ class SlotMultiCreatePageState extends State<SlotMultiCreatePage> {
   }
 
   void _applySlot() {
-    _ctrlSlotKey.text = widget.slot.key;
     _ctrlSlotBegin.setDateTime(widget.slot.begin);
     _ctrlSlotEnd.setDateTime(widget.slot.end);
     _ctrlSlotTitle.text = widget.slot.title;
     _ctrlSlotLocation.value = widget.slot.location;
     _ctrlSlotPublic = widget.slot.public;
     _ctrlSlotScrutable = widget.slot.scrutable;
-    _ctrlSlotNote.text = widget.slot.note;
   }
 
   void _gatherSlot() {
-    widget.slot.key = _ctrlSlotKey.text;
     widget.slot.location = _ctrlSlotLocation.value;
     widget.slot.begin = _ctrlSlotBegin.getDateTime()!;
     widget.slot.end = _ctrlSlotEnd.getDateTime()!;
     widget.slot.title = _ctrlSlotTitle.text;
     widget.slot.public = _ctrlSlotPublic;
     widget.slot.scrutable = _ctrlSlotScrutable;
-    widget.slot.note = _ctrlSlotNote.text;
   }
 
   void _handleSubmit() async {
@@ -85,22 +82,37 @@ class SlotMultiCreatePageState extends State<SlotMultiCreatePage> {
       return;
     }
 
-    if (!await widget.onSubmit(widget.session, widget.slot)) return;
+    List<DateTime> dates = _getFilteredDates();
+    for (DateTime date in dates) {
+      Slot slot = Slot.fromSlot(widget.slot);
+      slot.begin = slot.begin.applyDate(date);
+      slot.end = slot.end.applyDate(date);
+
+      if (!await widget.onSubmit(widget.session, slot)) return;
+    }
 
     Navigator.pop(context);
   }
 
-  void _handlePasswordChange() async {
-    bool success = await widget.onPasswordChange!(widget.session, widget.slot, _ctrlSlotPassword.text);
-    if (!success) return;
+  List<DateTime> _getFilteredDates() {
+    List<DateTime> dates = [];
+    DateTime startDate = _ctrlBatchBegin.getDate();
+    DateTime endDate = _ctrlBatchEnd.getDate();
 
-    _ctrlSlotPassword.text = '';
-  }
+    if (endDate.isBefore(startDate)) return [];
 
-  void _deleteSlot() async {
-    if (!await widget.onDelete!(widget.session, widget.slot)) return;
+    DateTime currentDate = startDate;
+    while (currentDate.isBefore(endDate)) {
+      // If the weekday is included, add the date
+      if (_ctrlBatchDays[currentDate.weekday - 1]) {
+        dates.add(currentDate);
+      }
 
-    Navigator.pop(context);
+      // Move to the next day
+      currentDate = currentDate.add(Duration(days: 1));
+    }
+
+    return dates;
   }
 
   @override
@@ -111,24 +123,6 @@ class SlotMultiCreatePageState extends State<SlotMultiCreatePage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppSlotTile(
-              slot: widget.slot,
-              trailing: [
-                if (widget.onDelete != null)
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: _deleteSlot,
-                  ),
-              ],
-            ),
-          AppInfoRow(
-            info: Text("Key"),
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlSlotKey,
-            ),
-          ),
           AppInfoRow(
             info: Text("Title"),
             child: TextField(
@@ -140,17 +134,21 @@ class SlotMultiCreatePageState extends State<SlotMultiCreatePage> {
             info: Text("Start Time"),
             child: DateTimeEdit(
               controller: _ctrlSlotBegin,
+              showDate: false,
             ),
           ),
           AppInfoRow(
             info: Text("End Time"),
             child: DateTimeEdit(
               controller: _ctrlSlotEnd,
+              showDate: false,
             ),
           ),
           LocationDropdown(
             controller: _ctrlSlotLocation,
-            onChanged: () => setState(() => {/* Location has changed */}),
+            onChanged: () => setState(() => {
+                  /* Location has changed */
+                }),
           ),
           AppInfoRow(
             info: Text("Public"),
@@ -167,32 +165,41 @@ class SlotMultiCreatePageState extends State<SlotMultiCreatePage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Notes"),
-            child: TextField(
-              maxLines: 4,
-              controller: _ctrlSlotNote,
+            info: Text("Weekdays"),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: _buildDays(context),
+            ),
+          ),
+          AppInfoRow(
+            info: Text("From Date"),
+            child: DateTimeEdit(
+              controller: _ctrlBatchBegin,
+              showTime: false,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("To Date"),
+            child: DateTimeEdit(
+              controller: _ctrlBatchEnd,
+              showTime: false,
             ),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,
             onPressed: _handleSubmit,
           ),
-          if (widget.onPasswordChange != null) Divider(),
-          if (widget.onPasswordChange != null)
-            AppInfoRow(
-              info: Text("Password"),
-              child: TextField(
-                obscureText: true,
-                maxLines: 1,
-                controller: _ctrlSlotPassword,
-                decoration: InputDecoration(
-                  hintText: "Reset password (leave empty to keep current)",
-                ),
-              ),
-              trailing: IconButton(icon: Icon(Icons.save), onPressed: _handlePasswordChange),
-            ),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildDays(BuildContext context) {
+    List<String> weekdays = getWeekdaysShort(context);
+    return List.generate(7, (index) {
+      return Column(
+        children: [Text("${weekdays[index]}"), Checkbox(value: _ctrlBatchDays[index], onChanged: (bool? value) => setState(() => _ctrlBatchDays[index] = value!))],
+      );
+    });
   }
 }
