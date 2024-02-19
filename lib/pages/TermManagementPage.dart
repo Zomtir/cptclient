@@ -75,7 +75,7 @@ class TermManagementPageState extends State<TermManagementPage> {
           // three pages, choose user, users that should be active, users that should be inactive
           AppButton(
             leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionNew,
+            text: AppLocalizations.of(context)!.actionCreate,
             onPressed: _createTerm,
           ),
           AppListView(

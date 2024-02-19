@@ -6,28 +6,28 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/pages/ClassDetailPage.dart';
+import 'package:cptclient/pages/ClassDetailManagementPage.dart';
 import 'package:cptclient/pages/SlotCreateBatchPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server_class_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CourseClassManagementPage extends StatefulWidget {
+class ClassOverviewManagementPage extends StatefulWidget {
   final Session session;
   final Course course;
   final bool isDraft;
 
-  CourseClassManagementPage({super.key, required this.session, required this.course, required this.isDraft});
+  ClassOverviewManagementPage({super.key, required this.session, required this.course, required this.isDraft});
 
   @override
-  CourseClassManagementPageState createState() => CourseClassManagementPageState();
+  ClassOverviewManagementPageState createState() => ClassOverviewManagementPageState();
 }
 
-class CourseClassManagementPageState extends State<CourseClassManagementPage> {
+class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage> {
   List<Slot> _slots = [];
 
-  CourseClassManagementPageState();
+  ClassOverviewManagementPageState();
 
   @override
   void initState() {
@@ -88,7 +88,7 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ClassDetailPage(
+        builder: (context) => ClassDetailManagementPage(
           session: widget.session,
           slotID: slot.id,
         ),
@@ -111,12 +111,12 @@ class CourseClassManagementPageState extends State<CourseClassManagementPage> {
           ),
           AppButton(
             leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionNew,
+            text: AppLocalizations.of(context)!.actionCreate,
             onPressed: _createClass,
           ),
           AppButton(
             leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionNewBatch,
+            text: AppLocalizations.of(context)!.actionCreateBatch,
             onPressed: _createClassBatch,
           ),
           AppListView<Slot>(

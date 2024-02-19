@@ -26,7 +26,7 @@ class SelectionPanelState<T> extends State<SelectionPanel<T>> {
     return Column(
       children: [
         AppButton(
-          text: AppLocalizations.of(context)!.actionNew,
+          text: AppLocalizations.of(context)!.actionAdd,
           onPressed: () => showTilePicker(
             context: context,
             dataModel: widget.dataModel,

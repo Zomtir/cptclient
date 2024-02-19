@@ -10,20 +10,20 @@ import 'package:cptclient/static/server_class_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ClassAvailablePage extends StatefulWidget {
+class ClassOverviewAvailablePage extends StatefulWidget {
   final Session session;
   final Course course;
 
-  ClassAvailablePage({super.key, required this.session, required this.course});
+  ClassOverviewAvailablePage({super.key, required this.session, required this.course});
 
   @override
-  ClassAvailablePageState createState() => ClassAvailablePageState();
+  ClassOverviewAvailablePageState createState() => ClassOverviewAvailablePageState();
 }
 
-class ClassAvailablePageState extends State<ClassAvailablePage> {
+class ClassOverviewAvailablePageState extends State<ClassOverviewAvailablePage> {
   List<Slot> _slots = [];
 
-  ClassAvailablePageState();
+  ClassOverviewAvailablePageState();
 
   @override
   void initState() {

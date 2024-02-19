@@ -11,27 +11,26 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
+import 'package:cptclient/material/pages/UserSelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
-import 'package:cptclient/pages/SlotOwnerPage.dart';
-import 'package:cptclient/pages/SlotParticipantPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EventOwnershipPage extends StatefulWidget {
+class EventOverviewOwnershipPage extends StatefulWidget {
   final Session session;
 
-  EventOwnershipPage({super.key, required this.session});
+  EventOverviewOwnershipPage({super.key, required this.session});
 
   @override
-  State<StatefulWidget> createState() => EventOwnershipPageState();
+  State<StatefulWidget> createState() => EventOverviewOwnershipPageState();
 }
 
-class EventOwnershipPageState extends State<EventOwnershipPage> {
+class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> {
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
   final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
@@ -39,7 +38,7 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
 
   List<Slot> _events = [];
 
-  EventOwnershipPageState();
+  EventOverviewOwnershipPageState();
 
   @override
   void initState() {
@@ -55,7 +54,7 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     });
   }
 
-  Future<void> _createEvent() async {
+  Future<void> _handleCreate() async {
     Slot slot = Slot.fromUser(widget.session.user!);
     await Navigator.push(
       context,
@@ -72,7 +71,7 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     _update();
   }
 
-  Future<void> _duplicateSlot(Slot slot) async {
+  Future<void> _handleDuplicate(Slot slot) async {
     Slot newSlot = Slot.fromSlot(slot);
     newSlot.status = Status.DRAFT;
     await Navigator.push(
@@ -90,7 +89,7 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     _update();
   }
 
-  void _handleEventSelect(Slot slot) async {
+  void _handleSelect(Slot slot) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -104,7 +103,7 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     _update();
   }
 
-  void _handleEventEdit(Slot slot) async {
+  void _handleEdit(Slot slot) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -122,16 +121,17 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     _update();
   }
 
-  void _handleEventOwners(Slot slot) async {
+  void _handleOwners(Slot slot) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotOwnerPage(
+        builder: (context) => UserSelectionPage(
           session: widget.session,
           slot: slot,
-          onCallOwnerList: api_owner.event_participant_list,
-          onCallOwnerAdd: api_owner.event_participant_add,
-          onCallOwnerRemove: api_owner.event_participant_remove,
+          title: AppLocalizations.of(context)!.pageEventOwners,
+          onCallList: api_owner.event_participant_list,
+          onCallAdd: api_owner.event_participant_add,
+          onCallRemove: api_owner.event_participant_remove,
         ),
       ),
     );
@@ -139,16 +139,17 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
     _update();
   }
 
-  void _handleEventParticipants(Slot slot) async {
+  void _handleParticipants(Slot slot) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotParticipantPage(
+        builder: (context) => UserSelectionPage(
           session: widget.session,
           slot: slot,
-          onCallParticipantList: api_owner.event_participant_list,
-          onCallParticipantAdd: api_owner.event_participant_add,
-          onCallParticipantRemove: api_owner.event_participant_remove,
+          title: AppLocalizations.of(context)!.pageEventParticipants,
+          onCallList: api_owner.event_participant_list,
+          onCallAdd: api_owner.event_participant_add,
+          onCallRemove: api_owner.event_participant_remove,
         ),
       ),
     );
@@ -192,8 +193,8 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
         children: [
           AppButton(
             leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionNew,
-            onPressed: _createEvent,
+            text: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
           ),
           FilterToggle(
             onApply: _update,
@@ -222,7 +223,7 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
             items: _events,
             itemBuilder: (Slot slot) {
               return InkWell(
-                onTap: () => _handleEventSelect(slot),
+                onTap: () => _handleSelect(slot),
                 child: AppSlotTile(
                   slot: slot,
                   trailing: _buildTrailing(slot),
@@ -236,63 +237,40 @@ class EventOwnershipPageState extends State<EventOwnershipPage> {
   }
 
   List<Widget> _buildTrailing(Slot slot) {
-    switch (slot.status) {
-      case Status.DRAFT:
-        return [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _handleEventEdit(slot),
+    return [
+      if (slot.status == Status.DRAFT) IconButton(
+        icon: const Icon(Icons.check),
+        onPressed: () => _submitSlot(slot),
+      ),
+      if (slot.status == Status.PENDING) IconButton(
+        icon: const Icon(Icons.undo),
+        onPressed: () => _withdrawSlot(slot),
+      ),
+      if (slot.status == Status.OCCURRING) IconButton(
+        icon: const Icon(Icons.cancel_outlined),
+        onPressed: () => _cancelSlot(slot),
+      ),
+      if (slot.status == Status.REJECTED) IconButton(
+        icon: const Icon(Icons.restore),
+        onPressed: () => _recycleSlot(slot),
+      ),
+      if (slot.status == Status.CANCELED) IconButton(
+        icon: const Icon(Icons.play_arrow),
+        onPressed: () => {},
+      ),
+      PopupMenuButton<VoidCallback>(
+        onSelected: (fn) => fn(),
+        itemBuilder: (context) => [
+          if (slot.status == Status.DRAFT) PopupMenuItem<VoidCallback>(
+            value: () => _handleEdit(slot),
+            child: Text(AppLocalizations.of(context)!.actionEdit),
           ),
-          IconButton(
-            icon: const Icon(Icons.check),
-            onPressed: () => _submitSlot(slot),
+          PopupMenuItem<VoidCallback>(
+            value: () => _handleDuplicate(slot),
+            child: Text(AppLocalizations.of(context)!.actionDuplicate),
           ),
-          PopupMenuButton<VoidCallback>(
-            onSelected: (fn) => fn(),
-            itemBuilder: (context) => [
-              PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Personal Invites')),
-              PopupMenuItem<VoidCallback>(value: () => {}, child: Text('Level Invites')),
-              PopupMenuItem<VoidCallback>(value: () => _handleEventParticipants(slot), child: Text('Participants')),
-              PopupMenuItem<VoidCallback>(value: () => _handleEventOwners(slot), child: Text('Owners')),
-              PopupMenuItem<VoidCallback>(
-                value: () => _duplicateSlot(slot),
-                child: Row(
-                  children: [const Icon(Icons.copy), Text('Duplicate')],
-                ),
-              ),
-            ],
-          ),
-        ];
-      case Status.PENDING:
-        return [
-          IconButton(
-            icon: const Icon(Icons.undo),
-            onPressed: () => _withdrawSlot(slot),
-          )
-        ];
-      case Status.OCCURRING:
-        return [
-          IconButton(
-            icon: const Icon(Icons.cancel_outlined),
-            onPressed: () => _cancelSlot(slot),
-          )
-        ];
-      case Status.REJECTED:
-        return [
-          IconButton(
-            icon: const Icon(Icons.settings_backup_restore),
-            onPressed: () => _recycleSlot(slot),
-          )
-        ];
-      case Status.CANCELED:
-        return [
-          IconButton(
-            icon: const Icon(Icons.charging_station),
-            onPressed: () => {},
-          )
-        ];
-      default:
-        return [];
-    }
+        ],
+      ),
+    ];
   }
 }

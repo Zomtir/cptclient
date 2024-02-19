@@ -92,7 +92,7 @@ class TeamManagementPageState extends State<TeamManagementPage> {
         children: <Widget>[
           AppButton(
             leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionNew,
+            text: AppLocalizations.of(context)!.actionCreate,
             onPressed: () => _editTeam(Team.fromVoid(), true),
           ),
           AppListView(

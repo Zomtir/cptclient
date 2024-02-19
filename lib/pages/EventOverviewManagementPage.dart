@@ -13,22 +13,25 @@ import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/pages/EventInfoPage.dart';
+import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
+import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EventManagementPage extends StatefulWidget {
+class EventOverviewManagementPage extends StatefulWidget {
   final Session session;
 
-  EventManagementPage({super.key, required this.session});
+  EventOverviewManagementPage({super.key, required this.session});
 
   @override
-  State<StatefulWidget> createState() => EventManagementPageState();
+  State<StatefulWidget> createState() => EventOverviewManagementPageState();
 }
 
-class EventManagementPageState extends State<EventManagementPage> {
+class EventOverviewManagementPageState extends State<EventOverviewManagementPage> {
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
   final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
   final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
@@ -38,7 +41,7 @@ class EventManagementPageState extends State<EventManagementPage> {
   List<Slot> _events = [];
   final _filterDaysMax = 366;
 
-  EventManagementPageState();
+  EventOverviewManagementPageState();
 
   @override
   void initState() {
@@ -65,11 +68,10 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   Future<void> _selectSlot(Slot slot) async {
-    /*
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotOwnerPage(
+        builder: (context) => EventInfoPage(
           session: widget.session,
           slot: slot,
         ),
@@ -77,16 +79,56 @@ class EventManagementPageState extends State<EventManagementPage> {
     );
 
     _update();
-    */
   }
 
-  void _acceptReservation(Slot slot) async {
+  void _acceptEvent(Slot slot) async {
     if (!await api_admin.event_accept(widget.session, slot)) return;
     _update();
   }
 
-  void _denyReservation(Slot slot) async {
+  void _denyEvent(Slot slot) async {
     if (!await api_admin.event_deny(widget.session, slot)) return;
+    _update();
+  }
+
+  void _suspendEvent(Slot slot) async {
+    if (!await api_admin.event_suspend(widget.session, slot)) return;
+    _update();
+  }
+
+  void _handleEdit(Slot slot) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SlotEditPage(
+          session: widget.session,
+          slot: slot,
+          isDraft: false,
+          onSubmit: api_admin.event_edit,
+          onPasswordChange: api_admin.event_edit_password,
+          onDelete: api_admin.event_delete,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
+  Future<void> _handleDuplicate(Slot slot) async {
+    Slot newSlot = Slot.fromSlot(slot);
+    newSlot.status = Status.DRAFT;
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SlotEditPage(
+          session: widget.session,
+          slot: newSlot,
+          isDraft: true,
+          onSubmit: api_regular.event_create,
+        ),
+      ),
+    );
+
     _update();
   }
 
@@ -176,20 +218,33 @@ class EventManagementPageState extends State<EventManagementPage> {
   }
 
   List<Widget> _buildTrailing(Slot slot) {
-    switch (slot.status) {
-      case Status.PENDING:
-        return [
-          IconButton(
-            icon: const Icon(Icons.highlight_remove),
-            onPressed: () => _denyReservation(slot),
+    return [
+      if (slot.status == Status.PENDING) IconButton(
+        icon: const Icon(Icons.highlight_remove),
+        onPressed: () => _denyEvent(slot),
+      ),
+      if (slot.status == Status.PENDING) IconButton(
+        icon: const Icon(Icons.check_circle_outline),
+        onPressed: () => _acceptEvent(slot),
+      ),
+      if (slot.status == Status.OCCURRING || slot.status == Status.REJECTED) IconButton(
+        icon: const Icon(Icons.undo),
+        onPressed: () => _suspendEvent(slot),
+      ),
+      PopupMenuButton<VoidCallback>(
+        onSelected: (fn) => fn(),
+        itemBuilder: (context) => [
+          PopupMenuItem<VoidCallback>(
+            value: () => _handleEdit(slot),
+            child: Text(AppLocalizations.of(context)!.actionEdit),
           ),
-          IconButton(
-            icon: const Icon(Icons.check_circle_outline),
-            onPressed: () => _acceptReservation(slot),
+          PopupMenuItem<VoidCallback>(
+            value: () => _handleDuplicate(slot),
+            child: Text(AppLocalizations.of(context)!.actionDuplicate),
           ),
-        ];
-      default:
-        return [];
-    }
+        ],
+      ),
+    ];
   }
+  
 }

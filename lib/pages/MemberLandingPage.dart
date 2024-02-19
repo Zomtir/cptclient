@@ -7,9 +7,9 @@ import 'package:cptclient/pages/CalendarPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseManagementPage.dart';
 import 'package:cptclient/pages/CourseResponsiblePage.dart';
-import 'package:cptclient/pages/EventAvailablePage.dart';
-import 'package:cptclient/pages/EventManagement.dart';
-import 'package:cptclient/pages/EventOwnershipPage.dart';
+import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
+import 'package:cptclient/pages/EventOverviewManagementPage.dart';
+import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
 import 'package:cptclient/pages/RankingManagementPage.dart';
 import 'package:cptclient/pages/RankingOverviewPage.dart';
@@ -96,16 +96,16 @@ class MemberLandingPage extends StatelessWidget {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageEventAvailable,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventAvailablePage(session: session))),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewAvailablePage(session: session))),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwnership,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOwnershipPage(session: session))),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewOwnershipPage(session: session))),
           ),
           if (session.right!.admin_event)
             AppButton(
               text: AppLocalizations.of(context)!.pageEventManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventManagementPage(session: session))),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewManagementPage(session: session))),
             ),
           Divider(),
           AppModuleSection(

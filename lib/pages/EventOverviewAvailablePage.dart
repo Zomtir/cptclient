@@ -19,16 +19,16 @@ import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EventAvailablePage extends StatefulWidget {
+class EventOverviewAvailablePage extends StatefulWidget {
   final Session session;
 
-  EventAvailablePage({super.key, required this.session});
+  EventOverviewAvailablePage({super.key, required this.session});
 
   @override
-  State<StatefulWidget> createState() => EventAvailablePageState();
+  State<StatefulWidget> createState() => EventOverviewAvailablePageState();
 }
 
-class EventAvailablePageState extends State<EventAvailablePage> {
+class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> {
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
   final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
@@ -36,7 +36,7 @@ class EventAvailablePageState extends State<EventAvailablePage> {
 
   List<Slot> _events = [];
 
-  EventAvailablePageState();
+  EventOverviewAvailablePageState();
 
   @override
   void initState() {
@@ -93,7 +93,7 @@ class EventAvailablePageState extends State<EventAvailablePage> {
         children: [
           AppButton(
             leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionNew,
+            text: AppLocalizations.of(context)!.actionCreate,
             onPressed: _createEvent,
           ),
           FilterToggle(

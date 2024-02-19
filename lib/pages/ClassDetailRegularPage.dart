@@ -38,7 +38,6 @@ class ClassMemberPageState extends State<ClassMemberPage> {
           if (!widget.isDraft) AppSlotTile(
             slot: widget.slot,
           ),
-          //Text(widget.slot.status!.toString()),
           Column(
             children: [
               AppInfoRow(
