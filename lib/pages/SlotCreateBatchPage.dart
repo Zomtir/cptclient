@@ -47,6 +47,7 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
   final DateTimeController _ctrlBatchBegin = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlBatchEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 7)));
 
+  bool _enabled = true;
   SlotCreateBatchPageState();
 
   @override
@@ -75,20 +76,29 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
   }
 
   void _handleSubmit() async {
+    setState(() => _enabled = false);
     _gatherSlot();
 
     if (widget.slot.location == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Location is required.')));
+      setState(() => _enabled = true);
       return;
     }
 
     List<DateTime> dates = _getFilteredDates();
+
+    if (dates.length > 100) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Too many dates (${dates.length})')));
+      setState(() => _enabled = true);
+      return;
+    }
+
     for (DateTime date in dates) {
       Slot slot = Slot.fromSlot(widget.slot);
       slot.begin = slot.begin.applyDate(date);
       slot.end = slot.end.applyDate(date);
 
-      if (!await widget.onSubmit(widget.session, slot)) return;
+      widget.onSubmit(widget.session, slot);
     }
 
     Navigator.pop(context);
@@ -187,7 +197,7 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,
-            onPressed: _handleSubmit,
+            onPressed: _enabled ? _handleSubmit : null,
           ),
         ],
       ),
