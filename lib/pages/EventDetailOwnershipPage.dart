@@ -69,11 +69,11 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
       MaterialPageRoute(
         builder: (context) => UserSelectionPage(
           session: widget.session,
-          slot: slot!,
           title: AppLocalizations.of(context)!.pageEventParticipants,
-          onCallList: api_owner.event_participant_list,
-          onCallAdd: api_owner.event_participant_add,
-          onCallRemove: api_owner.event_participant_remove,
+          tile: AppSlotTile(slot: slot!),
+          onCallList: (session) => api_owner.event_participant_list(session, slot!),
+          onCallAdd: (session, user) => api_owner.event_participant_add(session, slot!, user),
+          onCallRemove: (session, user) => api_owner.event_participant_remove(session, slot!, user),
         ),
       ),
     );
@@ -85,11 +85,11 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
       MaterialPageRoute(
         builder: (context) => UserSelectionPage(
           session: widget.session,
-          slot: slot!,
           title: AppLocalizations.of(context)!.pageEventOwners,
-          onCallList: api_owner.event_owner_list,
-          onCallAdd: api_owner.event_owner_add,
-          onCallRemove: api_owner.event_owner_remove,
+          tile: AppSlotTile(slot: slot!),
+          onCallList: (session) => api_owner.event_owner_list(session, slot!),
+          onCallAdd: (session, user) => api_owner.event_owner_add(session, slot!, user),
+          onCallRemove: (session, user) => api_owner.event_owner_remove(session, slot!, user),
         ),
       ),
     );

@@ -8,7 +8,7 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_course_admin.dart' as server;
+import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 
 class CourseEditPage extends StatefulWidget {
@@ -69,9 +69,9 @@ class CourseEditPageState extends State<CourseEditPage> {
 
     bool success;
     if (widget.isDraft) {
-      success = await server.course_create(widget.session, widget.course);
+      success = await api_admin.course_create(widget.session, widget.course);
     } else {
-      success = await server.course_edit(widget.session, widget.course.id, widget.course);
+      success = await api_admin.course_edit(widget.session, widget.course);
     }
 
     if (!success) {

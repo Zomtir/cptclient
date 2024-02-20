@@ -43,10 +43,10 @@ Future<bool> course_create(Session session, Course course) async {
   return success;
 }
 
-Future<bool> course_edit(Session session, int courseID, Course course) async {
+Future<bool> course_edit(Session session, Course course) async {
   final response = await http.post(
     server.uri('/admin/course_edit', {
-     'course_id' : courseID.toString(),
+     'course_id' : course.id.toString(),
     }),
     headers: {
       'Token': session.token,
@@ -58,9 +58,9 @@ Future<bool> course_edit(Session session, int courseID, Course course) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> course_delete(Session session, int courseID) async {
+Future<bool> course_delete(Session session, Course course) async {
   final response = await http.head(
-    server.uri('/admin/course_delete', {'course_id': courseID.toString()}),
+    server.uri('/admin/course_delete', {'course_id': course.id.toString()}),
     headers: {
       'Token': session.token,
     },

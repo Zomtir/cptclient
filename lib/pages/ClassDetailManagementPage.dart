@@ -68,11 +68,11 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
       MaterialPageRoute(
         builder: (context) => UserSelectionPage(
           session: widget.session,
-          slot: slot!,
           title: AppLocalizations.of(context)!.pageClassParticipants,
-          onCallList: api_admin.class_participant_list,
-          onCallAdd: api_admin.class_participant_add,
-          onCallRemove: api_admin.class_participant_remove,
+          tile: AppSlotTile(slot: slot!),
+          onCallList: (session) => api_admin.class_participant_list(session, slot!),
+          onCallAdd: (session, user) => api_admin.class_participant_add(session, slot!, user),
+          onCallRemove: (session, user) => api_admin.class_participant_remove(session, slot!, user),
         ),
       ),
     );
@@ -84,11 +84,11 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
       MaterialPageRoute(
         builder: (context) => UserSelectionPage(
           session: widget.session,
-          slot: slot!,
           title: AppLocalizations.of(context)!.pageClassOwners,
-          onCallList: api_admin.class_owner_list,
-          onCallAdd: api_admin.class_owner_add,
-          onCallRemove: api_admin.class_owner_remove,
+          tile: AppSlotTile(slot: slot!),
+          onCallList: (session) => api_admin.class_owner_list(session, slot!),
+          onCallAdd: (session, user) => api_admin.class_owner_add(session, slot!, user),
+          onCallRemove: (session, user) => api_admin.class_owner_remove(session, slot!, user),
         ),
       ),
     );
@@ -101,7 +101,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Slot details"),
+        title: Text(AppLocalizations.of(context)!.pageClassDetails),
       ),
       body: AppBody(
         children: [
