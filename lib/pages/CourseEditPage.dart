@@ -1,13 +1,9 @@
-import 'package:cptclient/json/branch.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 
@@ -29,8 +25,6 @@ class CourseEditPageState extends State<CourseEditPage> {
   final TextEditingController _ctrlCourseTitle = TextEditingController();
   bool _ctrlCourseActive = true;
   bool _ctrlCoursePublic = true;
-  final DropdownController<Branch> _ctrlCourseBranch = DropdownController<Branch>(items: server.cacheBranches);
-  int _pickThresholdValue = 0;
 
   CourseEditPageState();
 
@@ -130,27 +124,6 @@ class CourseEditPageState extends State<CourseEditPage> {
               onChanged: (bool? public) => setState(() => _ctrlCoursePublic = public!),
             ),
           ),
-          AppInfoRow(
-            info: Text("Branch"),
-            child: AppDropdown<Branch>(
-              hint: Text("Branch"),
-              controller: _ctrlCourseBranch,
-              builder: (Branch branch) => Text(branch.title),
-              onChanged: (Branch? branch) => setState(() => _ctrlCourseBranch.value = branch),
-            ),
-          ),
-          AppInfoRow(
-              info: Text("Level"),
-              child: Slider(
-                value: _pickThresholdValue.toDouble(),
-                min: 0,
-                max: 10,
-                divisions: 10,
-                onChanged: (double value) {
-                  setState(() => _pickThresholdValue = value.toInt());
-                },
-                label: "$_pickThresholdValue",
-              )),
           AppButton(
             text: "Save",
             onPressed: _submitCourse,

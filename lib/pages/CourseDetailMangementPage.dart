@@ -131,6 +131,10 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
             onPressed: _handleModerators,
           ),
           AppButton(
+            text: AppLocalizations.of(context)!.pageCourseRequirements,
+            onPressed: null,
+          ),
+          AppButton(
             text: AppLocalizations.of(context)!.pageCourseStatisticClasses,
             onPressed: null,
           ),

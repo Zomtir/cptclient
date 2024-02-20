@@ -12,8 +12,6 @@ import 'package:cptclient/material/Tribox.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/dropdowns/RankingDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/pages/ClassDetailManagementPage.dart';
-import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
