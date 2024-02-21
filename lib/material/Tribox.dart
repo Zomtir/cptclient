@@ -36,7 +36,6 @@ class Tribox extends StatelessWidget {
           ],
         );
     }
-    throw Exception("Tribox: Not all trinary states were covered.") ;
   }
 
 }

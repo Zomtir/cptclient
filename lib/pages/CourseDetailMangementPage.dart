@@ -7,6 +7,7 @@ import 'package:cptclient/material/pages/UserSelectionPage.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
+import 'package:cptclient/pages/CourseStatisticClassPage.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_team_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -97,11 +98,23 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
+  Future<void> _handleStatisticClass() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseStatisticClassPage(
+          session: widget.session,
+          course: widget.course,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Class Management"),
+        title: Text(AppLocalizations.of(context)!.pageCourseDetails),
       ),
       body: AppBody(
         children: <Widget>[
@@ -136,7 +149,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseStatisticClasses,
-            onPressed: null,
+            onPressed: _handleStatisticClass,
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseStatisticParticipants,

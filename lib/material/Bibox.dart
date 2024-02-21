@@ -18,7 +18,6 @@ class Bibox extends StatelessWidget {
       case false:
         return IconButton(onPressed: () => onChanged(true), icon: Icon(Icons.disabled_by_default_outlined));
     }
-    throw Exception("Tribox: Not all binary states were covered.") ;
   }
 
 }

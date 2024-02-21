@@ -154,3 +154,20 @@ Future<bool> course_teaminvite_remove(Session session, int courseID, int teamID)
 
   return (response.statusCode == 200);
 }
+
+Future<List<(int,String,String,int,int)>> course_statistic_class(Session session, int courseID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_class', {'course_id': courseID.toString()}),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, String, int, int)>.from(list.map((model) {
+    return (model[0],model[1],model[2],model[3],model[4]);
+  }));
+}
