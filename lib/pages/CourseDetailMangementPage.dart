@@ -8,6 +8,8 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/CourseStatisticClassPage.dart';
+import 'package:cptclient/pages/CourseStatisticOwnerPage.dart';
+import 'package:cptclient/pages/CourseStatisticParticipantPage.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_team_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -110,6 +112,30 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
+  Future<void> _handleStatisticParticipant() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseStatisticParticipantPage(
+          session: widget.session,
+          course: widget.course,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleStatisticOwner() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseStatisticOwnerPage(
+          session: widget.session,
+          course: widget.course,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,11 +179,11 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseStatisticParticipants,
-            onPressed: null,
+            onPressed: _handleStatisticParticipant,
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseStatisticOwners,
-            onPressed: null,
+            onPressed: _handleStatisticOwner,
           ),
         ],
       ),

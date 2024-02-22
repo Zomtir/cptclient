@@ -13,7 +13,7 @@ extension DateTimeExtension on DateTime {
 
   String fmtDate(BuildContext context) {
     final localeTag = Localizations.localeOf(context).toLanguageTag();
-    return DateFormat.yMMMd(localeTag).format(this);
+    return DateFormat.yMMMEd(localeTag).format(this);
   }
 
   String fmtTime(BuildContext context) {
@@ -23,7 +23,9 @@ extension DateTimeExtension on DateTime {
 
   String fmtDateTime(BuildContext context) {
     final localeTag = Localizations.localeOf(context).toLanguageTag();
-    return DateFormat("E d MMM y HH:mm",localeTag).format(this);
+    return DateFormat.yMMMEd(localeTag).add_Hm().format(this);
+
+    //return "${fmtDate(context)} ${fmtTime(context)}";
   }
 }
 

@@ -181,3 +181,51 @@ Future<List<(int, String, DateTime, DateTime, int, int)>> course_statistic_class
     }),
   );
 }
+
+Future<List<(int, String, String, int)>> course_statistic_participant(Session session, int courseID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_participant', {'course_id': courseID.toString()}),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, String, int)>.from(
+    list.map((model) {
+      return (
+        model[0],
+        model[1],
+        model[2],
+        model[3],
+      );
+    }),
+  );
+}
+
+Future<List<(int, String, String, int)>> course_statistic_owner(Session session, int courseID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_owner', {'course_id': courseID.toString()}),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, String, int)>.from(
+    list.map((model) {
+      return (
+        model[0],
+        model[1],
+        model[2],
+        model[3],
+      );
+    }),
+  );
+}

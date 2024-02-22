@@ -1,6 +1,5 @@
 import 'package:cptclient/json/ranking.dart';
 import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 
 class AppRankingTile extends StatelessWidget {

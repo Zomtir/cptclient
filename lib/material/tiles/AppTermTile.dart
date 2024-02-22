@@ -1,7 +1,6 @@
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 
 class AppTermTile extends StatelessWidget {
