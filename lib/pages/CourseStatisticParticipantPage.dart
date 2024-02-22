@@ -2,6 +2,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/pages/CourseStatisticParticipant1Page.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,11 +34,24 @@ class CourseStatisticParticipantPageState extends State<CourseStatisticParticipa
     setState(() => this.stats = stats);
   }
 
+  Future<void> _handleParticipant(int participantID) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseStatisticParticipant1Page(
+          session: widget.session,
+          course: widget.course,
+          participantID: participantID,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
+        title: Text(AppLocalizations.of(context)!.pageCourseStatisticParticipants),
       ),
       body: AppBody(
         maxWidth: 1000,
@@ -55,7 +69,7 @@ class CourseStatisticParticipantPageState extends State<CourseStatisticParticipa
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("${stats[index].$1}")),
+                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleParticipant(stats[index].$1))),
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3}")),
                   DataCell(Text("${stats[index].$4}")),

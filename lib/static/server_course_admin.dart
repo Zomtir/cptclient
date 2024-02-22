@@ -206,6 +206,33 @@ Future<List<(int, String, String, int)>> course_statistic_participant(Session se
   );
 }
 
+Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(Session session, int courseID, int participantID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_participant1', {
+      'course_id': courseID.toString(),
+      'participant_id': participantID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, DateTime, DateTime)>.from(
+    list.map((model) {
+      return (
+        model[0],
+        model[1],
+        parseNaiveDateTime(model[2])!.toLocal(),
+        parseNaiveDateTime(model[3])!.toLocal(),
+      );
+    }),
+  );
+}
+
 Future<List<(int, String, String, int)>> course_statistic_owner(Session session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_owner', {'course_id': courseID.toString()}),
@@ -225,6 +252,33 @@ Future<List<(int, String, String, int)>> course_statistic_owner(Session session,
         model[1],
         model[2],
         model[3],
+      );
+    }),
+  );
+}
+
+Future<List<(int, String, DateTime, DateTime)>> course_statistic_owner1(Session session, int courseID, int ownerID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_owner1', {
+      'course_id': courseID.toString(),
+      'owner_id': ownerID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, DateTime, DateTime)>.from(
+    list.map((model) {
+      return (
+        model[0],
+        model[1],
+        parseNaiveDateTime(model[2])!.toLocal(),
+        parseNaiveDateTime(model[3])!.toLocal(),
       );
     }),
   );

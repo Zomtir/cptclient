@@ -8,20 +8,21 @@ import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CourseStatisticClassPage extends StatefulWidget {
+class CourseStatisticOwner1Page extends StatefulWidget {
   final Session session;
   final Course course;
+  final int ownerID;
 
-  CourseStatisticClassPage({super.key, required this.session, required this.course});
+  CourseStatisticOwner1Page({super.key, required this.session, required this.course, required this.ownerID});
 
   @override
-  CourseStatisticClassPageState createState() => CourseStatisticClassPageState();
+  CourseStatisticOwner1PageState createState() => CourseStatisticOwner1PageState();
 }
 
-class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
-  CourseStatisticClassPageState();
+class CourseStatisticOwner1PageState extends State<CourseStatisticOwner1Page> {
+  CourseStatisticOwner1PageState();
 
-  List<(int, String, DateTime, DateTime, int, int)> stats = [];
+  List<(int, String, DateTime, DateTime)> stats = [];
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   }
 
   void _update() async {
-    List<(int, String, DateTime, DateTime, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
+    List<(int, String, DateTime, DateTime)> stats = await api_admin.course_statistic_owner1(widget.session, widget.course.id, widget.ownerID);
     stats.sort((a, b) => a.$3.compareTo(b.$3));
     setState(() => this.stats = stats);
   }
@@ -51,7 +52,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
+        title: Text(AppLocalizations.of(context)!.pageCourseStatisticOwners),
       ),
       body: AppBody(
         maxWidth: 1000,
@@ -65,8 +66,6 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
               DataColumn(label: Text('Name')),
               DataColumn(label: Text('Begin')),
               DataColumn(label: Text('End')),
-              DataColumn(label: Text('Participants')),
-              DataColumn(label: Text('Owners')),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
@@ -75,8 +74,6 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].$4.fmtDateTime(context)}")),
-                  DataCell(Text("${stats[index].$5}")),
-                  DataCell(Text("${stats[index].$6}")),
                 ],
               );
             }),
