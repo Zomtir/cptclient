@@ -1,5 +1,6 @@
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/material/RoundBox.dart';
+import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class AppTermTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${term.user!.firstname} ${term.user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${niceDate(term.begin)} - ${niceDate(term.end)}"),
+                Text("${term.begin!.fmtDate(context)} - ${term.end!.fmtDate(context)}"),
               ],
             ),
           ),

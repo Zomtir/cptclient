@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
   DateTime applyTime(TimeOfDay time) {
@@ -8,6 +9,21 @@ extension DateTimeExtension on DateTime {
 
   DateTime applyDate(DateTime date) {
     return DateTime(date.year, date.month, date.day, hour, minute);
+  }
+
+  String fmtDate(BuildContext context) {
+    final localeTag = Localizations.localeOf(context).toLanguageTag();
+    return DateFormat.yMMMd(localeTag).format(this);
+  }
+
+  String fmtTime(BuildContext context) {
+    final localeTag = Localizations.localeOf(context).toLanguageTag();
+    return DateFormat.Hm(localeTag).format(this);
+  }
+
+  String fmtDateTime(BuildContext context) {
+    final localeTag = Localizations.localeOf(context).toLanguageTag();
+    return DateFormat("E d MMM y HH:mm",localeTag).format(this);
   }
 }
 

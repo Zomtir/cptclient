@@ -2,6 +2,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,7 +20,7 @@ class CourseStatisticClassPage extends StatefulWidget {
 class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   CourseStatisticClassPageState();
 
-  List<(int, String, String, int, int)> stats = [];
+  List<(int, String, DateTime, DateTime, int, int)> stats = [];
 
   @override
   void initState() {
@@ -28,18 +29,19 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   }
 
   void _update() async {
-    List<(int, String, String, int, int)> _stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
-    setState(() => stats = _stats);
+    List<(int, String, DateTime, DateTime, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
+    stats.sort((a, b) => a.$3.compareTo(b.$3));
+    setState(() => this.stats = stats);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(stats.length);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Class Management"),
+        title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
       ),
       body: AppBody(
+        maxWidth: 1000,
         children: <Widget>[
           AppCourseTile(
             course: widget.course,
@@ -49,6 +51,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
               DataColumn(label: Text('ID')),
               DataColumn(label: Text('Name')),
               DataColumn(label: Text('Begin')),
+              DataColumn(label: Text('End')),
               DataColumn(label: Text('Participants')),
               DataColumn(label: Text('Owners')),
             ],
@@ -57,9 +60,10 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
                 cells: <DataCell>[
                   DataCell(Text("${stats[index].$1}")),
                   DataCell(Text("${stats[index].$2}")),
-                  DataCell(Text("${stats[index].$3}")),
-                  DataCell(Text("${stats[index].$4}")),
+                  DataCell(Text("${stats[index].$3.fmtDateTime(context)}")),
+                  DataCell(Text("${stats[index].$4.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].$5}")),
+                  DataCell(Text("${stats[index].$6}")),
                 ],
               );
             }),

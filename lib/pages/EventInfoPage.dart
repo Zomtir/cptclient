@@ -2,6 +2,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -59,11 +60,11 @@ class EventInfoPageState extends State<EventInfoPage> {
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.slotBegin),
-            child: Text(niceDateTime(widget.slot.begin)),
+            child: Text(widget.slot.begin.fmtDate(context)),
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.slotEnd),
-            child: Text(niceDateTime(widget.slot.end)),
+            child: Text(widget.slot.end.fmtDate(context)),
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.slotLocation),

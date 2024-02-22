@@ -15,12 +15,8 @@ String compressDate(DateTime begin, DateTime end) {
   return "$strBegin - $strEnd";
 }
 
-String niceDate(DateTime? dt) {
-  return dt == null ? "unknown" : DateFormat("dd MMM yyyy").format(dt);
-}
-
-String niceDateTime(DateTime? dt) {
-  return dt == null ? "unknown" : DateFormat("dd MMM yyyy HH:mm").format(dt);
+DateTime? parseNaiveDateTime(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dt, true).toLocal();
 }
 
 String? formatNullWebDateTime(DateTime? dt) {
