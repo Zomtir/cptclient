@@ -12,6 +12,7 @@ import 'package:cptclient/pages/CourseStatisticOwnerPage.dart';
 import 'package:cptclient/pages/CourseStatisticParticipantPage.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_team_regular.dart' as api_regular;
+import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -75,7 +76,8 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseModerators,
           tile: AppCourseTile(course: widget.course),
-          onCallList: (session) => api_admin.course_moderator_list(session, widget.course.id),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_admin.course_moderator_list(session, widget.course.id),
           onCallAdd: (session, user) => api_admin.course_moderator_add(session, widget.course.id, user.id),
           onCallRemove: (session, user) => api_admin.course_moderator_remove(session, widget.course.id, user.id),
         ),
@@ -83,18 +85,35 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
-  Future<void> _handleTeaminvites() async {
+  Future<void> _handleParticipantTeams() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TeamSelectionPage(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageCourseTeaminvites,
+          title: AppLocalizations.of(context)!.pageCourseParticipantTeams,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_teaminvite_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_teaminvite_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_teaminvite_remove(session, widget.course.id, team.id),
+          onCallSelected: (session) => api_admin.course_participant_team_list(session, widget.course.id),
+          onCallAdd: (session, team) => api_admin.course_participant_team_add(session, widget.course.id, team.id),
+          onCallRemove: (session, team) => api_admin.course_participant_team_remove(session, widget.course.id, team.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleOwnerTeams() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TeamSelectionPage(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageCourseOwnerTeams,
+          tile: AppCourseTile(course: widget.course),
+          onCallAvailable: (session) => api_regular.team_list(session),
+          onCallSelected: (session) => api_admin.course_owner_team_list(session, widget.course.id),
+          onCallAdd: (session, team) => api_admin.course_owner_team_add(session, widget.course.id, team.id),
+          onCallRemove: (session, team) => api_admin.course_owner_team_remove(session, widget.course.id, team.id),
         ),
       ),
     );
@@ -162,8 +181,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
             onPressed: _handleClasses,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageCourseTeaminvites,
-            onPressed: _handleTeaminvites,
+            text: AppLocalizations.of(context)!.pageCourseParticipantTeams,
+            onPressed: _handleParticipantTeams,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageCourseOwnerTeams,
+            onPressed: _handleOwnerTeams,
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseModerators,

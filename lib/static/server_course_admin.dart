@@ -113,9 +113,9 @@ Future<bool> course_moderator_remove(Session session, int courseID, int userID) 
   return (response.statusCode == 200);
 }
 
-Future<List<Team>> course_teaminvite_list(Session session, int courseID) async {
+Future<List<Team>> course_participant_team_list(Session session, int courseID) async {
   final response = await http.get(
-    server.uri('/admin/course_teaminvite_list', {'course_id': courseID.toString()}),
+    server.uri('/admin/course_participant_team_list', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -128,9 +128,9 @@ Future<List<Team>> course_teaminvite_list(Session session, int courseID) async {
   return List<Team>.from(list.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> course_teaminvite_add(Session session, int courseID, int teamID) async {
+Future<bool> course_participant_team_add(Session session, int courseID, int teamID) async {
   final response = await http.head(
-    server.uri('/admin/course_teaminvite_add', {
+    server.uri('/admin/course_participant_team_add', {
       'course_id': courseID.toString(),
       'team_id': teamID.toString(),
     }),
@@ -142,9 +142,52 @@ Future<bool> course_teaminvite_add(Session session, int courseID, int teamID) as
   return (response.statusCode == 200);
 }
 
-Future<bool> course_teaminvite_remove(Session session, int courseID, int teamID) async {
+Future<bool> course_participant_team_remove(Session session, int courseID, int teamID) async {
   final response = await http.head(
-    server.uri('/admin/course_teaminvite_remove', {
+    server.uri('/admin/course_participant_team_remove', {
+      'course_id': courseID.toString(),
+      'team_id': teamID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<Team>> course_owner_team_list(Session session, int courseID) async {
+  final response = await http.get(
+    server.uri('/admin/course_owner_team_list', {'course_id': courseID.toString()}),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<Team>.from(list.map((model) => Team.fromJson(model)));
+}
+
+Future<bool> course_owner_team_add(Session session, int courseID, int teamID) async {
+  final response = await http.head(
+    server.uri('/admin/course_owner_team_add', {
+      'course_id': courseID.toString(),
+      'team_id': teamID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> course_owner_team_remove(Session session, int courseID, int teamID) async {
+  final response = await http.head(
+    server.uri('/admin/course_owner_team_remove', {
       'course_id': courseID.toString(),
       'team_id': teamID.toString(),
     }),

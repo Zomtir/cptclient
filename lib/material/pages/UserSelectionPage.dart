@@ -3,7 +3,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,8 @@ class UserSelectionPage extends StatefulWidget {
   final Session session;
   final String title;
   final Widget tile;
-  final Future<List<User>> Function(Session) onCallList;
+  final Future<List<User>> Function(Session) onCallAvailable;
+  final Future<List<User>> Function(Session) onCallSelected;
   final Future<bool> Function(Session, User) onCallAdd;
   final Future<bool> Function(Session, User) onCallRemove;
 
@@ -20,7 +20,8 @@ class UserSelectionPage extends StatefulWidget {
     required this.session,
     required this.title,
     required this.tile,
-    required this.onCallList,
+    required this.onCallAvailable,
+    required this.onCallSelected,
     required this.onCallAdd,
     required this.onCallRemove,
   });
@@ -44,10 +45,10 @@ class UserSelectionPageState extends State<UserSelectionPage> {
   }
 
   void _update() async {
-    List<User> available = await server.user_list(widget.session);
+    List<User> available = await widget.onCallAvailable(widget.session);
     available.sort();
 
-    List<User> selected = await widget.onCallList(widget.session);
+    List<User> selected = await widget.onCallSelected(widget.session);
     selected.sort();
 
     _data.available = available;

@@ -18,6 +18,7 @@ import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -129,7 +130,8 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppSlotTile(slot: slot),
-          onCallList: (session) => api_owner.event_owner_list(session, slot),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_owner.event_owner_list(session, slot),
           onCallAdd: (session, user) => api_owner.event_owner_add(session, slot, user),
           onCallRemove: (session, user) => api_owner.event_owner_remove(session, slot, user),
         ),
@@ -147,7 +149,8 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppSlotTile(slot: slot),
-          onCallList: (session) => api_owner.event_participant_list(session, slot),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_owner.event_participant_list(session, slot),
           onCallAdd: (session, user) => api_owner.event_participant_add(session, slot, user),
           onCallRemove: (session, user) => api_owner.event_participant_remove(session, slot, user),
         ),
