@@ -3,6 +3,7 @@
 import 'dart:core';
 
 import 'package:cptclient/static/format.dart';
+import 'package:diacritic/diacritic.dart';
 
 class User implements Comparable {
   final int id;
@@ -55,7 +56,7 @@ class User implements Comparable {
         federationnumber = convertNullInt(json['federationnumber']),
         federationpermissionsolo = parseNullWebDate(json['federationpermissionsolo']),
         federationpermissionteam = parseNullWebDate(json['federationpermissionteam']),
-        federationresidency = json['federationresidency'],
+        federationresidency = parseNullWebDate(json['federationresidency']),
         datadeclaration = convertNullInt(json['datadeclaration']),
         datadisclaimer = json['datadisclaimer'],
         note = json['note'];
@@ -92,9 +93,9 @@ class User implements Comparable {
 
   @override
   int compareTo(other) {
-    int compLast = lastname.compareTo(other.lastname);
+    int compLast = removeDiacritics(lastname).compareTo(removeDiacritics(other.lastname));
     if (compLast != 0) return compLast;
-    int compFirst = firstname.compareTo(other.firstname);
+    int compFirst = removeDiacritics(firstname).compareTo(removeDiacritics(other.firstname));
     if (compFirst != 0) return compFirst;
 
     return key.compareTo(other.key);

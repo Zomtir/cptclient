@@ -21,6 +21,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  diacritic: ^0.1.5
+
   # Fetch data from the internet
   http: ^1.2.0
 

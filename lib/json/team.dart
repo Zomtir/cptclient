@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:cptclient/json/right.dart';
+import 'package:diacritic/diacritic.dart';
 
 class Team implements Comparable {
   final int id;
@@ -43,7 +44,7 @@ class Team implements Comparable {
 
   @override
   int compareTo(other) {
-    return name.compareTo(other.name);
+    return removeDiacritics(name).compareTo(removeDiacritics(other.name));
   }
 }
 
