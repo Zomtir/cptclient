@@ -2,6 +2,7 @@ import 'package:cptclient/json/term.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppTermTile extends StatelessWidget {
   final Term term;
@@ -27,7 +28,7 @@ class AppTermTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${term.user!.firstname} ${term.user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${term.begin!.fmtDate(context)} - ${term.end!.fmtDate(context)}"),
+                Text("${term.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${term.end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
               ],
             ),
           ),

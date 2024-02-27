@@ -110,5 +110,7 @@
   "weekdayShortThu": "Do",
   "weekdayShortFri": "Fr",
   "weekdayShortSat": "Sa",
-  "weekdayShortSun": "So"
+  "weekdayShortSun": "So",
+  "unknown": "Unbekannt",
+  "undefined": "Undefiniert"
 }
