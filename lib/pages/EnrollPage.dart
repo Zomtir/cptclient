@@ -1,10 +1,13 @@
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/pages/UserSelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/server_slot_service.dart' as server;
+import 'package:cptclient/static/server_slot_service.dart' as api_service;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EnrollPage extends StatefulWidget {
   final Session session;
@@ -18,8 +21,7 @@ class EnrollPage extends StatefulWidget {
 }
 
 class EnrollPageState extends State<EnrollPage> {
-  List<User> _participantPool = [];
-  List<User> _participantList = [];
+  final TextEditingController _ctrlSlotNote = TextEditingController();
 
   EnrollPageState();
 
@@ -30,25 +32,47 @@ class EnrollPageState extends State<EnrollPage> {
   }
 
   void _update() async {
-    _participantPool = await server.slot_participant_pool(widget.session);
-    _participantList = await server.slot_participant_list(widget.session);
+    //String slotNoteText = await api_service.slot_notes(widget.session);
+
+    String slotNoteText = widget.session.slot!.note;
 
     setState(() {
-      _participantPool.sort();
-      _participantList.sort();
+      _ctrlSlotNote.text = slotNoteText;
     });
   }
 
-  void _addParticipant(User user) async {
-    if (!await server.slot_participant_add(widget.session, user)) return;
-
-    _update();
+  Future<void> _handleParticipants() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserSelectionPage(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageClassParticipants,
+          tile: AppSlotTile(slot: widget.session.slot!),
+          onCallAvailable: (session) => api_service.slot_participant_pool(session),
+          onCallSelected: (session) => api_service.slot_participant_list(session),
+          onCallAdd: (session, user) => api_service.slot_participant_add(session, user),
+          onCallRemove: (session, user) => api_service.slot_participant_remove(session, user),
+        ),
+      ),
+    );
   }
 
-  void _removeParticipant(User user) async {
-    if (!await server.slot_participant_remove(widget.session, user)) return;
-
-    _update();
+  Future<void> _handleOwners() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserSelectionPage(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageClassOwners,
+          tile: AppSlotTile(slot: widget.session.slot!),
+          onCallAvailable: (session) => api_service.slot_owner_pool(session),
+          onCallSelected: (session) => api_service.slot_owner_list(session),
+          onCallAdd: (session, user) => api_service.slot_owner_add(session, user),
+          onCallRemove: (session, user) => api_service.slot_owner_remove(session, user),
+        ),
+      ),
+    );
   }
 
   @override
@@ -66,14 +90,21 @@ class EnrollPageState extends State<EnrollPage> {
       body: AppBody(
         children: [
           AppSlotTile(slot: widget.session.slot!),
-          //SelectionPanel<User>(
-      //  available: _participantPool,
-      //   chosen: _participantList,
-      //     onAdd: _addParticipant,
-      //    onRemove: _removeParticipant,
-      //    filter: filterUsers,
-      //    builder: (User user) => AppUserTile(user: user),
-          //  ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageClassParticipants,
+            onPressed: _handleParticipants,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageClassOwners,
+            onPressed: _handleOwners,
+          ),
+          AppInfoRow(
+            info: Text("Notes"),
+            child: TextField(
+              maxLines: 4,
+              controller: _ctrlSlotNote,
+            ),
+          ),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
 
 class LoginSlotPage extends StatefulWidget {
@@ -37,36 +38,40 @@ class LoginSlotPageState extends State<LoginSlotPage> {
     final node = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Slot Login"),
+        title: Text(AppLocalizations.of(context)!.loginSlot),
       ),
       body: AppBody(children: [
-        TextFormField(
-          maxLines: 1,
-          controller: _ctrlSlotLogin,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-            labelText: "Slot Key",
-            hintText: "8 alphanumeric characters",
-            suffixIcon: IconButton(
-              focusNode: FocusNode(skipTraversal: true),
-              onPressed: () => _ctrlSlotLogin.clear(),
-              icon: Icon(Icons.clear),
+        ListTile(
+          title: TextFormField(
+            maxLines: 1,
+            controller: _ctrlSlotLogin,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+              labelText: "Slot Key",
+              hintText: "8 alphanumeric characters",
+              suffixIcon: IconButton(
+                focusNode: FocusNode(skipTraversal: true),
+                onPressed: () => _ctrlSlotLogin.clear(),
+                icon: Icon(Icons.clear),
+              ),
             ),
           ),
         ),
-        TextField(
-          obscureText: true,
-          maxLines: 1,
-          controller: _ctrlSlotPasswd,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-            labelText: "Slot Password",
-            suffixIcon: IconButton(
-              focusNode: FocusNode(skipTraversal: true),
-              onPressed: () => _ctrlSlotPasswd.clear(),
-              icon: Icon(Icons.clear),
+        ListTile(
+          title: TextField(
+            obscureText: true,
+            maxLines: 1,
+            controller: _ctrlSlotPasswd,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+              labelText: "Slot Password",
+              suffixIcon: IconButton(
+                focusNode: FocusNode(skipTraversal: true),
+                onPressed: () => _ctrlSlotPasswd.clear(),
+                icon: Icon(Icons.clear),
+              ),
             ),
           ),
         ),

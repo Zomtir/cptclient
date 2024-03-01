@@ -1,4 +1,9 @@
 {
+  "loginResume": "Sitzung wiederherstellen",
+  "loginUser": "Benutzer-Login",
+  "loginSlot": "Ereignis-Login",
+  "loginCourse": "Kurs-Login",
+  "loginLocation": "Orts-Login",
   "submissionFail": "Übermittlung der Information fehlgeschlagen",
   "submissionSuccess": "Übermittlung der Information erfolgreich",
   "submissionSuccessExceptPassword": "Übermittlung der Information teilweise erfolgreich; Passwort abgelehnt",

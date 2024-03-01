@@ -75,3 +75,57 @@ Future<bool> slot_participant_remove(Session session, User user) async {
 
   return (response.statusCode == 200);
 }
+
+Future<List<User>> slot_owner_pool(Session session) async {
+  final response = await http.get(
+    server.uri('/service/slot_owner_pool'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(response.body);
+  return List<User>.from(l.map((model) => User.fromJson(model)));
+}
+
+Future<List<User>> slot_owner_list(Session session) async {
+  final response = await http.get(
+    server.uri('/service/slot_owner_list'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(response.body);
+  return List<User>.from(l.map((model) => User.fromJson(model)));
+}
+
+Future<bool> slot_owner_add(Session session, User user) async {
+  final response = await http.head(
+    server.uri('/service/slot_owner_add', {
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> slot_owner_remove(Session session, User user) async {
+  final response = await http.head(
+    server.uri('/service/slot_owner_remove', {
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}

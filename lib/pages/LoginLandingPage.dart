@@ -8,6 +8,7 @@ import 'package:cptclient/pages/LoginSlotPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
 
 class LoginLandingPage extends StatefulWidget {
@@ -55,24 +56,24 @@ class LoginLandingPageState extends State<LoginLandingPage> {
       ),
       body: AppBody(children: [
         if (html.window.localStorage['Session']!.isNotEmpty) AppButton(
-          text: "Resume Session",
+          text: AppLocalizations.of(context)!.loginResume,
           onPressed: _resume,
         ),
         if (html.window.localStorage['Session']!.isNotEmpty) Divider(),
         AppButton(
-          text: "User Login",
+          text: AppLocalizations.of(context)!.loginUser,
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
         ),
         AppButton(
-          text: "Slot Login",
+          text: AppLocalizations.of(context)!.loginSlot,
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginSlotPage())),
         ),
         AppButton(
-          text: "Course Login",
+          text: AppLocalizations.of(context)!.loginCourse,
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
         ),
         AppButton(
-          text: "Location Login",
+          text: AppLocalizations.of(context)!.loginLocation,
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
         ),
       ]),

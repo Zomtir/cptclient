@@ -7,6 +7,7 @@ import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import "package:universal_html/html.dart" as html;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginLocationPage extends StatefulWidget {
   LoginLocationPage({super.key});
@@ -40,7 +41,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
     final node = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Location Login"),
+        title: Text(AppLocalizations.of(context)!.loginLocation),
       ),
       body: AppBody(children: [
         TextFormField(

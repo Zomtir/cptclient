@@ -1,4 +1,9 @@
 {
+  "loginResume": "Resume Session",
+  "loginUser": "User Login",
+  "loginSlot": "Slot Login",
+  "loginCourse": "Course Login",
+  "loginLocation": "Location Login",
   "submissionFail": "Failed to submit the information",
   "submissionSuccess": "Succeeded to submit the information",
   "submissionSuccessExceptPassword": "Partially succeeded to submit the information; password was denied",

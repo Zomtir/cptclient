@@ -48,6 +48,8 @@ Future<void> loginUser() async {
   if (await server.loadStatus()) {
     if (await confirmUser()) {
       gotoRoute('/user');
+    } else {
+      logout();
     }
   } else {
     gotoRoute('/config');
@@ -58,6 +60,8 @@ Future<void> loginSlot() async {
   if (await server.loadStatus()) {
     if (await confirmSlot()) {
       gotoRoute('/slot');
+    } else {
+      logout();
     }
   } else {
     gotoRoute('/config');
