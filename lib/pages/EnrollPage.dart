@@ -1,4 +1,5 @@
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -13,7 +14,7 @@ class EnrollPage extends StatefulWidget {
   final Session session;
 
   EnrollPage({super.key, required this.session}) {
-    if (session.token == "" || session.slot == null) navi.logout();
+    if (session.token.isEmpty) navi.logout();
   }
 
   @override
@@ -22,6 +23,7 @@ class EnrollPage extends StatefulWidget {
 
 class EnrollPageState extends State<EnrollPage> {
   final TextEditingController _ctrlSlotNote = TextEditingController();
+  Slot? _slot;
 
   EnrollPageState();
 
@@ -32,12 +34,12 @@ class EnrollPageState extends State<EnrollPage> {
   }
 
   void _update() async {
-    //String slotNoteText = await api_service.slot_notes(widget.session);
-
-    String slotNoteText = widget.session.slot!.note;
+    Slot? slot = await api_service.slot_info(widget.session);
+    if (slot == null) return;
 
     setState(() {
-      _ctrlSlotNote.text = slotNoteText;
+      _slot = slot;
+      _ctrlSlotNote.text = slot.note;
     });
   }
 
@@ -48,7 +50,7 @@ class EnrollPageState extends State<EnrollPage> {
         builder: (context) => UserSelectionPage(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageClassParticipants,
-          tile: AppSlotTile(slot: widget.session.slot!),
+          tile: AppSlotTile(slot: _slot!),
           onCallAvailable: (session) => api_service.slot_participant_pool(session),
           onCallSelected: (session) => api_service.slot_participant_list(session),
           onCallAdd: (session, user) => api_service.slot_participant_add(session, user),
@@ -65,7 +67,7 @@ class EnrollPageState extends State<EnrollPage> {
         builder: (context) => UserSelectionPage(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageClassOwners,
-          tile: AppSlotTile(slot: widget.session.slot!),
+          tile: AppSlotTile(slot: _slot!),
           onCallAvailable: (session) => api_service.slot_owner_pool(session),
           onCallSelected: (session) => api_service.slot_owner_list(session),
           onCallAdd: (session, user) => api_service.slot_owner_add(session, user),
@@ -75,8 +77,13 @@ class EnrollPageState extends State<EnrollPage> {
     );
   }
 
+  Future<void> _handleNote() async {
+    await api_service.slot_note_edit(widget.session, _ctrlSlotNote.text);
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_slot == null) return Container();
     return Scaffold(
       appBar: AppBar(
         title: Text("Slot Participation"),
@@ -89,7 +96,7 @@ class EnrollPageState extends State<EnrollPage> {
       ),
       body: AppBody(
         children: [
-          AppSlotTile(slot: widget.session.slot!),
+          AppSlotTile(slot: _slot!),
           AppButton(
             text: AppLocalizations.of(context)!.pageClassParticipants,
             onPressed: _handleParticipants,
@@ -103,6 +110,10 @@ class EnrollPageState extends State<EnrollPage> {
             child: TextField(
               maxLines: 4,
               controller: _ctrlSlotNote,
+            ),
+            trailing: IconButton(
+              icon: const Icon(Icons.save),
+              onPressed: _handleNote,
             ),
           ),
         ],

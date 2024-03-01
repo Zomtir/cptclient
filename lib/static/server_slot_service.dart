@@ -8,11 +8,11 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<Slot?> slot_info(String token) async {
+Future<Slot?> slot_info(Session session) async {
   final response = await http.get(
     server.uri('/service/slot_info'),
     headers: {
-      'Token': token,
+      'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
     },
   );
@@ -20,6 +20,19 @@ Future<Slot?> slot_info(String token) async {
   if (response.statusCode != 200) return null;
 
   return Slot.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+}
+
+Future<bool?> slot_note_edit(Session session, String note) async {
+  final response = await http.post(
+    server.uri('/service/slot_note_edit'),
+    headers: {
+      'Token': session.token,
+      'Content-Type': 'text/plain; charset=utf-8',
+    },
+    body: utf8.encode(note),
+  );
+
+  return (response.statusCode == 200);
 }
 
 Future<List<User>> slot_participant_pool(Session session) async {

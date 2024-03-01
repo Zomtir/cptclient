@@ -7,10 +7,8 @@ library navigation;
 
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_slot_service.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -100,12 +98,9 @@ Future<bool> confirmUser() async {
 }
 
 Future<bool> confirmSlot() async {
-  if (html.window.localStorage['Token']! == "") return false;
+  if (html.window.localStorage['Token']!.isEmpty) return false;
 
-  Slot? slot = await server.slot_info(html.window.localStorage['Token']!);
-  if (slot == null) return false;
-
-  session = Session(html.window.localStorage['Token']!, slot: slot);
+  session = Session(html.window.localStorage['Token']!);
   return true;
 }
 
