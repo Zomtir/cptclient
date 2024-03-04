@@ -4,19 +4,16 @@ This is the client application for connecting to cptserver. CPT stands for Cours
 
 ## Getting Started
 
-Should work out of the box, if the cptserver is running. The server details have to be adapted in `cptclient.yaml`.
+Should mostly work out of the box, if a cptserver is running.
+
+1) Install Android SDK
+   1) Enable Dart Plugin
+   2) Enable Flutter Plugin
+2) Install Flutter SDK
+3) Adapt the server details in `cptclient.yaml`. A template can be found in `cptclient-template.yaml`.
+4) Choose Chrome (web) as build target and press the Run button. Alternatively you can use the command line:
 
 ```
 flutter gen-l10n
 flutter build web
 ```
-
-## TODO
-- Make calendar functional
-- Mailing/chat/notification support
-- Slot reservation time limitations
-  - Add opening dates / hours (e.g 9:00 to 22:00)
-  - Add closing dates / hours (holidays)
-
-## Wishlist
-- Compatibility for NFC login
