@@ -1,4 +1,4 @@
-import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/ranking.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -27,7 +27,7 @@ class RankingAdminPage extends StatefulWidget {
 
 class RankingAdminPageState extends State<RankingAdminPage> {
   final DropdownController<User> _ctrlRankingUser = DropdownController<User>(items: []);
-  final DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<Skill> _ctrlRankingBranch = DropdownController<Skill>(items: server.cacheSkills);
   int _rankingLevel = 0;
   final DropdownController<User> _ctrlRankingJudge = DropdownController<User>(items: []);
   final TextEditingController _ctrlRankingDate = TextEditingController();
@@ -152,12 +152,12 @@ class RankingAdminPageState extends State<RankingAdminPage> {
           ),
           AppInfoRow(
             info: Text("Branch"),
-            child: AppDropdown<Branch>(
+            child: AppDropdown<Skill>(
               controller: _ctrlRankingBranch,
-              builder: (Branch branch) {
+              builder: (Skill branch) {
                 return Text(branch.title);
               },
-              onChanged: (Branch? branch) {
+              onChanged: (Skill? branch) {
                 setState(() => _ctrlRankingBranch.value = branch);
               },
             ),

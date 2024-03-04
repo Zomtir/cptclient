@@ -12,6 +12,7 @@ class User implements Comparable {
   bool? active;
   String firstname;
   String lastname;
+  String? nickname;
   String? address;
   String? email;
   String? phone;
@@ -45,6 +46,7 @@ class User implements Comparable {
         active = json['active'],
         firstname = json['firstname'],
         lastname = json['lastname'],
+        nickname = json['nickname'],
         address = json['address'],
         email = json['email'],
         phone = json['phone'],
@@ -68,6 +70,7 @@ class User implements Comparable {
         'active': active,
         'firstname': firstname,
         'lastname': lastname,
+        'nickname': nickname,
         'address': address,
         'email': email,
         'phone': phone,

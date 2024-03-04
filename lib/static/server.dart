@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/location.dart';
@@ -23,7 +23,7 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
 }
 
 List<Location> cacheLocations = [];
-List<Branch> cacheBranches = [];
+List<Skill> cacheSkills = [];
 List<Status> cacheSlotStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
@@ -46,14 +46,14 @@ Future<bool> loadCache() async {
   } else {
     // Connection succeeds
     await loadLocations();
-    await loadBranches();
+    await loadSkills();
     await Future.delayed(Duration(milliseconds: 200));
     return true;
   }
 }
 
 void refresh() {
-  loadBranches();
+  loadSkills();
   loadLocations();
 }
 
@@ -73,9 +73,9 @@ Future<bool> loadLocations() async {
   return true;
 }
 
-Future<bool> loadBranches() async {
+Future<bool> loadSkills() async {
   final response = await http.get(
-    uri('branch_list'),
+    uri('skill_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },
@@ -84,7 +84,7 @@ Future<bool> loadBranches() async {
   if (response.statusCode != 200) return false;
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  cacheBranches = List<Branch>.from(l.map((model) => Branch.fromJson(model)));
+  cacheSkills = List<Skill>.from(l.map((model) => Skill.fromJson(model)));
 
   return true;
 }

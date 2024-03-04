@@ -1,4 +1,4 @@
-import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -28,7 +28,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
 
   bool _isActive = true;
   bool _isPublic = true;
-  final DropdownController<Branch> _ctrlDropdownBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<Skill> _ctrlDropdownBranch = DropdownController<Skill>(items: server.cacheSkills);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseResponsiblePageState();
@@ -94,12 +94,12 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                   ),
                   AppInfoRow(
                     info: Text("Branch"),
-                    child: AppDropdown<Branch>(
+                    child: AppDropdown<Skill>(
                       controller: _ctrlDropdownBranch,
-                      builder: (Branch branch) {
+                      builder: (Skill branch) {
                         return Text(branch.title);
                       },
-                      onChanged: (Branch? branch) {
+                      onChanged: (Skill? branch) {
                         _ctrlDropdownBranch.value = branch;
                       },
                     ),

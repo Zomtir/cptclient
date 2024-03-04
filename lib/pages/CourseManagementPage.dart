@@ -1,4 +1,4 @@
-import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -34,7 +34,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   final DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
   bool? _ctrlPublic;
   bool? _ctrlActive;
-  final DropdownController<Branch> _ctrlRankingBranch = DropdownController<Branch>(items: server.cacheBranches);
+  final DropdownController<Skill> _ctrlRankingBranch = DropdownController<Skill>(items: server.cacheSkills);
   RangeValues _ctrlRankingRange = RangeValues(0, 10);
 
   CourseManagementPageState();
@@ -152,7 +152,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
               RankingDropdown(
                 controller: _ctrlRankingBranch,
                 range: _ctrlRankingRange,
-                onChanged: (Branch? branch, RangeValues range) => setState(() {
+                onChanged: (Skill? branch, RangeValues range) => setState(() {
                   _ctrlRankingBranch.value = branch;
                   _ctrlRankingRange = range;
                 }),

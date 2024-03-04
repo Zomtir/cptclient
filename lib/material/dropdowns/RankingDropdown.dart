@@ -1,4 +1,4 @@
-import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RankingDropdown extends StatelessWidget {
-  final DropdownController<Branch> controller;
+  final DropdownController<Skill> controller;
   final RangeValues range;
-  final void Function(Branch?, RangeValues) onChanged;
+  final void Function(Skill?, RangeValues) onChanged;
 
   RankingDropdown({
     super.key,
@@ -23,12 +23,12 @@ class RankingDropdown extends StatelessWidget {
       children: [
         AppInfoRow(
           info: Text(AppLocalizations.of(context)!.courseRanking),
-          child: AppDropdown<Branch>(
+          child: AppDropdown<Skill>(
             controller: controller,
-            builder: (Branch branch) {
+            builder: (Skill branch) {
               return Text(branch.title);
             },
-            onChanged: (Branch? branch) => onChanged(branch, range),
+            onChanged: (Skill? branch) => onChanged(branch, range),
           ),
           trailing: IconButton(
             icon: Icon(Icons.clear),

@@ -1,13 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:cptclient/json/branch.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:intl/intl.dart';
 
 class Ranking {
   final int id;
   User? user;
-  Branch? branch;
+  Skill? branch;
   int rank;
   DateTime date;
   User? judge;
@@ -25,7 +25,7 @@ class Ranking {
   Ranking.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       user = User.fromJson(json['user']),
-      branch = Branch.fromJson(json['branch']),
+      branch = Skill.fromJson(json['branch']),
       rank = json['rank'],
       date = DateFormat("yyyy-MM-dd").parse(json['date'], true).toLocal(),
       judge = User.fromJson(json['judge']);
