@@ -1,13 +1,15 @@
-import 'package:cptclient/json/competence.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:flutter/material.dart';
 
 class AppSkillTile extends StatelessWidget {
-  final Competence skill;
+  final Skill skill;
+  final List<Widget> trailing;
 
   const AppSkillTile({
     super.key,
     required this.skill,
+    this.trailing = const [],
   });
 
   @override
@@ -16,8 +18,9 @@ class AppSkillTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("${skill.branch.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("${skill.rank}", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${skill.title}", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${skill.min} - ${skill.max}", style: TextStyle(fontWeight: FontWeight.bold)),
+          ...trailing,
         ],
       ),
     );

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class SelectionData<T> extends ChangeNotifier {
   List<T> _available;
   List<T> _selected;
-  final Function(T) onSelect;
-  final Function(T) onDeselect;
+  final Function(T)? onSelect;
+  final Function(T)? onDeselect;
   final List<T> Function(List<T>, String) filter;
 
   SelectionData({

@@ -19,12 +19,6 @@ class LoginLandingPage extends StatefulWidget {
 }
 
 class LoginLandingPageState extends State<LoginLandingPage> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void _resume() async {
     switch (html.window.localStorage['Session']!) {
       case 'user':
@@ -46,35 +40,42 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionPage())),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ConnectionPage())),
           ),
           IconButton(
             icon: Icon(Icons.info, color: Colors.white),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreditPage())),
           ),
         ],
       ),
       body: AppBody(children: [
-        if (html.window.localStorage['Session']!.isNotEmpty) AppButton(
-          text: AppLocalizations.of(context)!.loginResume,
-          onPressed: _resume,
-        ),
+        if (html.window.localStorage['Session']!.isNotEmpty)
+          AppButton(
+            text: AppLocalizations.of(context)!.loginResume,
+            onPressed: _resume,
+          ),
         if (html.window.localStorage['Session']!.isNotEmpty) Divider(),
         AppButton(
           text: AppLocalizations.of(context)!.loginUser,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LoginUserPage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginSlot,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginSlotPage())),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LoginSlotPage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginCourse,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LoginCoursePage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginLocation,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LoginLocationPage())),
         ),
       ]),
     );

@@ -29,7 +29,7 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
   }
 
   void _handleSelect(T item) {
-    widget.dataModel.onSelect(item);
+    widget.dataModel.onSelect?.call(item);
   }
 
   void _handleClear() {

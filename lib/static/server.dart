@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
@@ -87,6 +88,22 @@ Future<bool> loadSkills() async {
   cacheSkills = List<Skill>.from(l.map((model) => Skill.fromJson(model)));
 
   return true;
+}
+
+Future<List<Club>> receiveClubs() async {
+  final response = await http.get(
+    uri('/anon/club_list'),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  List<Club> clubs = List<Club>.from(l.map((model) => Club.fromJson(model)));
+
+  return clubs;
 }
 
 Future<List<Course>> receiveCourses() async {

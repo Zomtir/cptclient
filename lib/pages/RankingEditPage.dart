@@ -1,10 +1,12 @@
-import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/DateTimeController.dart';
+import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppRankingTile.dart';
@@ -12,11 +14,10 @@ import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_ranking_admin.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RankingAdminPage extends StatefulWidget {
   final Session session;
-  final Ranking ranking;
+  final Competence ranking;
   final bool isDraft;
 
   RankingAdminPage({super.key, required this.session, required this.ranking, required this.isDraft});
@@ -30,7 +31,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
   final DropdownController<Skill> _ctrlRankingBranch = DropdownController<Skill>(items: server.cacheSkills);
   int _rankingLevel = 0;
   final DropdownController<User> _ctrlRankingJudge = DropdownController<User>(items: []);
-  final TextEditingController _ctrlRankingDate = TextEditingController();
+  final DateTimeController _ctrlRankingDate = DateTimeController(dateTime: DateTime.now());
 
   RankingAdminPageState();
 
@@ -52,18 +53,18 @@ class RankingAdminPageState extends State<RankingAdminPage> {
 
   void _applyRanking() {
     _ctrlRankingUser.value = widget.ranking.user;
-    _ctrlRankingBranch.value = widget.ranking.branch;
+    _ctrlRankingBranch.value = widget.ranking.skill;
     _rankingLevel = widget.ranking.rank;
     _ctrlRankingJudge.value = widget.ranking.judge;
-    _ctrlRankingDate.text = DateFormat("yyyy-MM-dd HH:mm").format(widget.ranking.date);
+    _ctrlRankingDate.setDate(widget.ranking.date);
   }
 
   void _gatherRanking() {
     widget.ranking.user = _ctrlRankingUser.value;
-    widget.ranking.branch = _ctrlRankingBranch.value;
+    widget.ranking.skill = _ctrlRankingBranch.value;
     widget.ranking.rank = _rankingLevel;
     widget.ranking.judge = _ctrlRankingJudge.value;
-    widget.ranking.date = DateFormat("yyyy-MM-dd HH:mm").parse(_ctrlRankingDate.text, false);
+    widget.ranking.date = _ctrlRankingDate.getDate();
   }
 
   void _submitRanking() async {
@@ -98,7 +99,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
       MaterialPageRoute(
         builder: (context) => RankingAdminPage(
           session: widget.session,
-          ranking: Ranking.fromRanking(widget.ranking),
+          ranking: Competence.fromCompetence(widget.ranking),
           isDraft: true,
         ),
       ),
@@ -192,8 +193,7 @@ class RankingAdminPageState extends State<RankingAdminPage> {
           ),
           AppInfoRow(
             info: Text("Date"),
-            child: TextField(
-              maxLines: 1,
+            child: DateTimeEdit(
               controller: _ctrlRankingDate,
             ),
           ),

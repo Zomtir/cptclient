@@ -4,6 +4,8 @@ class Skill implements Comparable {
   final int id;
   final String key;
   final String title;
+  final int min = 0;
+  final int max = 0;
 
   Skill(this.id, this.key, this.title);
 

@@ -1,18 +1,50 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/json/user.dart';
+import 'package:intl/intl.dart';
 
 class Competence {
-  Skill branch;
+  final int id;
+  User? user;
+  Skill? skill;
   int rank;
-  int min;
-  int max;
+  DateTime date;
+  User? judge;
 
-  Competence.threshold({required this.branch, this.rank = 0, this.min = 0, this.max = 0});
+  Competence(this.id, this.user, this.skill, this.rank, this.date, this.judge);
 
-  Competence.fromJson(List<dynamic> json)
-      : branch = Skill.fromJson(json[0]),
-        rank = json[1],
-        min = 0,
-        max = 0;
+  Competence.create()
+    : id = 0,
+      user = null,
+      skill = null,
+      rank = 0,
+      date = DateTime.now(),
+      judge = null;
+
+  Competence.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      user = User.fromJson(json['user']),
+      skill = Skill.fromJson(json['skill']),
+      rank = json['rank'],
+      date = DateFormat("yyyy-MM-dd").parse(json['date'], true).toLocal(),
+      judge = User.fromJson(json['judge']);
+
+  Map<String, dynamic> toJson() =>
+    {
+      'id': id,
+      'user': user?.toJson(),
+      'branch': skill?.toJson(),
+      'rank': rank,
+      'date' : DateFormat("yyyy-MM-dd").format(date.toUtc()),
+      'judge' : judge?.toJson()
+    };
+
+    Competence.fromCompetence(Competence ranking)
+      : id = 0,
+        user = ranking.user,
+        skill = ranking.skill,
+        rank = ranking.rank,
+        date = DateTime.now(),
+        judge = ranking.judge;
 }

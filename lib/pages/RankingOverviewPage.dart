@@ -1,6 +1,6 @@
-import 'package:cptclient/json/ranking.dart';
-import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/competence.dart';
+import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppRankingTile.dart';
@@ -18,8 +18,8 @@ class RankingOverviewPage extends StatefulWidget {
 }
 
 class RankingOverviewPageState extends State<RankingOverviewPage> {
-  List<Ranking> _rankings = [];
-  List<Competence> _summary = [];
+  List<Competence> _rankings = [];
+  List<(Skill, int)> _summary = [];
 
   RankingOverviewPageState();
 
@@ -31,12 +31,12 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
   }
 
   Future<void> _requestRankings() async {
-    List<Ranking> rankings = await server.ranking_list(widget.session);
+    List<Competence> rankings = await server.competence_list(widget.session);
     setState(() => _rankings = rankings);
   }
 
   Future<void> _requestSummary() async {
-    List<Competence> summary = await server.ranking_summary(widget.session);
+    List<(Skill, int)> summary = await server.competence_summary(widget.session);
     setState(() => _summary = summary);
   }
 
@@ -48,18 +48,19 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          AppListView<Competence>(
+          AppListView<(Skill, int)>(
             items: _summary,
-            itemBuilder: (Competence skill) {
+            itemBuilder: ((Skill, int) skillrank) {
               return AppSkillTile(
-                skill: skill,
+                skill: skillrank.$1,
+                trailing: [Text(skillrank.$2.toString())],
               );
             },
           ),
           Divider(),
-          AppListView<Ranking>(
+          AppListView<Competence>(
             items: _rankings,
-            itemBuilder: (Ranking ranking) {
+            itemBuilder: (Competence ranking) {
               return AppRankingTile(
                 ranking: ranking,
               );

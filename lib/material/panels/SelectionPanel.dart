@@ -1,25 +1,26 @@
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
-import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SelectionPanel<T> extends StatefulWidget {
-  final SelectionData<T> dataModel;
+class SelectionPanel<T> extends StatelessWidget {
+  final List<T> available;
+  final List<T> selected;
+  final Function(T)? onSelect;
+  final Function(T)? onDeselect;
+  final List<T> Function(List<T>, String) filter;
   final Widget Function(T) builder;
 
   const SelectionPanel({
     super.key,
-    required this.dataModel,
+    required this.available,
+    required this.selected,
+    this.onSelect,
+    this.onDeselect,
+    required this.filter,
     required this.builder,
   });
-
-  @override
-  SelectionPanelState createState() => SelectionPanelState<T>();
-}
-
-class SelectionPanelState<T> extends State<SelectionPanel<T>> {
 
   @override
   Widget build(BuildContext context) {
@@ -27,42 +28,40 @@ class SelectionPanelState<T> extends State<SelectionPanel<T>> {
       children: [
         AppButton(
           text: AppLocalizations.of(context)!.actionAdd,
-          onPressed: () => showTilePicker(
+          onPressed: () => showTilePicker<T>(
             context: context,
-            dataModel: widget.dataModel,
+            available: this.available,
+            selected: this.selected,
+            filter: this.filter,
             builder: (T item) {
               return Row(
                 children: [
                   Expanded(
-                    child: widget.builder(item),
+                    child: this.builder(item),
                   ),
                   IconButton(
                     icon: const Icon(Icons.add),
-                    onPressed: () => widget.dataModel.onSelect(item),
+                    onPressed: () => this.onSelect?.call(item),
                   ),
                 ],
               );
             },
+            onSelect: (BuildContext context, T item) => this.onSelect?.call(item),
           ),
         ),
-        ListenableBuilder(
-          listenable: widget.dataModel,
-          builder: (BuildContext context, Widget? child) {
-            return AppListView<T>(
-              items: widget.dataModel.selected,
-              itemBuilder: (T item) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: widget.builder(item),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.remove),
-                      onPressed: () => widget.dataModel.onDeselect(item),
-                    ),
-                  ],
-                );
-              },
+        AppListView<T>(
+          items: this.selected,
+          itemBuilder: (T item) {
+            return Row(
+              children: [
+                Expanded(
+                  child: this.builder(item),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () => this.onDeselect?.call(item),
+                ),
+              ],
             );
           },
         ),

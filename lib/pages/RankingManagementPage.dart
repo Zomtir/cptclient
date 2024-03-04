@@ -1,6 +1,6 @@
-import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
@@ -25,8 +25,8 @@ class RankingManagementPage extends StatefulWidget {
 }
 
 class RankingManagementPageState extends State<RankingManagementPage> {
-  List<Ranking> _rankings = [];
-  List<Ranking> _rankingsFiltered = [];
+  List<Competence> _rankings = [];
+  List<Competence> _rankingsFiltered = [];
   bool _hideFilters = true;
 
   final DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
@@ -43,7 +43,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   }
 
   Future<void> _requestRankings() async {
-    _rankings = await server.ranking_list(widget.session, null, null);
+    _rankings = await server.competence_list(widget.session, null, null);
     _ctrlDropdownUser.items = Set<User>.from(_rankings.map((model) => model.user)).toList();
     _ctrlDropdownJudge.items = Set<User>.from(_rankings.map((model) => model.judge)).toList();
 
@@ -55,13 +55,13 @@ class RankingManagementPageState extends State<RankingManagementPage> {
       _rankingsFiltered = _rankings.where((ranking) {
         bool userFilter = (_ctrlDropdownUser.value == null) ? true : (ranking.user == _ctrlDropdownUser.value);
         bool judgeFilter = (_ctrlDropdownJudge.value == null) ? true : (ranking.judge == _ctrlDropdownJudge.value);
-        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (ranking.branch == _ctrlDropdownBranch.value && ranking.rank >= _thresholdRange.start && ranking.rank <= _thresholdRange.end);
+        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (ranking.skill == _ctrlDropdownBranch.value && ranking.rank >= _thresholdRange.start && ranking.rank <= _thresholdRange.end);
         return userFilter && judgeFilter && branchFilter;
       }).toList();
     });
   }
 
-  Future<void> _selectRanking(Ranking ranking, bool isDraft) async {
+  Future<void> _selectRanking(Competence ranking, bool isDraft) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -171,11 +171,11 @@ class RankingManagementPageState extends State<RankingManagementPage> {
           AppButton(
             leading: Icon(Icons.add),
             text: "New ranking",
-            onPressed: () => _selectRanking(Ranking.create(), true),
+            onPressed: () => _selectRanking(Competence.create(), true),
           ),
-          AppListView<Ranking>(
+          AppListView<Competence>(
             items: _rankingsFiltered,
-            itemBuilder: (Ranking ranking) {
+            itemBuilder: (Competence ranking) {
               return InkWell(
                 onTap: () => _selectRanking(ranking, false),
                 child: AppRankingTile(

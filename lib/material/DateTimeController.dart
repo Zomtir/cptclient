@@ -2,7 +2,7 @@ import 'package:cptclient/static/datetime.dart';
 import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
 
-class DateTimeController<T> {
+class DateTimeController {
   DateTime? _dateTime;
 
   DateTimeController({DateTime? dateTime}) : _dateTime = dateTime;

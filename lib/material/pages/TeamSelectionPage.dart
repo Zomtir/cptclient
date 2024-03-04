@@ -3,7 +3,6 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
-import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 
 class TeamSelectionPage extends StatefulWidget {
@@ -31,15 +30,14 @@ class TeamSelectionPage extends StatefulWidget {
 }
 
 class TeamSelectionPageState extends State<TeamSelectionPage> {
-  late SelectionData<Team> _data;
+  List<Team> _available = [];
+  List<Team> _selected = [];
 
   TeamSelectionPageState();
 
   @override
   void initState() {
     super.initState();
-
-    _data = SelectionData<Team>(available: [], selected: [], onSelect: _add, onDeselect: _remove, filter: filterTeams);
 
     _update();
   }
@@ -51,8 +49,10 @@ class TeamSelectionPageState extends State<TeamSelectionPage> {
     List<Team> selected = await widget.onCallSelected(widget.session);
     selected.sort();
 
-    _data.available = available;
-    _data.selected = selected;
+    setState(() {
+      _available = available;
+      _selected = selected;
+    });
   }
 
   void _add(Team team) async {
@@ -75,7 +75,11 @@ class TeamSelectionPageState extends State<TeamSelectionPage> {
         children: [
           widget.tile,
           SelectionPanel<Team>(
-            dataModel: _data,
+            available: _available,
+            selected: _selected,
+            onSelect: _add,
+            onDeselect: _remove,
+            filter: filterTeams,
             builder: (Team team) => AppTeamTile(team: team),
           ),
         ],

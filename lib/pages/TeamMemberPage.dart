@@ -7,7 +7,6 @@ import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/static/server_team_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as server;
-import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,22 +21,14 @@ class TeamMemberPage extends StatefulWidget {
 }
 
 class TeamMemberPageState extends State<TeamMemberPage> {
-  late SelectionData<User> _memberData;
+  List<User> _available = [];
+  List<User> _selected = [];
 
   TeamMemberPageState();
 
   @override
   void initState() {
     super.initState();
-
-    _memberData = SelectionData<User>(
-        available: [],
-        selected: [],
-        onSelect: _addMember,
-        onDeselect: _removeMember,
-        filter: filterUsers
-    );
-
     _update();
   }
 
@@ -48,8 +39,10 @@ class TeamMemberPageState extends State<TeamMemberPage> {
     List<User> members = await api_admin.team_member_list(widget.session, widget.team.id);
     members.sort();
 
-    _memberData.available = users;
-    _memberData.selected = members;
+    setState(() {
+      _available = users;
+      _selected = members;
+    });
   }
 
   void _addMember(User user) async {
@@ -74,7 +67,11 @@ class TeamMemberPageState extends State<TeamMemberPage> {
             team: widget.team,
           ),
           SelectionPanel<User>(
-            dataModel: _memberData,
+            available: _available,
+            selected: _selected,
+            onSelect: _addMember,
+            onDeselect: _removeMember,
+            filter: filterUsers,
             builder: (User user) => AppUserTile(user: user),
           ),
         ],

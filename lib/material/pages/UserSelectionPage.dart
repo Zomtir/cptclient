@@ -3,7 +3,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/panels/SelectionPanel.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 
 class UserSelectionPage extends StatefulWidget {
@@ -31,16 +30,14 @@ class UserSelectionPage extends StatefulWidget {
 }
 
 class UserSelectionPageState extends State<UserSelectionPage> {
-  late SelectionData<User> _data;
+  List<User> _available = [];
+  List<User> _selected = [];
 
   UserSelectionPageState();
 
   @override
   void initState() {
     super.initState();
-
-    _data = SelectionData<User>(available: [], selected: [], onSelect: _add, onDeselect: _remove, filter: filterUsers);
-
     _update();
   }
 
@@ -51,8 +48,10 @@ class UserSelectionPageState extends State<UserSelectionPage> {
     List<User> selected = await widget.onCallSelected(widget.session);
     selected.sort();
 
-    _data.available = available;
-    _data.selected = selected;
+    setState(() {
+      _available = available;
+      _selected = selected;
+    });
   }
 
   void _add(User user) async {
@@ -75,7 +74,11 @@ class UserSelectionPageState extends State<UserSelectionPage> {
         children: [
           widget.tile,
           SelectionPanel<User>(
-            dataModel: _data,
+            available: _available,
+            selected: _selected,
+            onSelect: _add,
+            onDeselect: _remove,
+            filter: filterUsers,
             builder: (User user) => AppUserTile(user: user),
           ),
         ],

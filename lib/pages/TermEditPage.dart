@@ -7,10 +7,11 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DateTimeController.dart';
 import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:cptclient/material/dialogs/AppPicker.dart';
-import 'package:cptclient/material/dialogs/UserPicker.dart';
+import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/material/tiles/AppTermTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
+import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_term_admin.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
@@ -22,7 +23,12 @@ class TermEditPage extends StatefulWidget {
   final void Function() onUpdate;
   final bool isDraft;
 
-  TermEditPage({super.key, required this.session, required this.term, required this.onUpdate, required this.isDraft});
+  TermEditPage(
+      {super.key,
+      required this.session,
+      required this.term,
+      required this.onUpdate,
+      required this.isDraft});
 
   @override
   TermEditPageState createState() => TermEditPageState();
@@ -60,19 +66,26 @@ class TermEditPageState extends State<TermEditPage> {
     _gatherTerm();
 
     if (_ctrlTermUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.termUser} ${AppLocalizations.of(context)!.isInvalid}")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              "${AppLocalizations.of(context)!.termUser} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
     if (_ctrlTermClub == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.termClub} ${AppLocalizations.of(context)!.isInvalid}")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              "${AppLocalizations.of(context)!.termClub} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
-    bool success = widget.isDraft ? await server.term_create(widget.session, widget.term) : await server.term_edit(widget.session, widget.term);
+    bool success = widget.isDraft
+        ? await server.term_create(widget.session, widget.term)
+        : await server.term_edit(widget.session, widget.term);
 
     if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.submissionFail)));
       return;
     }
 
@@ -82,7 +95,8 @@ class TermEditPageState extends State<TermEditPage> {
 
   void _deleteTerm() async {
     if (!await server.term_delete(widget.session, widget.term)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.deletionFail)));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.deletionFail)));
       return;
     }
 
@@ -93,7 +107,14 @@ class TermEditPageState extends State<TermEditPage> {
   void _handleUserSearch(BuildContext context) async {
     List<User> users = await server.user_list(widget.session);
 
-    User? user = await showAppUserPicker(context: context, users: users, initialUser: _ctrlTermUser);
+    User? user = await showTilePicker<User>(
+      context: context,
+      initial: _ctrlTermUser,
+      available: users,
+      selected: [],
+      builder: (user) => AppUserTile(user: user),
+      filter: filterUsers,
+    );
 
     setState(() {
       _ctrlTermUser = user;
@@ -107,12 +128,13 @@ class TermEditPageState extends State<TermEditPage> {
   }
 
   void _handleClubSearch(BuildContext context) async {
-    List<Club> clubs = []; //FIXME: await server.club_list(widget.session);
+    List<Club> clubs = await server.receiveClubs();
 
-    Club? club = await showAppPicker<Club>(
+    Club? club = await showTilePicker<Club>(
       context: context,
-      items: clubs,
       initial: _ctrlTermClub,
+      available: clubs,
+      selected: [],
       builder: (Club club) => AppClubTile(club: club),
       filter: filterClubs,
     );
@@ -153,7 +175,9 @@ class TermEditPageState extends State<TermEditPage> {
           if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.termUser),
-            child: Text(_ctrlTermUser == null ? AppLocalizations.of(context)!.undefined : "[${_ctrlTermUser!.key}] ${_ctrlTermUser!.firstname} ${_ctrlTermUser!.lastname}"),
+            child: Text(_ctrlTermUser == null
+                ? AppLocalizations.of(context)!.undefined
+                : "[${_ctrlTermUser!.key}] ${_ctrlTermUser!.firstname} ${_ctrlTermUser!.lastname}"),
             trailing: Row(
               children: [
                 IconButton(
@@ -169,7 +193,8 @@ class TermEditPageState extends State<TermEditPage> {
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.termClub),
-            child: Text(_ctrlTermClub?.name ?? AppLocalizations.of(context)!.undefined),
+            child: Text(
+                _ctrlTermClub?.name ?? AppLocalizations.of(context)!.undefined),
             trailing: Row(
               children: [
                 IconButton(

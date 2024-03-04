@@ -1,9 +1,9 @@
-import 'package:cptclient/json/ranking.dart';
+import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
 
 class AppRankingTile extends StatelessWidget {
-  final Ranking ranking;
+  final Competence ranking;
 
   const AppRankingTile({
     super.key,
@@ -22,7 +22,7 @@ class AppRankingTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("${ranking.user!.firstname} ${ranking.user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("${ranking.branch!.key} ${ranking.rank}"),
+            Text("${ranking.skill!.key} ${ranking.rank}"),
             Text("${ranking.date.fmtDate(context)} ${ranking.judge!.firstname} ${ranking.judge!.lastname}", style: TextStyle(color: Colors.black54)),
           ],
         ),
