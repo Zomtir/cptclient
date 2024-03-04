@@ -49,7 +49,7 @@ class TeamEditPageState extends State<TeamEditPage> {
     _ctrlRightCourse = widget.team.right!.admin_courses;
     _ctrlRightEvent = widget.team.right!.admin_courses;
     _ctrlRightInventory = widget.team.right!.admin_inventory;
-    _ctrlRightRanking = widget.team.right!.admin_rankings;
+    _ctrlRightRanking = widget.team.right!.admin_competence;
     _ctrlRightTeam = widget.team.right!.admin_teams;
     _ctrlRightTerm = widget.team.right!.admin_term;
     _ctrlRightUser = widget.team.right!.admin_users;
@@ -59,7 +59,7 @@ class TeamEditPageState extends State<TeamEditPage> {
     widget.team.name = _ctrlName.text;
     widget.team.description = _ctrlDescription.text;
     widget.team.right!.admin_courses = _ctrlRightCourse;
-    widget.team.right!.admin_rankings = _ctrlRightRanking;
+    widget.team.right!.admin_competence = _ctrlRightRanking;
     widget.team.right!.admin_event = _ctrlRightEvent;
     widget.team.right!.admin_inventory = _ctrlRightInventory;
     widget.team.right!.admin_teams = _ctrlRightTeam;

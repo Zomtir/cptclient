@@ -1,9 +1,9 @@
-import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:flutter/material.dart';
 
 class AppSkillTile extends StatelessWidget {
-  final Skill skill;
+  final Competence skill;
 
   const AppSkillTile({
     super.key,

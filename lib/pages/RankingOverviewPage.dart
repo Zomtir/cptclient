@@ -1,6 +1,6 @@
 import 'package:cptclient/json/ranking.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppRankingTile.dart';
@@ -19,7 +19,7 @@ class RankingOverviewPage extends StatefulWidget {
 
 class RankingOverviewPageState extends State<RankingOverviewPage> {
   List<Ranking> _rankings = [];
-  List<Skill> _summary = [];
+  List<Competence> _summary = [];
 
   RankingOverviewPageState();
 
@@ -36,7 +36,7 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
   }
 
   Future<void> _requestSummary() async {
-    List<Skill> summary = await server.ranking_summary(widget.session);
+    List<Competence> summary = await server.ranking_summary(widget.session);
     setState(() => _summary = summary);
   }
 
@@ -48,9 +48,9 @@ class RankingOverviewPageState extends State<RankingOverviewPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          AppListView<Skill>(
+          AppListView<Competence>(
             items: _summary,
-            itemBuilder: (Skill skill) {
+            itemBuilder: (Competence skill) {
               return AppSkillTile(
                 skill: skill,
               );

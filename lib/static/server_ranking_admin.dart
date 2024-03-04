@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:cptclient/json/ranking.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Ranking>> ranking_list(Session session, User? user, Skill? skill) async {
+Future<List<Ranking>> ranking_list(Session session, User? user, Competence? skill) async {
   final response = await http.get(
     server.uri('/admin/ranking_list', {
       if (user != null) 'user_id': user.id.toString(),

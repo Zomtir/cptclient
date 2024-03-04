@@ -123,12 +123,12 @@ class RankingAdminPageState extends State<RankingAdminPage> {
                     ranking: widget.ranking,
                   ),
                 ),
-                if (widget.session.right!.admin_rankings)
+                if (widget.session.right!.admin_competence)
                   IconButton(
                     icon: const Icon(Icons.copy),
                     onPressed: _duplicateRanking,
                   ),
-                if (widget.session.right!.admin_rankings)
+                if (widget.session.right!.admin_competence)
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: _deleteRanking,

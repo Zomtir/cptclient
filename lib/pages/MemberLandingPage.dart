@@ -116,7 +116,7 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.pageRankingPersonal,
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingOverviewPage(session: session))),
           ),
-          if (session.right!.admin_rankings)
+          if (session.right!.admin_competence)
             AppButton(
               text: AppLocalizations.of(context)!.pageRankingManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingManagementPage(session: session))),
