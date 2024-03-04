@@ -30,6 +30,7 @@ class UserAdminPageState extends State<UserAdminPage> {
   bool                  _ctrlUserActive = true;
   final TextEditingController _ctrlUserFirstname = TextEditingController();
   final TextEditingController _ctrlUserLastname = TextEditingController();
+  final TextEditingController _ctrlUserNickname = TextEditingController();
   final TextEditingController _ctrlUserAddress = TextEditingController();
   final TextEditingController _ctrlUserEmail = TextEditingController();
   final TextEditingController _ctrlUserPhone = TextEditingController();
@@ -60,6 +61,7 @@ class UserAdminPageState extends State<UserAdminPage> {
     _ctrlUserActive = widget.user.active ?? false;
     _ctrlUserFirstname.text = widget.user.firstname;
     _ctrlUserLastname.text = widget.user.lastname;
+    _ctrlUserNickname.text = widget.user.nickname ?? '';
     _ctrlUserAddress.text = widget.user.address ?? '';
     _ctrlUserEmail.text = widget.user.email ?? '';
     _ctrlUserPhone.text = widget.user.phone ?? '';
@@ -83,6 +85,7 @@ class UserAdminPageState extends State<UserAdminPage> {
     widget.user.active = _ctrlUserActive;
     widget.user.firstname = _ctrlUserFirstname.text;
     widget.user.lastname = _ctrlUserLastname.text;
+    widget.user.nickname = _ctrlUserNickname.text;
     widget.user.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
     widget.user.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
     widget.user.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
@@ -212,6 +215,13 @@ class UserAdminPageState extends State<UserAdminPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserLastname,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("${AppLocalizations.of(context)!.userNickname} *"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserNickname,
             ),
           ),
           AppInfoRow(

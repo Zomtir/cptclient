@@ -101,7 +101,7 @@ class User implements Comparable {
     int compFirst = removeDiacritics(firstname).compareTo(removeDiacritics(other.firstname));
     if (compFirst != 0) return compFirst;
 
-    return key.compareTo(other.key);
+    return key.compareTo(other.name);
   }
 }
 

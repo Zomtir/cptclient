@@ -1,6 +1,6 @@
-import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
