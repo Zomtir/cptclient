@@ -33,6 +33,7 @@ class TeamManagementPageState extends State<TeamManagementPage> {
 
   Future<void> _update() async {
     List<Team> teams = await api_admin.team_list(widget.session);
+    teams.sort();
 
     setState(() {
       _teams = teams;

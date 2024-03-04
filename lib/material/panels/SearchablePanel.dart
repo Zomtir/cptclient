@@ -33,7 +33,7 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
   }
 
   void _handleClear() {
-    _ctrlFilter.clear();
+    setState(() => _ctrlFilter.clear());
   }
 
   @override

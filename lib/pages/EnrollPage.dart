@@ -105,15 +105,18 @@ class EnrollPageState extends State<EnrollPage> {
             text: AppLocalizations.of(context)!.pageClassOwners,
             onPressed: _handleOwners,
           ),
-          AppInfoRow(
-            info: Text("Notes"),
-            child: TextField(
-              maxLines: 4,
+          ListTile(
+            title: TextField(
+              minLines: 3,
+              maxLines: 10,
               controller: _ctrlSlotNote,
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.save),
-              onPressed: _handleNote,
+              decoration: InputDecoration(
+                labelText: "Notes",
+                suffixIcon: IconButton(
+                  onPressed: _handleNote,
+                  icon: Icon(Icons.save),
+                ),
+              ),
             ),
           ),
         ],
