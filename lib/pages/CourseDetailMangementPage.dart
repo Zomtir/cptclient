@@ -1,10 +1,13 @@
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/team.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/pages/TeamSelectionPage.dart';
-import 'package:cptclient/material/pages/UserSelectionPage.dart';
+import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/material/tiles/AppTeamTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/CourseStatisticClassPage.dart';
@@ -72,7 +75,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserSelectionPage(
+        builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseModerators,
           tile: AppCourseTile(course: widget.course),
@@ -80,6 +83,8 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           onCallSelected: (session) => api_admin.course_moderator_list(session, widget.course.id),
           onCallAdd: (session, user) => api_admin.course_moderator_add(session, widget.course.id, user.id),
           onCallRemove: (session, user) => api_admin.course_moderator_remove(session, widget.course.id, user.id),
+          filter: filterUsers,
+          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
@@ -89,7 +94,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeamSelectionPage(
+        builder: (context) => SelectionPage<Team>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseParticipantTeams,
           tile: AppCourseTile(course: widget.course),
@@ -97,6 +102,8 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           onCallSelected: (session) => api_admin.course_participant_team_list(session, widget.course.id),
           onCallAdd: (session, team) => api_admin.course_participant_team_add(session, widget.course.id, team.id),
           onCallRemove: (session, team) => api_admin.course_participant_team_remove(session, widget.course.id, team.id),
+          filter: filterTeams,
+          builder: (team) => AppTeamTile(team: team),
         ),
       ),
     );
@@ -106,7 +113,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeamSelectionPage(
+        builder: (context) => SelectionPage<Team>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseOwnerTeams,
           tile: AppCourseTile(course: widget.course),
@@ -114,6 +121,8 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           onCallSelected: (session) => api_admin.course_owner_team_list(session, widget.course.id),
           onCallAdd: (session, team) => api_admin.course_owner_team_add(session, widget.course.id, team.id),
           onCallRemove: (session, team) => api_admin.course_owner_team_remove(session, widget.course.id, team.id),
+          filter: filterTeams,
+          builder: (team) => AppTeamTile(team: team),
         ),
       ),
     );

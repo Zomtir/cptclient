@@ -109,12 +109,12 @@ class TermEditPageState extends State<TermEditPage> {
 
     User? user = await showTilePicker<User>(
       context: context,
-      initial: _ctrlTermUser,
-      available: users,
-      selected: [],
-      builder: (user) => AppUserTile(user: user),
+      items: users,
+      builder: (User user) => AppUserTile(user: user),
       filter: filterUsers,
     );
+
+    if (user == null) return;
 
     setState(() {
       _ctrlTermUser = user;
@@ -132,12 +132,12 @@ class TermEditPageState extends State<TermEditPage> {
 
     Club? club = await showTilePicker<Club>(
       context: context,
-      initial: _ctrlTermClub,
-      available: clubs,
-      selected: [],
+      items: clubs,
       builder: (Club club) => AppClubTile(club: club),
       filter: filterClubs,
     );
+
+    if (club == null) return;
 
     setState(() {
       _ctrlTermClub = club;

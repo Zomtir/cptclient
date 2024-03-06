@@ -106,6 +106,8 @@ class User implements Comparable {
 }
 
 List<User> filterUsers(List<User> users, String filter) {
+  if (filter.isEmpty) return users;
+
   List<User> filtered = users.where((User user) {
     Set<String> fragments = filter.toLowerCase().split(' ').toSet();
     List<String> searchspace = [user.key, user.firstname, user.lastname];

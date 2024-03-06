@@ -1,16 +1,19 @@
 import 'dart:core';
 
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/structs/SelectionData.dart';
 import 'package:flutter/material.dart';
 
 class SearchablePanel<T> extends StatefulWidget {
-  final SelectionData<T> dataModel;
-  final Widget Function(T) builder;
+  final List<T> items;
+  final Function(T)? onSelect;
+  final List<T> Function(List<T>, String) filter;
+  final Widget Function(T, Function(T)?) builder;
 
   SearchablePanel({
     super.key,
-    required this.dataModel,
+    required this.items,
+    this.onSelect,
+    required this.filter,
     required this.builder,
   });
 
@@ -19,21 +22,26 @@ class SearchablePanel<T> extends StatefulWidget {
 }
 
 class SearchablePanelState<T> extends State<SearchablePanel<T>> {
-  List<T> _items = [];
+  List<T> _all = [];
+  List<T> _visible = [];
   final TextEditingController _ctrlFilter = TextEditingController();
 
-  List<T> _getItems() {
-    _items = List<T>.from(widget.dataModel.available.toSet().difference(widget.dataModel.selected.toSet()));
-    _items = widget.dataModel.filter(_items, _ctrlFilter.text);
-    return _items;
+  @override
+  void initState() {
+    super.initState();
+    _all = widget.items;
+    _update();
   }
 
-  void _handleSelect(T item) {
-    widget.dataModel.onSelect?.call(item);
+  void _update() {
+    setState(() => _visible = widget.filter(_all, _ctrlFilter.text));
   }
 
   void _handleClear() {
-    setState(() => _ctrlFilter.clear());
+    setState(() {
+      _ctrlFilter.clear();
+      _visible = _all;
+    });
   }
 
   @override
@@ -43,28 +51,19 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
         TextField(
           maxLines: 1,
           controller: _ctrlFilter,
-          onChanged: (text) => setState(() {/* The filter will be applied during rebuild */}),
+          onChanged: (text) => _update(),
           decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0)),
             suffixIcon: IconButton(
               onPressed: _handleClear,
               icon: Icon(Icons.clear),
             ),
           ),
         ),
-        ListenableBuilder(
-          listenable: widget.dataModel,
-          builder: (BuildContext context, Widget? child) {
-            return AppListView<T>(
-              items: _getItems(),
-              itemBuilder: (T item) {
-                return InkWell(
-                  onTap: () => _handleSelect(item),
-                  child: widget.builder(item),
-                );
-              },
-            );
-          },
+        AppListView<T>(
+          items: _visible,
+          itemBuilder: (T item) => widget.builder(item, widget.onSelect),
         ),
       ],
     );

@@ -32,9 +32,10 @@ Future<List<(Skill, int)>> competence_summary(Session session) async {
 
   if (response.statusCode != 200) return [];
 
-  //Iterable l = json.decode(response.body);
-
-  return [];
-  // FIXME
-  //return List<(Skill, int)>.from(l.map((model) => Skill.fromJson(model)));
+  Iterable l = json.decode(response.body);
+  return List<(Skill, int)>.from(l.map((model) {
+    Skill skill = Skill.fromJson(model[0]);
+    int rank = model[1];
+    return (skill, rank);
+  }));
 }

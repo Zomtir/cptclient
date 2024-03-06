@@ -4,10 +4,12 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
-import 'package:cptclient/pages/TeamMemberPage.dart';
 import 'package:cptclient/static/server_team_admin.dart' as api_admin;
+import 'package:cptclient/static/server_user_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -44,14 +46,19 @@ class TeamManagementPageState extends State<TeamManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeamMemberPage(
+        builder: (context) => SelectionPage<User>(
           session: widget.session,
-          team: team,
+          title: AppLocalizations.of(context)!.pageTeamEdit,
+          tile: AppTeamTile(team: team),
+          onCallAvailable: (session) => api_admin.user_list(session),
+          onCallSelected: (session) => api_admin.team_member_list(widget.session, team.id),
+          onCallAdd: (session, user) => api_admin.team_member_add(widget.session, team.id, user.id),
+          onCallRemove: (session, user) => api_admin.team_member_remove(widget.session, team.id, user.id),
+          filter: filterUsers,
+          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
-
-    _update();
   }
 
   Future<void> _editTeam(Team team, bool isDraft) async {

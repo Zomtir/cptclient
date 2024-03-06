@@ -1,9 +1,11 @@
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/pages/UserSelectionPage.dart';
+import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server_class_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
@@ -66,7 +68,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserSelectionPage(
+        builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageClassParticipants,
           tile: AppSlotTile(slot: slot!),
@@ -74,6 +76,8 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
           onCallSelected: (session) => api_admin.class_participant_list(session, slot!),
           onCallAdd: (session, user) => api_admin.class_participant_add(session, slot!, user),
           onCallRemove: (session, user) => api_admin.class_participant_remove(session, slot!, user),
+          filter: filterUsers,
+          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
@@ -83,7 +87,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserSelectionPage(
+        builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageClassOwners,
           tile: AppSlotTile(slot: slot!),
@@ -91,6 +95,8 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
           onCallSelected: (session) => api_admin.class_owner_list(session, slot!),
           onCallAdd: (session, user) => api_admin.class_owner_add(session, slot!, user),
           onCallRemove: (session, user) => api_admin.class_owner_remove(session, slot!, user),
+          filter: filterUsers,
+          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );

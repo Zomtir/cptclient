@@ -218,7 +218,7 @@ class UserAdminPageState extends State<UserAdminPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("${AppLocalizations.of(context)!.userNickname} *"),
+            info: Text(AppLocalizations.of(context)!.userNickname),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserNickname,

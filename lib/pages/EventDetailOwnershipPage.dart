@@ -1,10 +1,12 @@
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/pages/UserSelectionPage.dart';
+import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
@@ -68,7 +70,7 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserSelectionPage(
+        builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppSlotTile(slot: slot!),
@@ -76,6 +78,8 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           onCallSelected: (session) => api_owner.event_participant_list(session, slot!),
           onCallAdd: (session, user) => api_owner.event_participant_add(session, slot!, user),
           onCallRemove: (session, user) => api_owner.event_participant_remove(session, slot!, user),
+          filter: filterUsers,
+          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
@@ -85,7 +89,7 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserSelectionPage(
+        builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppSlotTile(slot: slot!),
@@ -93,6 +97,8 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           onCallSelected: (session) => api_owner.event_owner_list(session, slot!),
           onCallAdd: (session, user) => api_owner.event_owner_add(session, slot!, user),
           onCallRemove: (session, user) => api_owner.event_owner_remove(session, slot!, user),
+          filter: filterUsers,
+          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
