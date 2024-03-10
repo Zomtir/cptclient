@@ -1,4 +1,6 @@
-# Copyright waiver for <https://github.com/Zomtir/cptclient/>
+# COPYRIGHT WAIVER
+
+This is a copyright waiver for [https://github.com/Zomtir/cptclient/](https://github.com/Zomtir/cptclient/).
 
 I dedicate any and all copyright interest in this software to the
 public domain. I make this dedication for the benefit of the public at
