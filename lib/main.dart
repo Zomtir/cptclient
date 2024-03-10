@@ -67,7 +67,8 @@ class MainPage extends StatefulWidget {
   State<StatefulWidget> createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> with TickerProviderStateMixin {
+
   @override
   void initState() {
     super.initState();
@@ -78,10 +79,9 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: const Image(
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
-          image: AssetImage('assets/images/splash.png'),
+        child: CircularProgressIndicator(
+          value: null,
+          strokeWidth: 5,
         ),
       ),
     );

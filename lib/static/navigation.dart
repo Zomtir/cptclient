@@ -21,6 +21,8 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
 
 Future<void> connect() async {
+  // Simulate lag
+  //await Future.delayed(const Duration(seconds: 10));
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 

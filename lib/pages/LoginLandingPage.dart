@@ -36,7 +36,19 @@ class LoginLandingPageState extends State<LoginLandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Participation Tracker"),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: const Image(
+                width: 45,
+                alignment: Alignment.center,
+                image: AssetImage('assets/images/logo_cpt_64.png'),
+              ),
+            ),
+            Text("Course Participation Tracker"),
+          ],
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
