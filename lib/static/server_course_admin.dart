@@ -25,7 +25,7 @@ Future<List<Course>> course_list(Session session, User? user, bool? active, bool
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Course>.from(l.map((model) => Course.fromJson(model)));
 }
 

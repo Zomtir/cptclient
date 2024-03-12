@@ -45,7 +45,7 @@ Future<List<User>> slot_participant_pool(Session session) async {
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
@@ -59,7 +59,7 @@ Future<List<User>> slot_participant_list(Session session) async {
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
@@ -99,7 +99,7 @@ Future<List<User>> slot_owner_pool(Session session) async {
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
@@ -113,7 +113,7 @@ Future<List<User>> slot_owner_list(Session session) async {
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 

@@ -23,7 +23,7 @@ Future<List<Competence>> competence_list(Session session, User? user, Skill? ski
 
   if (response.statusCode != 200) return [];
 
-  Iterable l = json.decode(response.body);
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Competence>.from(l.map((model) => Competence.fromJson(model)));
 }
 
