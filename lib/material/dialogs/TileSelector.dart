@@ -17,7 +17,6 @@ Future<void> showTileSelector<T>({
     builder: (BuildContext context) {
       return TileSelector<T>(
         items: items,
-        onSelect: onSelect,
         builder: builder,
         filter: filter,
       );
@@ -27,14 +26,12 @@ Future<void> showTileSelector<T>({
 
 class TileSelector<T> extends StatefulWidget {
   final List<T> items;
-  final Function(BuildContext, T)? onSelect;
   final Widget Function(T, Function(T)?) builder;
   final List<T> Function(List<T>, String) filter;
 
   TileSelector({
     super.key,
     required this.items,
-    required this.onSelect,
     required this.builder,
     required this.filter,
   });
@@ -45,18 +42,15 @@ class TileSelector<T> extends StatefulWidget {
 
 class TileSelectorState<T> extends State<TileSelector<T>> {
   List<T> available;
-  List<T> selected = [];
 
   TileSelectorState({
     required this.available,
   });
 
   void _handleSelect(T item) {
-    selected.add(item);
     setState(() {
       available.remove(item);
     });
-    print(available.length);
   }
 
   void _handleClose() {

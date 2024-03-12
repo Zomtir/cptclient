@@ -53,8 +53,7 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
           controller: _ctrlFilter,
           onChanged: (text) => _update(),
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             suffixIcon: IconButton(
               onPressed: _handleClear,
               icon: Icon(Icons.clear),
@@ -63,7 +62,10 @@ class SearchablePanelState<T> extends State<SearchablePanel<T>> {
         ),
         AppListView<T>(
           items: _visible,
-          itemBuilder: (T item) => widget.builder(item, widget.onSelect),
+          itemBuilder: (T item) => widget.builder(item, (item) {
+            widget.onSelect?.call(item);
+            _update();
+          }),
         ),
       ],
     );

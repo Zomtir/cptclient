@@ -98,7 +98,6 @@ class SelectionPageState<T> extends State<SelectionPage<T>> {
                   ],
                 );
               },
-              onSelect: (BuildContext context, T item) => this._add(item),
             ),
           ),
           AppListView<T>(
