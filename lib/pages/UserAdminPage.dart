@@ -85,7 +85,7 @@ class UserAdminPageState extends State<UserAdminPage> {
     widget.user.active = _ctrlUserActive;
     widget.user.firstname = _ctrlUserFirstname.text;
     widget.user.lastname = _ctrlUserLastname.text;
-    widget.user.nickname = _ctrlUserNickname.text;
+    widget.user.nickname = _ctrlUserNickname.text.isNotEmpty ? _ctrlUserNickname.text : null;
     widget.user.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
     widget.user.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
     widget.user.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;

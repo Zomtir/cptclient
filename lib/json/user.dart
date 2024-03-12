@@ -101,7 +101,7 @@ class User implements Comparable {
     int compFirst = removeDiacritics(firstname).compareTo(removeDiacritics(other.firstname));
     if (compFirst != 0) return compFirst;
 
-    return key.compareTo(other.name);
+    return key.compareTo(other.key);
   }
 }
 
@@ -110,7 +110,7 @@ List<User> filterUsers(List<User> users, String filter) {
 
   List<User> filtered = users.where((User user) {
     Set<String> fragments = filter.toLowerCase().split(' ').toSet();
-    List<String> searchspace = [user.key, user.firstname, user.lastname];
+    List<String> searchspace = [user.key, user.firstname, user.lastname, user.nickname ?? ""];
 
     for (var fragment in fragments) {
       bool matchedAny = false;

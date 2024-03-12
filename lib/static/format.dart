@@ -1,15 +1,17 @@
 library format;
 
+import 'package:cptclient/static/datetime.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-String compressDate(DateTime begin, DateTime end) {
-  String strBegin = DateFormat("dd MMM yyyy HH:mm").format(begin);
+String compressDate(BuildContext context, DateTime begin, DateTime end) {
+  String strBegin = begin.fmtDateTime(context);
   String strEnd;
 
   if (begin.day == end.day) {
-    strEnd = DateFormat("HH:mm").format(end);
+    strEnd = end.fmtTime(context);
   } else {
-    strEnd = DateFormat("dd MMM yyyy HH:mm").format(end);
+    strEnd = end.fmtDateTime(context);
   }
 
   return "$strBegin - $strEnd";

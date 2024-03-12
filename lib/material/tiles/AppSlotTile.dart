@@ -27,7 +27,7 @@ class AppSlotTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${slot.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(compressDate(slot.begin, slot.end)),
+                Text(compressDate(context, slot.begin, slot.end)),
                 Text("${slot.location!.title}", style: TextStyle(color: Colors.black54)),
                 Text(slot.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
               ],
