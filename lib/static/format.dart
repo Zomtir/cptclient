@@ -17,24 +17,36 @@ String compressDate(BuildContext context, DateTime begin, DateTime end) {
   return "$strBegin - $strEnd";
 }
 
+String? formatNaiveDate(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt.toUtc());
+}
+
+DateTime? parseNaiveDate(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true).toLocal();
+}
+
+String? formatNaiveDateTime(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dt.toUtc());
+}
+
 DateTime? parseNaiveDateTime(String? dt) {
   return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dt, true).toLocal();
 }
 
-String? formatNullWebDateTime(DateTime? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").format(dt.toUtc());
-}
-
-DateTime? parseNullWebDateTime(String? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").parse(dt, true).toLocal();
-}
-
-String? formatNullWebDate(DateTime? dt) {
+String? formatWebDate(DateTime? dt) {
   return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt.toUtc());
 }
 
-DateTime? parseNullWebDate(String? dt) {
+DateTime? parseWebDate(String? dt) {
   return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true).toLocal();
+}
+
+String? formatWebDateTime(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd+HH-mm").format(dt.toUtc());
+}
+
+DateTime? parseWebDateTime(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd+HH-mm").parse(dt, true).toLocal();
 }
 
 String? formatNullInt(int? i) {

@@ -5,7 +5,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/crypto.dart';
-import 'package:intl/intl.dart';
+import 'package:cptclient/static/format.dart';
 
 enum Status { DRAFT, PENDING, OCCURRING, REJECTED, CANCELED }
 
@@ -49,9 +49,8 @@ class Slot implements Comparable {
         key = json['key'],
         title = json['title'],
         location = Location.fromJson(json['location']),
-        begin =
-            DateFormat("yyyy-MM-ddTHH:mm").parse(json['begin'], true).toLocal(),
-        end = DateFormat("yyyy-MM-ddTHH:mm").parse(json['end'], true).toLocal(),
+        begin = parseNaiveDateTime(json['begin'])!,
+        end = parseNaiveDateTime(json['end'])!,
         status = Status.values.firstWhere((x) => x.name == json['status']),
         public = json['public'],
         scrutable = json['scrutable'],
@@ -62,8 +61,8 @@ class Slot implements Comparable {
         'key': key,
         'title': title,
         'location': location?.toJson(),
-        'begin': DateFormat("yyyy-MM-dd HH:mm").format(begin.toUtc()),
-        'end': DateFormat("yyyy-MM-dd HH:mm").format(end.toUtc()),
+        'begin': formatNaiveDateTime(begin),
+        'end': formatNaiveDateTime(end),
         'status': status.toString(),
         'public': public,
         'scrutable': scrutable,

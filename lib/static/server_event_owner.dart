@@ -13,8 +13,8 @@ import 'package:http/http.dart' as http;
 Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Status? status, Location? location) async {
   final response = await http.get(
     server.uri('/admin/event_list', {
-      'begin': formatNullWebDate(begin),
-      'end': formatNullWebDate(end),
+      'begin': formatWebDate(begin),
+      'end': formatWebDate(end),
       if (status != null) 'status': status.name,
       if (location != null) 'location_id': location.id.toString(),
     }),

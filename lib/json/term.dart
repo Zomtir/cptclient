@@ -25,15 +25,15 @@ class Term implements Comparable {
       : id = json['id'],
         user = User.fromJson(json['user']),
         club = Club.fromJson(json['club']),
-        begin = parseNullWebDate(json['begin']),
-        end = parseNullWebDate(json['end']);
+        begin = parseNaiveDate(json['begin']),
+        end = parseNaiveDate(json['end']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'user': user?.toJson(),
         'club': club?.toJson(),
-        'begin': formatNullWebDate(begin),
-        'end': formatNullWebDate(end),
+        'begin': formatNaiveDate(begin),
+        'end': formatNaiveDate(end),
       };
 
   @override
