@@ -3,7 +3,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppIconButton.dart';
 import 'package:cptclient/material/AppModuleSection.dart';
-import 'package:cptclient/pages/CalendarPage.dart';
+import 'package:cptclient/pages/CalendarMonthPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseManagementPage.dart';
 import 'package:cptclient/pages/CourseResponsiblePage.dart';

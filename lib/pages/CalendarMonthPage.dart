@@ -37,6 +37,7 @@ class CalendarPageState extends State<CalendarPage> {
     setState(() {
       _monthFirst = DateTime(dt.year, dt.month, 1);
       _monthLast = DateTime(dt.year, dt.month + 1, 0);
+      _slotsFiltered.clear();
     });
 
     _update();
