@@ -10,9 +10,9 @@ import 'package:http/http.dart' as http;
 
 Future<List<Slot>> slot_list(Session session, DateTime begin, DateTime end) async {
   final response = await http.get(
-    server.uri('/regular/slot_list', {
-      'begin': formatWebDate(begin),
-      'end': formatWebDate(end),
+    server.uri('/regular/event_list', {
+      'begin': formatWebDateTime(begin),
+      'end': formatWebDateTime(end),
     }),
     headers: {
       'Token': session.token,

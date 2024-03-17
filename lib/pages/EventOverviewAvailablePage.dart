@@ -28,11 +28,16 @@ class EventOverviewAvailablePage extends StatefulWidget {
   State<StatefulWidget> createState() => EventOverviewAvailablePageState();
 }
 
-class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> {
-  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
-  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
-  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
-  final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+class EventOverviewAvailablePageState
+    extends State<EventOverviewAvailablePage> {
+  final DropdownController<Location> _ctrlLocation =
+      DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<Status> _ctrlStatus =
+      DropdownController<Status>(items: server.cacheSlotStatus);
+  final DateTimeController _ctrlDateBegin =
+      DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
+  final DateTimeController _ctrlDateEnd =
+      DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
 
   List<Slot> _events = [];
 
@@ -45,7 +50,14 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
   }
 
   Future<void> _update() async {
-    List<Slot> events = await api_regular.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlLocation.value, _ctrlStatus.value);
+    List<Slot> events = await api_regular.event_list(
+      widget.session,
+      begin: _ctrlDateBegin.getDate(),
+      end: _ctrlDateEnd.getDate(),
+      location: _ctrlLocation.value,
+      status: _ctrlStatus.value,
+      courseTrue: false,
+    );
 
     setState(() {
       _events = events;
@@ -101,7 +113,8 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
             children: [
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotBegin),
-                child: DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
+                child:
+                    DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotEnd),

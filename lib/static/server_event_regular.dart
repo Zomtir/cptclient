@@ -10,13 +10,15 @@ import 'package:cptclient/static/message.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Location? location, Status? status) async {
+Future<List<Slot>> event_list(Session session, {DateTime? begin, DateTime? end, Location? location, Status? status, bool? courseTrue, int? courseID}) async {
   final response = await http.get(
     server.uri('/regular/event_list', {
-      'begin': formatWebDate(begin),
-      'end': formatWebDate(end),
+      'begin': formatWebDateTime(begin),
+      'end': formatWebDateTime(end),
       'location_id' : location?.id.toString(),
       'status': status?.name,
+      'course_true' : courseTrue?.toString(),
+      'course_id': courseID?.toString(),
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',
@@ -47,9 +49,9 @@ Future<bool> event_create(Session session, Slot slot) async {
   return success;
 }
 
-Future<bool> event_owner_condition(Session session, Slot slot) async {
+Future<bool> event_owner_true(Session session, Slot slot) async {
   final response = await http.get(
-    server.uri('/regular/event_owner_condition', {
+    server.uri('/regular/event_owner_true', {
       'slot_id': slot.id.toString(),
     }),
     headers: {
@@ -61,4 +63,30 @@ Future<bool> event_owner_condition(Session session, Slot slot) async {
   if (response.statusCode != 200) return false;
 
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
+}
+
+Future<bool> class_participant_add(Session session, Slot slot) async {
+  final response = await http.head(
+    server.uri('/regular/class_participant_add', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> class_participant_remove(Session session, Slot slot) async {
+  final response = await http.head(
+    server.uri('/regular/class_participant_remove', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
 }

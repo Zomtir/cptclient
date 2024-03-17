@@ -6,7 +6,7 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/static/server_class_regular.dart' as api_regular;
+import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,13 +14,16 @@ class ClassOverviewAvailablePage extends StatefulWidget {
   final Session session;
   final Course course;
 
-  ClassOverviewAvailablePage({super.key, required this.session, required this.course});
+  ClassOverviewAvailablePage(
+      {super.key, required this.session, required this.course});
 
   @override
-  ClassOverviewAvailablePageState createState() => ClassOverviewAvailablePageState();
+  ClassOverviewAvailablePageState createState() =>
+      ClassOverviewAvailablePageState();
 }
 
-class ClassOverviewAvailablePageState extends State<ClassOverviewAvailablePage> {
+class ClassOverviewAvailablePageState
+    extends State<ClassOverviewAvailablePage> {
   List<Slot> _slots = [];
 
   ClassOverviewAvailablePageState();
@@ -36,7 +39,11 @@ class ClassOverviewAvailablePageState extends State<ClassOverviewAvailablePage> 
   }
 
   Future<void> _getCourseSlots() async {
-    List<Slot> slots = await api_regular.class_list(widget.session, widget.course.id);
+    List<Slot> slots = await api_regular.event_list(
+      widget.session,
+      courseTrue: true,
+      courseID: widget.course.id,
+    );
     slots.sort();
 
     setState(() {
@@ -62,7 +69,7 @@ class ClassOverviewAvailablePageState extends State<ClassOverviewAvailablePage> 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageClassAvailable),
+        title: Text(AppLocalizations.of(context)!.pageEventAvailable),
       ),
       body: AppBody(
         children: <Widget>[

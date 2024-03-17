@@ -31,12 +31,18 @@ class EventOverviewManagementPage extends StatefulWidget {
   State<StatefulWidget> createState() => EventOverviewManagementPageState();
 }
 
-class EventOverviewManagementPageState extends State<EventOverviewManagementPage> {
-  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
-  final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
-  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
-  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
-  final DropdownController<User> _ctrlOwner = DropdownController<User>(items: []);
+class EventOverviewManagementPageState
+    extends State<EventOverviewManagementPage> {
+  final DateTimeController _ctrlDateBegin =
+      DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
+  final DateTimeController _ctrlDateEnd =
+      DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+  final DropdownController<Status> _ctrlStatus =
+      DropdownController<Status>(items: server.cacheSlotStatus);
+  final DropdownController<Location> _ctrlLocation =
+      DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<User> _ctrlOwner =
+      DropdownController<User>(items: []);
 
   List<Slot> _events = [];
   final _filterDaysMax = 366;
@@ -51,7 +57,15 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   }
 
   Future<void> _update() async {
-    List<Slot> events = await api_admin.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlStatus.value, _ctrlLocation.value, _ctrlOwner.value);
+    List<Slot> events = await api_admin.event_list(
+      widget.session,
+      begin: _ctrlDateBegin.getDate(),
+      end: _ctrlDateEnd.getDate(),
+      status: _ctrlStatus.value,
+      location: _ctrlLocation.value,
+      courseTrue: false,
+      ownerID: _ctrlOwner.value?.id,
+    );
 
     setState(() {
       _events = events;
@@ -137,7 +151,9 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
     if (newDateEnd.isBefore(newDateBegin)) newDateEnd = newDateBegin;
 
-    if (newDateEnd.isAfter(newDateBegin.add(Duration(days: _filterDaysMax)))) newDateEnd = newDateBegin.add(Duration(days: _filterDaysMax));
+    if (newDateEnd.isAfter(newDateBegin.add(Duration(days: _filterDaysMax)))) {
+      newDateEnd = newDateBegin.add(Duration(days: _filterDaysMax));
+    }
 
     setState(() {
       _ctrlDateBegin.setDateTime(newDateBegin);
@@ -150,7 +166,9 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
     if (newDateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
 
-    if (newDateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
+    if (newDateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) {
+      newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
+    }
 
     setState(() {
       _ctrlDateBegin.setDateTime(newDateBegin);
@@ -171,7 +189,8 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
             children: [
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotBegin),
-                child: DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
+                child:
+                    DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.slotEnd),
@@ -190,7 +209,8 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
                   builder: (User user) {
                     return Text("${user.firstname} ${user.lastname}");
                   },
-                  onChanged: (User? user) => setState(() => _ctrlOwner.value = user),
+                  onChanged: (User? user) =>
+                      setState(() => _ctrlOwner.value = user),
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.clear),
@@ -219,18 +239,21 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
   List<Widget> _buildTrailing(Slot slot) {
     return [
-      if (slot.status == Status.PENDING) IconButton(
-        icon: const Icon(Icons.highlight_remove),
-        onPressed: () => _denyEvent(slot),
-      ),
-      if (slot.status == Status.PENDING) IconButton(
-        icon: const Icon(Icons.check_circle_outline),
-        onPressed: () => _acceptEvent(slot),
-      ),
-      if (slot.status == Status.OCCURRING || slot.status == Status.REJECTED) IconButton(
-        icon: const Icon(Icons.undo),
-        onPressed: () => _suspendEvent(slot),
-      ),
+      if (slot.status == Status.PENDING)
+        IconButton(
+          icon: const Icon(Icons.highlight_remove),
+          onPressed: () => _denyEvent(slot),
+        ),
+      if (slot.status == Status.PENDING)
+        IconButton(
+          icon: const Icon(Icons.check_circle_outline),
+          onPressed: () => _acceptEvent(slot),
+        ),
+      if (slot.status == Status.OCCURRING || slot.status == Status.REJECTED)
+        IconButton(
+          icon: const Icon(Icons.undo),
+          onPressed: () => _suspendEvent(slot),
+        ),
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),
         itemBuilder: (context) => [
@@ -246,5 +269,4 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
       ),
     ];
   }
-  
 }

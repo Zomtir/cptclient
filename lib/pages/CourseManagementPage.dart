@@ -88,23 +88,6 @@ class CourseManagementPageState extends State<CourseManagementPage> {
     _update();
   }
 
-  Future<void> _duplicateCourse(Course course) async {
-    Course newCourse = Course.fromCourse(course);
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CourseEditPage(
-          session: widget.session,
-          course: newCourse,
-          isDraft: true,
-          onSubmit: server.course_create,
-        ),
-      ),
-    );
-
-    _update();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

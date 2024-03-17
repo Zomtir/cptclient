@@ -50,7 +50,7 @@ class EnrollPageState extends State<EnrollPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageClassParticipants,
+          title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppSlotTile(slot: _slot!),
           onCallAvailable: (session) => api_service.slot_participant_pool(session),
           onCallSelected: (session) => api_service.slot_participant_list(session),
@@ -69,7 +69,7 @@ class EnrollPageState extends State<EnrollPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageClassOwners,
+          title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppSlotTile(slot: _slot!),
           onCallAvailable: (session) => api_service.slot_owner_pool(session),
           onCallSelected: (session) => api_service.slot_owner_list(session),
@@ -103,11 +103,11 @@ class EnrollPageState extends State<EnrollPage> {
         children: [
           AppSlotTile(slot: _slot!),
           AppButton(
-            text: AppLocalizations.of(context)!.pageClassParticipants,
+            text: AppLocalizations.of(context)!.pageEventParticipants,
             onPressed: _handleParticipants,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageClassOwners,
+            text: AppLocalizations.of(context)!.pageEventOwners,
             onPressed: _handleOwners,
           ),
           ListTile(

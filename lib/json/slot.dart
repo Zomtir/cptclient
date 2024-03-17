@@ -97,9 +97,7 @@ class Slot implements Comparable {
   }
 }
 
-List<Slot> filterSlots(List<Slot> slots, DateTime dt) {
-  DateTime earliest = dt.copyWith(hour: 0, minute: 0, second: 0);
-  DateTime latest = dt.copyWith(hour: 24, minute: 0, second: 0);
+List<Slot> filterSlots(List<Slot> slots, DateTime earliest, DateTime latest) {
   List<Slot> filtered = slots.where((Slot slot) {
     bool tooEarly = earliest.isAfter(slot.end);
     bool tooLate = latest.isBefore(slot.begin);
@@ -107,5 +105,6 @@ List<Slot> filterSlots(List<Slot> slots, DateTime dt) {
     return !(tooEarly || tooLate);
   }).toList();
 
+  filtered.sort();
   return filtered;
 }

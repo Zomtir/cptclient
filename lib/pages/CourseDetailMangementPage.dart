@@ -52,6 +52,22 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
+  Future<void> _handleDuplicate() async {
+    Course newCourse = Course.fromCourse(widget.course);
+    Navigator.pop(context);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseEditPage(
+          session: widget.session,
+          course: newCourse,
+          isDraft: true,
+          onSubmit: api_admin.course_create,
+        ),
+      ),
+    );
+  }
+
   _handleDelete() async {
     if(!await api_admin.course_delete(widget.session, widget.course)) return;
 
@@ -178,6 +194,10 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: _handleEdit,
+              ),
+              IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: _handleDuplicate,
               ),
               IconButton(
                 icon: const Icon(Icons.delete),

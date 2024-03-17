@@ -7,7 +7,7 @@ import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
-import 'package:cptclient/static/server_class_admin.dart' as api_admin;
+import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,11 +29,13 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
   @override
   void initState() {
     super.initState();
+    print("hi1");
     _update();
+    print("hi2");
   }
 
   _update() async {
-    Slot? slot = await api_admin.class_info(widget.session, widget.slotID);
+    Slot? slot = await api_admin.event_info(widget.session, widget.slotID);
 
     if (slot == null) return;
 
@@ -50,7 +52,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
           session: widget.session,
           slot: slot!,
           isDraft: false,
-          onSubmit: api_admin.class_edit,
+          onSubmit: api_admin.event_edit,
         ),
       ),
     );
@@ -59,7 +61,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
   }
 
   _handleDelete() async {
-    if(!await api_admin.class_delete(widget.session, slot!)) return;
+    if(!await api_admin.event_delete(widget.session, slot!)) return;
 
     Navigator.pop(context);
   }
@@ -70,12 +72,12 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageClassParticipants,
+          title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppSlotTile(slot: slot!),
-          onCallAvailable: (session) => api_admin.class_participant_pool(session, slot!),
-          onCallSelected: (session) => api_admin.class_participant_list(session, slot!),
-          onCallAdd: (session, user) => api_admin.class_participant_add(session, slot!, user),
-          onCallRemove: (session, user) => api_admin.class_participant_remove(session, slot!, user),
+          onCallAvailable: (session) => api_admin.event_participant_pool(session, slot!),
+          onCallSelected: (session) => api_admin.event_participant_list(session, slot!),
+          onCallAdd: (session, user) => api_admin.event_participant_add(session, slot!, user),
+          onCallRemove: (session, user) => api_admin.event_participant_remove(session, slot!, user),
           filter: filterUsers,
           builder: (User user) => AppUserTile(user: user),
         ),
@@ -89,12 +91,12 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageClassOwners,
+          title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppSlotTile(slot: slot!),
-          onCallAvailable: (session) => api_admin.class_owner_pool(session, slot!),
-          onCallSelected: (session) => api_admin.class_owner_list(session, slot!),
-          onCallAdd: (session, user) => api_admin.class_owner_add(session, slot!, user),
-          onCallRemove: (session, user) => api_admin.class_owner_remove(session, slot!, user),
+          onCallAvailable: (session) => api_admin.event_owner_pool(session, slot!),
+          onCallSelected: (session) => api_admin.event_owner_list(session, slot!),
+          onCallAdd: (session, user) => api_admin.event_owner_add(session, slot!, user),
+          onCallRemove: (session, user) => api_admin.event_owner_remove(session, slot!, user),
           filter: filterUsers,
           builder: (User user) => AppUserTile(user: user),
         ),
@@ -109,7 +111,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageClassDetails),
+        title: Text(AppLocalizations.of(context)!.pageEventDetails),
       ),
       body: AppBody(
         children: [
@@ -127,11 +129,11 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
             ],
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageClassParticipants,
+            text: AppLocalizations.of(context)!.pageEventParticipants,
             onPressed: _handleParticipants,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageClassOwners,
+            text: AppLocalizations.of(context)!.pageEventOwners,
             onPressed: _handleOwners,
           ),
         ],

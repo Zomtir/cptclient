@@ -9,7 +9,7 @@ import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/ClassDetailManagementPage.dart';
 import 'package:cptclient/pages/SlotCreateBatchPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
-import 'package:cptclient/static/server_class_admin.dart' as api_admin;
+import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,12 +35,8 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     _update();
   }
 
-  void _update() {
-    _getCourseSlots();
-  }
-
-  Future<void> _getCourseSlots() async {
-    List<Slot> slots = await api_admin.class_list(widget.session, widget.course.id);
+  Future<void> _update() async {
+    List<Slot> slots = await api_admin.event_list(widget.session, courseTrue: true, courseID: widget.course.id);
     slots.sort();
 
     setState(() {
@@ -57,7 +53,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           slot: Slot.fromCourse(widget.course),
           isDraft: true,
           onSubmit: (Session session, Slot slot) async {
-            if (!await api_admin.class_create(session, widget.course.id, slot)) return false;
+            if (!await api_admin.event_create(session, widget.course.id, slot)) return false;
             _update();
             return true;
           },
@@ -75,7 +71,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           slot: Slot.fromCourse(widget.course),
           isDraft: true,
           onSubmit: (Session session, Slot slot) async {
-            if (!await api_admin.class_create(session, widget.course.id, slot)) return false;
+            if (!await api_admin.event_create(session, widget.course.id, slot)) return false;
             _update();
             return true;
           },
@@ -85,6 +81,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
   }
 
   Future<void> _selectCourseSlot(Slot slot, bool isDraft) async {
+    print("hi0");
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -95,7 +92,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
       ),
     );
 
-    _getCourseSlots();
+    _update();
   }
 
   @override

@@ -10,14 +10,16 @@ import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Status? status, Location? location, User? owner) async {
+Future<List<Slot>> event_list(Session session, {DateTime? begin, DateTime? end, Status? status, Location? location, bool? courseTrue, int? courseID, int? ownerID}) async {
   final response = await http.get(
     server.uri('/admin/event_list', {
-      'begin': formatWebDate(begin),
-      'end': formatWebDate(end),
-      if (status != null) 'status': status.name,
-      if (location != null) 'location_id': location.id.toString(),
-      if (owner != null) 'owner_id': owner.id.toString(),
+      'begin': formatWebDateTime(begin),
+      'end': formatWebDateTime(end),
+      'status': status?.name,
+      'location_id': location?.id.toString(),
+      'course_true': courseTrue?.toString(),
+      'course_id': courseID?.toString(),
+      'owner_id': ownerID?.toString(),
     }),
     headers: {
       'Token': session.token,
@@ -29,7 +31,6 @@ Future<List<Slot>> event_list(Session session, DateTime begin, DateTime end, Sta
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Slot>.from(l.map((model) => Slot.fromJson(model)));
 }
-
 
 Future<Slot?> event_info(Session session, int slotID) async {
   final response = await http.get(
@@ -45,6 +46,21 @@ Future<Slot?> event_info(Session session, int slotID) async {
   if (response.statusCode != 200) return null;
 
   return Slot.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+}
+
+Future<bool> event_create(Session session, int course_id, Slot slot) async {
+  final response = await http.post(
+    server.uri('/admin/event_create', {
+      'course_id': course_id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(slot),
+  );
+
+  return (response.statusCode == 200);
 }
 
 Future<bool> event_edit(Session session, Slot slot) async {
@@ -122,6 +138,126 @@ Future<bool> event_suspend(Session session, Slot slot) async {
   final response = await http.head(
     server.uri('/admin/event_suspend', {
       'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_owner_pool(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/admin/event_owner_pool', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
+Future<List<User>> event_owner_list(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/admin/event_owner_list', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
+Future<bool> event_owner_add(Session session, Slot slot, User user) async {
+  final response = await http.head(
+    server.uri('/admin/event_owner_add', {
+      'slot_id': slot.id.toString(),
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_owner_remove(Session session, Slot slot, User user) async {
+  final response = await http.head(
+    server.uri('/admin/event_owner_remove', {
+      'slot_id': slot.id.toString(),
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_participant_pool(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/admin/event_participant_pool', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
+Future<List<User>> event_participant_list(Session session, Slot slot) async {
+  final response = await http.get(
+    server.uri('/admin/event_participant_list', {
+      'slot_id': slot.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
+Future<bool> event_participant_add(Session session, Slot slot, User user) async {
+  final response = await http.head(
+    server.uri('/admin/event_participant_add', {
+      'slot_id': slot.id.toString(),
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_participant_remove(Session session, Slot slot, User user) async {
+  final response = await http.head(
+    server.uri('/admin/event_participant_remove', {
+      'slot_id': slot.id.toString(),
+      'user_id': user.id.toString(),
     }),
     headers: {
       'Token': session.token,

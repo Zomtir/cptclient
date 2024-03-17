@@ -55,7 +55,7 @@ class MemberLandingPage extends StatelessWidget {
           AppIconButton(
             image: const AssetImage('assets/icons/icon_calendar.png'),
             text: AppLocalizations.of(context)!.labelCalendar,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarPage(session: session,))),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarMonthPage(session: session,))),
           ),
           Divider(),
           AppModuleSection(
