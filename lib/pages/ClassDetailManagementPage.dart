@@ -5,7 +5,6 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
@@ -78,8 +77,6 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
           onCallSelected: (session) => api_admin.event_participant_list(session, slot!),
           onCallAdd: (session, user) => api_admin.event_participant_add(session, slot!, user),
           onCallRemove: (session, user) => api_admin.event_participant_remove(session, slot!, user),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
@@ -97,8 +94,6 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
           onCallSelected: (session) => api_admin.event_owner_list(session, slot!),
           onCallAdd: (session, user) => api_admin.event_owner_add(session, slot!, user),
           onCallRemove: (session, user) => api_admin.event_owner_remove(session, slot!, user),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );

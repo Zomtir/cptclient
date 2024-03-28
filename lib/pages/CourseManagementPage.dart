@@ -6,17 +6,17 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/Tribox.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/dropdowns/RankingDropdown.dart';
+import 'package:cptclient/material/fields/AppField.dart';
+import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_course_admin.dart' as server;
-import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:cptclient/static/server_course_admin.dart' as api_admin;
+import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
+import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,32 +31,25 @@ class CourseManagementPage extends StatefulWidget {
 
 class CourseManagementPageState extends State<CourseManagementPage> {
   List<Course> _courses = [];
-  final DropdownController<User> _ctrlModerator = DropdownController<User>(items: []);
+  final FieldController<User> _ctrlModerator = FieldController<User>();
   bool? _ctrlPublic;
   bool? _ctrlActive;
-  final DropdownController<Skill> _ctrlRankingBranch = DropdownController<Skill>(items: server.cacheSkills);
-  RangeValues _ctrlRankingRange = RangeValues(0, 10);
+  final FieldController<Skill> _ctrlSkill = FieldController<Skill>();
+  RangeValues _ctrlSkillRange = RangeValues(0, 10);
 
   CourseManagementPageState();
 
   @override
   void initState() {
     super.initState();
-    _requestUsers();
     _update();
   }
 
-  Future<void> _requestUsers() async {
-    List<User> users = await server.user_list(widget.session);
-    users.sort();
-
-    setState(() {
-      _ctrlModerator.items = users;
-    });
-  }
-
   Future<void> _update() async {
-    _courses = await server.course_list(widget.session, _ctrlModerator.value, _ctrlActive, _ctrlPublic);
+    _ctrlSkill.callItems = () => api_anon.skill_list();
+    _ctrlModerator.callItems = () => api_regular.user_list(widget.session);
+
+    _courses = await api_admin.course_list(widget.session, _ctrlModerator.value, _ctrlActive, _ctrlPublic);
     setState(() => _courses.sort());
   }
 
@@ -80,7 +73,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
           session: widget.session,
           course: course,
           isDraft: true,
-          onSubmit: server.course_create,
+          onSubmit: api_admin.course_create,
         ),
       ),
     );
@@ -106,16 +99,9 @@ class CourseManagementPageState extends State<CourseManagementPage> {
             children: [
               AppInfoRow(
                 info: Text(AppLocalizations.of(context)!.courseModerator),
-                child: AppDropdown<User>(
+                child: AppField<User>(
                   controller: _ctrlModerator,
-                  builder: (User user) {
-                    return Text(user.key);
-                  },
                   onChanged: (User? user) => setState(() => _ctrlModerator.value = user),
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () => setState(() => _ctrlModerator.value = null),
                 ),
               ),
               AppInfoRow(
@@ -132,12 +118,12 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                   onChanged: (bool? public) => setState(() => _ctrlPublic = public),
                 ),
               ),
-              RankingDropdown(
-                controller: _ctrlRankingBranch,
-                range: _ctrlRankingRange,
+              CompetenceDropdown(
+                controller: _ctrlSkill,
+                range: _ctrlSkillRange,
                 onChanged: (Skill? branch, RangeValues range) => setState(() {
-                  _ctrlRankingBranch.value = branch;
-                  _ctrlRankingRange = range;
+                  _ctrlSkill.value = branch;
+                  _ctrlSkillRange = range;
                 }),
               ),
             ],

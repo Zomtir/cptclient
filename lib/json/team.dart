@@ -1,9 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:cptclient/json/right.dart';
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter/material.dart';
 
-class Team implements Comparable {
+class Team extends FieldInterface implements Comparable {
   final int id;
   String name;
   String description;
@@ -46,23 +49,17 @@ class Team implements Comparable {
   int compareTo(other) {
     return removeDiacritics(name).compareTo(removeDiacritics(other.name));
   }
-}
 
-List<Team> filterTeams(List<Team> teams, String filter) {
-  List<Team> filtered = teams.where((Team team) {
-    Set<String> fragments = filter.toLowerCase().split(' ').toSet();
-    List<String> searchspace = [team.name, team.description];
+  @override
+  Widget buildTile() {
+    return AppTeamTile(team: this);
+  }
 
-    for (var fragment in fragments) {
-      bool matchedAny = false;
-      for (var space in searchspace) {
-        matchedAny = matchedAny || space.toLowerCase().contains(fragment);
-      }
-      if (!matchedAny) return false;
-    }
+  @override
+  get searchable => [name, description];
 
-    return true;
-  }).toList();
-
-  return filtered;
+  @override
+  String toFieldString() {
+    return "$name";
+  }
 }

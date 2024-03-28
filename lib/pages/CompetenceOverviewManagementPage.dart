@@ -10,31 +10,31 @@ import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppRankingTile.dart';
-import 'package:cptclient/pages/RankingEditPage.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_ranking_admin.dart' as server;
+import 'package:cptclient/pages/CompetenceEditPage.dart';
+import 'package:cptclient/static/server_ranking_admin.dart' as api_admin;
+import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 
-class RankingManagementPage extends StatefulWidget {
+class CompetenceOverviewManagementPage extends StatefulWidget {
   final Session session;
 
-  RankingManagementPage({super.key, required this.session});
+  CompetenceOverviewManagementPage({super.key, required this.session});
 
   @override
-  State<StatefulWidget> createState() => RankingManagementPageState();
+  State<StatefulWidget> createState() => CompetenceOverviewManagementPageState();
 }
 
-class RankingManagementPageState extends State<RankingManagementPage> {
+class CompetenceOverviewManagementPageState extends State<CompetenceOverviewManagementPage> {
   List<Competence> _rankings = [];
   List<Competence> _rankingsFiltered = [];
   bool _hideFilters = true;
 
   final DropdownController<User> _ctrlDropdownUser = DropdownController<User>(items: []);
   final DropdownController<User> _ctrlDropdownJudge = DropdownController<User>(items: []);
-  final DropdownController<Skill> _ctrlDropdownBranch = DropdownController<Skill>(items: server.cacheSkills);
+  final DropdownController<Skill> _ctrlDropdownSkill = DropdownController<Skill>(items: []);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
-  RankingManagementPageState();
+  CompetenceOverviewManagementPageState();
 
   @override
   void initState() {
@@ -43,7 +43,8 @@ class RankingManagementPageState extends State<RankingManagementPage> {
   }
 
   Future<void> _requestRankings() async {
-    _rankings = await server.competence_list(widget.session, null, null);
+    _rankings = await api_admin.competence_list(widget.session, null, null);
+    _ctrlDropdownSkill.items = await api_anon.skill_list();
     _ctrlDropdownUser.items = Set<User>.from(_rankings.map((model) => model.user)).toList();
     _ctrlDropdownJudge.items = Set<User>.from(_rankings.map((model) => model.judge)).toList();
 
@@ -55,7 +56,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
       _rankingsFiltered = _rankings.where((ranking) {
         bool userFilter = (_ctrlDropdownUser.value == null) ? true : (ranking.user == _ctrlDropdownUser.value);
         bool judgeFilter = (_ctrlDropdownJudge.value == null) ? true : (ranking.judge == _ctrlDropdownJudge.value);
-        bool branchFilter = (_ctrlDropdownBranch.value == null) ? true : (ranking.skill == _ctrlDropdownBranch.value && ranking.rank >= _thresholdRange.start && ranking.rank <= _thresholdRange.end);
+        bool branchFilter = (_ctrlDropdownSkill.value == null) ? true : (ranking.skill == _ctrlDropdownSkill.value && ranking.rank >= _thresholdRange.start && ranking.rank <= _thresholdRange.end);
         return userFilter && judgeFilter && branchFilter;
       }).toList();
     });
@@ -65,7 +66,7 @@ class RankingManagementPageState extends State<RankingManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RankingAdminPage(
+        builder: (context) => CompetenceEditPage(
           session: widget.session,
           ranking: ranking,
           isDraft: isDraft,
@@ -135,19 +136,19 @@ class RankingManagementPageState extends State<RankingManagementPage> {
               AppInfoRow(
                 info: Text("Branch"),
                 child: AppDropdown<Skill>(
-                  controller: _ctrlDropdownBranch,
+                  controller: _ctrlDropdownSkill,
                   builder: (Skill branch) {
                     return Text(branch.title);
                   },
                   onChanged: (Skill? branch) {
-                    _ctrlDropdownBranch.value = branch;
+                    _ctrlDropdownSkill.value = branch;
                     _filterRankings();
                   },
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
-                    _ctrlDropdownBranch.value = null;
+                    _ctrlDropdownSkill.value = null;
                     _filterRankings();
                   },
                 ),

@@ -1,15 +1,15 @@
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppDialog.dart';
+import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Future<void> showTileSelector<T>({
+Future<void> showTileSelector<T extends FieldInterface>({
   required BuildContext context,
   required List<T> items,
   Function(BuildContext, T)? onSelect,
   required Widget Function(T, Function(T)?) builder,
-  required List<T> Function(List<T>, String) filter,
 }) async {
   return showDialog<void>(
     context: context,
@@ -18,29 +18,26 @@ Future<void> showTileSelector<T>({
       return TileSelector<T>(
         items: items,
         builder: builder,
-        filter: filter,
       );
     },
   );
 }
 
-class TileSelector<T> extends StatefulWidget {
+class TileSelector<T extends FieldInterface> extends StatefulWidget {
   final List<T> items;
   final Widget Function(T, Function(T)?) builder;
-  final List<T> Function(List<T>, String) filter;
 
   TileSelector({
     super.key,
     required this.items,
     required this.builder,
-    required this.filter,
   });
 
   @override
   TileSelectorState createState() => TileSelectorState<T>(available: items);
 }
 
-class TileSelectorState<T> extends State<TileSelector<T>> {
+class TileSelectorState<T extends FieldInterface> extends State<TileSelector<T>> {
   List<T> available;
 
   TileSelectorState({
@@ -69,7 +66,6 @@ class TileSelectorState<T> extends State<TileSelector<T>> {
           SearchablePanel<T>(
             items: available,
             onSelect: _handleSelect,
-            filter: widget.filter,
             builder: widget.builder,
           ),
         ],

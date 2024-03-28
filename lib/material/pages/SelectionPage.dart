@@ -3,11 +3,12 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/dialogs/TileSelector.dart';
+import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/static/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SelectionPage<T> extends StatefulWidget {
+class SelectionPage<T extends FieldInterface> extends StatefulWidget {
   final Session session;
   final String title;
   final Widget tile;
@@ -15,8 +16,6 @@ class SelectionPage<T> extends StatefulWidget {
   final Future<List<T>> Function(Session) onCallSelected;
   final Future<bool> Function(Session, T) onCallAdd;
   final Future<bool> Function(Session, T) onCallRemove;
-  final List<T> Function(List<T>, String) filter;
-  final Widget Function(T) builder;
 
   SelectionPage({
     super.key,
@@ -27,15 +26,13 @@ class SelectionPage<T> extends StatefulWidget {
     required this.onCallSelected,
     required this.onCallAdd,
     required this.onCallRemove,
-    required this.filter,
-    required this.builder,
   });
 
   @override
   SelectionPageState createState() => SelectionPageState<T>();
 }
 
-class SelectionPageState<T> extends State<SelectionPage<T>> {
+class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T>> {
   List<T> _available = [];
   List<T> _selected = [];
 
@@ -84,12 +81,11 @@ class SelectionPageState<T> extends State<SelectionPage<T>> {
             onPressed: () => showTileSelector<T>(
               context: context,
               items: this._available.difference<T>(this._selected),
-              filter: widget.filter,
               builder: (T item, Function(T)? onSelect) {
                 return Row(
                   children: [
                     Expanded(
-                      child: widget.builder(item),
+                      child: item.buildTile(),
                     ),
                     IconButton(
                       icon: const Icon(Icons.add),
@@ -106,7 +102,7 @@ class SelectionPageState<T> extends State<SelectionPage<T>> {
               return Row(
                 children: [
                   Expanded(
-                    child: widget.builder(item),
+                    child: item.buildTile(),
                   ),
                   IconButton(
                     icon: const Icon(Icons.remove),

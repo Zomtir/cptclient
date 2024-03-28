@@ -1,6 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
-class Skill implements Comparable {
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppSkillTile.dart';
+import 'package:flutter/material.dart';
+
+class Skill extends FieldInterface implements Comparable {
   final int id;
   final String key;
   final String title;
@@ -15,13 +19,13 @@ class Skill implements Comparable {
         title = json['title'];
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'key': key,
-    'title': title,
-  };
+        'id': id,
+        'key': key,
+        'title': title,
+      };
 
   @override
-  bool operator == (other) => other is Skill && id == other.id;
+  bool operator ==(other) => other is Skill && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -31,4 +35,18 @@ class Skill implements Comparable {
     return title.compareTo(other.description);
   }
 
+  @override
+  String toFieldString() {
+    return "[$key] $title";
+  }
+
+  @override
+  Widget buildTile() {
+    return AppSkillTile(skill: this);
+  }
+
+  @override
+  get searchable {
+    return [key, title];
+  }
 }

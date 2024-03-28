@@ -5,17 +5,18 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/DateTimeController.dart';
-import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
+import 'package:cptclient/material/fields/DateTimeController.dart';
+import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,7 +32,7 @@ class EventOverviewAvailablePage extends StatefulWidget {
 class EventOverviewAvailablePageState
     extends State<EventOverviewAvailablePage> {
   final DropdownController<Location> _ctrlLocation =
-      DropdownController<Location>(items: server.cacheLocations);
+      DropdownController<Location>(items: []);
   final DropdownController<Status> _ctrlStatus =
       DropdownController<Status>(items: server.cacheSlotStatus);
   final DateTimeController _ctrlDateBegin =
@@ -50,6 +51,8 @@ class EventOverviewAvailablePageState
   }
 
   Future<void> _update() async {
+    List<Location> locations = await api_anon.location_list();
+
     List<Slot> events = await api_regular.event_list(
       widget.session,
       begin: _ctrlDateBegin.getDate(),
@@ -60,6 +63,7 @@ class EventOverviewAvailablePageState
     );
 
     setState(() {
+      _ctrlLocation.items = locations;
       _events = events;
     });
   }

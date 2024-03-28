@@ -2,10 +2,13 @@
 
 import 'dart:core';
 
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter/material.dart';
 
-class User implements Comparable {
+class User extends FieldInterface implements Comparable {
   final int id;
   String key;
   bool? enabled;
@@ -103,25 +106,19 @@ class User implements Comparable {
 
     return key.compareTo(other.key);
   }
-}
 
-List<User> filterUsers(List<User> users, String filter) {
-  if (filter.isEmpty) return users;
+  @override
+  String toFieldString() {
+    return "[$key] $firstname $lastname";
+  }
 
-  List<User> filtered = users.where((User user) {
-    Set<String> fragments = filter.toLowerCase().split(' ').toSet();
-    List<String> searchspace = [user.key, user.firstname, user.lastname, user.nickname ?? ""];
+  @override
+  Widget buildTile() {
+    return AppUserTile(user: this);
+  }
 
-    for (var fragment in fragments) {
-      bool matchedAny = false;
-      for (var space in searchspace) {
-        matchedAny = matchedAny || space.toLowerCase().contains(fragment);
-      }
-      if (!matchedAny) return false;
-    }
-
-    return true;
-  }).toList();
-
-  return filtered;
+  @override
+  get searchable {
+    return [key, firstname, lastname, nickname ?? ""];
+  }
 }

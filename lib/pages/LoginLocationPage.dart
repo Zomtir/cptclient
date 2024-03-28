@@ -5,6 +5,7 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/design/AppButtonLightStyle.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
@@ -18,14 +19,22 @@ class LoginLocationPage extends StatefulWidget {
 
 class LoginLocationPageState extends State<LoginLocationPage> {
   final TextEditingController _ctrlLogin = TextEditingController();
-  List<Location> _cache = [];
+  List<Location> _locations = [];
 
   @override
   void initState() {
     super.initState();
 
     _ctrlLogin.text = html.window.localStorage['DefaultLocation']!;
-    _cache = server.cacheLocations;
+    _receiveLocations();
+  }
+
+  Future<void> _receiveLocations() async {
+    List<Location> locations = await api_anon.location_list();
+
+    setState(() {
+      _locations = locations;
+    });
   }
 
   void _loginLocation() async {
@@ -61,7 +70,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
           ),
         ),
         AppListView(
-          items: _cache,
+          items: _locations,
           itemBuilder: (location) => AppButton(
             text: location.title,
             onPressed: () => _ctrlLogin.text = location.key,

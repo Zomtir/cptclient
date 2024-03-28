@@ -5,15 +5,14 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/DateTimeController.dart';
-import 'package:cptclient/material/DateTimeEdit.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
-import 'package:cptclient/material/tiles/AppClubTile.dart';
+import 'package:cptclient/material/fields/AppField.dart';
+import 'package:cptclient/material/fields/DateTimeController.dart';
+import 'package:cptclient/material/fields/DateTimeField.dart';
+import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/tiles/AppTermTile.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_term_admin.dart' as server;
-import 'package:cptclient/static/server_user_regular.dart' as server;
+import 'package:cptclient/static/server_club_anon.dart' as api_anon;
+import 'package:cptclient/static/server_term_admin.dart' as api_admin;
+import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,8 +34,8 @@ class TermEditPage extends StatefulWidget {
 }
 
 class TermEditPageState extends State<TermEditPage> {
-  User? _ctrlTermUser;
-  Club? _ctrlTermClub;
+  final FieldController<User> _ctrlTermUser = FieldController<User>();
+  final FieldController<Club> _ctrlTermClub = FieldController<Club>();
   final DateTimeController _ctrlTermBegin = DateTimeController();
   final DateTimeController _ctrlTermEnd = DateTimeController();
 
@@ -45,19 +44,25 @@ class TermEditPageState extends State<TermEditPage> {
   @override
   void initState() {
     super.initState();
+    _update();
     _applyTerm();
   }
 
+  Future<void> _update() async {
+    _ctrlTermUser.callItems = () => api_regular.user_list(widget.session);
+    _ctrlTermClub.callItems = () => api_anon.club_list();
+  }
+
   void _applyTerm() {
-    _ctrlTermUser = widget.term.user;
-    _ctrlTermClub = widget.term.club;
+    _ctrlTermUser.value = widget.term.user;
+    _ctrlTermClub.value = widget.term.club;
     _ctrlTermBegin.setDateTime(widget.term.begin);
     _ctrlTermEnd.setDateTime(widget.term.end);
   }
 
   void _gatherTerm() {
-    widget.term.user = _ctrlTermUser;
-    widget.term.club = _ctrlTermClub;
+    widget.term.user = _ctrlTermUser.value;
+    widget.term.club = _ctrlTermClub.value;
     widget.term.begin = _ctrlTermBegin.getDateTime();
     widget.term.end = _ctrlTermEnd.getDateTime();
   }
@@ -65,14 +70,14 @@ class TermEditPageState extends State<TermEditPage> {
   void _submitTerm() async {
     _gatherTerm();
 
-    if (_ctrlTermUser == null) {
+    if (_ctrlTermUser.value == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
               "${AppLocalizations.of(context)!.termUser} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
-    if (_ctrlTermClub == null) {
+    if (_ctrlTermClub.value == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
               "${AppLocalizations.of(context)!.termClub} ${AppLocalizations.of(context)!.isInvalid}")));
@@ -80,8 +85,8 @@ class TermEditPageState extends State<TermEditPage> {
     }
 
     bool success = widget.isDraft
-        ? await server.term_create(widget.session, widget.term)
-        : await server.term_edit(widget.session, widget.term);
+        ? await api_admin.term_create(widget.session, widget.term)
+        : await api_admin.term_edit(widget.session, widget.term);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -94,7 +99,7 @@ class TermEditPageState extends State<TermEditPage> {
   }
 
   void _deleteTerm() async {
-    if (!await server.term_delete(widget.session, widget.term)) {
+    if (!await api_admin.term_delete(widget.session, widget.term)) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)!.deletionFail)));
       return;
@@ -102,52 +107,6 @@ class TermEditPageState extends State<TermEditPage> {
 
     widget.onUpdate();
     Navigator.pop(context);
-  }
-
-  void _handleUserSearch(BuildContext context) async {
-    List<User> users = await server.user_list(widget.session);
-
-    User? user = await showTilePicker<User>(
-      context: context,
-      items: users,
-      builder: (User user) => AppUserTile(user: user),
-      filter: filterUsers,
-    );
-
-    if (user == null) return;
-
-    setState(() {
-      _ctrlTermUser = user;
-    });
-  }
-
-  void _handleUserClear() {
-    setState(() {
-      _ctrlTermUser = null;
-    });
-  }
-
-  void _handleClubSearch(BuildContext context) async {
-    List<Club> clubs = await server.receiveClubs();
-
-    Club? club = await showTilePicker<Club>(
-      context: context,
-      items: clubs,
-      builder: (Club club) => AppClubTile(club: club),
-      filter: filterClubs,
-    );
-
-    if (club == null) return;
-
-    setState(() {
-      _ctrlTermClub = club;
-    });
-  }
-
-  void _handleClubClear() {
-    setState(() {
-      _ctrlTermClub = null;
-    });
   }
 
   @override
@@ -159,13 +118,9 @@ class TermEditPageState extends State<TermEditPage> {
       body: AppBody(
         children: [
           if (!widget.isDraft)
-            Row(
-              children: [
-                Expanded(
-                  child: AppTermTile(
-                    term: widget.term,
-                  ),
-                ),
+            AppTermTile(
+              term: widget.term,
+              trailing: [
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: _deleteTerm,
@@ -175,37 +130,16 @@ class TermEditPageState extends State<TermEditPage> {
           if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.termUser),
-            child: Text(_ctrlTermUser == null
-                ? AppLocalizations.of(context)!.undefined
-                : "[${_ctrlTermUser!.key}] ${_ctrlTermUser!.firstname} ${_ctrlTermUser!.lastname}"),
-            trailing: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () => _handleUserSearch(context),
-                ),
-                IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: _handleUserClear,
-                ),
-              ],
+            child: AppField<User>(
+              controller: _ctrlTermUser,
+              onChanged: (user) => setState(() => _ctrlTermUser.value = user),
             ),
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.termClub),
-            child: Text(
-                _ctrlTermClub?.name ?? AppLocalizations.of(context)!.undefined),
-            trailing: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () => _handleClubSearch(context),
-                ),
-                IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: _handleClubClear,
-                ),
-              ],
+            child: AppField<Club>(
+              controller: _ctrlTermClub,
+              onChanged: (club) => setState(() => _ctrlTermClub.value = club),
             ),
           ),
           AppInfoRow(

@@ -6,7 +6,6 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
 import 'package:cptclient/static/server_team_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_admin.dart' as api_admin;
@@ -54,8 +53,6 @@ class TeamManagementPageState extends State<TeamManagementPage> {
           onCallSelected: (session) => api_admin.team_member_list(widget.session, team.id),
           onCallAdd: (session, user) => api_admin.team_member_add(widget.session, team.id, user.id),
           onCallRemove: (session, user) => api_admin.team_member_remove(widget.session, team.id, user.id),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );

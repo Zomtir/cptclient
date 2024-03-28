@@ -8,20 +8,20 @@ import 'package:cptclient/material/tiles/AppSkillTile.dart';
 import 'package:cptclient/static/server_ranking_regular.dart' as server;
 import 'package:flutter/material.dart';
 
-class RankingOverviewPage extends StatefulWidget {
+class CompetenceSummaryPage extends StatefulWidget {
   final Session session;
 
-  RankingOverviewPage({super.key, required this.session});
+  CompetenceSummaryPage({super.key, required this.session});
 
   @override
-  State<StatefulWidget> createState() => RankingOverviewPageState();
+  State<StatefulWidget> createState() => CompetenceSummaryPageState();
 }
 
-class RankingOverviewPageState extends State<RankingOverviewPage> {
+class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
   List<Competence> _rankings = [];
   List<(Skill, int)> _summary = [];
 
-  RankingOverviewPageState();
+  CompetenceSummaryPageState();
 
   @override
   void initState() {

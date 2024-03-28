@@ -4,12 +4,12 @@ import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/DateTimeController.dart';
-import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
+import 'package:cptclient/material/fields/DateTimeController.dart';
+import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -39,7 +39,7 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
   final DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
   final TextEditingController _ctrlSlotTitle = TextEditingController();
-  final DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: []);
   bool _ctrlSlotPublic = false;
   bool _ctrlSlotScrutable = true;
 
@@ -54,7 +54,16 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
   void initState() {
     super.initState();
 
+    _receiveLocations();
     _applySlot();
+  }
+
+  Future<void> _receiveLocations() async {
+    List<Location> locations = await api_anon.location_list();
+
+    setState(() {
+      _ctrlSlotLocation.items = locations;
+    });
   }
 
   void _applySlot() {

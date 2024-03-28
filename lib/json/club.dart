@@ -1,4 +1,8 @@
-class Club implements Comparable {
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppClubTile.dart';
+import 'package:flutter/material.dart';
+
+class Club extends FieldInterface implements Comparable {
   final int id;
   final String name;
   final String description;
@@ -11,13 +15,13 @@ class Club implements Comparable {
         description = json['description'];
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'description': description,
-  };
+        'id': id,
+        'name': name,
+        'description': description,
+      };
 
   @override
-  bool operator == (other) => other is Club && id == other.id;
+  bool operator ==(other) => other is Club && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -26,23 +30,17 @@ class Club implements Comparable {
   int compareTo(other) {
     return name.compareTo(other.name);
   }
-}
 
-List<Club> filterClubs(List<Club> users, String filter) {
-  List<Club> filtered = users.where((Club club) {
-    Set<String> fragments = filter.toLowerCase().split(' ').toSet();
-    List<String> searchspace = [club.name, club.description];
+  @override
+  String toFieldString() {
+    return "$name";
+  }
 
-    for (var fragment in fragments) {
-      bool matchedAny = false;
-      for (var space in searchspace) {
-        matchedAny = matchedAny || space.toLowerCase().contains(fragment);
-      }
-      if (!matchedAny) return false;
-    }
+  @override
+  Widget buildTile() {
+    return AppClubTile(club: this);
+  }
 
-    return true;
-  }).toList();
-
-  return filtered;
+  @override
+  get searchable => [name, description];
 }

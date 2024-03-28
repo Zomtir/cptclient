@@ -37,7 +37,6 @@ Future<void> connect() async {
   html.window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
 
   if (await server.loadStatus()) {
-    await server.loadCache();
     gotoRoute('/login');
   } else {
     gotoRoute('/config');
@@ -74,7 +73,6 @@ Future<void> logout() async {
   session = null;
 
   if (await server.loadStatus()) {
-    await server.loadCache();
     gotoRoute('/login');
   } else {
     gotoRoute('/config');

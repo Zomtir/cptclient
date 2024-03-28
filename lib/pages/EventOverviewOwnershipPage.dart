@@ -6,20 +6,20 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/DateTimeController.dart';
-import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
+import 'package:cptclient/material/fields/DateTimeController.dart';
+import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,7 +34,7 @@ class EventOverviewOwnershipPage extends StatefulWidget {
 }
 
 class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> {
-  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: server.cacheLocations);
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
   final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheSlotStatus);
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
   final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
@@ -46,7 +46,16 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
   @override
   void initState() {
     super.initState();
+    _receiveLocations();
     _update();
+  }
+
+  Future<void> _receiveLocations() async {
+    List<Location> locations = await api_anon.location_list();
+
+    setState(() {
+      _ctrlLocation.items = locations;
+    });
   }
 
   Future<void> _update() async {
@@ -136,8 +145,6 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           onCallSelected: (session) => api_owner.event_owner_list(session, slot),
           onCallAdd: (session, user) => api_owner.event_owner_add(session, slot, user),
           onCallRemove: (session, user) => api_owner.event_owner_remove(session, slot, user),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
@@ -157,8 +164,6 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           onCallSelected: (session) => api_owner.event_participant_list(session, slot),
           onCallAdd: (session, user) => api_owner.event_participant_add(session, slot, user),
           onCallRemove: (session, user) => api_owner.event_participant_remove(session, slot, user),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );

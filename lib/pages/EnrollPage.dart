@@ -5,7 +5,6 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server_slot_service.dart' as api_service;
 import 'package:flutter/material.dart';
@@ -56,8 +55,6 @@ class EnrollPageState extends State<EnrollPage> {
           onCallSelected: (session) => api_service.slot_participant_list(session),
           onCallAdd: (session, user) => api_service.slot_participant_add(session, user),
           onCallRemove: (session, user) => api_service.slot_participant_remove(session, user),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );
@@ -75,8 +72,6 @@ class EnrollPageState extends State<EnrollPage> {
           onCallSelected: (session) => api_service.slot_owner_list(session),
           onCallAdd: (session, user) => api_service.slot_owner_add(session, user),
           onCallRemove: (session, user) => api_service.slot_owner_remove(session, user),
-          filter: filterUsers,
-          builder: (User user) => AppUserTile(user: user),
         ),
       ),
     );

@@ -1,16 +1,16 @@
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/dropdowns/AppDropdown.dart';
+import 'package:cptclient/material/fields/AppField.dart';
+import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class RankingDropdown extends StatelessWidget {
-  final DropdownController<Skill> controller;
+class CompetenceDropdown extends StatelessWidget {
+  final FieldController<Skill> controller;
   final RangeValues range;
   final void Function(Skill?, RangeValues) onChanged;
 
-  RankingDropdown({
+  CompetenceDropdown({
     super.key,
     required this.controller,
     required this.range,
@@ -23,12 +23,9 @@ class RankingDropdown extends StatelessWidget {
       children: [
         AppInfoRow(
           info: Text(AppLocalizations.of(context)!.courseRanking),
-          child: AppDropdown<Skill>(
+          child: AppField<Skill>(
             controller: controller,
-            builder: (Skill branch) {
-              return Text(branch.title);
-            },
-            onChanged: (Skill? branch) => onChanged(branch, range),
+            onChanged: (Skill? skill) => onChanged(skill, range),
           ),
           trailing: IconButton(
             icon: Icon(Icons.clear),
@@ -36,7 +33,7 @@ class RankingDropdown extends StatelessWidget {
           ),
         ),
         if (controller.value != null) AppInfoRow(
-          info: Text("Ranking Range"),
+          info: Text("Rank Range"),
           child: RangeSlider(
             values: range,
             min: 0,

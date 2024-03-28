@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class AppSearchField extends StatelessWidget {
   final TextEditingController controller;
-  final VoidCallback? onChange;
+  final VoidCallback? onChanged;
 
   const AppSearchField({
     super.key,
     required this.controller,
-    this.onChange,
+    this.onChanged,
   });
 
   @override
@@ -15,13 +15,13 @@ class AppSearchField extends StatelessWidget {
     return TextField(
       maxLines: 1,
       controller: controller,
-      onChanged: (text) => onChange?.call(),
+      onChanged: (text) => onChanged?.call(),
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
         suffixIcon: IconButton(
           onPressed: () {
             controller.clear();
-            onChange?.call();
+            onChanged?.call();
           },
           icon: Icon(Icons.clear),
         ),

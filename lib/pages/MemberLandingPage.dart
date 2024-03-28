@@ -4,6 +4,8 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppIconButton.dart';
 import 'package:cptclient/material/AppModuleSection.dart';
 import 'package:cptclient/pages/CalendarMonthPage.dart';
+import 'package:cptclient/pages/CompetenceOverviewManagementPage.dart';
+import 'package:cptclient/pages/CompetenceSummaryPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseManagementPage.dart';
 import 'package:cptclient/pages/CourseResponsiblePage.dart';
@@ -11,13 +13,10 @@ import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
 import 'package:cptclient/pages/EventOverviewManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
-import 'package:cptclient/pages/RankingManagementPage.dart';
-import 'package:cptclient/pages/RankingOverviewPage.dart';
 import 'package:cptclient/pages/TeamManagementPage.dart';
 import 'package:cptclient/pages/TermManagementPage.dart';
 import 'package:cptclient/pages/UserManagementPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -36,10 +35,6 @@ class MemberLandingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Welcome ${session.user!.firstname}"),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh, color: Colors.white),
-            onPressed: () => server.refresh(),
-          ),
           IconButton(
             icon: Icon(Icons.perm_identity, color: Colors.white),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MemberProfilePage(session: session))),
@@ -114,12 +109,12 @@ class MemberLandingPage extends StatelessWidget {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageRankingPersonal,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingOverviewPage(session: session))),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
           ),
           if (session.right!.admin_competence)
             AppButton(
               text: AppLocalizations.of(context)!.pageRankingManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RankingManagementPage(session: session))),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceOverviewManagementPage(session: session))),
             ),
           Divider(),
           AppModuleSection(

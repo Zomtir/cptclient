@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
-import 'package:cptclient/json/location.dart';
-import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
@@ -23,8 +20,6 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
       queryParameters: queryParameters);
 }
 
-List<Location> cacheLocations = [];
-List<Skill> cacheSkills = [];
 List<Status> cacheSlotStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
@@ -39,76 +34,9 @@ Future<bool> loadStatus() async {
   return (response.statusCode == 200);
 }
 
-Future<bool> loadCache() async {
-  // We are at the splash screen
-  if (!await loadStatus()) {
-    // Connection fails
-    return false;
-  } else {
-    // Connection succeeds
-    await loadLocations();
-    await loadSkills();
-    await Future.delayed(Duration(milliseconds: 200));
-    return true;
-  }
-}
-
-void refresh() {
-  loadSkills();
-  loadLocations();
-}
-
-Future<bool> loadLocations() async {
-  final response = await http.get(
-    uri('location_list'),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return false;
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  cacheLocations = List<Location>.from(l.map((model) => Location.fromJson(model)));
-
-  return true;
-}
-
-Future<bool> loadSkills() async {
-  final response = await http.get(
-    uri('skill_list'),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return false;
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  cacheSkills = List<Skill>.from(l.map((model) => Skill.fromJson(model)));
-
-  return true;
-}
-
-Future<List<Club>> receiveClubs() async {
-  final response = await http.get(
-    uri('/anon/club_list'),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  List<Club> clubs = List<Club>.from(l.map((model) => Club.fromJson(model)));
-
-  return clubs;
-}
-
 Future<List<Course>> receiveCourses() async {
   final response = await http.get(
-    uri('anon/course_list'),
+    uri('/anon/course_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },

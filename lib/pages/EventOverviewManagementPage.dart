@@ -5,19 +5,20 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/DateTimeController.dart';
-import 'package:cptclient/material/DateTimeEdit.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
+import 'package:cptclient/material/fields/DateTimeController.dart';
+import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppSlotTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,7 +41,7 @@ class EventOverviewManagementPageState
   final DropdownController<Status> _ctrlStatus =
       DropdownController<Status>(items: server.cacheSlotStatus);
   final DropdownController<Location> _ctrlLocation =
-      DropdownController<Location>(items: server.cacheLocations);
+      DropdownController<Location>(items: []);
   final DropdownController<User> _ctrlOwner =
       DropdownController<User>(items: []);
 
@@ -52,7 +53,8 @@ class EventOverviewManagementPageState
   @override
   void initState() {
     super.initState();
-    _requestOwnerFilter();
+    _requestLocations();
+    _requestOwners();
     _update();
   }
 
@@ -72,7 +74,16 @@ class EventOverviewManagementPageState
     });
   }
 
-  Future<void> _requestOwnerFilter() async {
+  Future<void> _requestLocations() async {
+    List<Location> locations = await api_anon.location_list();
+    locations.sort();
+
+    setState(() {
+      _ctrlLocation.items = locations;
+    });
+  }
+
+  Future<void> _requestOwners() async {
     List<User> users = await api_regular.user_list(widget.session);
     users.sort();
 
@@ -166,7 +177,8 @@ class EventOverviewManagementPageState
 
     if (newDateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
 
-    if (newDateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) {
+    if (newDateBegin
+        .isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) {
       newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
     }
 

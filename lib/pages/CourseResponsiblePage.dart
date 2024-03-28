@@ -9,8 +9,8 @@ import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseModeratorPage.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_course_moderator.dart' as server;
+import 'package:cptclient/static/server_course_moderator.dart' as api_regular;
+import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -28,7 +28,8 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
 
   bool _isActive = true;
   bool _isPublic = true;
-  final DropdownController<Skill> _ctrlDropdownBranch = DropdownController<Skill>(items: server.cacheSkills);
+  final DropdownController<Skill> _ctrlDropdownSkill =
+      DropdownController<Skill>(items: []);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseResponsiblePageState();
@@ -40,21 +41,25 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
   }
 
   void _update() async {
-    List<Course> courses = await server.course_responsibility(widget.session, _isActive, _isPublic);
+    List<Skill> skills = await api_anon.skill_list();
+    List<Course> courses = await api_regular.course_responsibility(
+        widget.session, _isActive, _isPublic);
 
-    setState(() => _courses = courses);
+    setState(() {
+      _ctrlDropdownSkill.items = skills;
+      _courses = courses;
+    });
   }
 
   Future<void> _selectCourse(Course course, bool isDraft) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CourseModeratorPage(
-              session: widget.session,
-              course: course,
-              isDraft: isDraft,
-            ),
+        builder: (context) => CourseModeratorPage(
+          session: widget.session,
+          course: course,
+          isDraft: isDraft,
+        ),
       ),
     );
     _update();
@@ -95,18 +100,18 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                   AppInfoRow(
                     info: Text("Branch"),
                     child: AppDropdown<Skill>(
-                      controller: _ctrlDropdownBranch,
+                      controller: _ctrlDropdownSkill,
                       builder: (Skill branch) {
                         return Text(branch.title);
                       },
                       onChanged: (Skill? branch) {
-                        _ctrlDropdownBranch.value = branch;
+                        _ctrlDropdownSkill.value = branch;
                       },
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.clear),
                       onPressed: () {
-                        _ctrlDropdownBranch.value = null;
+                        _ctrlDropdownSkill.value = null;
                       },
                     ),
                   ),
@@ -120,7 +125,8 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                       onChanged: (RangeValues values) {
                         _thresholdRange = values;
                       },
-                      labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
+                      labels: RangeLabels(
+                          "${_thresholdRange.start}", "${_thresholdRange.end}"),
                     ),
                   ),
                 ],
@@ -142,5 +148,4 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
       ),
     );
   }
-
 }
