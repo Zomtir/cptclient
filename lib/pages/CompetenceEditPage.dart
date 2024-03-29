@@ -9,7 +9,7 @@ import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
-import 'package:cptclient/material/tiles/AppRankingTile.dart';
+import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/static/server_ranking_admin.dart' as api_admin;
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
@@ -117,8 +117,8 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             Row(
               children: [
                 Expanded(
-                  child: AppRankingTile(
-                    ranking: widget.ranking,
+                  child: AppCompetenceTile(
+                    competence: widget.ranking,
                   ),
                 ),
                 if (widget.session.right!.admin_competence)

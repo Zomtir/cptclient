@@ -9,7 +9,7 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/CollapseWidget.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
-import 'package:cptclient/material/tiles/AppRankingTile.dart';
+import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/pages/CompetenceEditPage.dart';
 import 'package:cptclient/static/server_ranking_admin.dart' as api_admin;
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
@@ -179,8 +179,8 @@ class CompetenceOverviewManagementPageState extends State<CompetenceOverviewMana
             itemBuilder: (Competence ranking) {
               return InkWell(
                 onTap: () => _selectRanking(ranking, false),
-                child: AppRankingTile(
-                  ranking: ranking,
+                child: AppCompetenceTile(
+                  competence: ranking,
                 ),
               );
             },
