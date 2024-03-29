@@ -13,9 +13,10 @@ import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
 import 'package:cptclient/pages/EventOverviewManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
+import 'package:cptclient/pages/SkillOverviewPage.dart';
 import 'package:cptclient/pages/TeamOverviewManagementPage.dart';
 import 'package:cptclient/pages/TermManagementPage.dart';
-import 'package:cptclient/pages/UserOverviewManagementPage.dart';
+import 'package:cptclient/pages/UserOverviewPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -116,6 +117,11 @@ class MemberLandingPage extends StatelessWidget {
               text: AppLocalizations.of(context)!.pageRankingManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceOverviewManagementPage(session: session))),
             ),
+          if (session.right!.admin_competence)
+            AppButton(
+              text: AppLocalizations.of(context)!.pageSkillManagement,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SkillOverviewPage(session: session))),
+            ),
           Divider(),
           AppModuleSection(
             image: const AssetImage('assets/icons/icon_teams.png'),
@@ -144,7 +150,7 @@ class MemberLandingPage extends StatelessWidget {
           if (session.right!.admin_users)
             AppButton(
               text: AppLocalizations.of(context)!.pageUserManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewManagementPage(session: session))),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
             ),
         ],
       ),

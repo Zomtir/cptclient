@@ -4,7 +4,6 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
-import 'package:cptclient/material/tiles/AppSkillTile.dart';
 import 'package:cptclient/static/server_ranking_regular.dart' as server;
 import 'package:flutter/material.dart';
 

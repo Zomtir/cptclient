@@ -6,12 +6,17 @@ import 'package:flutter/material.dart';
 
 class Skill extends FieldInterface implements Comparable {
   final int id;
-  final String key;
-  final String title;
-  final int min = 0;
-  final int max = 0;
+  String key;
+  String title;
+  int min = 0;
+  int max = 0;
 
   Skill(this.id, this.key, this.title);
+
+  Skill.fromVoid()
+      : id = 0,
+        key = "",
+        title = "";
 
   Skill.fromJson(Map<String, dynamic> json)
       : id = json['id'],

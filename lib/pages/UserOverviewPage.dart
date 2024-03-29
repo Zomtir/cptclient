@@ -8,16 +8,16 @@ import 'package:cptclient/static/server_user_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class UserOverviewManagementPage extends StatefulWidget {
+class UserOverviewPage extends StatefulWidget {
   final Session session;
 
-  UserOverviewManagementPage({super.key, required this.session});
+  UserOverviewPage({super.key, required this.session});
 
   @override
-  UserOverviewManagementPageState createState() => UserOverviewManagementPageState();
+  UserOverviewPageState createState() => UserOverviewPageState();
 }
 
-class UserOverviewManagementPageState extends State<UserOverviewManagementPage> {
+class UserOverviewPageState extends State<UserOverviewPage> {
   GlobalKey<SearchablePanelState<User>> searchPanelKey = GlobalKey();
 
   @override
@@ -31,7 +31,7 @@ class UserOverviewManagementPageState extends State<UserOverviewManagementPage> 
     searchPanelKey.currentState?.setItems(users);
   }
 
-  void _selectUser(User user) async {
+  void _handleSelect(User user) async {
     User? userdetailed = await api_admin.user_detailed(widget.session, user);
 
     if (userdetailed == null) return;
@@ -49,7 +49,7 @@ class UserOverviewManagementPageState extends State<UserOverviewManagementPage> 
     );
   }
 
-  void _createUser() async {
+  void _handleCreate() async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -74,7 +74,7 @@ class UserOverviewManagementPageState extends State<UserOverviewManagementPage> 
           AppButton(
             leading: Icon(Icons.add),
             text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _createUser,
+            onPressed: _handleCreate,
           ),
           SearchablePanel(
             key: searchPanelKey,
@@ -82,7 +82,7 @@ class UserOverviewManagementPageState extends State<UserOverviewManagementPage> 
               onTap: () => onSelect?.call(user),
               child: user.buildTile(),
             ),
-            onSelect: _selectUser,
+            onSelect: _handleSelect,
           )
         ],
       ),

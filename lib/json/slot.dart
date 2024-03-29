@@ -35,7 +35,7 @@ class Slot implements Comparable {
 
   Slot.fromSlot(Slot slot)
       : id = 0,
-        key = assembleSlotKey(),
+        key = assembleKey([5]),
         title = slot.title,
         location = slot.location,
         begin = slot.begin,
@@ -71,7 +71,7 @@ class Slot implements Comparable {
 
   Slot.fromCourse(Course course)
       : id = 0,
-        key = assembleSlotKey(),
+        key = assembleKey([3,3,3]),
         title = course.title,
         location = null,
         begin = DateTime.now(),
@@ -82,7 +82,7 @@ class Slot implements Comparable {
 
   Slot.fromUser(User user)
       : id = 0,
-        key = assembleSlotKey(),
+        key = assembleKey([3,3,3]),
         title = "${user.key}'s individual reservation",
         location = null,
         begin = DateTime.now(),

@@ -22,7 +22,7 @@ class CompetenceDropdown extends StatelessWidget {
     return Column(
       children: [
         AppInfoRow(
-          info: Text(AppLocalizations.of(context)!.courseRanking),
+          info: Text(AppLocalizations.of(context)!.skillTitle),
           child: AppField<Skill>(
             controller: controller,
             onChanged: (Skill? skill) => onChanged(skill, range),
@@ -33,7 +33,7 @@ class CompetenceDropdown extends StatelessWidget {
           ),
         ),
         if (controller.value != null) AppInfoRow(
-          info: Text("Rank Range"),
+          info: Text(AppLocalizations.of(context)!.skillRange),
           child: RangeSlider(
             values: range,
             min: 0,

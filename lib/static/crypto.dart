@@ -19,8 +19,9 @@ String hashPassword(String password, String salt) {
 Random _random = Random.secure();
 const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 
-String assembleSlotKey() {
-  return "${generateString(3)}-${generateString(3)}-${generateString(3)}";
+String assembleKey(List<int> structure) {
+  List<String> segments = structure.map((size) => generateString(size)).toList();
+  return segments.join("-");
 }
 
 String generateString(int length) {
