@@ -3,23 +3,22 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/pages/UserAdminPage.dart';
+import 'package:cptclient/pages/UserEditPage.dart';
 import 'package:cptclient/static/server_user_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class UserManagementPage extends StatefulWidget {
+class UserOverviewManagementPage extends StatefulWidget {
   final Session session;
 
-  UserManagementPage({super.key, required this.session});
+  UserOverviewManagementPage({super.key, required this.session});
 
   @override
-  UserManagementPageState createState() => UserManagementPageState();
+  UserOverviewManagementPageState createState() => UserOverviewManagementPageState();
 }
 
-class UserManagementPageState extends State<UserManagementPage> {
-  final TextEditingController controller = TextEditingController();
-  List<User> _users = [];
+class UserOverviewManagementPageState extends State<UserOverviewManagementPage> {
+  GlobalKey<SearchablePanelState<User>> searchPanelKey = GlobalKey();
 
   @override
   void initState() {
@@ -29,7 +28,7 @@ class UserManagementPageState extends State<UserManagementPage> {
 
   Future<void> _update() async {
     List<User> users = await api_admin.user_list(widget.session);
-    setState(() => _users = users);
+    searchPanelKey.currentState?.setItems(users);
   }
 
   void _selectUser(User user) async {
@@ -40,7 +39,7 @@ class UserManagementPageState extends State<UserManagementPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserAdminPage(
+        builder: (context) => UserEditPage(
           session: widget.session,
           user: userdetailed,
           onUpdate: _update,
@@ -54,7 +53,7 @@ class UserManagementPageState extends State<UserManagementPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserAdminPage(
+        builder: (context) => UserEditPage(
           session: widget.session,
           user: User.fromVoid(),
           onUpdate: _update,
@@ -78,8 +77,8 @@ class UserManagementPageState extends State<UserManagementPage> {
             onPressed: _createUser,
           ),
           SearchablePanel(
-            items: _users,
-            builder: (user, Function(User)? onSelect) => InkWell(
+            key: searchPanelKey,
+            builder: (User user, Function(User)? onSelect) => InkWell(
               onTap: () => onSelect?.call(user),
               child: user.buildTile(),
             ),

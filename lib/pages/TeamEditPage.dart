@@ -13,7 +13,11 @@ class TeamEditPage extends StatefulWidget {
   final Team team;
   final bool isDraft;
 
-  TeamEditPage({super.key, required this.session, required this.team, required this.isDraft});
+  TeamEditPage(
+      {super.key,
+      required this.session,
+      required this.team,
+      required this.isDraft});
 
   @override
   TeamEditPageState createState() => TeamEditPageState();
@@ -78,21 +82,13 @@ class TeamEditPageState extends State<TeamEditPage> {
     }
 
     if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit team')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Failed to edit team')));
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited team')));
-    Navigator.pop(context);
-  }
-
-  void _deleteTeam() async {
-    if (!await server.team_delete(widget.session, widget.team)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete team')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted team')));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Successfully edited team')));
     Navigator.pop(context);
   }
 
@@ -104,20 +100,7 @@ class TeamEditPageState extends State<TeamEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            Row(
-              children: [
-                Expanded(
-                  child: AppTeamTile(
-                    team: widget.team,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _deleteTeam,
-                ),
-              ],
-            ),
+          if (!widget.isDraft) AppTeamTile(team: widget.team),
           if (!widget.isDraft) Divider(),
           _buildEditPanel(),
         ],
@@ -146,49 +129,56 @@ class TeamEditPageState extends State<TeamEditPage> {
           info: Text("Course Edit"),
           child: Checkbox(
             value: _ctrlRightCourse,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightCourse = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightCourse = enabled!),
           ),
         ),
         AppInfoRow(
           info: Text("Event Edit"),
           child: Checkbox(
             value: _ctrlRightEvent,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightEvent = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightEvent = enabled!),
           ),
         ),
         AppInfoRow(
           info: Text("Inventory Edit"),
           child: Checkbox(
             value: _ctrlRightInventory,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightInventory = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightInventory = enabled!),
           ),
         ),
         AppInfoRow(
           info: Text("Ranking Edit"),
           child: Checkbox(
             value: _ctrlRightRanking,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightRanking = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightRanking = enabled!),
           ),
         ),
         AppInfoRow(
           info: Text("Team Edit"),
           child: Checkbox(
             value: _ctrlRightTeam,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightTeam = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightTeam = enabled!),
           ),
         ),
         AppInfoRow(
           info: Text("Term Edit"),
           child: Checkbox(
             value: _ctrlRightTerm,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightTerm = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightTerm = enabled!),
           ),
         ),
         AppInfoRow(
           info: Text("User Edit"),
           child: Checkbox(
             value: _ctrlRightUser,
-            onChanged: (bool? enabled) => setState(() => _ctrlRightUser = enabled!),
+            onChanged: (bool? enabled) =>
+                setState(() => _ctrlRightUser = enabled!),
           ),
         ),
         AppButton(

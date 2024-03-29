@@ -11,19 +11,19 @@ import 'package:cptclient/static/server_user_admin.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class UserAdminPage extends StatefulWidget {
+class UserEditPage extends StatefulWidget {
   final Session session;
   final User user;
   final void Function() onUpdate;
   final bool isDraft;
 
-  UserAdminPage({super.key, required this.session, required this.user, required this.onUpdate, required this.isDraft});
+  UserEditPage({super.key, required this.session, required this.user, required this.onUpdate, required this.isDraft});
 
   @override
-  UserAdminPageState createState() => UserAdminPageState();
+  UserEditPageState createState() => UserEditPageState();
 }
 
-class UserAdminPageState extends State<UserAdminPage> {
+class UserEditPageState extends State<UserEditPage> {
   final TextEditingController _ctrlUserKey = TextEditingController();
   final TextEditingController _ctrlUserPassword = TextEditingController();
   bool                  _ctrlUserEnabled = false;
@@ -47,7 +47,7 @@ class UserAdminPageState extends State<UserAdminPage> {
   final TextEditingController _ctrlUserDataDisclaimer = TextEditingController();
   final TextEditingController _ctrlUserNote = TextEditingController();
 
-  UserAdminPageState();
+  UserEditPageState();
 
   @override
   void initState() {

@@ -4,7 +4,7 @@ import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AppField<T extends FieldInterface> extends StatefulWidget {
+class AppField<T extends FieldInterface> extends StatelessWidget {
   final FieldController<T> controller;
   final void Function(T?) onChanged;
 
@@ -14,36 +14,17 @@ class AppField<T extends FieldInterface> extends StatefulWidget {
     required this.onChanged,
   });
 
-  @override
-  AppFieldState createState() => AppFieldState<T>();
-}
-
-class AppFieldState<T extends FieldInterface> extends State<AppField<T>> {
-  List<T> _items = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _update();
-  }
-
-  Future<void> _update() async {
-    List<T>? items = await widget.controller.callItems?.call();
-    if (items == null) return;
-    setState(() => _items = items);
-  }
-
   void _handleSearch(BuildContext context) async {
     T? item = await showTilePicker<T>(
       context: context,
-      items: _items,
+      items: await controller.callItems?.call() ?? [],
     );
 
-    widget.onChanged.call(item);
+    onChanged.call(item);
   }
 
   void _handleClear() {
-    widget.onChanged.call(null);
+    onChanged.call(null);
   }
 
   @override
@@ -51,7 +32,7 @@ class AppFieldState<T extends FieldInterface> extends State<AppField<T>> {
     return Row(
       children: [
         Expanded(
-            child: Text(widget.controller.value?.toFieldString() ??
+            child: Text(controller.value?.toFieldString() ??
                 AppLocalizations.of(context)!.undefined)),
         IconButton(
           icon: Icon(Icons.clear),

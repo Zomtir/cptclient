@@ -12,7 +12,7 @@ class SearchablePanel<T extends FieldInterface> extends StatefulWidget {
 
   SearchablePanel({
     super.key,
-    required this.items,
+    this.items = const [],
     this.onSelect,
     required this.builder,
   });
@@ -31,10 +31,15 @@ class SearchablePanelState<T extends FieldInterface>
   void initState() {
     super.initState();
     _all = widget.items;
-    _update();
+    update();
   }
 
-  void _update() {
+  void setItems(List<T> items) {
+    _all = items;
+    update();
+  }
+
+  void update() {
     if (_ctrlFilter.text.isEmpty) {
       setState(() => _visible = _all);
       return;
@@ -50,13 +55,13 @@ class SearchablePanelState<T extends FieldInterface>
       children: [
         AppSearchField(
           controller: _ctrlFilter,
-          onChanged: _update,
+          onChanged: update,
         ),
         AppListView<T>(
           items: _visible,
           itemBuilder: (T item) => widget.builder(item, (item) {
             widget.onSelect?.call(item);
-            _update();
+            update();
           }),
         ),
       ],
