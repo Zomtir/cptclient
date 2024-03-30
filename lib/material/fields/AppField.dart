@@ -20,6 +20,7 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
       items: await controller.callItems?.call() ?? [],
     );
 
+    if (item == null) return;
     onChanged.call(item);
   }
 

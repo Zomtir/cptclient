@@ -21,12 +21,12 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   final Map<int, List<Event>> _eventsFiltered = {};
   DateTime _monthFirst = DateTime.now();
   DateTime _monthLast = DateTime.now();
+  int _monthDays = 0;
 
   @override
   void initState() {
     super.initState();
     _setMonth(DateUtils.dateOnly(DateTime.now()));
-    _update();
   }
 
   void _update() async {
@@ -38,7 +38,8 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   void _setMonth(DateTime dt) {
     setState(() {
       _monthFirst = DateTime(dt.year, dt.month, 1);
-      _monthLast = DateTime(dt.year, dt.month + 1, 0);
+      _monthLast = DateTime(dt.year, dt.month + 1, 1);
+      _monthDays = DateTime(dt.year, dt.month + 1, 0).day;
       _eventsFiltered.clear();
     });
 
@@ -46,7 +47,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   void _filterEvents() {
-    for (int day = 1; day < _monthLast.day; day++) {
+    for (int day = 1; day <= _monthDays; day++) {
       List<Event> eventsPerDay = filterEvents(
         _eventsAll,
         _monthFirst.copyWith(day: day, hour: 0, minute: 0, second: 0),
@@ -138,7 +139,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   List<Widget> buildGrid(BuildContext context) {
-    List<Widget> lc = List.generate(_monthLast.day, (index) {
+    List<Widget> lc = List.generate(_monthDays, (index) {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(width: 0.5, color: Colors.grey),

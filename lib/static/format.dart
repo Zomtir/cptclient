@@ -42,11 +42,11 @@ DateTime? parseWebDate(String? dt) {
 }
 
 String? formatWebDateTime(DateTime? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd+HH-mm").format(dt.toUtc());
+  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").format(dt.toUtc());
 }
 
 DateTime? parseWebDateTime(String? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd+HH-mm").parse(dt, true).toLocal();
+  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").parse(dt, true).toLocal();
 }
 
 String? formatNullInt(int? i) {

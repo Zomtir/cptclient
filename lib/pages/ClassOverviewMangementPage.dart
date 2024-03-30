@@ -81,7 +81,6 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
   }
 
   Future<void> _selectCourseEvent(Event event, bool isDraft) async {
-    print("hi0");
     await Navigator.push(
       context,
       MaterialPageRoute(
