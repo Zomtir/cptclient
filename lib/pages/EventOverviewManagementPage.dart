@@ -1,6 +1,6 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -12,9 +12,9 @@ import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
@@ -39,13 +39,13 @@ class EventOverviewManagementPageState
   final DateTimeController _ctrlDateEnd =
       DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
   final DropdownController<Status> _ctrlStatus =
-      DropdownController<Status>(items: server.cacheSlotStatus);
+      DropdownController<Status>(items: server.cacheEventStatus);
   final DropdownController<Location> _ctrlLocation =
       DropdownController<Location>(items: []);
   final DropdownController<User> _ctrlOwner =
       DropdownController<User>(items: []);
 
-  List<Slot> _events = [];
+  List<Event> _events = [];
   final _filterDaysMax = 366;
 
   EventOverviewManagementPageState();
@@ -59,7 +59,7 @@ class EventOverviewManagementPageState
   }
 
   Future<void> _update() async {
-    List<Slot> events = await api_admin.event_list(
+    List<Event> events = await api_admin.event_list(
       widget.session,
       begin: _ctrlDateBegin.getDate(),
       end: _ctrlDateEnd.getDate(),
@@ -92,13 +92,13 @@ class EventOverviewManagementPageState
     });
   }
 
-  Future<void> _selectSlot(Slot slot) async {
+  Future<void> _selectEvent(Event event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventInfoPage(
           session: widget.session,
-          slot: slot,
+          event: event,
         ),
       ),
     );
@@ -106,31 +106,31 @@ class EventOverviewManagementPageState
     _update();
   }
 
-  void _acceptEvent(Slot slot) async {
-    if (!await api_admin.event_accept(widget.session, slot)) return;
+  void _acceptEvent(Event event) async {
+    if (!await api_admin.event_accept(widget.session, event)) return;
     _update();
   }
 
-  void _denyEvent(Slot slot) async {
-    if (!await api_admin.event_deny(widget.session, slot)) return;
+  void _denyEvent(Event event) async {
+    if (!await api_admin.event_deny(widget.session, event)) return;
     _update();
   }
 
-  void _suspendEvent(Slot slot) async {
-    if (!await api_admin.event_suspend(widget.session, slot)) return;
+  void _suspendEvent(Event event) async {
+    if (!await api_admin.event_suspend(widget.session, event)) return;
     _update();
   }
 
-  void _handleEdit(Slot slot) async {
+  void _handleEdit(Event event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotEditPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
-          slot: slot,
+          event: event,
           isDraft: false,
           onSubmit: api_admin.event_edit,
-          onPasswordChange: api_admin.event_edit_password,
+          onPasswordChange: api_admin.event_password_edit,
           onDelete: api_admin.event_delete,
         ),
       ),
@@ -139,15 +139,15 @@ class EventOverviewManagementPageState
     _update();
   }
 
-  Future<void> _handleDuplicate(Slot slot) async {
-    Slot newSlot = Slot.fromSlot(slot);
-    newSlot.status = Status.DRAFT;
+  Future<void> _handleDuplicate(Event event) async {
+    Event newEvent = Event.fromEvent(event);
+    newEvent.status = Status.DRAFT;
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotEditPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
-          slot: newSlot,
+          event: newEvent,
           isDraft: true,
           onSubmit: api_regular.event_create,
         ),
@@ -200,12 +200,12 @@ class EventOverviewManagementPageState
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.slotBegin),
+                info: Text(AppLocalizations.of(context)!.eventBegin),
                 child:
                     DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.slotEnd),
+                info: Text(AppLocalizations.of(context)!.eventEnd),
                 child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
               LocationDropdown(
@@ -237,10 +237,10 @@ class EventOverviewManagementPageState
           ),
           AppListView(
             items: _events,
-            itemBuilder: (Slot slot) {
-              return AppSlotTile(
-                slot: slot,
-                trailing: _buildTrailing(slot),
+            itemBuilder: (Event event) {
+              return AppEventTile(
+                event: event,
+                trailing: _buildTrailing(event),
               );
             },
           )
@@ -249,32 +249,32 @@ class EventOverviewManagementPageState
     );
   }
 
-  List<Widget> _buildTrailing(Slot slot) {
+  List<Widget> _buildTrailing(Event event) {
     return [
-      if (slot.status == Status.PENDING)
+      if (event.status == Status.PENDING)
         IconButton(
           icon: const Icon(Icons.highlight_remove),
-          onPressed: () => _denyEvent(slot),
+          onPressed: () => _denyEvent(event),
         ),
-      if (slot.status == Status.PENDING)
+      if (event.status == Status.PENDING)
         IconButton(
           icon: const Icon(Icons.check_circle_outline),
-          onPressed: () => _acceptEvent(slot),
+          onPressed: () => _acceptEvent(event),
         ),
-      if (slot.status == Status.OCCURRING || slot.status == Status.REJECTED)
+      if (event.status == Status.OCCURRING || event.status == Status.REJECTED)
         IconButton(
           icon: const Icon(Icons.undo),
-          onPressed: () => _suspendEvent(slot),
+          onPressed: () => _suspendEvent(event),
         ),
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),
         itemBuilder: (context) => [
           PopupMenuItem<VoidCallback>(
-            value: () => _handleEdit(slot),
+            value: () => _handleEdit(event),
             child: Text(AppLocalizations.of(context)!.actionEdit),
           ),
           PopupMenuItem<VoidCallback>(
-            value: () => _handleDuplicate(slot),
+            value: () => _handleDuplicate(event),
             child: Text(AppLocalizations.of(context)!.actionDuplicate),
           ),
         ],

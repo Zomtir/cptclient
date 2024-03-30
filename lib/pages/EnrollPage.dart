@@ -1,12 +1,12 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/server_slot_service.dart' as api_service;
+import 'package:cptclient/static/server_event_service.dart' as api_service;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,8 +22,8 @@ class EnrollPage extends StatefulWidget {
 }
 
 class EnrollPageState extends State<EnrollPage> {
-  final TextEditingController _ctrlSlotNote = TextEditingController();
-  Slot? _slot;
+  final TextEditingController _ctrlNote = TextEditingController();
+  Event? _event;
 
   EnrollPageState();
 
@@ -34,12 +34,12 @@ class EnrollPageState extends State<EnrollPage> {
   }
 
   void _update() async {
-    Slot? slot = await api_service.slot_info(widget.session);
-    if (slot == null) return;
+    Event? event = await api_service.event_info(widget.session);
+    if (event == null) return;
 
     setState(() {
-      _slot = slot;
-      _ctrlSlotNote.text = slot.note;
+      _event = event;
+      _ctrlNote.text = event.note;
     });
   }
 
@@ -50,11 +50,11 @@ class EnrollPageState extends State<EnrollPage> {
         builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
-          tile: AppSlotTile(slot: _slot!),
-          onCallAvailable: (session) => api_service.slot_participant_pool(session),
-          onCallSelected: (session) => api_service.slot_participant_list(session),
-          onCallAdd: (session, user) => api_service.slot_participant_add(session, user),
-          onCallRemove: (session, user) => api_service.slot_participant_remove(session, user),
+          tile: AppEventTile(event: _event!),
+          onCallAvailable: (session) => api_service.event_participant_pool(session),
+          onCallSelected: (session) => api_service.event_participant_list(session),
+          onCallAdd: (session, user) => api_service.event_participant_add(session, user),
+          onCallRemove: (session, user) => api_service.event_participant_remove(session, user),
         ),
       ),
     );
@@ -67,26 +67,26 @@ class EnrollPageState extends State<EnrollPage> {
         builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
-          tile: AppSlotTile(slot: _slot!),
-          onCallAvailable: (session) => api_service.slot_owner_pool(session),
-          onCallSelected: (session) => api_service.slot_owner_list(session),
-          onCallAdd: (session, user) => api_service.slot_owner_add(session, user),
-          onCallRemove: (session, user) => api_service.slot_owner_remove(session, user),
+          tile: AppEventTile(event: _event!),
+          onCallAvailable: (session) => api_service.event_owner_pool(session),
+          onCallSelected: (session) => api_service.event_owner_list(session),
+          onCallAdd: (session, user) => api_service.event_owner_add(session, user),
+          onCallRemove: (session, user) => api_service.event_owner_remove(session, user),
         ),
       ),
     );
   }
 
   Future<void> _handleNote() async {
-    await api_service.slot_note_edit(widget.session, _ctrlSlotNote.text);
+    await api_service.event_note_edit(widget.session, _ctrlNote.text);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_slot == null) return Container();
+    if (_event == null) return Container();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Slot Participation"),
+        title: Text("Event Participation"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
@@ -96,7 +96,7 @@ class EnrollPageState extends State<EnrollPage> {
       ),
       body: AppBody(
         children: [
-          AppSlotTile(slot: _slot!),
+          AppEventTile(event: _event!),
           AppButton(
             text: AppLocalizations.of(context)!.pageEventParticipants,
             onPressed: _handleParticipants,
@@ -109,7 +109,7 @@ class EnrollPageState extends State<EnrollPage> {
             title: TextField(
               minLines: 3,
               maxLines: 10,
-              controller: _ctrlSlotNote,
+              controller: _ctrlNote,
               decoration: InputDecoration(
                 labelText: "Notes",
                 suffixIcon: IconButton(

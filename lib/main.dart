@@ -55,7 +55,7 @@ void main() {
           return MemberLandingPage(session: navi.session!);
         }
       },
-      '/slot': (context) => EnrollPage(session: navi.session!),
+      '/event': (context) => EnrollPage(session: navi.session!),
     },
   ));
 }

@@ -6,31 +6,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
 
-class LoginSlotPage extends StatefulWidget {
-  LoginSlotPage({super.key});
+class LoginEventPage extends StatefulWidget {
+  LoginEventPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => LoginSlotPageState();
+  State<StatefulWidget> createState() => LoginEventPageState();
 }
 
-class LoginSlotPageState extends State<LoginSlotPage> {
-  final TextEditingController _ctrlSlotLogin = TextEditingController();
-  final TextEditingController _ctrlSlotPasswd = TextEditingController();
+class LoginEventPageState extends State<LoginEventPage> {
+  final TextEditingController _ctrlLogin = TextEditingController();
+  final TextEditingController _ctrlPasswd = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    _ctrlSlotLogin.text = html.window.localStorage['DefaultSlot']!;
+    _ctrlLogin.text = html.window.localStorage['DefaultEvent']!;
   }
 
-  void _loginSlot() async {
-    bool success = await server.loginSlot(_ctrlSlotLogin.text, _ctrlSlotPasswd.text);
+  void _loginEvent() async {
+    bool success = await server.loginEvent(_ctrlLogin.text, _ctrlPasswd.text);
 
-    _ctrlSlotLogin.text = html.window.localStorage['DefaultSlot']!;
-    _ctrlSlotPasswd.text = "";
+    _ctrlLogin.text = html.window.localStorage['DefaultEvent']!;
+    _ctrlPasswd.text = "";
 
-    if (success) navi.loginSlot();
+    if (success) navi.loginEvent();
   }
 
   @override
@@ -38,21 +38,21 @@ class LoginSlotPageState extends State<LoginSlotPage> {
     final node = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.loginSlot),
+        title: Text(AppLocalizations.of(context)!.loginEvent),
       ),
       body: AppBody(children: [
         ListTile(
           title: TextFormField(
             maxLines: 1,
-            controller: _ctrlSlotLogin,
+            controller: _ctrlLogin,
             textInputAction: TextInputAction.next,
             onEditingComplete: () => node.nextFocus(),
             decoration: InputDecoration(
-              labelText: "Slot Key",
+              labelText: "Event Key",
               hintText: "8 alphanumeric characters",
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlSlotLogin.clear(),
+                onPressed: () => _ctrlLogin.clear(),
                 icon: Icon(Icons.clear),
               ),
             ),
@@ -62,14 +62,14 @@ class LoginSlotPageState extends State<LoginSlotPage> {
           title: TextField(
             obscureText: true,
             maxLines: 1,
-            controller: _ctrlSlotPasswd,
+            controller: _ctrlPasswd,
             textInputAction: TextInputAction.next,
             onEditingComplete: () => node.nextFocus(),
             decoration: InputDecoration(
-              labelText: "Slot Password",
+              labelText: "Event Password",
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlSlotPasswd.clear(),
+                onPressed: () => _ctrlPasswd.clear(),
                 icon: Icon(Icons.clear),
               ),
             ),
@@ -77,7 +77,7 @@ class LoginSlotPageState extends State<LoginSlotPage> {
         ),
         AppButton(
           text: "Login",
-          onPressed: _loginSlot,
+          onPressed: _loginEvent,
         ),
         Divider(),
       ]),

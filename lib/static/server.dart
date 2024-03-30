@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
-import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 import "package:universal_html/html.dart" as html;
@@ -20,7 +20,7 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
       queryParameters: queryParameters);
 }
 
-List<Status> cacheSlotStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
+List<Status> cacheEventStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
   final http.Response response;
@@ -92,13 +92,13 @@ Future<bool> loginUser(String key, String pwd) async {
   }
 }
 
-Future<bool> loginSlot(String key, String pwd) async {
+Future<bool> loginEvent(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return false;
 
   Credential credential = Credential(key, pwd, "");
 
   final response = await http.post(
-    uri('slot_login'),
+    uri('event_login'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Accept': 'text/plain; charset=utf-8',
@@ -107,11 +107,11 @@ Future<bool> loginSlot(String key, String pwd) async {
   );
 
   if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'slot';
+    html.window.localStorage['Session'] = 'event';
     html.window.localStorage['Token'] = response.body;
     return true;
   } else {
-    print("Slot login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
+    print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
     return false;
   }
 }
@@ -127,7 +127,7 @@ Future<bool> loginCourse(String key) async {
   );
 
   if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'slot';
+    html.window.localStorage['Session'] = 'event';
     html.window.localStorage['Token'] = response.body;
     return true;
   } else {
@@ -147,7 +147,7 @@ Future<bool> loginLocation(String key) async {
   );
 
   if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'slot';
+    html.window.localStorage['Session'] = 'event';
     html.window.localStorage['Token'] = response.body;
     return true;
   } else {

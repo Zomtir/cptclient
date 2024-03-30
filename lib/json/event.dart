@@ -9,7 +9,7 @@ import 'package:cptclient/static/format.dart';
 
 enum Status { DRAFT, PENDING, OCCURRING, REJECTED, CANCELED }
 
-class Slot implements Comparable {
+class Event implements Comparable {
   final int id;
   String key;
   String title;
@@ -21,7 +21,7 @@ class Slot implements Comparable {
   bool scrutable;
   String note = "";
 
-  Slot({
+  Event({
     required this.id,
     required this.key,
     required this.title,
@@ -33,18 +33,18 @@ class Slot implements Comparable {
     required this.note,
   });
 
-  Slot.fromSlot(Slot slot)
+  Event.fromEvent(Event event)
       : id = 0,
         key = assembleKey([5]),
-        title = slot.title,
-        location = slot.location,
-        begin = slot.begin,
-        end = slot.end,
-        status = slot.status,
-        public = slot.public,
-        scrutable = slot.scrutable;
+        title = event.title,
+        location = event.location,
+        begin = event.begin,
+        end = event.end,
+        status = event.status,
+        public = event.public,
+        scrutable = event.scrutable;
 
-  Slot.fromJson(Map<String, dynamic> json)
+  Event.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         key = json['key'],
         title = json['title'],
@@ -69,7 +69,7 @@ class Slot implements Comparable {
         'note': note,
       };
 
-  Slot.fromCourse(Course course)
+  Event.fromCourse(Course course)
       : id = 0,
         key = assembleKey([3,3,3]),
         title = course.title,
@@ -80,7 +80,7 @@ class Slot implements Comparable {
         public = true,
         scrutable = false;
 
-  Slot.fromUser(User user)
+  Event.fromUser(User user)
       : id = 0,
         key = assembleKey([3,3,3]),
         title = "${user.key}'s individual reservation",
@@ -97,10 +97,10 @@ class Slot implements Comparable {
   }
 }
 
-List<Slot> filterSlots(List<Slot> slots, DateTime earliest, DateTime latest) {
-  List<Slot> filtered = slots.where((Slot slot) {
-    bool tooEarly = earliest.isAfter(slot.end);
-    bool tooLate = latest.isBefore(slot.begin);
+List<Event> filterEvents(List<Event> events, DateTime earliest, DateTime latest) {
+  List<Event> filtered = events.where((Event event) {
+    bool tooEarly = earliest.isAfter(event.end);
+    bool tooLate = latest.isBefore(event.begin);
 
     return !(tooEarly || tooLate);
   }).toList();

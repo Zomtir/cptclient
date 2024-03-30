@@ -15,7 +15,7 @@ class ConnectionPageState extends State<ConnectionPage> {
   final TextEditingController _ctrlServerHost = TextEditingController();
   final TextEditingController _ctrlServerPort = TextEditingController();
   final TextEditingController _ctrlUser = TextEditingController();
-  final TextEditingController _ctrlSlot = TextEditingController();
+  final TextEditingController _ctrlEvent = TextEditingController();
   final TextEditingController _ctrlCourse = TextEditingController();
   final TextEditingController _ctrlLocation = TextEditingController();
   bool _serverOnline = false;
@@ -28,7 +28,7 @@ class ConnectionPageState extends State<ConnectionPage> {
     _ctrlServerHost.text = html.window.localStorage['ServerHost']!;
     _ctrlServerPort.text = html.window.localStorage['ServerPort']!;
     _ctrlUser.text = html.window.localStorage['DefaultUser']!;
-    _ctrlSlot.text = html.window.localStorage['DefaultSlot']!;
+    _ctrlEvent.text = html.window.localStorage['DefaultEvent']!;
     _ctrlCourse.text = html.window.localStorage['DefaultCourse']!;
     _ctrlLocation.text = html.window.localStorage['DefaultLocation']!;
 
@@ -106,11 +106,11 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Default Slot Key"),
+            info: Text("Default Event Key"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlSlot,
-              onChanged: (String text) => {html.window.localStorage['DefaultSlot'] = text},
+              controller: _ctrlEvent,
+              onChanged: (String text) => {html.window.localStorage['DefaultEvent'] = text},
             ),
           ),
           AppInfoRow(

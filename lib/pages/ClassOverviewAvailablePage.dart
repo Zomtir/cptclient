@@ -1,10 +1,10 @@
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class ClassOverviewAvailablePage extends StatefulWidget {
 
 class ClassOverviewAvailablePageState
     extends State<ClassOverviewAvailablePage> {
-  List<Slot> _slots = [];
+  List<Event> _events = [];
 
   ClassOverviewAvailablePageState();
 
@@ -35,34 +35,34 @@ class ClassOverviewAvailablePageState
   }
 
   void _update() {
-    _getCourseSlots();
+    _getCourseEvents();
   }
 
-  Future<void> _getCourseSlots() async {
-    List<Slot> slots = await api_regular.event_list(
+  Future<void> _getCourseEvents() async {
+    List<Event> events = await api_regular.event_list(
       widget.session,
       courseTrue: true,
       courseID: widget.course.id,
     );
-    slots.sort();
+    events.sort();
 
     setState(() {
-      _slots = slots;
+      _events = events;
     });
   }
 
-  Future<void> _selectCourseSlot(Slot slot, bool isDraft) async {
+  Future<void> _selectCourseEvent(Event event, bool isDraft) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventInfoPage(
           session: widget.session,
-          slot: slot,
+          event: event,
         ),
       ),
     );
 
-    _getCourseSlots();
+    _getCourseEvents();
   }
 
   @override
@@ -76,13 +76,13 @@ class ClassOverviewAvailablePageState
           AppCourseTile(
             course: widget.course,
           ),
-          AppListView<Slot>(
-            items: _slots,
-            itemBuilder: (Slot slot) {
+          AppListView<Event>(
+            items: _events,
+            itemBuilder: (Event event) {
               return InkWell(
-                onTap: () => _selectCourseSlot(slot, false),
-                child: AppSlotTile(
-                  slot: slot,
+                onTap: () => _selectCourseEvent(event, false),
+                child: AppEventTile(
+                  event: event,
                   trailing: [
                     IconButton(onPressed: null, icon: Icon(Icons.star_border)),
                     IconButton(onPressed: null, icon: Icon(Icons.star)),

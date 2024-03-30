@@ -1,9 +1,9 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/server_slot_regular.dart' as api_regular;
+import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -17,8 +17,8 @@ class CalendarMonthPage extends StatefulWidget {
 }
 
 class CalendarMonthPageState extends State<CalendarMonthPage> {
-  List<Slot> _slotsAll = [];
-  final Map<int, List<Slot>> _slotsFiltered = {};
+  List<Event> _eventsAll = [];
+  final Map<int, List<Event>> _eventsFiltered = {};
   DateTime _monthFirst = DateTime.now();
   DateTime _monthLast = DateTime.now();
 
@@ -30,33 +30,33 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   void _update() async {
-    _slotsAll =
-        await api_regular.slot_list(widget.session, _monthFirst, _monthLast);
-    _filterSlots();
+    _eventsAll =
+        await api_regular.event_list(widget.session, begin: _monthFirst, end: _monthLast);
+    _filterEvents();
   }
 
   void _setMonth(DateTime dt) {
     setState(() {
       _monthFirst = DateTime(dt.year, dt.month, 1);
       _monthLast = DateTime(dt.year, dt.month + 1, 0);
-      _slotsFiltered.clear();
+      _eventsFiltered.clear();
     });
 
     _update();
   }
 
-  void _filterSlots() {
+  void _filterEvents() {
     for (int day = 1; day < _monthLast.day; day++) {
-      List<Slot> slotsPerDay = filterSlots(
-        _slotsAll,
+      List<Event> eventsPerDay = filterEvents(
+        _eventsAll,
         _monthFirst.copyWith(day: day, hour: 0, minute: 0, second: 0),
         _monthFirst.copyWith(day: day, hour: 24, minute: 0, second: 0),
       );
 
-      if (slotsPerDay.length > 4) {
-        slotsPerDay.removeRange(4, slotsPerDay.length);
+      if (eventsPerDay.length > 4) {
+        eventsPerDay.removeRange(4, eventsPerDay.length);
       }
-      setState(() => _slotsFiltered[day] = slotsPerDay);
+      setState(() => _eventsFiltered[day] = eventsPerDay);
     }
   }
 
@@ -167,10 +167,10 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   List<Widget> buildDay(BuildContext context, int day) {
-    return List.generate(_slotsFiltered[day]?.length ?? 0, (index) {
+    return List.generate(_eventsFiltered[day]?.length ?? 0, (index) {
       return Container(
         child: Text(
-          _slotsFiltered[day]![index].title,
+          _eventsFiltered[day]![index].title,
           style: Theme.of(context).textTheme.labelSmall,
           maxLines: 1,
           softWrap: false,

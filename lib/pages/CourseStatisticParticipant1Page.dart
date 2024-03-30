@@ -36,13 +36,13 @@ class CourseStatisticParticipant1PageState extends State<CourseStatisticParticip
     setState(() => this.stats = stats);
   }
 
-  Future<void> _handleClass(int slotID) async {
+  Future<void> _handleClass(int eventID) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClassDetailManagementPage(
           session: widget.session,
-          slotID: slotID,
+          eventID: eventID,
         ),
       ),
     );

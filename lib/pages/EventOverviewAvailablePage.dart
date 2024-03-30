@@ -1,6 +1,6 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -11,9 +11,9 @@ import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/pages/SlotEditPage.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
@@ -34,13 +34,13 @@ class EventOverviewAvailablePageState
   final DropdownController<Location> _ctrlLocation =
       DropdownController<Location>(items: []);
   final DropdownController<Status> _ctrlStatus =
-      DropdownController<Status>(items: server.cacheSlotStatus);
+      DropdownController<Status>(items: server.cacheEventStatus);
   final DateTimeController _ctrlDateBegin =
       DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
   final DateTimeController _ctrlDateEnd =
       DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
 
-  List<Slot> _events = [];
+  List<Event> _events = [];
 
   EventOverviewAvailablePageState();
 
@@ -53,7 +53,7 @@ class EventOverviewAvailablePageState
   Future<void> _update() async {
     List<Location> locations = await api_anon.location_list();
 
-    List<Slot> events = await api_regular.event_list(
+    List<Event> events = await api_regular.event_list(
       widget.session,
       begin: _ctrlDateBegin.getDate(),
       end: _ctrlDateEnd.getDate(),
@@ -69,13 +69,13 @@ class EventOverviewAvailablePageState
   }
 
   Future<void> _createEvent() async {
-    Slot slot = Slot.fromUser(widget.session.user!);
+    Event event = Event.fromUser(widget.session.user!);
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotEditPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
-          slot: slot,
+          event: event,
           isDraft: true,
           onSubmit: api_regular.event_create,
         ),
@@ -85,13 +85,13 @@ class EventOverviewAvailablePageState
     _update();
   }
 
-  void _handleSelectSlot(Slot slot) async {
+  void _handleSelectevent(Event event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventInfoPage(
           session: widget.session,
-          slot: slot,
+          event: event,
         ),
       ),
     );
@@ -116,12 +116,12 @@ class EventOverviewAvailablePageState
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.slotBegin),
+                info: Text(AppLocalizations.of(context)!.eventBegin),
                 child:
                     DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.slotEnd),
+                info: Text(AppLocalizations.of(context)!.eventEnd),
                 child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
               LocationDropdown(
@@ -134,11 +134,11 @@ class EventOverviewAvailablePageState
           ),
           AppListView(
             items: _events,
-            itemBuilder: (Slot slot) {
+            itemBuilder: (Event event) {
               return InkWell(
-                onTap: () => _handleSelectSlot(slot),
-                child: AppSlotTile(
-                  slot: slot,
+                onTap: () => _handleSelectevent(event),
+                child: AppEventTile(
+                  event: event,
                 ),
               );
             },

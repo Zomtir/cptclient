@@ -3,8 +3,8 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/LoginCoursePage.dart';
+import 'package:cptclient/pages/LoginEventPage.dart';
 import 'package:cptclient/pages/LoginLocationPage.dart';
-import 'package:cptclient/pages/LoginSlotPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
@@ -24,8 +24,8 @@ class LoginLandingPageState extends State<LoginLandingPage> {
       case 'user':
         navi.loginUser();
         break;
-      case 'slot':
-        navi.loginSlot();
+      case 'event':
+        navi.loginEvent();
         break;
       default:
         break;
@@ -75,9 +75,9 @@ class LoginLandingPageState extends State<LoginLandingPage> {
               MaterialPageRoute(builder: (context) => LoginUserPage())),
         ),
         AppButton(
-          text: AppLocalizations.of(context)!.loginSlot,
+          text: AppLocalizations.of(context)!.loginEvent,
           onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LoginSlotPage())),
+              MaterialPageRoute(builder: (context) => LoginEventPage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginCourse,

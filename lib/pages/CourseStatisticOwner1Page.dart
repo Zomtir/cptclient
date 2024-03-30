@@ -36,13 +36,13 @@ class CourseStatisticOwner1PageState extends State<CourseStatisticOwner1Page> {
     setState(() => this.stats = stats);
   }
 
-  Future<void> _handleClass(int slotID) async {
+  Future<void> _handleEvent(int eventID) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClassDetailManagementPage(
           session: widget.session,
-          slotID: slotID,
+          eventID: eventID,
         ),
       ),
     );
@@ -70,7 +70,7 @@ class CourseStatisticOwner1PageState extends State<CourseStatisticOwner1Page> {
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleClass(stats[index].$1))),
+                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleEvent(stats[index].$1))),
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].$4.fmtDateTime(context)}")),

@@ -1,6 +1,6 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -8,23 +8,23 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SlotEditPage extends StatefulWidget {
+class EventEditPage extends StatefulWidget {
   final Session session;
-  final Slot slot;
+  final Event event;
   final bool isDraft;
-  final Future<bool> Function(Session, Slot) onSubmit;
-  final Future<bool> Function(Session, Slot, String)? onPasswordChange;
-  final Future<bool> Function(Session, Slot)? onDelete;
+  final Future<bool> Function(Session, Event) onSubmit;
+  final Future<bool> Function(Session, Event, String)? onPasswordChange;
+  final Future<bool> Function(Session, Event)? onDelete;
 
-  SlotEditPage({
+  EventEditPage({
     super.key,
     required this.session,
-    required this.slot,
+    required this.event,
     required this.isDraft,
     required this.onSubmit,
     this.onPasswordChange,
@@ -32,82 +32,79 @@ class SlotEditPage extends StatefulWidget {
   });
 
   @override
-  SlotEditPageState createState() => SlotEditPageState();
+  EventEditPageState createState() => EventEditPageState();
 }
 
-class SlotEditPageState extends State<SlotEditPage> {
-  final TextEditingController _ctrlSlotKey = TextEditingController();
-  final TextEditingController _ctrlSlotPassword = TextEditingController();
-  final DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
-  final DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
-  final TextEditingController _ctrlSlotTitle = TextEditingController();
-  final DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: []);
-  bool _ctrlSlotPublic = false;
-  bool _ctrlSlotScrutable = true;
-  final TextEditingController _ctrlSlotNote = TextEditingController();
+class EventEditPageState extends State<EventEditPage> {
+  final TextEditingController _ctrlKey = TextEditingController();
+  final TextEditingController _ctrlPassword = TextEditingController();
+  final DateTimeController _ctrlBegin = DateTimeController(dateTime: DateTime.now());
+  final DateTimeController _ctrlEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
+  final TextEditingController _ctrlTitle = TextEditingController();
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  bool _ctrlPublic = false;
+  bool _ctrlScrutable = true;
+  final TextEditingController _ctrlNote = TextEditingController();
 
-  SlotEditPageState();
+  EventEditPageState();
 
   @override
   void initState() {
     super.initState();
 
     _receiveLocations();
-    _applySlot();
+    _applyEvent();
   }
 
   Future<void> _receiveLocations() async {
     List<Location> locations = await api_anon.location_list();
-
-    setState(() {
-      _ctrlSlotLocation.items = locations;
-    });
+    setState(() => _ctrlLocation.items = locations);
   }
 
-  void _applySlot() {
-    _ctrlSlotKey.text = widget.slot.key;
-    _ctrlSlotBegin.setDateTime(widget.slot.begin);
-    _ctrlSlotEnd.setDateTime(widget.slot.end);
-    _ctrlSlotTitle.text = widget.slot.title;
-    _ctrlSlotLocation.value = widget.slot.location;
-    _ctrlSlotPublic = widget.slot.public;
-    _ctrlSlotScrutable = widget.slot.scrutable;
-    _ctrlSlotNote.text = widget.slot.note;
+  void _applyEvent() {
+    _ctrlKey.text = widget.event.key;
+    _ctrlBegin.setDateTime(widget.event.begin);
+    _ctrlEnd.setDateTime(widget.event.end);
+    _ctrlTitle.text = widget.event.title;
+    _ctrlLocation.value = widget.event.location;
+    _ctrlPublic = widget.event.public;
+    _ctrlScrutable = widget.event.scrutable;
+    _ctrlNote.text = widget.event.note;
   }
 
-  void _gatherSlot() {
-    widget.slot.key = _ctrlSlotKey.text;
-    widget.slot.location = _ctrlSlotLocation.value;
-    widget.slot.begin = _ctrlSlotBegin.getDateTime()!;
-    widget.slot.end = _ctrlSlotEnd.getDateTime()!;
-    widget.slot.title = _ctrlSlotTitle.text;
-    widget.slot.public = _ctrlSlotPublic;
-    widget.slot.scrutable = _ctrlSlotScrutable;
-    widget.slot.note = _ctrlSlotNote.text;
+  void _gatherEvent() {
+    widget.event.key = _ctrlKey.text;
+    widget.event.location = _ctrlLocation.value;
+    widget.event.begin = _ctrlBegin.getDateTime()!;
+    widget.event.end = _ctrlEnd.getDateTime()!;
+    widget.event.title = _ctrlTitle.text;
+    widget.event.public = _ctrlPublic;
+    widget.event.scrutable = _ctrlScrutable;
+    widget.event.note = _ctrlNote.text;
   }
 
   void _handleSubmit() async {
-    _gatherSlot();
+    _gatherEvent();
 
-    if (widget.slot.location == null) {
+    if (widget.event.location == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Location is required.')));
       return;
     }
 
-    if (!await widget.onSubmit(widget.session, widget.slot)) return;
+    if (!await widget.onSubmit(widget.session, widget.event)) return;
 
     Navigator.pop(context);
   }
 
   void _handlePasswordChange() async {
-    bool success = await widget.onPasswordChange!(widget.session, widget.slot, _ctrlSlotPassword.text);
+    bool success = await widget.onPasswordChange!(widget.session, widget.event, _ctrlPassword.text);
     if (!success) return;
 
-    _ctrlSlotPassword.text = '';
+    _ctrlPassword.text = '';
   }
 
-  void _deleteSlot() async {
-    if (!await widget.onDelete!(widget.session, widget.slot)) return;
+  void _handleDelete() async {
+    if (!await widget.onDelete!(widget.session, widget.event)) return;
 
     Navigator.pop(context);
   }
@@ -121,13 +118,13 @@ class SlotEditPageState extends State<SlotEditPage> {
       body: AppBody(
         children: [
           if (!widget.isDraft)
-            AppSlotTile(
-              slot: widget.slot,
+            AppEventTile(
+              event: widget.event,
               trailing: [
                 if (widget.onDelete != null)
                   IconButton(
                     icon: const Icon(Icons.delete),
-                    onPressed: _deleteSlot,
+                    onPressed: _handleDelete,
                   ),
               ],
             ),
@@ -135,51 +132,51 @@ class SlotEditPageState extends State<SlotEditPage> {
             info: Text("Key"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlSlotKey,
+              controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
             info: Text("Title"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlSlotTitle,
+              controller: _ctrlTitle,
             ),
           ),
           AppInfoRow(
             info: Text("Start Time"),
             child: DateTimeEdit(
-              controller: _ctrlSlotBegin,
+              controller: _ctrlBegin,
             ),
           ),
           AppInfoRow(
             info: Text("End Time"),
             child: DateTimeEdit(
-              controller: _ctrlSlotEnd,
+              controller: _ctrlEnd,
             ),
           ),
           LocationDropdown(
-            controller: _ctrlSlotLocation,
+            controller: _ctrlLocation,
             onChanged: () => setState(() => {/* Location has changed */}),
           ),
           AppInfoRow(
             info: Text("Public"),
             child: Checkbox(
-              value: _ctrlSlotPublic,
-              onChanged: (bool? active) => setState(() => _ctrlSlotPublic = active!),
+              value: _ctrlPublic,
+              onChanged: (bool? active) => setState(() => _ctrlPublic = active!),
             ),
           ),
           AppInfoRow(
             info: Text("Scrutable"),
             child: Checkbox(
-              value: _ctrlSlotScrutable,
-              onChanged: (bool? active) => setState(() => _ctrlSlotScrutable = active!),
+              value: _ctrlScrutable,
+              onChanged: (bool? active) => setState(() => _ctrlScrutable = active!),
             ),
           ),
           AppInfoRow(
             info: Text("Notes"),
             child: TextField(
               maxLines: 4,
-              controller: _ctrlSlotNote,
+              controller: _ctrlNote,
             ),
           ),
           AppButton(
@@ -193,7 +190,7 @@ class SlotEditPageState extends State<SlotEditPage> {
               child: TextField(
                 obscureText: true,
                 maxLines: 1,
-                controller: _ctrlSlotPassword,
+                controller: _ctrlPassword,
                 decoration: InputDecoration(
                   hintText: "Reset password (leave empty to keep current)",
                 ),

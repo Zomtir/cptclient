@@ -39,7 +39,7 @@ class LoginCoursePageState extends State<LoginCoursePage> {
 
     _ctrlLogin.text = html.window.localStorage['DefaultCourse']!;
 
-    if (success) navi.loginSlot();
+    if (success) navi.loginEvent();
   }
 
   @override

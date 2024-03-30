@@ -1,4 +1,4 @@
-import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
@@ -18,7 +18,7 @@ class StatusDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppInfoRow(
-      info: Text(AppLocalizations.of(context)!.slotStatus),
+      info: Text(AppLocalizations.of(context)!.eventStatus),
       child: AppDropdown<Status>(
         controller: controller,
         builder: (Status status) {

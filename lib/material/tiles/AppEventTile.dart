@@ -1,15 +1,15 @@
-import 'package:cptclient/json/slot.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 
-class AppSlotTile extends StatelessWidget {
-  final Slot slot;
+class AppEventTile extends StatelessWidget {
+  final Event event;
   final List<Widget> trailing;
 
-  const AppSlotTile({
+  const AppEventTile({
     super.key,
-    required this.slot,
+    required this.event,
     this.trailing = const [],
   });
 
@@ -20,16 +20,16 @@ class AppSlotTile extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(.0),
-            child: Tooltip(message: "[${slot.id}] ${slot.key}", child: Icon(Icons.info)),
+            child: Tooltip(message: "[${event.id}] ${event.key}", child: Icon(Icons.info)),
           ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${slot.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(compressDate(context, slot.begin, slot.end)),
-                Text("${slot.location!.title}", style: TextStyle(color: Colors.black54)),
-                Text(slot.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
+                Text("${event.title}", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(compressDate(context, event.begin, event.end)),
+                Text("${event.location!.title}", style: TextStyle(color: Colors.black54)),
+                Text(event.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
               ],
             ),
           ),

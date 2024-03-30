@@ -42,7 +42,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
 
     _ctrlLogin.text = html.window.localStorage['DefaultLocation']!;
 
-    if (success) navi.loginSlot();
+    if (success) navi.loginEvent();
   }
 
   @override

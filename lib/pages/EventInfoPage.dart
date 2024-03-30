@@ -1,20 +1,19 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// TODO rename to SlotInfoPage and include courseInfo if available
 class EventInfoPage extends StatefulWidget {
   final Session session;
-  final Slot slot;
+  final Event event;
 
   EventInfoPage({
     super.key,
     required this.session,
-    required this.slot,
+    required this.event,
   });
 
   @override
@@ -26,19 +25,19 @@ class EventInfoPageState extends State<EventInfoPage> {
   EventInfoPageState();
 
   void _handleLikeAdd() async {
-    //await api_regular.event_like_add(widget.session, widget.slot);
+    //await api_regular.event_like_add(widget.session, widget.event);
   }
 
   void _handleLikeRemove() async {
-    //await api_regular.event_like_remove(widget.session, widget.slot);
+    //await api_regular.event_like_remove(widget.session, widget.event);
   }
 
   void _handleParticipationAdd() async {
-    //await api_regular.event_participant_add(widget.session, widget.slot);
+    //await api_regular.event_participant_add(widget.session, widget.event);
   }
 
   void _handleParticipationRemove() async {
-    //await api_regular.event_participant_remove(widget.session, widget.slot);
+    //await api_regular.event_participant_remove(widget.session, widget.event);
   }
 
   @override
@@ -50,42 +49,42 @@ class EventInfoPageState extends State<EventInfoPage> {
       body: AppBody(
         children: [
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotKey),
-            child: Text(widget.slot.key),
+            info: Text(AppLocalizations.of(context)!.eventKey),
+            child: Text(widget.event.key),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotTitle),
-            child: Text(widget.slot.title),
+            info: Text(AppLocalizations.of(context)!.eventTitle),
+            child: Text(widget.event.title),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotBegin),
-            child: Text(widget.slot.begin.fmtDate(context)),
+            info: Text(AppLocalizations.of(context)!.eventBegin),
+            child: Text(widget.event.begin.fmtDate(context)),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotEnd),
-            child: Text(widget.slot.end.fmtDate(context)),
+            info: Text(AppLocalizations.of(context)!.eventEnd),
+            child: Text(widget.event.end.fmtDate(context)),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotLocation),
-            child: Text(widget.slot.location!.title),
+            info: Text(AppLocalizations.of(context)!.eventLocation),
+            child: Text(widget.event.location!.title),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotPublic),
+            info: Text(AppLocalizations.of(context)!.eventPublic),
             child: Checkbox(
-              value: widget.slot.public,
+              value: widget.event.public,
               onChanged: null,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotScrutable),
+            info: Text(AppLocalizations.of(context)!.eventScrutable),
             child: Checkbox(
-              value: widget.slot.scrutable,
+              value: widget.event.scrutable,
               onChanged: null,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.slotNote),
-            child: Text(widget.slot.note),
+            info: Text(AppLocalizations.of(context)!.eventNote),
+            child: Text(widget.event.note),
           ),
           Divider(),
           IconButton(icon: Icon(Icons.star), onPressed: _handleLikeAdd),

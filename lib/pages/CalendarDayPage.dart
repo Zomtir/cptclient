@@ -1,8 +1,8 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/static/server_slot_regular.dart' as api_regular;
+import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,8 +18,8 @@ class CalendarDayPage extends StatefulWidget {
 }
 
 class CalendarDayPageState extends State<CalendarDayPage> {
-  List<Slot> _slotsAll = [];
-  List<Slot> _slotsFiltered = [];
+  List<Event> _eventsAll = [];
+  List<Event> _eventsFiltered = [];
   DateTime _dayFirst = DateTime(0);
   DateTime _dayLast = DateTime(0);
 
@@ -31,34 +31,34 @@ class CalendarDayPageState extends State<CalendarDayPage> {
   }
 
   void _update() async {
-    _slotsAll =
-        await api_regular.slot_list(widget.session, _dayFirst, _dayLast);
-    _filterSlots();
+    _eventsAll =
+        await api_regular.event_list(widget.session, begin: _dayFirst, end: _dayLast);
+    _filterEvents();
   }
 
   void _setDay(DateTime dt) {
     setState(() {
       _dayFirst = dt.copyWith(hour: 0);
       _dayLast = dt.copyWith(hour: 24);
-      _slotsFiltered.clear();
+      _eventsFiltered.clear();
     });
 
     _update();
   }
 
-  void _filterSlots() {
+  void _filterEvents() {
     setState(() {
-      _slotsFiltered = filterSlots(_slotsAll, _dayFirst, _dayLast);
+      _eventsFiltered = filterEvents(_eventsAll, _dayFirst, _dayLast);
     });
   }
 
-  Future<void> _handleSelectEvent(Slot slot) async {
+  Future<void> _handleSelectEvent(Event event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventInfoPage(
           session: widget.session,
-          slot: slot,
+          event: event,
         ),
       ),
     );
@@ -97,12 +97,12 @@ class CalendarDayPageState extends State<CalendarDayPage> {
   }
 
   List<Widget> buildDay(BuildContext context) {
-    return List.generate(_slotsFiltered.length, (index) {
+    return List.generate(_eventsFiltered.length, (index) {
       return InkWell(
-        onTap: () => _handleSelectEvent(_slotsFiltered[index]),
+        onTap: () => _handleSelectEvent(_eventsFiltered[index]),
         child: Container(
           child: Text(
-            _slotsFiltered[index].title,
+            _eventsFiltered[index].title,
             style: Theme.of(context).textTheme.labelSmall,
             maxLines: 1,
             softWrap: false,

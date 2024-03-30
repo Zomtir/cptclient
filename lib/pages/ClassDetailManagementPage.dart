@@ -1,45 +1,43 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
-import 'package:cptclient/pages/SlotEditPage.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClassDetailManagementPage extends StatefulWidget {
   final Session session;
-  final int slotID;
+  final int eventID;
   
-  ClassDetailManagementPage({super.key, required this.session, required this.slotID});
+  ClassDetailManagementPage({super.key, required this.session, required this.eventID});
 
   @override
   ClassDetailManagementPageState createState() => ClassDetailManagementPageState();
 }
 
 class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
-  Slot? slot;
+  Event? event;
 
   ClassDetailManagementPageState();
 
   @override
   void initState() {
     super.initState();
-    print("hi1");
     _update();
-    print("hi2");
   }
 
   _update() async {
-    Slot? slot = await api_admin.event_info(widget.session, widget.slotID);
+    Event? event = await api_admin.event_info(widget.session, widget.eventID);
 
-    if (slot == null) return;
+    if (event == null) return;
 
     setState(() {
-      this.slot = slot;
+      this.event = event;
     });
   }
 
@@ -47,9 +45,9 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotEditPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
-          slot: slot!,
+          event: event!,
           isDraft: false,
           onSubmit: api_admin.event_edit,
         ),
@@ -60,7 +58,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
   }
 
   _handleDelete() async {
-    if(!await api_admin.event_delete(widget.session, slot!)) return;
+    if(!await api_admin.event_delete(widget.session, event!)) return;
 
     Navigator.pop(context);
   }
@@ -72,11 +70,11 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
         builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
-          tile: AppSlotTile(slot: slot!),
-          onCallAvailable: (session) => api_admin.event_participant_pool(session, slot!),
-          onCallSelected: (session) => api_admin.event_participant_list(session, slot!),
-          onCallAdd: (session, user) => api_admin.event_participant_add(session, slot!, user),
-          onCallRemove: (session, user) => api_admin.event_participant_remove(session, slot!, user),
+          tile: AppEventTile(event: event!),
+          onCallAvailable: (session) => api_admin.event_participant_pool(session, event!),
+          onCallSelected: (session) => api_admin.event_participant_list(session, event!),
+          onCallAdd: (session, user) => api_admin.event_participant_add(session, event!, user),
+          onCallRemove: (session, user) => api_admin.event_participant_remove(session, event!, user),
         ),
       ),
     );
@@ -89,11 +87,11 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
         builder: (context) => SelectionPage<User>(
           session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
-          tile: AppSlotTile(slot: slot!),
-          onCallAvailable: (session) => api_admin.event_owner_pool(session, slot!),
-          onCallSelected: (session) => api_admin.event_owner_list(session, slot!),
-          onCallAdd: (session, user) => api_admin.event_owner_add(session, slot!, user),
-          onCallRemove: (session, user) => api_admin.event_owner_remove(session, slot!, user),
+          tile: AppEventTile(event: event!),
+          onCallAvailable: (session) => api_admin.event_owner_pool(session, event!),
+          onCallSelected: (session) => api_admin.event_owner_list(session, event!),
+          onCallAdd: (session, user) => api_admin.event_owner_add(session, event!, user),
+          onCallRemove: (session, user) => api_admin.event_owner_remove(session, event!, user),
         ),
       ),
     );
@@ -101,7 +99,7 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
 
   @override
   Widget build (BuildContext context) {
-    if (slot == null) {
+    if (event == null) {
       return Icon(Icons.downloading);
     }
     return Scaffold(
@@ -110,8 +108,8 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
       ),
       body: AppBody(
         children: [
-          AppSlotTile(
-            slot: slot!,
+          AppEventTile(
+            event: event!,
             trailing: [
               IconButton(
                 icon: const Icon(Icons.edit),

@@ -1,6 +1,6 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -13,18 +13,18 @@ import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SlotCreateBatchPage extends StatefulWidget {
+class EventCreateBatchPage extends StatefulWidget {
   final Session session;
-  final Slot slot;
+  final Event event;
   final bool isDraft;
-  final Future<bool> Function(Session, Slot) onSubmit;
-  final Future<bool> Function(Session, Slot, String)? onPasswordChange;
-  final Future<bool> Function(Session, Slot)? onDelete;
+  final Future<bool> Function(Session, Event) onSubmit;
+  final Future<bool> Function(Session, Event, String)? onPasswordChange;
+  final Future<bool> Function(Session, Event)? onDelete;
 
-  SlotCreateBatchPage({
+  EventCreateBatchPage({
     super.key,
     required this.session,
-    required this.slot,
+    required this.event,
     required this.isDraft,
     required this.onSubmit,
     this.onPasswordChange,
@@ -32,63 +32,63 @@ class SlotCreateBatchPage extends StatefulWidget {
   });
 
   @override
-  SlotCreateBatchPageState createState() => SlotCreateBatchPageState();
+  EventCreateBatchPageState createState() => EventCreateBatchPageState();
 }
 
-class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
-  final DateTimeController _ctrlSlotBegin = DateTimeController(dateTime: DateTime.now());
-  final DateTimeController _ctrlSlotEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
-  final TextEditingController _ctrlSlotTitle = TextEditingController();
-  final DropdownController<Location> _ctrlSlotLocation = DropdownController<Location>(items: []);
-  bool _ctrlSlotPublic = false;
-  bool _ctrlSlotScrutable = true;
+class EventCreateBatchPageState extends State<EventCreateBatchPage> {
+  final DateTimeController _ctrlBegin = DateTimeController(dateTime: DateTime.now());
+  final DateTimeController _ctrlEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
+  final TextEditingController _ctrlTitle = TextEditingController();
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  bool _ctrlPublic = false;
+  bool _ctrlScrutable = true;
 
   final List<bool> _ctrlBatchDays = List<bool>.filled(7, false);
   final DateTimeController _ctrlBatchBegin = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlBatchEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 7)));
 
   bool _enabled = true;
-  SlotCreateBatchPageState();
+  EventCreateBatchPageState();
 
   @override
   void initState() {
     super.initState();
 
     _receiveLocations();
-    _applySlot();
+    _applyEvent();
   }
 
   Future<void> _receiveLocations() async {
     List<Location> locations = await api_anon.location_list();
 
     setState(() {
-      _ctrlSlotLocation.items = locations;
+      _ctrlLocation.items = locations;
     });
   }
 
-  void _applySlot() {
-    _ctrlSlotBegin.setDateTime(widget.slot.begin);
-    _ctrlSlotEnd.setDateTime(widget.slot.end);
-    _ctrlSlotTitle.text = widget.slot.title;
-    _ctrlSlotLocation.value = widget.slot.location;
-    _ctrlSlotPublic = widget.slot.public;
-    _ctrlSlotScrutable = widget.slot.scrutable;
+  void _applyEvent() {
+    _ctrlBegin.setDateTime(widget.event.begin);
+    _ctrlEnd.setDateTime(widget.event.end);
+    _ctrlTitle.text = widget.event.title;
+    _ctrlLocation.value = widget.event.location;
+    _ctrlPublic = widget.event.public;
+    _ctrlScrutable = widget.event.scrutable;
   }
 
-  void _gatherSlot() {
-    widget.slot.location = _ctrlSlotLocation.value;
-    widget.slot.begin = _ctrlSlotBegin.getDateTime()!;
-    widget.slot.end = _ctrlSlotEnd.getDateTime()!;
-    widget.slot.title = _ctrlSlotTitle.text;
-    widget.slot.public = _ctrlSlotPublic;
-    widget.slot.scrutable = _ctrlSlotScrutable;
+  void _gatherEvent() {
+    widget.event.location = _ctrlLocation.value;
+    widget.event.begin = _ctrlBegin.getDateTime()!;
+    widget.event.end = _ctrlEnd.getDateTime()!;
+    widget.event.title = _ctrlTitle.text;
+    widget.event.public = _ctrlPublic;
+    widget.event.scrutable = _ctrlScrutable;
   }
 
   void _handleSubmit() async {
     setState(() => _enabled = false);
-    _gatherSlot();
+    _gatherEvent();
 
-    if (widget.slot.location == null) {
+    if (widget.event.location == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Location is required.')));
       setState(() => _enabled = true);
       return;
@@ -103,11 +103,11 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
     }
 
     for (DateTime date in dates) {
-      Slot slot = Slot.fromSlot(widget.slot);
-      slot.begin = slot.begin.applyDate(date);
-      slot.end = slot.end.applyDate(date);
+      Event event = Event.fromEvent(widget.event);
+      event.begin = event.begin.applyDate(date);
+      event.end = event.end.applyDate(date);
 
-      widget.onSubmit(widget.session, slot);
+      widget.onSubmit(widget.session, event);
     }
 
     Navigator.pop(context);
@@ -146,25 +146,25 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
             info: Text("Title"),
             child: TextField(
               maxLines: 1,
-              controller: _ctrlSlotTitle,
+              controller: _ctrlTitle,
             ),
           ),
           AppInfoRow(
             info: Text("Start Time"),
             child: DateTimeEdit(
-              controller: _ctrlSlotBegin,
+              controller: _ctrlBegin,
               showDate: false,
             ),
           ),
           AppInfoRow(
             info: Text("End Time"),
             child: DateTimeEdit(
-              controller: _ctrlSlotEnd,
+              controller: _ctrlEnd,
               showDate: false,
             ),
           ),
           LocationDropdown(
-            controller: _ctrlSlotLocation,
+            controller: _ctrlLocation,
             onChanged: () => setState(() => {
                   /* Location has changed */
                 }),
@@ -172,15 +172,15 @@ class SlotCreateBatchPageState extends State<SlotCreateBatchPage> {
           AppInfoRow(
             info: Text("Public"),
             child: Checkbox(
-              value: _ctrlSlotPublic,
-              onChanged: (bool? active) => setState(() => _ctrlSlotPublic = active!),
+              value: _ctrlPublic,
+              onChanged: (bool? active) => setState(() => _ctrlPublic = active!),
             ),
           ),
           AppInfoRow(
             info: Text("Scrutable"),
             child: Checkbox(
-              value: _ctrlSlotScrutable,
-              onChanged: (bool? active) => setState(() => _ctrlSlotScrutable = active!),
+              value: _ctrlScrutable,
+              onChanged: (bool? active) => setState(() => _ctrlScrutable = active!),
             ),
           ),
           AppInfoRow(

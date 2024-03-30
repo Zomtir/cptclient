@@ -18,7 +18,7 @@ class LocationDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppInfoRow(
-      info: Text(AppLocalizations.of(context)!.slotLocation),
+      info: Text(AppLocalizations.of(context)!.eventLocation),
       child: AppDropdown<Location>(
         controller: controller,
         builder: (Location location) {

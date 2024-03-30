@@ -1,18 +1,18 @@
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:flutter/material.dart';
 
 class ClassMemberPage extends StatefulWidget {
   final Session session;
-  final Slot slot;
+  final Event event;
   final void Function() onUpdate;
   final bool isDraft;
   final bool isModerator = false;
   
-  ClassMemberPage({super.key, required this.session, required this.slot, required this.onUpdate, required this.isDraft});
+  ClassMemberPage({super.key, required this.session, required this.event, required this.onUpdate, required this.isDraft});
 
   @override
   ClassMemberPageState createState() => ClassMemberPageState();
@@ -31,12 +31,12 @@ class ClassMemberPageState extends State<ClassMemberPage> {
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Slot configuration"),
+        title: Text("Event configuration"),
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) AppSlotTile(
-            slot: widget.slot,
+          if (!widget.isDraft) AppEventTile(
+            event: widget.event,
           ),
           Column(
             children: [

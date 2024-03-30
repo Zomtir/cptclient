@@ -1,14 +1,14 @@
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/slot.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/material/tiles/AppSlotTile.dart';
+import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/ClassDetailManagementPage.dart';
-import 'package:cptclient/pages/SlotCreateBatchPage.dart';
-import 'package:cptclient/pages/SlotEditPage.dart';
+import 'package:cptclient/pages/EventCreateBatchPage.dart';
+import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,7 +25,7 @@ class ClassOverviewManagementPage extends StatefulWidget {
 }
 
 class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage> {
-  List<Slot> _slots = [];
+  List<Event> _events = [];
 
   ClassOverviewManagementPageState();
 
@@ -36,11 +36,11 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
   }
 
   Future<void> _update() async {
-    List<Slot> slots = await api_admin.event_list(widget.session, courseTrue: true, courseID: widget.course.id);
-    slots.sort();
+    List<Event> events = await api_admin.event_list(widget.session, courseTrue: true, courseID: widget.course.id);
+    events.sort();
 
     setState(() {
-      _slots = slots;
+      _events = events;
     });
   }
 
@@ -48,12 +48,12 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotEditPage(
+        builder: (context) => EventEditPage(
           session: widget.session,
-          slot: Slot.fromCourse(widget.course),
+          event: Event.fromCourse(widget.course),
           isDraft: true,
-          onSubmit: (Session session, Slot slot) async {
-            if (!await api_admin.event_create(session, widget.course.id, slot)) return false;
+          onSubmit: (Session session, Event event) async {
+            if (!await api_admin.event_create(session, widget.course.id, event)) return false;
             _update();
             return true;
           },
@@ -66,12 +66,12 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SlotCreateBatchPage(
+        builder: (context) => EventCreateBatchPage(
           session: widget.session,
-          slot: Slot.fromCourse(widget.course),
+          event: Event.fromCourse(widget.course),
           isDraft: true,
-          onSubmit: (Session session, Slot slot) async {
-            if (!await api_admin.event_create(session, widget.course.id, slot)) return false;
+          onSubmit: (Session session, Event event) async {
+            if (!await api_admin.event_create(session, widget.course.id, event)) return false;
             _update();
             return true;
           },
@@ -80,14 +80,14 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     );
   }
 
-  Future<void> _selectCourseSlot(Slot slot, bool isDraft) async {
+  Future<void> _selectCourseEvent(Event event, bool isDraft) async {
     print("hi0");
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClassDetailManagementPage(
           session: widget.session,
-          slotID: slot.id,
+          eventID: event.id,
         ),
       ),
     );
@@ -116,13 +116,13 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
             text: AppLocalizations.of(context)!.actionCreateBatch,
             onPressed: _createClassBatch,
           ),
-          AppListView<Slot>(
-            items: _slots,
-            itemBuilder: (Slot slot) {
+          AppListView<Event>(
+            items: _events,
+            itemBuilder: (Event event) {
               return InkWell(
-                onTap: () => _selectCourseSlot(slot, false),
-                child: AppSlotTile(
-                  slot: slot,
+                onTap: () => _selectCourseEvent(event, false),
+                child: AppEventTile(
+                  event: event,
                 ),
               );
             },

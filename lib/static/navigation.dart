@@ -32,7 +32,7 @@ Future<void> connect() async {
   html.window.localStorage.putIfAbsent('Session', () => '');
   html.window.localStorage.putIfAbsent('Token', () => '');
   html.window.localStorage.putIfAbsent('DefaultUser', ()=>'');
-  html.window.localStorage.putIfAbsent('DefaultSlot', ()=>'');
+  html.window.localStorage.putIfAbsent('DefaultEvent', ()=>'');
   html.window.localStorage.putIfAbsent('DefaultCourse', ()=>'');
   html.window.localStorage.putIfAbsent('DefaultLocation', ()=>'');
 
@@ -55,10 +55,10 @@ Future<void> loginUser() async {
   }
 }
 
-Future<void> loginSlot() async {
+Future<void> loginEvent() async {
   if (await server.loadStatus()) {
-    if (await confirmSlot()) {
-      gotoRoute('/slot');
+    if (await confirmEvent()) {
+      gotoRoute('/event');
     } else {
       logout();
     }
@@ -97,7 +97,7 @@ Future<bool> confirmUser() async {
   return true;
 }
 
-Future<bool> confirmSlot() async {
+Future<bool> confirmEvent() async {
   if (html.window.localStorage['Token']!.isEmpty) return false;
 
   session = Session(html.window.localStorage['Token']!);
