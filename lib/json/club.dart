@@ -4,18 +4,21 @@ import 'package:flutter/material.dart';
 
 class Club extends FieldInterface implements Comparable {
   final int id;
+  final String key;
   final String name;
   final String description;
 
-  Club(this.id, this.name, this.description);
+  Club(this.id, this.key, this.name, this.description);
 
   Club.fromJson(Map<String, dynamic> json)
       : id = json['id'],
+        key = json['key'],
         name = json['name'],
         description = json['description'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'key': key,
         'name': name,
         'description': description,
       };
@@ -42,5 +45,5 @@ class Club extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable => [name, description];
+  get searchable => [name, key, description];
 }
