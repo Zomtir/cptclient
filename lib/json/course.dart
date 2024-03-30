@@ -47,6 +47,6 @@ class Course implements Comparable {
 
   @override
   int compareTo(other) {
-    return title.compareTo(other.title);
+    return title.compareTo(other.name);
   }
 }

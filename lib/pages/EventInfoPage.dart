@@ -66,7 +66,7 @@ class EventInfoPageState extends State<EventInfoPage> {
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.eventLocation),
-            child: Text(widget.event.location!.title),
+            child: Text(widget.event.location!.name),
           ),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.eventPublic),

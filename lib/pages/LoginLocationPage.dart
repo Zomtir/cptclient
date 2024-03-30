@@ -72,7 +72,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
         AppListView(
           items: _locations,
           itemBuilder: (location) => AppButton(
-            text: location.title,
+            text: location.name,
             onPressed: () => _ctrlLogin.text = location.key,
             style: AppButtonLightStyle(),
           ),
