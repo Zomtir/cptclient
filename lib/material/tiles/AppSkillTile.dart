@@ -16,10 +16,22 @@ class AppSkillTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return RoundBox(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("${skill.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("${skill.min} - ${skill.max}", style: TextStyle(fontWeight: FontWeight.bold)),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Tooltip(message: "[${skill.id}] ${skill.key}", child: Icon(Icons.info)),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${skill.title}",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${skill.min} - ${skill.max}",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
           ...trailing,
         ],
       ),

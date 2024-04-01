@@ -1,14 +1,14 @@
-import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/location.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:flutter/material.dart';
 
-class AppClubTile extends StatelessWidget {
-  final Club club;
+class AppLocationTile extends StatelessWidget {
+  final Location location;
   final List<Widget> trailing;
 
-  const AppClubTile({
+  const AppLocationTile({
     super.key,
-    required this.club,
+    required this.location,
     this.trailing = const [],
   });
 
@@ -19,21 +19,24 @@ class AppClubTile extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Tooltip(message: "[${club.id}] ${club.key}", child: Icon(Icons.info)),
+            child: Tooltip(
+                message: "[${location.id}] ${location.key}",
+                child: Icon(Icons.info)),
           ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${club.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${club.description}"),
+                Text("${location.name}",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${location.description}",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           ...trailing,
         ],
-      )
+      ),
     );
   }
-
 }

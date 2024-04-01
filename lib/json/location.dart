@@ -1,10 +1,21 @@
-class Location implements Comparable {
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppLocationTile.dart';
+import 'package:cptclient/static/crypto.dart';
+import 'package:flutter/material.dart';
+
+class Location extends FieldInterface implements Comparable {
   final int id;
-  final String key;
-  final String name;
-  final String description;
+  String key;
+  String name;
+  String description;
 
   Location(this.id, this.key, this.name, this.description);
+
+  Location.fromVoid()
+      : id = 0,
+        key = assembleKey([4]),
+        name = "",
+        description = "";
 
   Location.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -12,7 +23,8 @@ class Location implements Comparable {
         name = json['name'],
         description = json['description'];
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         'id': id,
         'key': key,
         'name': name,
@@ -28,5 +40,20 @@ class Location implements Comparable {
   @override
   int compareTo(other) {
     return name.compareTo(other.name);
+  }
+
+  @override
+  String toFieldString() {
+    return "[$key] $name";
+  }
+
+  @override
+  Widget buildTile() {
+    return AppLocationTile(location: this);
+  }
+
+  @override
+  get searchable {
+    return [key, name, description];
   }
 }

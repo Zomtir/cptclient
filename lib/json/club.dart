@@ -1,14 +1,21 @@
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
+import 'package:cptclient/static/crypto.dart';
 import 'package:flutter/material.dart';
 
 class Club extends FieldInterface implements Comparable {
   final int id;
-  final String key;
-  final String name;
-  final String description;
+  String key;
+  String name;
+  String description;
 
   Club(this.id, this.key, this.name, this.description);
+
+  Club.fromVoid()
+      : id = 0,
+        key = assembleKey([5]),
+        name = "",
+        description = "";
 
   Club.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -45,5 +52,5 @@ class Club extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable => [name, key, description];
+  get searchable => [key, name, description];
 }

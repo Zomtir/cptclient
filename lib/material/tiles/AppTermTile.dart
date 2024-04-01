@@ -27,16 +27,17 @@ class AppTermTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${term.user!.firstname} ${term.user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${term.user!.firstname} ${term.user!.lastname}",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text("${term.club!.name}"),
-                Text("${term.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${term.end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
+                Text(
+                    "${term.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${term.end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
               ],
             ),
           ),
           ...trailing,
         ],
-      )
+      ),
     );
   }
-
 }

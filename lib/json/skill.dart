@@ -2,31 +2,38 @@
 
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppSkillTile.dart';
+import 'package:cptclient/static/crypto.dart';
 import 'package:flutter/material.dart';
 
 class Skill extends FieldInterface implements Comparable {
   final int id;
   String key;
   String title;
-  int min = 0;
-  int max = 0;
+  int min;
+  int max;
 
-  Skill(this.id, this.key, this.title);
+  Skill(this.id, this.key, this.title, this.min, this.max);
 
   Skill.fromVoid()
       : id = 0,
-        key = "",
-        title = "";
+        key = assembleKey([4]),
+        title = "",
+        min = 0,
+        max = 1;
 
   Skill.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         key = json['key'],
-        title = json['title'];
+        title = json['title'],
+        min = json['min'],
+        max = json['max'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'key': key,
         'title': title,
+        'min': min,
+        'max': max,
       };
 
   @override

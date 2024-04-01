@@ -90,7 +90,7 @@ class SkillEditPageState extends State<SkillEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageSkillManagement),
+        title: Text(AppLocalizations.of(context)!.pageSkillEdit),
       ),
       body: AppBody(
         children: [
@@ -127,12 +127,12 @@ class SkillEditPageState extends State<SkillEditPage> {
               min: 0,
               max: 10,
               divisions: 10,
-              onChanged: (RangeValues values) => {},
+              onChanged: (RangeValues values) => setState(() => _ctrlRange = values),
               labels: RangeLabels("${_ctrlRange.start}", "${_ctrlRange.end}"),
             ),
           ),
           AppButton(
-            text: "Save",
+            text: AppLocalizations.of(context)!.actionSave,
             onPressed: _handleSubmit,
           ),
         ],

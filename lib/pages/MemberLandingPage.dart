@@ -4,6 +4,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppIconButton.dart';
 import 'package:cptclient/material/AppModuleSection.dart';
 import 'package:cptclient/pages/CalendarMonthPage.dart';
+import 'package:cptclient/pages/ClubOverviewPage.dart';
 import 'package:cptclient/pages/CompetenceOverviewManagementPage.dart';
 import 'package:cptclient/pages/CompetenceSummaryPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
@@ -12,6 +13,7 @@ import 'package:cptclient/pages/CourseResponsiblePage.dart';
 import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
 import 'package:cptclient/pages/EventOverviewManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
+import 'package:cptclient/pages/LocationOverviewPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
 import 'package:cptclient/pages/SkillOverviewPage.dart';
 import 'package:cptclient/pages/TeamOverviewManagementPage.dart';
@@ -103,6 +105,11 @@ class MemberLandingPage extends StatelessWidget {
               text: AppLocalizations.of(context)!.pageEventManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewManagementPage(session: session))),
             ),
+          if (session.right!.location.write)
+            AppButton(
+              text: AppLocalizations.of(context)!.pageLocationManagement,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LocationOverviewPage(session: session))),
+            ),
           Divider(),
           AppModuleSection(
             image: const AssetImage('assets/icons/icon_rankings.png'),
@@ -137,6 +144,11 @@ class MemberLandingPage extends StatelessWidget {
             image: const AssetImage('assets/icons/icon_membership.png'),
             text: AppLocalizations.of(context)!.labelTerm,
           ),
+          if (session.right!.club.write)
+            AppButton(
+              text: AppLocalizations.of(context)!.pageClubManagement,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ClubOverviewPage(session: session))),
+            ),
           if (session.right!.club.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageTermManagement,
