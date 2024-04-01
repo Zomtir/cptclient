@@ -3,6 +3,7 @@
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppSkillTile.dart';
 import 'package:cptclient/static/crypto.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
 class Skill extends FieldInterface implements Comparable {
@@ -44,7 +45,7 @@ class Skill extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    return title.compareTo(other.description);
+    return removeDiacritics(title).compareTo(removeDiacritics(other.title));
   }
 
   @override

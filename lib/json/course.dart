@@ -1,3 +1,5 @@
+import 'package:diacritic/diacritic.dart';
+
 class Course implements Comparable {
   final int id;
   String key;
@@ -47,6 +49,6 @@ class Course implements Comparable {
 
   @override
   int compareTo(other) {
-    return title.compareTo(other.name);
+    return removeDiacritics(title).compareTo(removeDiacritics(other.title));
   }
 }

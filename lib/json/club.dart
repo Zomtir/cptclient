@@ -1,6 +1,7 @@
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/static/crypto.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
 class Club extends FieldInterface implements Comparable {
@@ -38,7 +39,7 @@ class Club extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    return name.compareTo(other.name);
+    return removeDiacritics(name).compareTo(removeDiacritics(other.name));
   }
 
   @override
