@@ -34,17 +34,17 @@ class Competence {
     {
       'id': id,
       'user': user?.toJson(),
-      'branch': skill?.toJson(),
+      'skill': skill?.toJson(),
       'rank': rank,
       'date' : DateFormat("yyyy-MM-dd").format(date.toUtc()),
       'judge' : judge?.toJson()
     };
 
-    Competence.fromCompetence(Competence ranking)
+    Competence.fromCompetence(Competence competence)
       : id = 0,
-        user = ranking.user,
-        skill = ranking.skill,
-        rank = ranking.rank,
+        user = competence.user,
+        skill = competence.skill,
+        rank = competence.rank,
         date = DateTime.now(),
-        judge = ranking.judge;
+        judge = competence.judge;
 }

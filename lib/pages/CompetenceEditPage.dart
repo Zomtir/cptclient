@@ -14,6 +14,7 @@ import 'package:cptclient/static/server_ranking_admin.dart' as api_admin;
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetenceEditPage extends StatefulWidget {
   final Session session;
@@ -67,7 +68,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
   void _submitRanking() async {
     _gatherRanking();
 
-    final success = widget.isDraft ? await api_admin.ranking_create(widget.session, widget.ranking) : await api_admin.ranking_edit(widget.session, widget.ranking);
+    final success = widget.isDraft ? await api_admin.competence_create(widget.session, widget.ranking) : await api_admin.competence_edit(widget.session, widget.ranking);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save ranking')));
@@ -79,7 +80,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
   }
 
   void _deleteRanking() async {
-    final success = await api_admin.ranking_delete(widget.session, widget.ranking);
+    final success = await api_admin.competence_delete(widget.session, widget.ranking);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete ranking')));
@@ -109,7 +110,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ranking"),
+        title: Text(AppLocalizations.of(context)!.pageCompetenceEdit),
       ),
       body: AppBody(
         children: [
@@ -134,7 +135,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text("User"),
+            info: Text(AppLocalizations.of(context)!.competenceUser),
             child: AppField<User>(
               controller: _ctrlUser,
               onChanged: (User? user) {
@@ -145,7 +146,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Skill"),
+            info: Text(AppLocalizations.of(context)!.competenceSkill),
             child: AppField<Skill>(
               controller: _ctrlSkill,
               onChanged: (Skill? skill) {
@@ -154,7 +155,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Level"),
+            info: Text(AppLocalizations.of(context)!.competenceSkillRank),
             child: Slider(
               value: _ctrlRank.toDouble(),
               min: 0,
@@ -167,7 +168,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Judge"),
+            info: Text(AppLocalizations.of(context)!.competenceJudge),
             child: AppField<User>(
               controller: _ctrlJudge,
               onChanged: (User? user) {
@@ -178,13 +179,14 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Date"),
+            info: Text(AppLocalizations.of(context)!.competenceDate),
             child: DateTimeEdit(
               controller: _ctrlDate,
+              showTime: false,
             ),
           ),
           AppButton(
-            text: "Save",
+            text: AppLocalizations.of(context)!.actionSave,
             onPressed: _submitRanking,
           ),
         ],

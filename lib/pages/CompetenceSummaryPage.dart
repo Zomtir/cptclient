@@ -17,7 +17,7 @@ class CompetenceSummaryPage extends StatefulWidget {
 }
 
 class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
-  List<Competence> _rankings = [];
+  List<Competence> _competences = [];
   List<(Skill, int)> _summary = [];
 
   CompetenceSummaryPageState();
@@ -30,8 +30,8 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
   }
 
   Future<void> _requestList() async {
-    List<Competence> rankings = await server.competence_list(widget.session);
-    setState(() => _rankings = rankings);
+    List<Competence> competences = await server.competence_list(widget.session);
+    setState(() => _competences = competences);
   }
 
   Future<void> _requestSummary() async {
@@ -67,7 +67,7 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
           ),
           Divider(),
           AppListView<Competence>(
-            items: _rankings,
+            items: _competences,
             itemBuilder: (Competence competence) {
               return AppCompetenceTile(
                 competence: competence,

@@ -121,8 +121,8 @@ class CourseManagementPageState extends State<CourseManagementPage> {
               CompetenceDropdown(
                 controller: _ctrlSkill,
                 range: _ctrlSkillRange,
-                onChanged: (Skill? branch, RangeValues range) => setState(() {
-                  _ctrlSkill.value = branch;
+                onChanged: (Skill? skill, RangeValues range) => setState(() {
+                  _ctrlSkill.value = skill;
                   _ctrlSkillRange = range;
                 }),
               ),

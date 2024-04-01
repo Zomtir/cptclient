@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppIconButton.dart';
 import 'package:cptclient/material/AppModuleSection.dart';
 import 'package:cptclient/pages/CalendarMonthPage.dart';
 import 'package:cptclient/pages/ClubOverviewPage.dart';
-import 'package:cptclient/pages/CompetenceOverviewManagementPage.dart';
+import 'package:cptclient/pages/CompetenceOverviewPage.dart';
 import 'package:cptclient/pages/CompetenceSummaryPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseManagementPage.dart';
@@ -116,13 +116,13 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.labelRanking,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageRankingPersonal,
+            text: AppLocalizations.of(context)!.pageCompetencePersonal,
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
           ),
           if (session.right!.competence.write)
             AppButton(
-              text: AppLocalizations.of(context)!.pageRankingManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceOverviewManagementPage(session: session))),
+              text: AppLocalizations.of(context)!.pageCompetenceManagement,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceOverviewPage(session: session))),
             ),
           if (session.right!.competence.write)
             AppButton(

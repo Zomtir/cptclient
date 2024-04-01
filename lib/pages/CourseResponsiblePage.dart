@@ -98,14 +98,14 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                     ),
                   ),
                   AppInfoRow(
-                    info: Text("Branch"),
+                    info: Text("Skill"),
                     child: AppDropdown<Skill>(
                       controller: _ctrlDropdownSkill,
-                      builder: (Skill branch) {
-                        return Text(branch.title);
+                      builder: (Skill skill) {
+                        return Text(skill.title);
                       },
-                      onChanged: (Skill? branch) {
-                        _ctrlDropdownSkill.value = branch;
+                      onChanged: (Skill? skill) {
+                        _ctrlDropdownSkill.value = skill;
                       },
                     ),
                     trailing: IconButton(
