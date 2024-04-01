@@ -2,6 +2,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
+import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -30,8 +31,8 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   void _update() async {
-    _eventsAll =
-        await api_regular.event_list(widget.session, begin: _monthFirst, end: _monthLast);
+    _eventsAll = await api_regular.event_list(widget.session,
+        begin: _monthFirst, end: _monthLast);
     _filterEvents();
   }
 
@@ -71,6 +72,20 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleSelectEvent(Event event) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventInfoPage(
+          session: widget.session,
+          event: event,
+        ),
+      ),
+    );
+
+    _update();
   }
 
   @override
@@ -169,16 +184,19 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
 
   List<Widget> buildDay(BuildContext context, int day) {
     return List.generate(_eventsFiltered[day]?.length ?? 0, (index) {
-      return Container(
-        child: Text(
-          _eventsFiltered[day]![index].title,
-          style: Theme.of(context).textTheme.labelSmall,
-          maxLines: 1,
-          softWrap: false,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(5.0),
+      return InkWell(
+        onTap: () => _handleSelectEvent(_eventsFiltered[day]![index]),
+        child: Container(
+          child: Text(
+            _eventsFiltered[day]![index].title,
+            style: Theme.of(context).textTheme.labelSmall,
+            maxLines: 1,
+            softWrap: false,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(5.0),
+          ),
         ),
       );
     });

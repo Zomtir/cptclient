@@ -2,7 +2,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/pages/ClassDetailManagementPage.dart';
+import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';

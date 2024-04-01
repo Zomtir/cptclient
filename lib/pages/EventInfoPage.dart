@@ -1,7 +1,9 @@
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,12 +26,32 @@ class EventInfoPageState extends State<EventInfoPage> {
 
   EventInfoPageState();
 
-  void _handleLikeAdd() async {
+  Future<void> _handleSwitchAdmin() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClassDetailManagementPage(
+          session: widget.session,
+          eventID: widget.event.id,
+        ),
+      ),
+    );
+  }
+
+  void _handleBookmarkAdd() async {
     //await api_regular.event_like_add(widget.session, widget.event);
   }
 
-  void _handleLikeRemove() async {
+  void _handleBookmarkRemove() async {
     //await api_regular.event_like_remove(widget.session, widget.event);
+  }
+
+  void _handleRegistrationAdd() async {
+    //await api_regular.event_participant_add(widget.session, widget.event);
+  }
+
+  void _handleRegistrationRemove() async {
+    //await api_regular.event_participant_remove(widget.session, widget.event);
   }
 
   void _handleParticipationAdd() async {
@@ -48,6 +70,7 @@ class EventInfoPageState extends State<EventInfoPage> {
       ),
       body: AppBody(
         children: [
+          if (widget.session.right!.event.read) AppButton(text: "Go to Admin Page", onPressed: _handleSwitchAdmin),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.eventKey),
             child: Text(widget.event.key),
@@ -87,8 +110,30 @@ class EventInfoPageState extends State<EventInfoPage> {
             child: Text(widget.event.note),
           ),
           Divider(),
-          IconButton(icon: Icon(Icons.star), onPressed: _handleLikeAdd),
-          IconButton(icon: Icon(Icons.group_add), onPressed: _handleParticipationAdd),
+          AppInfoRow(
+            info: Text("Bookmark"),
+            child: Checkbox(
+              value: false,
+              onChanged: (bool? value) {  },
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Register"),
+            child: Checkbox(
+              value: false,
+              onChanged: (bool? value) {  },
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Participate"),
+            child: Checkbox(
+              value: false,
+              onChanged: (bool? value) {  },
+            ),
+          ),
+          //Tooltip(message: "Bookmark", child: IconButton(icon: Icon(Icons.star), onPressed: _handleBookmarkAdd)),
+          //Tooltip(message: "Register", child: IconButton(icon: Icon(Icons.group_add), onPressed: _handleRegistrationAdd)),
+          //Tooltip(message: "Participate", child: IconButton(icon: Icon(Icons.chair_alt), onPressed: _handleParticipationAdd)),
         ],
       ),
     );
