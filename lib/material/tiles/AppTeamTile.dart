@@ -19,7 +19,7 @@ class AppTeamTile extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Tooltip(message: "${team.id}", child: Icon(Icons.info)),
+            child: Tooltip(message: "[${team.id}] ${team.key}", child: Icon(Icons.info)),
           ),
           Expanded(
             child: Column(

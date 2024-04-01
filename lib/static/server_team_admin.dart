@@ -54,6 +54,21 @@ Future<bool> team_edit(Session session, Team team) async {
   return (response.statusCode == 200);
 }
 
+Future<bool> team_right_edit(Session session, Team team) async {
+  final response = await http.post(
+    server.uri('/admin/team_right_edit', {
+      'team_id': team.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(team.right),
+  );
+
+  return (response.statusCode == 200);
+}
+
 Future<bool> team_delete(Session session, Team team) async {
   final response = await http.head(
     server.uri('/admin/team_delete', {

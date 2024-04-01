@@ -24,16 +24,9 @@ class TeamEditPage extends StatefulWidget {
 }
 
 class TeamEditPageState extends State<TeamEditPage> {
+  final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlDescription = TextEditingController();
-
-  bool _ctrlRightCourse = false;
-  bool _ctrlRightEvent = false;
-  bool _ctrlRightInventory = false;
-  bool _ctrlRightRanking = false;
-  bool _ctrlRightTeam = false;
-  bool _ctrlRightTerm = false;
-  bool _ctrlRightUser = false;
 
   TeamEditPageState();
 
@@ -48,27 +41,15 @@ class TeamEditPageState extends State<TeamEditPage> {
   }
 
   void _applyTeam() {
+    _ctrlKey.text = widget.team.key;
     _ctrlName.text = widget.team.name;
     _ctrlDescription.text = widget.team.description;
-    _ctrlRightCourse = widget.team.right!.admin_courses;
-    _ctrlRightEvent = widget.team.right!.admin_courses;
-    _ctrlRightInventory = widget.team.right!.admin_inventory;
-    _ctrlRightRanking = widget.team.right!.admin_competence;
-    _ctrlRightTeam = widget.team.right!.admin_teams;
-    _ctrlRightTerm = widget.team.right!.admin_term;
-    _ctrlRightUser = widget.team.right!.admin_users;
   }
 
   void _gatherTeam() {
+    widget.team.key = _ctrlKey.text;
     widget.team.name = _ctrlName.text;
     widget.team.description = _ctrlDescription.text;
-    widget.team.right!.admin_courses = _ctrlRightCourse;
-    widget.team.right!.admin_competence = _ctrlRightRanking;
-    widget.team.right!.admin_event = _ctrlRightEvent;
-    widget.team.right!.admin_inventory = _ctrlRightInventory;
-    widget.team.right!.admin_teams = _ctrlRightTeam;
-    widget.team.right!.admin_term = _ctrlRightTerm;
-    widget.team.right!.admin_users = _ctrlRightUser;
   }
 
   void _submitTeam() async {
@@ -102,90 +83,33 @@ class TeamEditPageState extends State<TeamEditPage> {
         children: [
           if (!widget.isDraft) AppTeamTile(team: widget.team),
           if (!widget.isDraft) Divider(),
-          _buildEditPanel(),
+          AppInfoRow(
+            info: Text("Key"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlKey,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Name"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlName,
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Description"),
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlDescription,
+            ),
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.actionSave,
+            onPressed: _submitTeam,
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildEditPanel() {
-    return Column(
-      children: [
-        AppInfoRow(
-          info: Text("Name"),
-          child: TextField(
-            maxLines: 1,
-            controller: _ctrlName,
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Description"),
-          child: TextField(
-            maxLines: 1,
-            controller: _ctrlDescription,
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Course Edit"),
-          child: Checkbox(
-            value: _ctrlRightCourse,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightCourse = enabled!),
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Event Edit"),
-          child: Checkbox(
-            value: _ctrlRightEvent,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightEvent = enabled!),
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Inventory Edit"),
-          child: Checkbox(
-            value: _ctrlRightInventory,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightInventory = enabled!),
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Ranking Edit"),
-          child: Checkbox(
-            value: _ctrlRightRanking,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightRanking = enabled!),
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Team Edit"),
-          child: Checkbox(
-            value: _ctrlRightTeam,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightTeam = enabled!),
-          ),
-        ),
-        AppInfoRow(
-          info: Text("Term Edit"),
-          child: Checkbox(
-            value: _ctrlRightTerm,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightTerm = enabled!),
-          ),
-        ),
-        AppInfoRow(
-          info: Text("User Edit"),
-          child: Checkbox(
-            value: _ctrlRightUser,
-            onChanged: (bool? enabled) =>
-                setState(() => _ctrlRightUser = enabled!),
-          ),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.actionSave,
-          onPressed: _submitTeam,
-        ),
-      ],
     );
   }
 }

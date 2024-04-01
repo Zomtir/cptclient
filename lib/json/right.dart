@@ -1,49 +1,144 @@
 // ignore_for_file: non_constant_identifier_names
 
+class Permission {
+  final String id;
+  final String name;
+  final bool read;
+  final bool write;
+
+  const Permission(this.id, this.name, {this.read = false, this.write = false});
+
+  Permission copyWith({bool? read, bool? write}) => Permission(
+        id,
+        name,
+        read: read ?? this.read,
+        write: write ?? this.write,
+      );
+}
+
 class Right {
-  bool admin_competence;
-  bool admin_courses;
-  bool admin_event;
-  bool admin_inventory;
-  bool admin_teams;
-  bool admin_term;
-  bool admin_users;
+  Permission club;
+  Permission competence;
+  Permission course;
+  Permission event;
+  Permission inventory;
+  Permission location;
+  Permission team;
+  Permission user;
 
   Right({
-    this.admin_competence = false,
-    this.admin_courses = false,
-    this.admin_event = false,
-    this.admin_inventory = false,
-    this.admin_teams = false,
-    this.admin_term = false,
-    this.admin_users = false,
+    this.club = const Permission("club", "Club", read: false, write: false),
+    this.competence =
+        const Permission("competence", "Competence", read: false, write: false),
+    this.course =
+        const Permission("course", "Course", read: false, write: false),
+    this.event = const Permission("event", "Event", read: false, write: false),
+    this.inventory =
+        const Permission("inventory", "Inventory", read: false, write: false),
+    this.location =
+        const Permission("location", "Location", read: false, write: false),
+    this.team = const Permission("team", "Team", read: false, write: false),
+    this.user = const Permission("user", "User", read: false, write: false),
   });
 
   Right.fromRight(Right right)
-      : admin_competence = right.admin_competence,
-        admin_courses = right.admin_courses,
-        admin_event = right.admin_event,
-        admin_inventory = right.admin_inventory,
-        admin_teams = right.admin_teams,
-        admin_term = right.admin_term,
-        admin_users = right.admin_users;
+      : club = right.club,
+        competence = right.competence,
+        course = right.course,
+        event = right.event,
+        inventory = right.inventory,
+        location = right.location,
+        team = right.team,
+        user = right.user;
 
   Right.fromJson(Map<String, dynamic> json)
-      : admin_competence = json['admin_competence'],
-        admin_courses = json['admin_courses'],
-        admin_event = json['admin_event'],
-        admin_inventory = json['admin_inventory'],
-        admin_teams = json['admin_teams'],
-        admin_term = json['admin_term'],
-        admin_users = json['admin_users'];
+      : club = Permission(
+          "club",
+          "Club",
+          read: json['right_club_read'],
+          write: json['right_club_write'],
+        ),
+        competence = Permission(
+          "competence",
+          "Competence",
+          read: json['right_competence_read'],
+          write: json['right_competence_write'],
+        ),
+        course = Permission(
+          "course",
+          "Course",
+          read: json['right_course_read'],
+          write: json['right_course_write'],
+        ),
+        event = Permission(
+          "event",
+          "Event",
+          read: json['right_event_read'],
+          write: json['right_event_write'],
+        ),
+        inventory = Permission(
+          "inventory",
+          "Inventory",
+          read: json['right_inventory_read'],
+          write: json['right_inventory_write'],
+        ),
+        location = Permission(
+          "location",
+          "Location",
+          read: json['right_location_read'],
+          write: json['right_location_write'],
+        ),
+        team = Permission(
+          "team",
+          "Team",
+          read: json['right_team_read'],
+          write: json['right_team_write'],
+        ),
+        user = Permission(
+          "user",
+          "User",
+          read: json['right_user_read'],
+          write: json['right_user_write'],
+        );
 
   Map<String, dynamic> toJson() => {
-        'admin_competence': admin_competence,
-        'admin_courses': admin_courses,
-        'admin_event': admin_event,
-        'admin_inventory': admin_inventory,
-        'admin_teams': admin_teams,
-        'admin_term': admin_term,
-        'admin_users': admin_users,
+        'right_club_write': club.write,
+        'right_club_read': club.read,
+        'right_competence_write': competence.write,
+        'right_competence_read': competence.read,
+        'right_course_write': course.write,
+        'right_course_read': course.read,
+        'right_event_write': event.write,
+        'right_event_read': event.read,
+        'right_inventory_write': inventory.write,
+        'right_inventory_read': inventory.read,
+        'right_location_write': location.write,
+        'right_location_read': location.read,
+        'right_team_write': team.write,
+        'right_team_read': team.read,
+        'right_user_write': user.write,
+        'right_user_read': user.read,
       };
+
+  List<Permission> toList() => [
+        club,
+        competence,
+        course,
+        event,
+        inventory,
+        location,
+        team,
+        user,
+      ];
+
+  void fromList(List<Permission> list) {
+    club = list[0];
+    competence = list[1];
+    course = list[2];
+    event = list[3];
+    inventory = list[4];
+    location = list[5];
+    team = list[6];
+    user = list[7];
+  }
 }

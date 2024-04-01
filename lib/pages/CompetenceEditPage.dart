@@ -121,12 +121,12 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
                     competence: widget.ranking,
                   ),
                 ),
-                if (widget.session.right!.admin_competence)
+                if (widget.session.right!.competence.write)
                   IconButton(
                     icon: const Icon(Icons.copy),
                     onPressed: _duplicateRanking,
                   ),
-                if (widget.session.right!.admin_competence)
+                if (widget.session.right!.competence.write)
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: _deleteRanking,

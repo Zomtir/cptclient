@@ -47,6 +47,7 @@
   "skillRangeMax" : "Obere Grenze",
   "pageUserManagement": "Benutzerverwaltung",
   "pageTeamMember": "Gruppenmitglieder",
+  "pageTeamRight": "Gruppenberechtigungen",
   "pageTeamEdit": "Gruppe bearbeiten",
   "pageTeamManagement": "Gruppenverwaltung",
   "pageTermManagement": "Mitgliedschaftsverwaltung",

@@ -62,7 +62,7 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.pageInventoryPersonal,
             onPressed: () => {},
           ),
-          if (session.right!.admin_inventory)
+          if (session.right!.inventory.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageInventoryManagement,
               onPressed: () => {},
@@ -80,7 +80,7 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.pageCourseResponsible,
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseResponsiblePage(session: session))),
           ),
-          if (session.right!.admin_courses)
+          if (session.right!.course.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageCourseManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseManagementPage(session: session))),
@@ -98,7 +98,7 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.pageEventOwnership,
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewOwnershipPage(session: session))),
           ),
-          if (session.right!.admin_event)
+          if (session.right!.event.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageEventManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewManagementPage(session: session))),
@@ -112,12 +112,12 @@ class MemberLandingPage extends StatelessWidget {
             text: AppLocalizations.of(context)!.pageRankingPersonal,
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
           ),
-          if (session.right!.admin_competence)
+          if (session.right!.competence.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageRankingManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceOverviewManagementPage(session: session))),
             ),
-          if (session.right!.admin_competence)
+          if (session.right!.competence.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageSkillManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SkillOverviewPage(session: session))),
@@ -127,7 +127,7 @@ class MemberLandingPage extends StatelessWidget {
             image: const AssetImage('assets/icons/icon_teams.png'),
             text: AppLocalizations.of(context)!.labelTeam,
           ),
-          if (session.right!.admin_teams)
+          if (session.right!.team.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageTeamManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewManagementPage(session: session))),
@@ -137,7 +137,7 @@ class MemberLandingPage extends StatelessWidget {
             image: const AssetImage('assets/icons/icon_membership.png'),
             text: AppLocalizations.of(context)!.labelTerm,
           ),
-          if (session.right!.admin_term)
+          if (session.right!.club.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageTermManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TermManagementPage(session: session))),
@@ -147,7 +147,7 @@ class MemberLandingPage extends StatelessWidget {
             image: const AssetImage('assets/icons/icon_user.png'),
             text: AppLocalizations.of(context)!.labelUser,
           ),
-          if (session.right!.admin_users)
+          if (session.right!.user.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageUserManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),

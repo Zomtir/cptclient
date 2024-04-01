@@ -6,6 +6,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
+import 'package:cptclient/pages/TeamRightPage.dart';
 import 'package:cptclient/static/server_team_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
@@ -42,6 +43,18 @@ class TeamDetailManagementPage extends StatelessWidget {
           session: session,
           team: team,
           isDraft: false,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleRight(BuildContext context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TeamRightPage(
+          session: session,
+          team: team,
         ),
       ),
     );
@@ -105,6 +118,10 @@ class TeamDetailManagementPage extends StatelessWidget {
           AppButton(
             text: AppLocalizations.of(context)!.pageTeamMember,
             onPressed: () => _handleMember(context),
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageTeamRight,
+            onPressed: () => _handleRight(context),
           ),
         ],
       ),

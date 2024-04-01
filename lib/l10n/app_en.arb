@@ -47,6 +47,7 @@
   "skillRangeMax" : "Upper Bound",
   "pageUserManagement": "Administrate User Account",
   "pageTeamMember": "Team Members",
+  "pageTeamRight": "Team Permissions",
   "pageTeamEdit": "Edit Team Details",
   "pageTermManagement": "Administrate Membership Terms",
   "pageTermEdit": "Edit Membership Terms",
