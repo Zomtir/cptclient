@@ -44,6 +44,8 @@ jobs:
           # AGP8 needs JDK 17
           distribution: 'temurin'
           java-version: '17'
+      - run: cp cptclient-template.yaml cptclient.yaml
+        shell: bash
       - name: Build
         uses: oberhauser-dev/flutter-release-action@dev
         with:
@@ -97,6 +99,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libunwind-dev
           sudo apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+      - run: cp cptclient-template.yaml cptclient.yaml
+        shell: bash
       - name: Publish
         uses: oberhauser-dev/flutter-release-action@dev
         with:

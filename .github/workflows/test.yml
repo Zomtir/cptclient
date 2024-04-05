@@ -52,6 +52,7 @@ jobs:
         with:
           flutter-version: ${{ inputs.flutter_version }}
           channel: ${{ inputs.flutter_channel }}
+      - run: cp cptclient-template.yaml cptclient.yaml
       - run: flutter pub get
       - run: flutter analyze
       - run: dart format . --set-exit-if-changed

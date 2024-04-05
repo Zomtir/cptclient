@@ -93,6 +93,7 @@ jobs:
           channel: 'stable'
       - name: Build Web app
         run: |
+          cp cptclient-template.yaml cptclient.yaml
           flutter build web \
             --build-name=0.0.0-nightly.${GITHUB_SHA::7} \
             --base-href ${{ inputs.upload_pages_artifact && '"/cptclient/"' || '"/"' }} \
@@ -122,7 +123,9 @@ jobs:
           channel: 'stable'
       - name: Build Android APK
         # Build on debug to avoid code signing
-        run: flutter build apk --debug
+        run: |
+          cp cptclient-template.yaml cptclient.yaml
+          flutter build apk --debug
 
   ios:
     runs-on: macos-14
@@ -135,7 +138,9 @@ jobs:
           flutter-version: ${{ inputs.flutter_version }}
           channel: 'stable'
       - name: Build iOS
-        run: flutter build ios --release --no-codesign
+        run: |
+          cp cptclient-template.yaml cptclient.yaml
+          flutter build ios --release --no-codesign
 
   macos:
     runs-on: macos-14
@@ -148,7 +153,9 @@ jobs:
           flutter-version: ${{ inputs.flutter_version }}
           channel: 'stable'
       - name: Build macOS
-        run: flutter build macos --release
+        run: |
+          cp cptclient-template.yaml cptclient.yaml
+          flutter build macos --release
 
   windows:
     runs-on: windows-latest
@@ -161,7 +168,10 @@ jobs:
           flutter-version: ${{ inputs.flutter_version }}
           channel: 'stable'
       - name: Build Windows app
-        run: flutter build windows --release
+        shell: bash
+        run: |
+          cp cptclient-template.yaml cptclient.yaml
+          flutter build windows --release
 
   linux:
     runs-on: ubuntu-latest
@@ -179,4 +189,6 @@ jobs:
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
 
       - name: Build Linux app
-        run: flutter build linux --release
+        run: |
+          cp cptclient-template.yaml cptclient.yaml
+          flutter build linux --release
