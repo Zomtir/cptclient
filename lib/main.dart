@@ -8,56 +8,65 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(MaterialApp(
-    title: 'CPT Client',
-    localizationsDelegates: [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: [
-      Locale('en'), // English
-      Locale('de'), // German
-    ],
-    theme: ThemeData(
-      appBarTheme: AppBarTheme(
-        backgroundColor: Color.fromARGB(255, 208, 190, 135),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+  runApp(CptApp());
+}
+
+class CptApp extends StatelessWidget {
+  const CptApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'CPT Client',
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en'), // English
+        Locale('de'), // German
+      ],
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 208, 190, 135),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+          ),
+        ),
+        dividerTheme: DividerThemeData(
+          color: Color.fromARGB(255, 208, 190, 135),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(color: Colors.amber, width: 2),
+          ),
+          isDense: true,
         ),
       ),
-      dividerTheme: DividerThemeData(
-        color: Color.fromARGB(255, 208, 190, 135),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          borderSide: BorderSide(color: Colors.amber, width: 2),
-        ),
-        isDense: true,
-      ),
-    ),
-    navigatorObservers: [navi.routeObserver],
-    // onGenerateRoute: generateRoute,
-    navigatorKey: navi.navigatorKey,
-    initialRoute: '/',
-    routes: {
-      '/': (context) => MainPage(),
-      '/config': (context) => ConnectionPage(),
-      '/login': (context) => LoginLandingPage(),
-      '/user': (context) {
-        if (navi.session == null || navi.session?.user == null) {
-          return LoginLandingPage();
-        } else {
-          return MemberLandingPage(session: navi.session!);
-        }
+      navigatorObservers: [navi.routeObserver],
+      // onGenerateRoute: generateRoute,
+      navigatorKey: navi.navigatorKey,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainPage(),
+        '/config': (context) => ConnectionPage(),
+        '/login': (context) => LoginLandingPage(),
+        '/user': (context) {
+          if (navi.session == null || navi.session?.user == null) {
+            return LoginLandingPage();
+          } else {
+            return MemberLandingPage(session: navi.session!);
+          }
+        },
+        '/event': (context) => EnrollPage(session: navi.session!),
       },
-      '/event': (context) => EnrollPage(session: navi.session!),
-    },
-  ));
+    );
+  }
 }
 
 class MainPage extends StatefulWidget {
@@ -68,7 +77,6 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> with TickerProviderStateMixin {
-
   @override
   void initState() {
     super.initState();
