@@ -42,11 +42,10 @@ dependencies:
   cupertino_icons: ^1.0.6
 
 dev_dependencies:
-
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
-
   integration_test:
     sdk: flutter
 
@@ -63,3 +62,16 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/logo_cpt_256.png"
+  web:
+    generate: true
+  windows:
+    generate: true
+    icon_size: 256
+  macos:
+    generate: true
