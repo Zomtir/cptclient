@@ -8,6 +8,7 @@ library navigation;
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/environment.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
@@ -26,9 +27,9 @@ Future<void> connect() async {
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 
-  html.window.localStorage.putIfAbsent('ServerScheme', () => configMap['ServerScheme']);
-  html.window.localStorage.putIfAbsent('ServerHost', () => configMap['ServerHost']);
-  html.window.localStorage.putIfAbsent('ServerPort', () => configMap['ServerPort']);
+  html.window.localStorage.putIfAbsent('ServerScheme', () => Env.serverScheme.fromString() ?? configMap['ServerScheme']);
+  html.window.localStorage.putIfAbsent('ServerHost', () => Env.serverHost.fromString() ?? configMap['ServerHost']);
+  html.window.localStorage.putIfAbsent('ServerPort', () => Env.serverPort.fromInt()?.toString() ?? configMap['ServerPort']);
   html.window.localStorage.putIfAbsent('Session', () => '');
   html.window.localStorage.putIfAbsent('Token', () => '');
   html.window.localStorage.putIfAbsent('DefaultUser', ()=>'');
