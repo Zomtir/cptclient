@@ -102,7 +102,7 @@ jobs:
             --dart-define=SERVER_PORT=443
       - name: Upload pages artifact
         if: inputs.upload_pages_artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./build/web
 
