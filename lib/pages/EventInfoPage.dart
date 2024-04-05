@@ -38,26 +38,32 @@ class EventInfoPageState extends State<EventInfoPage> {
     );
   }
 
+  // ignore: unused_element
   void _handleBookmarkAdd() async {
     //await api_regular.event_like_add(widget.session, widget.event);
   }
 
+  // ignore: unused_element
   void _handleBookmarkRemove() async {
     //await api_regular.event_like_remove(widget.session, widget.event);
   }
 
+  // ignore: unused_element
   void _handleRegistrationAdd() async {
     //await api_regular.event_participant_add(widget.session, widget.event);
   }
 
+  // ignore: unused_element
   void _handleRegistrationRemove() async {
     //await api_regular.event_participant_remove(widget.session, widget.event);
   }
 
+  // ignore: unused_element
   void _handleParticipationAdd() async {
     //await api_regular.event_participant_add(widget.session, widget.event);
   }
 
+  // ignore: unused_element
   void _handleParticipationRemove() async {
     //await api_regular.event_participant_remove(widget.session, widget.event);
   }

@@ -133,6 +133,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     _update();
   }
 
+  // ignore: unused_element
   void _handleOwners(Event event) async {
     await Navigator.push(
       context,
@@ -152,6 +153,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     _update();
   }
 
+  // ignore: unused_element
   void _handleParticipants(Event event) async {
     await Navigator.push(
       context,

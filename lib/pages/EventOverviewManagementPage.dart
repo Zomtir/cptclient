@@ -92,6 +92,7 @@ class EventOverviewManagementPageState
     });
   }
 
+  // ignore: unused_element
   Future<void> _selectEvent(Event event) async {
     await Navigator.push(
       context,
@@ -157,6 +158,7 @@ class EventOverviewManagementPageState
     _update();
   }
 
+  // ignore: unused_element
   _pickDateBegin(DateTime newDateBegin) {
     DateTime newDateEnd = _ctrlDateEnd.getDateTime()!;
 
@@ -172,6 +174,7 @@ class EventOverviewManagementPageState
     });
   }
 
+  // ignore: unused_element
   _pickDateEnd(DateTime newDateEnd) {
     DateTime newDateBegin = _ctrlDateBegin.getDateTime()!;
 
