@@ -14,9 +14,30 @@ Should mostly work out of the box, if a cptserver is running.
 4) Choose Chrome (web) as build target and press the Run button. Alternatively you can use the command line:
 
 ```
-flutter gen-l10n
 flutter build web
 ```
+
+### Localization
+
+Current supported locales are EN and DE in `main.dart`.
+
+```
+supportedLocales: [
+  Locale('en'), // English
+  Locale('de'), // German
+],
+```
+
+The localization files are located at `lib/l10n/` and can be applied to the package with `flutter gen-l10n`.
+
+### App Name
+
+Change App name with: `flutter pub global activate rename` & `rename setAppName --targets ios,android,macos,windows,web --value "YourAppName"`
+You can also set the name for linux, but this isn't the launcher name. Update debians `.desktop` file manually.
+
+### Icons
+
+Generate launcher icons with: `flutter pub run flutter_launcher_icons`
 
 ## Releases
 
@@ -44,7 +65,7 @@ pubspec.yaml
 
 ## License
 
-The code is dedicated to the [Public Domain](LICENSE.md).
+The code is dedicated to the Public Domain as declared in the [License](LICENSE.md).
 
 ## Contributing
 
@@ -66,10 +87,3 @@ cat WAIVER.md.asc
 gpg --list-keys
 gpg --armor --export <KEYID>
 ```
-
-### Icons & AppName
-
-Generate launcher icons with: `flutter pub run flutter_launcher_icons`
-
-Change App name with: `flutter pub global activate rename` & `rename setAppName --targets ios,android,macos,windows,web --value "YourAppName"`
-You can also set the name for linux, but this isn't the launcher name. Update debians `.desktop` file manually.
