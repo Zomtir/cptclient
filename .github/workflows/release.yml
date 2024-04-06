@@ -15,31 +15,31 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            platform: Android
+            platform: android
             build-type: apk
           - os: windows-latest
-            platform: Windows
+            platform: windows
             build-type: windows
           - os: ubuntu-latest
-            platform: Linux
+            platform: linux
             build-type: debian
           - os: ubuntu-latest
-            platform: Web
+            platform: web
             build-type: web
           - os: macos-14
-            platform: macOS
+            platform: macos
             build-type: macos
 #          - os: macos-14
-#            platform: iOS
+#            platform: ios
 #            build-type: ipa
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.4'
+          flutter-version: '3.19.5'
           channel: 'stable'
       - uses: actions/setup-java@v4
-        if: ${{ matrix.platform == 'Android' }}
+        if: matrix.platform == 'android'
         with:
           # AGP8 needs JDK 17
           distribution: 'temurin'
@@ -47,7 +47,7 @@ jobs:
       - run: cp cptclient-template.yaml cptclient.yaml
         shell: bash
       - name: Build
-        uses: oberhauser-dev/flutter-release-action@dev
+        uses: oberhauser-dev/flutter-release-action@v0
         with:
           dry-run: true
           app-name: 'cptclient'
@@ -75,34 +75,28 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            platform: Android
+            platform: android
             publish-distributor: android-google-play
           - os: ubuntu-latest
-            platform: Web
+            platform: web
             publish-distributor: web-server
 
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.4'
+          flutter-version: '3.19.5'
           channel: 'stable'
       - uses: actions/setup-java@v4
-        if: ${{ matrix.platform == 'Android' }}
+        if: matrix.platform == 'android'
         with:
           # AGP8 needs JDK 17
           distribution: 'temurin'
           java-version: '17'
-      - name: Install Linux Dependencies
-        if: ${{ matrix.platform == 'Linux' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libunwind-dev
-          sudo apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
       - run: cp cptclient-template.yaml cptclient.yaml
         shell: bash
       - name: Publish
-        uses: oberhauser-dev/flutter-release-action@dev
+        uses: oberhauser-dev/flutter-release-action@v0
         with:
           dry-run: true
           app-name: 'cptclient'
