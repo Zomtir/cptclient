@@ -48,7 +48,7 @@ jobs:
       - name: Build
         uses: oberhauser-dev/flutter-release-action@v0
         with:
-          dry-run: true
+          dry-run: false
           app-name: 'cptclient'
           app-version: ${{ github.ref_name }}
           tag: ${{ github.ref }}
