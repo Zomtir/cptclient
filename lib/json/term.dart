@@ -2,10 +2,12 @@
 
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/user.dart';
-
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppTermTile.dart';
 import 'package:cptclient/static/format.dart';
+import 'package:flutter/material.dart';
 
-class Term implements Comparable {
+class Term extends FieldInterface implements Comparable {
   final int id;
   User? user;
   Club? club;
@@ -45,5 +47,28 @@ class Term implements Comparable {
   @override
   int compareTo(other) {
     return (begin ?? DateTime(0)).compareTo(other.begin ?? DateTime(0));
+  }
+
+  @override
+  String toFieldString() {
+    return "[$id] ${club!.name}: ${user!.firstname} ${user!.lastname}";
+  }
+
+  @override
+  Widget buildTile() {
+    return AppTermTile(term: this);
+  }
+
+  @override
+  get searchable {
+    return [
+      user?.firstname ?? "",
+      user?.lastname ?? "",
+      user?.nickname ?? "",
+      club?.key ?? "",
+      club?.name ?? "",
+      begin?.year.toString() ?? "",
+      end?.year.toString() ?? "",
+    ];
   }
 }

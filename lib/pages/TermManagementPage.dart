@@ -2,8 +2,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppTermTile.dart';
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/pages/TermEditPage.dart';
 import 'package:cptclient/static/server_term_admin.dart' as server;
 import 'package:flutter/material.dart';
@@ -19,9 +18,7 @@ class TermManagementPage extends StatefulWidget {
 }
 
 class TermManagementPageState extends State<TermManagementPage> {
-  List<Term> _terms = [];
-
-  TermManagementPageState();
+  GlobalKey<SearchablePanelState<Term>> searchPanelKey = GlobalKey();
 
   @override
   void initState() {
@@ -31,12 +28,10 @@ class TermManagementPageState extends State<TermManagementPage> {
 
   Future<void> _update() async {
     List<Term> terms = await server.term_list(widget.session);
-    setState(() {
-      _terms = terms;
-    });
+    searchPanelKey.currentState?.setItems(terms);
   }
 
-  void _selectTerm(Term term) {
+  void _handleSelect(Term term) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -78,17 +73,14 @@ class TermManagementPageState extends State<TermManagementPage> {
             text: AppLocalizations.of(context)!.actionCreate,
             onPressed: _createTerm,
           ),
-          AppListView(
-            items: _terms,
-            itemBuilder: (Term term) {
-              return InkWell(
-                onTap: () => _selectTerm(term),
-                child: AppTermTile(
-                  term: term,
-                ),
-              );
-            },
-          ),
+          SearchablePanel(
+            key: searchPanelKey,
+            builder: (Term term, Function(Term)? onSelect) => InkWell(
+              onTap: () => onSelect?.call(term),
+              child: term.buildTile(),
+            ),
+            onSelect: _handleSelect,
+          )
         ],
       ),
     );
