@@ -13,6 +13,7 @@ import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/server.dart' as server;
@@ -119,6 +120,20 @@ class EventOverviewManagementPageState
 
   void _suspendEvent(Event event) async {
     if (!await api_admin.event_suspend(widget.session, event)) return;
+    _update();
+  }
+
+  Future<void> _handleSelect(Event event) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetailManagementPage(
+          session: widget.session,
+          eventID: event.id,
+        ),
+      ),
+    );
+
     _update();
   }
 
@@ -241,9 +256,12 @@ class EventOverviewManagementPageState
           AppListView(
             items: _events,
             itemBuilder: (Event event) {
-              return AppEventTile(
-                event: event,
-                trailing: _buildTrailing(event),
+              return InkWell(
+                onTap: () => _handleSelect(event),
+                child: AppEventTile(
+                  event: event,
+                  trailing: _buildTrailing(event),
+                ),
               );
             },
           )
@@ -272,10 +290,6 @@ class EventOverviewManagementPageState
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),
         itemBuilder: (context) => [
-          PopupMenuItem<VoidCallback>(
-            value: () => _handleEdit(event),
-            child: Text(AppLocalizations.of(context)!.actionEdit),
-          ),
           PopupMenuItem<VoidCallback>(
             value: () => _handleDuplicate(event),
             child: Text(AppLocalizations.of(context)!.actionDuplicate),

@@ -10,7 +10,14 @@ import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Event>> event_list(Session session, {DateTime? begin, DateTime? end, Status? status, Location? location, bool? courseTrue, int? courseID, int? ownerID}) async {
+Future<List<Event>> event_list(Session session,
+    {DateTime? begin,
+    DateTime? end,
+    Status? status,
+    Location? location,
+    bool? courseTrue,
+    int? courseID,
+    int? ownerID}) async {
   final response = await http.get(
     server.uri('/admin/event_list', {
       'begin': formatWebDateTime(begin),
@@ -78,7 +85,8 @@ Future<bool> event_edit(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_password_edit(Session session, Event event, String password) async {
+Future<bool> event_password_edit(
+    Session session, Event event, String password) async {
   if (password.isEmpty) return true;
 
   final response = await http.post(
@@ -160,7 +168,9 @@ Future<List<User>> event_owner_pool(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  return List<User>.from(json
+      .decode(utf8.decode(response.bodyBytes))
+      .map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_owner_list(Session session, Event event) async {
@@ -176,7 +186,9 @@ Future<List<User>> event_owner_list(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  return List<User>.from(json
+      .decode(utf8.decode(response.bodyBytes))
+      .map((data) => User.fromJson(data)));
 }
 
 Future<bool> event_owner_add(Session session, Event event, User user) async {
@@ -207,6 +219,100 @@ Future<bool> event_owner_remove(Session session, Event event, User user) async {
   return (response.statusCode == 200);
 }
 
+Future<List<User>> event_owner_invite_list(Session session, int eventID) async {
+  final response = await http.get(
+    server.uri('/admin/event_owner_invite_list', {
+      'event_id': eventID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(list.map((model) => User.fromJson(model)));
+}
+
+Future<bool> event_owner_invite_add(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_owner_invite_add', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_owner_invite_remove(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_owner_invite_remove', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_owner_uninvite_list(Session session, int eventID) async {
+  final response = await http.get(
+    server.uri('/admin/event_owner_uninvite_list', {
+      'event_id': eventID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(list.map((model) => User.fromJson(model)));
+}
+
+Future<bool> event_owner_uninvite_add(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_owner_uninvite_add', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_owner_uninvite_remove(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_owner_uninvite_remove', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
 Future<List<User>> event_participant_pool(Session session, Event event) async {
   final response = await http.get(
     server.uri('/admin/event_participant_pool', {
@@ -220,7 +326,9 @@ Future<List<User>> event_participant_pool(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  return List<User>.from(json
+      .decode(utf8.decode(response.bodyBytes))
+      .map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_participant_list(Session session, Event event) async {
@@ -236,10 +344,13 @@ Future<List<User>> event_participant_list(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  return List<User>.from(json
+      .decode(utf8.decode(response.bodyBytes))
+      .map((data) => User.fromJson(data)));
 }
 
-Future<bool> event_participant_add(Session session, Event event, User user) async {
+Future<bool> event_participant_add(
+    Session session, Event event, User user) async {
   final response = await http.head(
     server.uri('/admin/event_participant_add', {
       'event_id': event.id.toString(),
@@ -253,11 +364,106 @@ Future<bool> event_participant_add(Session session, Event event, User user) asyn
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_remove(Session session, Event event, User user) async {
+Future<bool> event_participant_remove(
+    Session session, Event event, User user) async {
   final response = await http.head(
     server.uri('/admin/event_participant_remove', {
       'event_id': event.id.toString(),
       'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_participant_invite_list(Session session, int eventID) async {
+  final response = await http.get(
+    server.uri('/admin/event_participant_invite_list', {
+      'event_id': eventID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(list.map((model) => User.fromJson(model)));
+}
+
+Future<bool> event_participant_invite_add(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_participant_invite_add', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_participant_invite_remove(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_participant_invite_remove', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_participant_uninvite_list(Session session, int eventID) async {
+  final response = await http.get(
+    server.uri('/admin/event_participant_uninvite_list', {
+      'event_id': eventID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(list.map((model) => User.fromJson(model)));
+}
+
+Future<bool> event_participant_uninvite_add(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_participant_uninvite_add', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_participant_uninvite_remove(
+    Session session, int eventID, int userID) async {
+  final response = await http.head(
+    server.uri('/admin/event_participant_uninvite_remove', {
+      'event_id': eventID.toString(),
+      'user_id': userID.toString(),
     }),
     headers: {
       'Token': session.token,

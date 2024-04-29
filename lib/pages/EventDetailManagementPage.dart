@@ -7,23 +7,24 @@ import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
+import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ClassDetailManagementPage extends StatefulWidget {
+class EventDetailManagementPage extends StatefulWidget {
   final Session session;
   final int eventID;
   
-  ClassDetailManagementPage({super.key, required this.session, required this.eventID});
+  EventDetailManagementPage({super.key, required this.session, required this.eventID});
 
   @override
-  ClassDetailManagementPageState createState() => ClassDetailManagementPageState();
+  EventDetailManagementPageState createState() => EventDetailManagementPageState();
 }
 
-class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
+class EventDetailManagementPageState extends State<EventDetailManagementPage> {
   Event? event;
 
-  ClassDetailManagementPageState();
+  EventDetailManagementPageState();
 
   @override
   void initState() {
@@ -80,6 +81,40 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
     );
   }
 
+  Future<void> _handleParticipantInvites() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageEventParticipantInvites,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_admin.event_participant_invite_list(session, event!.id),
+          onCallAdd: (session, user) => api_admin.event_participant_invite_add(session, event!.id, user.id),
+          onCallRemove: (session, user) => api_admin.event_participant_invite_remove(session, event!.id, user.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleParticipantUninvites() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageEventParticipantUninvites,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_admin.event_participant_uninvite_list(session, event!.id),
+          onCallAdd: (session, user) => api_admin.event_participant_uninvite_add(session, event!.id, user.id),
+          onCallRemove: (session, user) => api_admin.event_participant_uninvite_remove(session, event!.id, user.id),
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleOwners() async {
     await Navigator.push(
       context,
@@ -92,6 +127,40 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
           onCallSelected: (session) => api_admin.event_owner_list(session, event!),
           onCallAdd: (session, user) => api_admin.event_owner_add(session, event!, user),
           onCallRemove: (session, user) => api_admin.event_owner_remove(session, event!, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleOwnerInvites() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageEventOwnerInvites,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_admin.event_owner_invite_list(session, event!.id),
+          onCallAdd: (session, user) => api_admin.event_owner_invite_add(session, event!.id, user.id),
+          onCallRemove: (session, user) => api_admin.event_owner_invite_remove(session, event!.id, user.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleOwnerUninvites() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageEventOwnerUninvites,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: (session) => api_regular.user_list(session),
+          onCallSelected: (session) => api_admin.event_owner_uninvite_list(session, event!.id),
+          onCallAdd: (session, user) => api_admin.event_owner_uninvite_add(session, event!.id, user.id),
+          onCallRemove: (session, user) => api_admin.event_owner_uninvite_remove(session, event!.id, user.id),
         ),
       ),
     );
@@ -126,8 +195,24 @@ class ClassDetailManagementPageState extends State<ClassDetailManagementPage> {
             onPressed: _handleParticipants,
           ),
           AppButton(
+            text: AppLocalizations.of(context)!.pageEventParticipantInvites,
+            onPressed: _handleParticipantInvites,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventParticipantUninvites,
+            onPressed: _handleParticipantUninvites,
+          ),
+          AppButton(
             text: AppLocalizations.of(context)!.pageEventOwners,
             onPressed: _handleOwners,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventOwnerInvites,
+            onPressed: _handleOwnerInvites,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventOwnerUninvites,
+            onPressed: _handleOwnerUninvites,
           ),
         ],
       ),

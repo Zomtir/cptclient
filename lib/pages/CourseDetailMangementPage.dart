@@ -102,35 +102,69 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
-  Future<void> _handleParticipantTeams() async {
+  Future<void> _handleParticipantSummons() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<Team>(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageCourseParticipantTeams,
+          title: AppLocalizations.of(context)!.pageCourseParticipantSummons,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_participant_team_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_participant_team_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_participant_team_remove(session, widget.course.id, team.id),
+          onCallSelected: (session) => api_admin.course_participant_summon_list(session, widget.course.id),
+          onCallAdd: (session, team) => api_admin.course_participant_summon_add(session, widget.course.id, team.id),
+          onCallRemove: (session, team) => api_admin.course_participant_summon_remove(session, widget.course.id, team.id),
         ),
       ),
     );
   }
 
-  Future<void> _handleOwnerTeams() async {
+  Future<void> _handleParticipantUnsummons() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<Team>(
           session: widget.session,
-          title: AppLocalizations.of(context)!.pageCourseOwnerTeams,
+          title: AppLocalizations.of(context)!.pageCourseParticipantUnsummons,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_owner_team_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_owner_team_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_owner_team_remove(session, widget.course.id, team.id),
+          onCallSelected: (session) => api_admin.course_participant_unsummon_list(session, widget.course.id),
+          onCallAdd: (session, team) => api_admin.course_participant_unsummon_add(session, widget.course.id, team.id),
+          onCallRemove: (session, team) => api_admin.course_participant_unsummon_remove(session, widget.course.id, team.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleOwnerSummons() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<Team>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageCourseOwnerSummons,
+          tile: AppCourseTile(course: widget.course),
+          onCallAvailable: (session) => api_regular.team_list(session),
+          onCallSelected: (session) => api_admin.course_owner_summon_list(session, widget.course.id),
+          onCallAdd: (session, team) => api_admin.course_owner_summon_add(session, widget.course.id, team.id),
+          onCallRemove: (session, team) => api_admin.course_owner_summon_remove(session, widget.course.id, team.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleOwnerUnsummons() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<Team>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageCourseOwnerUnsummons,
+          tile: AppCourseTile(course: widget.course),
+          onCallAvailable: (session) => api_regular.team_list(session),
+          onCallSelected: (session) => api_admin.course_owner_unsummon_list(session, widget.course.id),
+          onCallAdd: (session, team) => api_admin.course_owner_unsummon_add(session, widget.course.id, team.id),
+          onCallRemove: (session, team) => api_admin.course_owner_unsummon_remove(session, widget.course.id, team.id),
         ),
       ),
     );
@@ -202,12 +236,20 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
             onPressed: _handleClasses,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageCourseParticipantTeams,
-            onPressed: _handleParticipantTeams,
+            text: AppLocalizations.of(context)!.pageCourseParticipantSummons,
+            onPressed: _handleParticipantSummons,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageCourseOwnerTeams,
-            onPressed: _handleOwnerTeams,
+            text: AppLocalizations.of(context)!.pageCourseParticipantUnsummons,
+            onPressed: _handleParticipantUnsummons,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageCourseOwnerSummons,
+            onPressed: _handleOwnerSummons,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageCourseOwnerUnsummons,
+            onPressed: _handleOwnerUnsummons,
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseModerators,

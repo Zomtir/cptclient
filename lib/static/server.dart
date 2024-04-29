@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
@@ -32,22 +31,6 @@ Future<bool> loadStatus() async {
   }
 
   return (response.statusCode == 200);
-}
-
-Future<List<Course>> receiveCourses() async {
-  final response = await http.get(
-    uri('/anon/course_list'),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  List<Course> courses = List<Course>.from(l.map((model) => Course.fromJson(model)));
-
-  return courses;
 }
 
 Future<String?> getUserSalt(String key) async {

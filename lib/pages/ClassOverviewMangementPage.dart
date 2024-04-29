@@ -84,7 +84,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ClassDetailManagementPage(
+        builder: (context) => EventDetailManagementPage(
           session: widget.session,
           eventID: event.id,
         ),

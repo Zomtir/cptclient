@@ -105,11 +105,6 @@ class MemberLandingPage extends StatelessWidget {
               text: AppLocalizations.of(context)!.pageEventManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EventOverviewManagementPage(session: session))),
             ),
-          if (session.right!.location.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageLocationManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LocationOverviewPage(session: session))),
-            ),
           Divider(),
           AppModuleSection(
             image: const AssetImage('assets/icons/icon_rankings.png'),
@@ -163,6 +158,12 @@ class MemberLandingPage extends StatelessWidget {
             AppButton(
               text: AppLocalizations.of(context)!.pageUserManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
+            ),
+          Divider(),
+          if (session.right!.location.write)
+            AppButton(
+              text: AppLocalizations.of(context)!.pageLocationManagement,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LocationOverviewPage(session: session))),
             ),
         ],
       ),

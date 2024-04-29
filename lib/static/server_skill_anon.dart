@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 Future<List<Skill>> skill_list() async {
   final response = await http.get(
-    uri('skill_list'),
+    uri('/anon/skill_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',
     },

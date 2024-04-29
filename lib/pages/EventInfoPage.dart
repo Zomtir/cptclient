@@ -30,7 +30,7 @@ class EventInfoPageState extends State<EventInfoPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ClassDetailManagementPage(
+        builder: (context) => EventDetailManagementPage(
           session: widget.session,
           eventID: widget.event.id,
         ),

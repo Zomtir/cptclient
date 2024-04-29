@@ -40,7 +40,7 @@ class CourseStatisticParticipant1PageState extends State<CourseStatisticParticip
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ClassDetailManagementPage(
+        builder: (context) => EventDetailManagementPage(
           session: widget.session,
           eventID: eventID,
         ),

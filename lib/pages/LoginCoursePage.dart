@@ -5,6 +5,7 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/design/AppButtonLightStyle.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
+import 'package:cptclient/static/server_course_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
@@ -30,7 +31,7 @@ class LoginCoursePageState extends State<LoginCoursePage> {
   }
 
   void _load() async {
-    List<Course> courses = await server.receiveCourses();
+    List<Course> courses = await api_anon.location_list();
     setState(() => _cache = courses);
   }
 
