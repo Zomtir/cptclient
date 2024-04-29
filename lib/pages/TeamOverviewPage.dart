@@ -2,29 +2,24 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/tiles/AppTeamTile.dart';
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/pages/TeamDetailManagementPage.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
 import 'package:cptclient/static/server_team_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TeamOverviewManagementPage extends StatefulWidget {
+class TeamOverviewPage extends StatefulWidget {
   final Session session;
 
-  TeamOverviewManagementPage({super.key, required this.session});
+  TeamOverviewPage({super.key, required this.session});
 
   @override
-  TeamOverviewManagementPageState createState() =>
-      TeamOverviewManagementPageState();
+  TeamOverviewPageState createState() => TeamOverviewPageState();
 }
 
-class TeamOverviewManagementPageState
-    extends State<TeamOverviewManagementPage> {
-  List<Team> _teams = [];
-
-  TeamOverviewManagementPageState();
+class TeamOverviewPageState extends State<TeamOverviewPage> {
+  GlobalKey<SearchablePanelState<Team>> searchPanelKey = GlobalKey();
 
   @override
   void initState() {
@@ -34,11 +29,7 @@ class TeamOverviewManagementPageState
 
   Future<void> _update() async {
     List<Team> teams = await api_admin.team_list(widget.session);
-    teams.sort();
-
-    setState(() {
-      _teams = teams;
-    });
+    searchPanelKey.currentState?.setItems(teams);
   }
 
   Future<void> _handleCreate() async {
@@ -83,15 +74,14 @@ class TeamOverviewManagementPageState
             text: AppLocalizations.of(context)!.actionCreate,
             onPressed: _handleCreate,
           ),
-          AppListView(
-            items: _teams,
-            itemBuilder: (Team team) {
-              return InkWell(
-                onTap: () => _handleSelect(team),
-                child: AppTeamTile(team: team),
-              );
-            },
-          ),
+          SearchablePanel(
+            key: searchPanelKey,
+            builder: (Team team, Function(Team)? onSelect) => InkWell(
+              onTap: () => onSelect?.call(team),
+              child: team.buildTile(),
+            ),
+            onSelect: _handleSelect,
+          )
         ],
       ),
     );

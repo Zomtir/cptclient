@@ -8,16 +8,16 @@ import 'package:cptclient/static/server_term_admin.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TermManagementPage extends StatefulWidget {
+class TermOverviewPage extends StatefulWidget {
   final Session session;
 
-  TermManagementPage({super.key, required this.session});
+  TermOverviewPage({super.key, required this.session});
 
   @override
-  TermManagementPageState createState() => TermManagementPageState();
+  TermOverviewPageState createState() => TermOverviewPageState();
 }
 
-class TermManagementPageState extends State<TermManagementPage> {
+class TermOverviewPageState extends State<TermOverviewPage> {
   GlobalKey<SearchablePanelState<Term>> searchPanelKey = GlobalKey();
 
   @override

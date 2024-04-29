@@ -16,8 +16,8 @@ import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
 import 'package:cptclient/pages/LocationOverviewPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
 import 'package:cptclient/pages/SkillOverviewPage.dart';
-import 'package:cptclient/pages/TeamOverviewManagementPage.dart';
-import 'package:cptclient/pages/TermManagementPage.dart';
+import 'package:cptclient/pages/TeamOverviewPage.dart';
+import 'package:cptclient/pages/TermOverviewPage.dart';
 import 'package:cptclient/pages/UserOverviewPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
@@ -132,7 +132,7 @@ class MemberLandingPage extends StatelessWidget {
           if (session.right!.team.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageTeamManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewManagementPage(session: session))),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewPage(session: session))),
             ),
           Divider(),
           AppModuleSection(
@@ -147,7 +147,7 @@ class MemberLandingPage extends StatelessWidget {
           if (session.right!.club.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageTermManagement,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TermManagementPage(session: session))),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TermOverviewPage(session: session))),
             ),
           Divider(),
           AppModuleSection(
