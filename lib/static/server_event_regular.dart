@@ -65,9 +65,25 @@ Future<bool> event_owner_true(Session session, Event event) async {
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool> class_participant_add(Session session, Event event) async {
+Future<bool?> event_participant_true(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/regular/event_participant_true', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+}
+
+Future<bool> event_participant_add(Session session, Event event) async {
   final response = await http.head(
-    server.uri('/regular/class_participant_add', {
+    server.uri('/regular/event_participant_add', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -78,9 +94,9 @@ Future<bool> class_participant_add(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> class_participant_remove(Session session, Event event) async {
+Future<bool> event_participant_remove(Session session, Event event) async {
   final response = await http.head(
-    server.uri('/regular/class_participant_remove', {
+    server.uri('/regular/event_participant_remove', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -89,4 +105,35 @@ Future<bool> class_participant_remove(Session session, Event event) async {
   );
 
   return (response.statusCode == 200);
+}
+
+Future<bool?> event_bookmark_true(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/regular/event_bookmark_true', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+}
+
+Future<bool> event_bookmark_edit(Session session, Event event, bool bookmark) async {
+  final response = await http.head(
+    server.uri('/regular/event_bookmark_edit', {
+      'event_id': event.id.toString(),
+      'bookmark': bookmark.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode != 200);
 }

@@ -137,24 +137,6 @@ class EventOverviewManagementPageState
     _update();
   }
 
-  void _handleEdit(Event event) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventEditPage(
-          session: widget.session,
-          event: event,
-          isDraft: false,
-          onSubmit: api_admin.event_edit,
-          onPasswordChange: api_admin.event_password_edit,
-          onDelete: api_admin.event_delete,
-        ),
-      ),
-    );
-
-    _update();
-  }
-
   Future<void> _handleDuplicate(Event event) async {
     Event newEvent = Event.fromEvent(event);
     newEvent.status = Status.DRAFT;
