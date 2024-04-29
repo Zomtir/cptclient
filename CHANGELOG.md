@@ -1,3 +1,48 @@
+## Release v0.8 (29th April 2024)
+
+- feat: Adapt app name
+- feat: Club and location administration
+- feat: Rework team permissions
+- feat: Renamed slot to event
+- feat: Calender rework
+  - Calendar month overview now shows slots
+  - Improved API and caching of events
+  - Limited maximum visible events per day to 4 in the month overview
+  - Added a daily calendar overview
+- feat: Event participant and owner invites/uninvites
+- feat: Skill Management Page
+- feat: Improved Competence Page
+- feat: Added TeamDetailManagementPage
+- feat: Bookmarking events
+- feat: Introduced the AppField widget
+- feat: Deprecating course classes and generalizing events
+- feat: Add user nickname filtering
+- feat: Add location description
+- feat: Add club key
+- feat: More searchable panels
+- feat: Extend Term from FieldInterface
+- feat: Polish competence pages
+- feat: Regenerate launch icon
+- feat: Improved diacritic compare
+- feat: Enable all platforms
+- feat: Support Environment variables
+- feat: Copy default cptclient.yaml
+- test: Ignore all unused elements
+- chore: Sanitize Date/DateTime fmt and parse
+- chore: Delete SelectionData
+- chore: Recreate Web and iOS
+- chore: Regenerate Android folder
+- fix: Fixed some UTF8 decoding
+- fix: Fixed tile removal on SelectionPage
+- docs: Adapt README for CI and release versioning
+- docs: Readme restructure
+- ci: Update upload-pages-artifact to v3
+- ci: Build on manual release only
+- ci: Always call test before build
+- ci: Set up GitHub workflows
+- ci: Call test on main push
+- ci: Disable tests for format
+
 ## Release v0.7 (10th March 2024)
 
 - README updates for getting started
