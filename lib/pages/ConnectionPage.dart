@@ -3,6 +3,7 @@ import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
 
 class ConnectionPage extends StatefulWidget {
@@ -44,7 +45,7 @@ class ConnectionPageState extends State<ConnectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text(AppLocalizations.of(context)!.pageSettings),
       ),
       body: AppBody(
         children: [

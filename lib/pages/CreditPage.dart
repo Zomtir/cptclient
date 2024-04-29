@@ -1,6 +1,7 @@
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreditPage extends StatelessWidget {
   final List<(String, String)> authors = [
@@ -11,7 +12,7 @@ class CreditPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Credits"),
+        title: Text(AppLocalizations.of(context)!.pageCredits),
       ),
       body: AppBody(children: <Widget>[
         Text(

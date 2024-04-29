@@ -49,18 +49,6 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             Text("Course Participation Tracker"),
           ],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ConnectionPage())),
-          ),
-          IconButton(
-            icon: Icon(Icons.info, color: Colors.white),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreditPage())),
-          ),
-        ],
       ),
       body: AppBody(children: [
         if (html.window.localStorage['Session']!.isNotEmpty)
@@ -88,6 +76,19 @@ class LoginLandingPageState extends State<LoginLandingPage> {
           text: AppLocalizations.of(context)!.loginLocation,
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => LoginLocationPage())),
+        ),
+        Divider(),
+        AppButton(
+          leading: Icon(Icons.settings, color: Colors.white),
+          text: AppLocalizations.of(context)!.pageSettings,
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ConnectionPage())),
+        ),
+        AppButton(
+          leading: Icon(Icons.info, color: Colors.white),
+          text: AppLocalizations.of(context)!.pageCredits,
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreditPage())),
         ),
       ]),
     );

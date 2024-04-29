@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppDialog.dart';
 import 'package:cptclient/material/NumberSelector.dart';
+import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -151,7 +152,7 @@ class _DatePickerState extends State<DatePicker> {
           Column(
             children: [
               Text(
-                "Year",
+                AppLocalizations.of(context)!.dateYear,
                 style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
               ),
@@ -161,7 +162,7 @@ class _DatePickerState extends State<DatePicker> {
           Column(
             children: [
               Text(
-                "Month",
+                AppLocalizations.of(context)!.dateMonth,
                 style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
               ),
@@ -171,7 +172,7 @@ class _DatePickerState extends State<DatePicker> {
           Column(
             children: [
               Text(
-                "Day",
+                AppLocalizations.of(context)!.dateDay,
                 style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
               ),
@@ -182,7 +183,7 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
 
-    List<String> weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+    List<String> weekdays = getWeekdaysShort(context);
 
     final Widget calendar = Container(
       width: 350,
@@ -203,7 +204,7 @@ class _DatePickerState extends State<DatePicker> {
                   onPressed: () => _handleDayPick(index + 1),
                   child: Text(
                     '${index + 1}',
-                    textScaler: TextScaler.linear(1.6),
+                    textScaler: TextScaler.linear(1.3),
                     style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
                   ),
                 ),
