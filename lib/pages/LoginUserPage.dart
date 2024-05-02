@@ -49,7 +49,7 @@ class LoginUserPageState extends State<LoginUserPage> {
             onEditingComplete: () => node.nextFocus(),
             decoration: InputDecoration(
               labelText: "User Key",
-              hintText: "6 alphanumeric characters",
+              hintText: "Only alphanumeric characters",
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
                 onPressed: () => _ctrlUserLogin.clear(),

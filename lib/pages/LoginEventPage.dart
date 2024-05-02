@@ -49,7 +49,7 @@ class LoginEventPageState extends State<LoginEventPage> {
             onEditingComplete: () => node.nextFocus(),
             decoration: InputDecoration(
               labelText: "Event Key",
-              hintText: "8 alphanumeric characters",
+              hintText: "Only alphanumeric characters",
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
                 onPressed: () => _ctrlLogin.clear(),
