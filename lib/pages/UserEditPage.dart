@@ -165,14 +165,14 @@ class UserEditPageState extends State<UserEditPage> {
               ),
             ],
           ),
-          AppInfoRow(
+          if (!widget.isDraft) AppInfoRow(
             info: Text("Key"),
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserKey,
             ),
           ),
-          AppInfoRow(
+          if (!widget.isDraft) AppInfoRow(
             info: Text("Password"),
             child: TextField(
               obscureText: true,
