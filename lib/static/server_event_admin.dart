@@ -219,6 +219,24 @@ Future<bool> event_owner_remove(Session session, Event event, User user) async {
   return (response.statusCode == 200);
 }
 
+Future<List<User>> event_owner_registration_list(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/admin/event_owner_registration_list', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json
+      .decode(utf8.decode(response.bodyBytes))
+      .map((data) => User.fromJson(data)));
+}
+
 Future<List<User>> event_owner_invite_list(Session session, int eventID) async {
   final response = await http.get(
     server.uri('/admin/event_owner_invite_list', {
@@ -377,6 +395,24 @@ Future<bool> event_participant_remove(
   );
 
   return (response.statusCode == 200);
+}
+
+Future<List<User>> event_participant_registration_list(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/admin/event_participant_registration_list', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json
+      .decode(utf8.decode(response.bodyBytes))
+      .map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_participant_invite_list(Session session, int eventID) async {

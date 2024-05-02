@@ -3,6 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
@@ -81,6 +82,20 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
     );
   }
 
+  Future<void> _handleParticipantRegistrations() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListPage<User>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
+          tile: AppEventTile(event: event!),
+          onCallList: (session) => api_admin.event_participant_registration_list(session, event!),
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleParticipantInvites() async {
     await Navigator.push(
       context,
@@ -127,6 +142,20 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           onCallSelected: (session) => api_admin.event_owner_list(session, event!),
           onCallAdd: (session, user) => api_admin.event_owner_add(session, event!, user),
           onCallRemove: (session, user) => api_admin.event_owner_remove(session, event!, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleOwnerRegistrations() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListPage<User>(
+          session: widget.session,
+          title: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
+          tile: AppEventTile(event: event!),
+          onCallList: (session) => api_admin.event_owner_registration_list(session, event!),
         ),
       ),
     );
@@ -195,6 +224,10 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
             onPressed: _handleParticipants,
           ),
           AppButton(
+            text: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
+            onPressed: _handleParticipantRegistrations,
+          ),
+          AppButton(
             text: AppLocalizations.of(context)!.pageEventParticipantInvites,
             onPressed: _handleParticipantInvites,
           ),
@@ -205,6 +238,10 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwners,
             onPressed: _handleOwners,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
+            onPressed: _handleOwnerRegistrations,
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwnerInvites,

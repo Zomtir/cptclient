@@ -49,7 +49,7 @@ Future<bool> event_create(Session session, Event event) async {
   return success;
 }
 
-Future<bool> event_owner_true(Session session, Event event) async {
+Future<bool?> event_owner_true(Session session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_owner_true', {
       'event_id': event.id.toString(),
@@ -60,9 +60,40 @@ Future<bool> event_owner_true(Session session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return false;
+  if (response.statusCode != 200) return null;
 
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
+}
+
+Future<bool?> event_owner_registration_true(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/regular/event_owner_registration_true', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+}
+
+Future<bool> event_owner_registration_edit(Session session, Event event, bool registration) async {
+  final response = await http.head(
+    server.uri('/regular/event_owner_registration_edit', {
+      'event_id': event.id.toString(),
+      'registration': registration.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode != 200);
 }
 
 Future<bool?> event_participant_true(Session session, Event event) async {
@@ -105,6 +136,37 @@ Future<bool> event_participant_remove(Session session, Event event) async {
   );
 
   return (response.statusCode == 200);
+}
+
+Future<bool?> event_participant_registration_true(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/regular/event_participant_registration_true', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+}
+
+Future<bool> event_participant_registration_edit(Session session, Event event, bool registration) async {
+  final response = await http.head(
+    server.uri('/regular/event_participant_registration_edit', {
+      'event_id': event.id.toString(),
+      'registration': registration.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode != 200);
 }
 
 Future<bool?> event_bookmark_true(Session session, Event event) async {

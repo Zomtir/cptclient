@@ -26,27 +26,53 @@ class EventInfoPage extends StatefulWidget {
 class EventInfoPageState extends State<EventInfoPage> {
   bool _bookmarked = false;
 
-  //bool _registered = false;
-  bool _participated = false;
+  bool _registeredParticipant = false;
+  bool _actualParticipant = false;
+  bool _registeredOwner = false;
+  bool _actualOwner = false;
 
   EventInfoPageState();
 
   @override
   void initState() {
     super.initState();
-    _update();
+    _updateBookmark();
+    _updateParticipant();
+    _updateOwner();
   }
 
-  Future<void> _update() async {
+  Future<void> _updateBookmark() async {
     bool? bookmarked = await api_regular.event_bookmark_true(widget.session, widget.event);
     if (bookmarked == null) return;
 
-    bool? participated = await api_regular.event_participant_true(widget.session, widget.event);
-    if (participated == null) return;
-
     setState(() {
       _bookmarked = bookmarked;
-      _participated = participated;
+    });
+  }
+
+  Future<void> _updateParticipant() async {
+    bool? actualParticipant = await api_regular.event_participant_true(widget.session, widget.event);
+    if (actualParticipant == null) return;
+
+    bool? registeredParticipant = await api_regular.event_participant_registration_true(widget.session, widget.event);
+    if (registeredParticipant == null) return;
+
+    setState(() {
+      _actualParticipant = actualParticipant;
+      _registeredParticipant = registeredParticipant;
+    });
+  }
+
+  Future<void> _updateOwner() async {
+    bool? actualOwner = await api_regular.event_owner_true(widget.session, widget.event);
+    if (actualOwner == null) return;
+
+    bool? registeredOwner = await api_regular.event_owner_registration_true(widget.session, widget.event);
+    if (registeredOwner == null) return;
+
+    setState(() {
+      _actualOwner = actualOwner;
+      _registeredOwner = registeredOwner;
     });
   }
 
@@ -64,13 +90,17 @@ class EventInfoPageState extends State<EventInfoPage> {
 
   void _handleBookmarkChange(bool bookmark) async {
     await api_regular.event_bookmark_edit(widget.session, widget.event, bookmark);
-    _update();
+    _updateBookmark();
+  }
+  
+  void _handleParticipationRegistrationChange(bool registration) async {
+    await api_regular.event_participant_registration_edit(widget.session, widget.event, registration);
+    _updateParticipant();
   }
 
-  // ignore: unused_element
-  void _handleRegistrationChange(bool registration) async {
-    //await api_regular.event_participant_add(widget.session, widget.event);
-    //await api_regular.event_participant_remove(widget.session, widget.event);
+  void _handleOwnerRegistrationChange(bool registration) async {
+    await api_regular.event_owner_registration_edit(widget.session, widget.event, registration);
+    _updateOwner();
   }
 
   void _handleParticipationChange(bool participated) async {
@@ -79,7 +109,7 @@ class EventInfoPageState extends State<EventInfoPage> {
     } else {
       await api_regular.event_participant_remove(widget.session, widget.event);
     }
-    _update();
+    _updateParticipant();
   }
 
   @override
@@ -137,18 +167,32 @@ class EventInfoPageState extends State<EventInfoPage> {
               onPressed: () => _handleBookmarkChange(!_bookmarked),
             ),
           ),
-          /*AppInfoRow(
-            info: Text("Registered"),
+          AppInfoRow(
+            info: Text("Register as Participant"),
             child: IconButton(
-              icon: _registered ? Icon(Icons.person_remove) : Icon(Icons.person_add_outlined),
-              onPressed: () => _handleBookmarkChange(!_bookmarked),
+              icon: _registeredParticipant ? Icon(Icons.person_remove) : Icon(Icons.person_add_outlined),
+              onPressed: () => _handleParticipationRegistrationChange(!_registeredParticipant),
             ),
-          ),*/
+          ),
           AppInfoRow(
             info: Text("Participation"),
             child: IconButton(
-              icon: _participated ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleParticipationChange(!_participated),
+              icon: _actualParticipant ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
+              onPressed: () => _handleParticipationChange(!_actualParticipant),
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Register as Owner"),
+            child: IconButton(
+              icon: _registeredOwner ? Icon(Icons.remove_moderator) : Icon(Icons.add_moderator_outlined),
+              onPressed: () => _handleOwnerRegistrationChange(!_registeredOwner),
+            ),
+          ),
+          AppInfoRow(
+            info: Text("Ownership"),
+            child: IconButton(
+              icon: _actualOwner ? Icon(Icons.house) : Icon(Icons.house_outlined),
+              onPressed: null,
             ),
           ),
         ],
