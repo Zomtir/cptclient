@@ -17,6 +17,20 @@ Should mostly work out of the box, if a cptserver is running.
 flutter build web
 ```
 
+### Initial admin user
+
+As long as there is a temporary super-user ('admin' by default) configured in the server configuration file (cptserver.toml), you can login as this user
+with any password (the mask require >=1 password length) with full permissions.
+
+After login, you should perform those steps:
+- Change your first name and last name placeholders in the user administration.
+- Change your password in the user administration. This will also generate new salt/pepper hashes.
+- Create a new team in the team administration (e.g. "Admin" team).
+- Give the admin team all permissions.
+- Add yourself to the admin team.
+- Remove the super-user from the server configuration file.
+- Restart the server.
+
 ### Localization
 
 Current supported locales are EN and DE in `main.dart`.
