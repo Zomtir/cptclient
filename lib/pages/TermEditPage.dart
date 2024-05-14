@@ -19,14 +19,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class TermEditPage extends StatefulWidget {
   final Session session;
   final Term term;
-  final void Function() onUpdate;
   final bool isDraft;
 
   TermEditPage(
       {super.key,
       required this.session,
       required this.term,
-      required this.onUpdate,
       required this.isDraft});
 
   @override
@@ -94,7 +92,6 @@ class TermEditPageState extends State<TermEditPage> {
       return;
     }
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -105,7 +102,6 @@ class TermEditPageState extends State<TermEditPage> {
       return;
     }
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 

@@ -3,6 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/pages/ClubDetailPage.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:cptclient/static/server_club_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
@@ -35,14 +36,14 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ClubEditPage(
+        builder: (context) => ClubDetailPage(
           session: widget.session,
           club: club,
-          onUpdate: _update,
-          isDraft: false,
         ),
       ),
     );
+
+    _update();
   }
 
   void _handleCreate() async {
@@ -52,11 +53,12 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
         builder: (context) => ClubEditPage(
           session: widget.session,
           club: Club.fromVoid(),
-          onUpdate: _update,
           isDraft: true,
         ),
       ),
     );
+
+    _update();
   }
 
   @override

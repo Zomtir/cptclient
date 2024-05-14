@@ -224,10 +224,6 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
             onPressed: _handleParticipants,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
-            onPressed: _handleParticipantRegistrations,
-          ),
-          AppButton(
             text: AppLocalizations.of(context)!.pageEventParticipantInvites,
             onPressed: _handleParticipantInvites,
           ),
@@ -236,12 +232,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
             onPressed: _handleParticipantUninvites,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwners,
-            onPressed: _handleOwners,
+            text: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
+            onPressed: _handleParticipantRegistrations,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
-            onPressed: _handleOwnerRegistrations,
+            text: AppLocalizations.of(context)!.pageEventOwners,
+            onPressed: _handleOwners,
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwnerInvites,
@@ -250,6 +246,10 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwnerUninvites,
             onPressed: _handleOwnerUninvites,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
+            onPressed: _handleOwnerRegistrations,
           ),
         ],
       ),

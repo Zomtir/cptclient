@@ -36,12 +36,12 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
             child: Text(controller.value?.toFieldString() ??
                 AppLocalizations.of(context)!.undefined)),
         IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: _handleClear,
-        ),
-        IconButton(
           icon: Icon(Icons.search),
           onPressed: () => _handleSearch(context),
+        ),
+        IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: _handleClear,
         ),
       ],
     );

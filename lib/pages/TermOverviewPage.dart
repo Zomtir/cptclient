@@ -31,18 +31,19 @@ class TermOverviewPageState extends State<TermOverviewPage> {
     searchPanelKey.currentState?.setItems(terms);
   }
 
-  void _handleSelect(Term term) {
-    Navigator.push(
+  void _handleSelect(Term term) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TermEditPage(
           session: widget.session,
           term: term,
-          onUpdate: _update,
           isDraft: false,
         ),
       ),
     );
+
+    _update();
   }
 
   void _createTerm() async {
@@ -52,11 +53,12 @@ class TermOverviewPageState extends State<TermOverviewPage> {
         builder: (context) => TermEditPage(
           session: widget.session,
           term: Term.fromVoid(),
-          onUpdate: _update,
           isDraft: true,
         ),
       ),
     );
+
+    _update();
   }
 
   @override

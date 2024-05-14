@@ -119,7 +119,11 @@ class MemberLandingPage extends StatelessWidget {
               text: AppLocalizations.of(context)!.pageCompetenceManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CompetenceOverviewPage(session: session))),
             ),
-          if (session.right!.competence.write)
+          AppModuleSection(
+            image: const AssetImage('assets/icons/icon_skill.png'),
+            text: AppLocalizations.of(context)!.labelSkill,
+          ),
+          if (session.right!.competence.read)
             AppButton(
               text: AppLocalizations.of(context)!.pageSkillManagement,
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SkillOverviewPage(session: session))),
@@ -160,6 +164,10 @@ class MemberLandingPage extends StatelessWidget {
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
             ),
           Divider(),
+          AppModuleSection(
+            image: const AssetImage('assets/icons/icon_location.png'),
+            text: AppLocalizations.of(context)!.labelLocation,
+          ),
           if (session.right!.location.write)
             AppButton(
               text: AppLocalizations.of(context)!.pageLocationManagement,

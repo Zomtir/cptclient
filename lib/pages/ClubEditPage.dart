@@ -11,14 +11,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ClubEditPage extends StatefulWidget {
   final Session session;
   final Club club;
-  final void Function() onUpdate;
   final bool isDraft;
 
   ClubEditPage(
       {super.key,
       required this.session,
       required this.club,
-      required this.onUpdate,
       required this.isDraft});
 
   @override
@@ -73,14 +71,6 @@ class ClubEditPageState extends State<ClubEditPage> {
 
     if (!success) return;
 
-    widget.onUpdate();
-    Navigator.pop(context);
-  }
-
-  void _deleteUser() async {
-    if (!await api_admin.club_delete(widget.session, widget.club)) return;
-
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -93,17 +83,7 @@ class ClubEditPageState extends State<ClubEditPage> {
       body: AppBody(
         children: [
           if (!widget.isDraft)
-            Row(
-              children: [
-                Expanded(
-                  child: AppClubTile(club: widget.club),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _deleteUser,
-                ),
-              ],
-            ),
+            AppClubTile(club: widget.club),
           AppInfoRow(
             info: Text(AppLocalizations.of(context)!.clubKey),
             child: TextField(
