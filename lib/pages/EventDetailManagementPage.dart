@@ -235,6 +235,7 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
             text: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
             onPressed: _handleParticipantRegistrations,
           ),
+          Divider(),
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwners,
             onPressed: _handleOwners,

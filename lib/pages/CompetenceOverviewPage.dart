@@ -54,13 +54,13 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
     setState(() => _competences = competences);
   }
 
-  Future<void> _handleSelect(Competence ranking, bool isDraft) async {
+  Future<void> _handleSelect(Competence competence, bool isDraft) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CompetenceEditPage(
           session: widget.session,
-          ranking: ranking,
+          competence: competence,
           isDraft: isDraft,
         ),
       ),
@@ -115,8 +115,8 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
           ),
           AppButton(
             leading: Icon(Icons.add),
-            text: "New ranking",
-            onPressed: () => _handleSelect(Competence.create(), true),
+            text: AppLocalizations.of(context)!.actionCreate,
+            onPressed: () => _handleSelect(Competence.fromVoid(), true),
           ),
           AppListView<Competence>(
             items: _competences,

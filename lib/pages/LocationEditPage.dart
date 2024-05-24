@@ -15,11 +15,7 @@ class LocationEditPage extends StatefulWidget {
   final bool isDraft;
 
   LocationEditPage(
-      {super.key,
-      required this.session,
-      required this.location,
-      required this.onUpdate,
-      required this.isDraft});
+      {super.key, required this.session, required this.location, required this.onUpdate, required this.isDraft});
 
   @override
   LocationEditPageState createState() => LocationEditPageState();
@@ -55,15 +51,13 @@ class LocationEditPageState extends State<LocationEditPage> {
 
     if (widget.location.key.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.isInvalid}")));
+          content: Text("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
     if (widget.location.name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.isInvalid}")));
+          content: Text("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
@@ -93,11 +87,9 @@ class LocationEditPageState extends State<LocationEditPage> {
       body: AppBody(
         children: [
           if (!widget.isDraft)
-            Row(
-              children: [
-                Expanded(
-                  child: AppLocationTile(location: widget.location),
-                ),
+            AppLocationTile(
+              location: widget.location,
+              trailing: [
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: _deleteUser,

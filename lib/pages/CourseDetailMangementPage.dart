@@ -11,6 +11,7 @@ import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/CourseStatisticClassPage.dart';
 import 'package:cptclient/pages/CourseStatisticOwnerPage.dart';
 import 'package:cptclient/pages/CourseStatisticParticipantPage.dart';
+import 'package:cptclient/pages/RequirementOverviewPage.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_team_regular.dart' as api_regular;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
@@ -98,6 +99,15 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           onCallAdd: (session, user) => api_admin.course_moderator_add(session, widget.course.id, user.id),
           onCallRemove: (session, user) => api_admin.course_moderator_remove(session, widget.course.id, user.id),
         ),
+      ),
+    );
+  }
+
+  Future<void> _handleRequirements() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RequirementOverviewPage(session: widget.session, course: widget.course),
       ),
     );
   }
@@ -236,6 +246,15 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
             onPressed: _handleClasses,
           ),
           AppButton(
+            text: AppLocalizations.of(context)!.pageCourseRequirements,
+            onPressed: _handleRequirements,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageCourseModerators,
+            onPressed: _handleModerators,
+          ),
+          Divider(),
+          AppButton(
             text: AppLocalizations.of(context)!.pageCourseParticipantSummons,
             onPressed: _handleParticipantSummons,
           ),
@@ -251,14 +270,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
             text: AppLocalizations.of(context)!.pageCourseOwnerUnsummons,
             onPressed: _handleOwnerUnsummons,
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseModerators,
-            onPressed: _handleModerators,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseRequirements,
-            onPressed: null,
-          ),
+          Divider(),
           AppButton(
             text: AppLocalizations.of(context)!.pageCourseStatisticClasses,
             onPressed: _handleStatisticClass,

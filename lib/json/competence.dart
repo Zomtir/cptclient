@@ -14,7 +14,7 @@ class Competence {
 
   Competence(this.id, this.user, this.skill, this.rank, this.date, this.judge);
 
-  Competence.create()
+  Competence.fromVoid()
     : id = 0,
       user = null,
       skill = null,

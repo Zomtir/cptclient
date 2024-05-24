@@ -18,10 +18,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetenceEditPage extends StatefulWidget {
   final Session session;
-  final Competence ranking;
+  final Competence competence;
   final bool isDraft;
 
-  CompetenceEditPage({super.key, required this.session, required this.ranking, required this.isDraft});
+  CompetenceEditPage({super.key, required this.session, required this.competence, required this.isDraft});
 
   @override
   State<StatefulWidget> createState() => CompetenceEditPageState();
@@ -50,25 +50,25 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
   }
 
   void _applyRanking() {
-    _ctrlUser.value = widget.ranking.user;
-    _ctrlSkill.value = widget.ranking.skill;
-    _ctrlRank = widget.ranking.rank;
-    _ctrlJudge.value = widget.ranking.judge;
-    _ctrlDate.setDate(widget.ranking.date);
+    _ctrlUser.value = widget.competence.user;
+    _ctrlSkill.value = widget.competence.skill;
+    _ctrlRank = widget.competence.rank;
+    _ctrlJudge.value = widget.competence.judge;
+    _ctrlDate.setDate(widget.competence.date);
   }
 
   void _gatherRanking() {
-    widget.ranking.user = _ctrlUser.value;
-    widget.ranking.skill = _ctrlSkill.value;
-    widget.ranking.rank = _ctrlRank;
-    widget.ranking.judge = _ctrlJudge.value;
-    widget.ranking.date = _ctrlDate.getDate();
+    widget.competence.user = _ctrlUser.value;
+    widget.competence.skill = _ctrlSkill.value;
+    widget.competence.rank = _ctrlRank;
+    widget.competence.judge = _ctrlJudge.value;
+    widget.competence.date = _ctrlDate.getDate();
   }
 
   void _submitRanking() async {
     _gatherRanking();
 
-    final success = widget.isDraft ? await api_admin.competence_create(widget.session, widget.ranking) : await api_admin.competence_edit(widget.session, widget.ranking);
+    final success = widget.isDraft ? await api_admin.competence_create(widget.session, widget.competence) : await api_admin.competence_edit(widget.session, widget.competence);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save ranking')));
@@ -80,7 +80,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
   }
 
   void _deleteRanking() async {
-    final success = await api_admin.competence_delete(widget.session, widget.ranking);
+    final success = await api_admin.competence_delete(widget.session, widget.competence);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete ranking')));
@@ -97,7 +97,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
       MaterialPageRoute(
         builder: (context) => CompetenceEditPage(
           session: widget.session,
-          ranking: Competence.fromCompetence(widget.ranking),
+          competence: Competence.fromCompetence(widget.competence),
           isDraft: true,
         ),
       ),
@@ -114,24 +114,24 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
       ),
       body: AppBody(
         children: [
-          if (widget.ranking.id != 0)
+          if (!widget.isDraft)
             Row(
               children: [
                 Expanded(
                   child: AppCompetenceTile(
-                    competence: widget.ranking,
+                    competence: widget.competence,
+                    trailing: [
+                      IconButton(
+                        icon: const Icon(Icons.copy),
+                        onPressed: _duplicateRanking,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: _deleteRanking,
+                      ),
+                    ],
                   ),
                 ),
-                if (widget.session.right!.competence.write)
-                  IconButton(
-                    icon: const Icon(Icons.copy),
-                    onPressed: _duplicateRanking,
-                  ),
-                if (widget.session.right!.competence.write)
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: _deleteRanking,
-                  ),
               ],
             ),
           AppInfoRow(

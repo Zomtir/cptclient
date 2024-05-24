@@ -1,6 +1,9 @@
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter/material.dart';
 
-class Course implements Comparable {
+class Course extends FieldInterface implements Comparable {
   final int id;
   String key;
   String title;
@@ -50,5 +53,18 @@ class Course implements Comparable {
   @override
   int compareTo(other) {
     return removeDiacritics(title).compareTo(removeDiacritics(other.title));
+  }
+
+  @override
+  Widget buildTile() {
+    return AppCourseTile(course: this);
+  }
+
+  @override
+  get searchable => [title];
+
+  @override
+  String toFieldString() {
+    return "$title";
   }
 }
