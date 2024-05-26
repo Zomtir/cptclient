@@ -32,31 +32,33 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
   }
 
   void _handleSelect(Location location) async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LocationEditPage(
           session: widget.session,
           location: location,
-          onUpdate: _update,
           isDraft: false,
         ),
       ),
     );
+
+    _update();
   }
 
   void _handleCreate() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LocationEditPage(
           session: widget.session,
           location: Location.fromVoid(),
-          onUpdate: _update,
           isDraft: true,
         ),
       ),
     );
+
+    _update();
   }
 
   @override

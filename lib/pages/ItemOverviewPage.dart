@@ -1,24 +1,24 @@
+import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/pages/UserEditPage.dart';
-import 'package:cptclient/static/server_user_admin.dart' as api_admin;
+import 'package:cptclient/pages/ItemEditPage.dart';
+import 'package:cptclient/static/server_item_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class UserOverviewPage extends StatefulWidget {
+class ItemOverviewPage extends StatefulWidget {
   final Session session;
 
-  UserOverviewPage({super.key, required this.session});
+  ItemOverviewPage({super.key, required this.session});
 
   @override
-  UserOverviewPageState createState() => UserOverviewPageState();
+  ItemOverviewPageState createState() => ItemOverviewPageState();
 }
 
-class UserOverviewPageState extends State<UserOverviewPage> {
-  GlobalKey<SearchablePanelState<User>> searchPanelKey = GlobalKey();
+class ItemOverviewPageState extends State<ItemOverviewPage> {
+  GlobalKey<SearchablePanelState<Item>> searchPanelKey = GlobalKey();
 
   @override
   void initState() {
@@ -27,21 +27,17 @@ class UserOverviewPageState extends State<UserOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<User> users = await api_admin.user_list(widget.session);
-    searchPanelKey.currentState?.setItems(users);
+    List<Item> items = await api_admin.item_list(widget.session);
+    searchPanelKey.currentState?.setItems(items);
   }
 
-  void _handleSelect(User user) async {
-    User? userdetailed = await api_admin.user_detailed(widget.session, user);
-
-    if (userdetailed == null) return;
-
+  void _handleSelect(Item item) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserEditPage(
+        builder: (context) => ItemEditPage(
           session: widget.session,
-          user: userdetailed,
+          item: item,
           isDraft: false,
         ),
       ),
@@ -54,9 +50,9 @@ class UserOverviewPageState extends State<UserOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserEditPage(
+        builder: (context) => ItemEditPage(
           session: widget.session,
-          user: User.fromVoid(),
+          item: Item.fromVoid(),
           isDraft: true,
         ),
       ),
@@ -69,7 +65,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageUserManagement),
+        title: Text(AppLocalizations.of(context)!.pageItemOverview),
       ),
       body: AppBody(
         children: <Widget>[
@@ -78,11 +74,11 @@ class UserOverviewPageState extends State<UserOverviewPage> {
             text: AppLocalizations.of(context)!.actionCreate,
             onPressed: _handleCreate,
           ),
-          SearchablePanel(
+          SearchablePanel<Item>(
             key: searchPanelKey,
-            builder: (User user, Function(User)? onSelect) => InkWell(
-              onTap: () => onSelect?.call(user),
-              child: user.buildTile(),
+            builder: (Item item, Function(Item)? onSelect) => InkWell(
+              onTap: () => onSelect?.call(item),
+              child: item.buildTile(),
             ),
             onSelect: _handleSelect,
           )

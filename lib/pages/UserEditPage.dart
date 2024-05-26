@@ -14,10 +14,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class UserEditPage extends StatefulWidget {
   final Session session;
   final User user;
-  final void Function() onUpdate;
   final bool isDraft;
 
-  UserEditPage({super.key, required this.session, required this.user, required this.onUpdate, required this.isDraft});
+  UserEditPage({super.key, required this.session, required this.user, required this.isDraft});
 
   @override
   UserEditPageState createState() => UserEditPageState();
@@ -130,7 +129,6 @@ class UserEditPageState extends State<UserEditPage> {
 
     _ctrlUserPassword.text = '';
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
@@ -140,7 +138,6 @@ class UserEditPageState extends State<UserEditPage> {
       return;
     }
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 

@@ -32,31 +32,33 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
   }
 
   void _handleSelect(Skill skill) async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SkillEditPage(
           session: widget.session,
           skill: skill,
-          onUpdate: _update,
           isDraft: false,
         ),
       ),
     );
+
+    _update();
   }
 
   void _handleCreate() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SkillEditPage(
           session: widget.session,
           skill: Skill.fromVoid(),
-          onUpdate: _update,
           isDraft: true,
         ),
       ),
     );
+
+    _update();
   }
 
   @override

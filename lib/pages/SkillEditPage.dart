@@ -11,14 +11,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SkillEditPage extends StatefulWidget {
   final Session session;
   final Skill skill;
-  final void Function() onUpdate;
   final bool isDraft;
 
   SkillEditPage(
       {super.key,
       required this.session,
       required this.skill,
-      required this.onUpdate,
       required this.isDraft});
 
   @override
@@ -75,14 +73,12 @@ class SkillEditPageState extends State<SkillEditPage> {
 
     if (!success) return;
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _deleteUser() async {
     if (!await api_admin.skill_delete(widget.session, widget.skill)) return;
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 

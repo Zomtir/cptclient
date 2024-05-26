@@ -1,14 +1,14 @@
-import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/material/RoundBox.dart';
 import 'package:flutter/material.dart';
 
-class AppLocationTile extends StatelessWidget {
-  final Location location;
+class AppItemcatTile extends StatelessWidget {
+  final ItemCategory category;
   final List<Widget> trailing;
 
-  const AppLocationTile({
+  const AppItemcatTile({
     super.key,
-    required this.location,
+    required this.category,
     this.trailing = const [],
   });
 
@@ -20,7 +20,7 @@ class AppLocationTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Tooltip(
-              message: "[${location.id}] ${location.key}",
+              message: "[${category.id}]",
               child: Icon(Icons.info),
             ),
           ),
@@ -28,8 +28,7 @@ class AppLocationTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${location.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${location.description}", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${category.name}", style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
           ),

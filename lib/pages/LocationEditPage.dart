@@ -11,11 +11,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class LocationEditPage extends StatefulWidget {
   final Session session;
   final Location location;
-  final void Function() onUpdate;
   final bool isDraft;
 
   LocationEditPage(
-      {super.key, required this.session, required this.location, required this.onUpdate, required this.isDraft});
+      {super.key, required this.session, required this.location, required this.isDraft});
 
   @override
   LocationEditPageState createState() => LocationEditPageState();
@@ -67,14 +66,12 @@ class LocationEditPageState extends State<LocationEditPage> {
 
     if (!success) return;
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
   void _deleteUser() async {
     if (!await api_admin.location_delete(widget.session, widget.location)) return;
 
-    widget.onUpdate();
     Navigator.pop(context);
   }
 
