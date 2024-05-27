@@ -1,5 +1,18 @@
 ## Release v0.8 (29th April 2024)
 
+- feat: Inventory management
+- feat: Course skill requirements
+- feat: Club statistics
+- feat: Event participant and owner registrations
+- fix: Better login hints
+- fix: Default user key and pw is random
+- chore: Flutter package updates
+- docs: Initial super user
+- ci: Option to publish to iOS App Store
+- ci: Enable upload to GitHub release
+
+## Release v0.8 (29th April 2024)
+
 - feat: Adapt app name
 - feat: Club and location administration
 - feat: Rework team permissions
