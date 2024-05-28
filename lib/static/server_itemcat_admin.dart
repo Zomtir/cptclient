@@ -36,7 +36,9 @@ Future<bool> itemcat_create(Session session, ItemCategory category) async {
 
 Future<bool> itemcat_edit(Session session, ItemCategory category) async {
   final response = await http.post(
-    server.uri('/admin/itemcat_edit'),
+    server.uri('/admin/itemcat_edit', {
+      'category_id': category.id.toString(),
+    }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
