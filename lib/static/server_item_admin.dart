@@ -39,7 +39,9 @@ Future<bool> item_create(Session session, Item item) async {
 
 Future<bool> item_edit(Session session, Item item) async {
   final response = await http.post(
-    server.uri('/admin/item_edit'),
+    server.uri('/admin/item_edit', {
+      'item_id': item.id.toString(),
+    }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
