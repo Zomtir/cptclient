@@ -5,6 +5,7 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server_inventory_admin.dart' as api_admin;
 import 'package:cptclient/static/server_item_admin.dart' as api_admin;
@@ -90,61 +91,69 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
         title: Text(AppLocalizations.of(context)!.pagePossessionUser),
       ),
       body: AppBody(
+        maxWidth: 1000,
         children: <Widget>[
           AppButton(
             text: AppLocalizations.of(context)!.possessionUser,
             onPressed: _prepare,
             leading: Icon(Icons.refresh),
           ),
+          if (_user != null) AppUserTile(user: _user!),
           Divider(),
-          DataTable(
-            columns: [
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionClub)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
-            ],
-            rows: List<DataRow>.generate(_possessions.length, (index) {
-              return DataRow(
-                cells: <DataCell>[
-                  DataCell(Text("${_possessions[index].item.toFieldString()}")),
-                  DataCell(Text(_possessions[index].club != null
-                      ? "${_possessions[index].club!.toFieldString()}"
-                      : AppLocalizations.of(context)!.undefined)),
-                  DataCell(Text(_possessions[index].transferDate != null
-                      ? "${formatNaiveDate(_possessions[index].transferDate)}"
-                      : AppLocalizations.of(context)!.undefined)),
-                  DataCell(
-                    Tooltip(
-                      message: "${_possessions[index].owned}",
-                      child: _possessions[index].owned ? Icon(Icons.catching_pokemon) : Icon(Icons.front_hand),
-                    ),
-                  ),
-                  DataCell(
-                    Row(
-                      children: [
-                        if (!_possessions[index].owned)
-                          IconButton(
-                            icon: Icon(Icons.arrow_back),
-                            onPressed: () => _handleHandout(_possessions[index]),
-                          ),
-                        if (_possessions[index].owned && _possessions[index].club != null)
-                          IconButton(
-                            icon: Icon(Icons.arrow_forward),
-                            onPressed: () => _handleHandback(_possessions[index]),
-                          ),
-                        if (_possessions[index].owned)
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () => _handleDelete(_possessions[index]),
-                          ),
-                      ],
-                    ),
-                  ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: 1000,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionClub)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
                 ],
-              );
-            }),
+                rows: List<DataRow>.generate(_possessions.length, (index) {
+                  return DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text("${_possessions[index].item.toFieldString()}")),
+                      DataCell(Text(_possessions[index].club != null
+                          ? "${_possessions[index].club!.toFieldString()}"
+                          : AppLocalizations.of(context)!.undefined)),
+                      DataCell(Text(_possessions[index].transferDate != null
+                          ? "${formatNaiveDate(_possessions[index].transferDate)}"
+                          : AppLocalizations.of(context)!.undefined)),
+                      DataCell(
+                        Tooltip(
+                          message: "${_possessions[index].owned}",
+                          child: _possessions[index].owned ? Icon(Icons.catching_pokemon) : Icon(Icons.front_hand),
+                        ),
+                      ),
+                      DataCell(
+                        Row(
+                          children: [
+                            if (!_possessions[index].owned)
+                              IconButton(
+                                icon: Icon(Icons.arrow_back),
+                                onPressed: () => _handleHandout(_possessions[index]),
+                              ),
+                            if (_possessions[index].owned && _possessions[index].club != null)
+                              IconButton(
+                                icon: Icon(Icons.arrow_forward),
+                                onPressed: () => _handleHandback(_possessions[index]),
+                              ),
+                            if (_possessions[index].owned)
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () => _handleDelete(_possessions[index]),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionCreate,

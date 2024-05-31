@@ -72,6 +72,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
         title: Text(AppLocalizations.of(context)!.pagePossessionClub),
       ),
       body: AppBody(
+        maxWidth: 1000,
         children: <Widget>[
           AppButton(
             text: AppLocalizations.of(context)!.possessionClub,
@@ -79,37 +80,43 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
             leading: Icon(Icons.refresh),
           ),
           Divider(),
-          DataTable(
-            columns: [
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionUser)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
-            ],
-            rows: List<DataRow>.generate(_possessions.length, (index) {
-              return DataRow(
-                cells: <DataCell>[
-                  DataCell(Text("${_possessions[index].user.toFieldString()}")),
-                  DataCell(Text("${_possessions[index].item.toFieldString()}")),
-                  DataCell(Text("${formatNaiveDate(_possessions[index].transferDate)}")),
-                  DataCell(
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.undo),
-                          onPressed: () => _handleReturn(_possessions[index]),
-                        ),
-                        Spacer(),
-                        IconButton(
-                          icon: Icon(Icons.card_giftcard),
-                          onPressed: () => _handleHandout(_possessions[index]),
-                        ),
-                      ],
-                    ),
-                  ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: 1000,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionUser)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
                 ],
-              );
-            }),
+                rows: List<DataRow>.generate(_possessions.length, (index) {
+                  return DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text("${_possessions[index].user.toFieldString()}")),
+                      DataCell(Text("${_possessions[index].item.toFieldString()}")),
+                      DataCell(Text("${formatNaiveDate(_possessions[index].transferDate)}")),
+                      DataCell(
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.undo),
+                              onPressed: () => _handleReturn(_possessions[index]),
+                            ),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(Icons.card_giftcard),
+                              onPressed: () => _handleHandout(_possessions[index]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
           ),
         ],
       ),

@@ -47,6 +47,10 @@ class CptApp extends StatelessWidget {
           ),
           isDense: true,
         ),
+        dataTableTheme: DataTableThemeData(
+          headingTextStyle: TextStyle(fontWeight: FontWeight.bold),
+          columnSpacing: 10,
+        )
       ),
       navigatorObservers: [navi.routeObserver],
       // onGenerateRoute: generateRoute,
