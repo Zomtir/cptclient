@@ -1,3 +1,4 @@
+import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -15,6 +16,7 @@ class MemberProfilePage extends StatefulWidget {
 
 class MemberProfilePageState extends State<MemberProfilePage> {
   final TextEditingController _ctrlUserPassword = TextEditingController();
+  List<Permission> _permissions = [];
 
   MemberProfilePageState();
 
@@ -22,6 +24,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   void initState() {
     super.initState();
     _ctrlUserPassword.text = "";
+    _permissions = widget.session.right!.toList();
   }
 
   Future<void> _savePassword() async {
@@ -67,6 +70,33 @@ class MemberProfilePageState extends State<MemberProfilePage> {
                 ),
               ),
             ),
+          ),
+          Divider(),
+          DataTable(
+            columns: const [
+              DataColumn(label: Text('Permission')),
+              DataColumn(label: Text('Read')),
+              DataColumn(label: Text('Write')),
+            ],
+            rows: List<DataRow>.generate(_permissions.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(Text("${_permissions[index].name}")),
+                  DataCell(
+                    Checkbox(
+                      value: _permissions[index].read,
+                      onChanged: null,
+                    ),
+                  ),
+                  DataCell(
+                    Checkbox(
+                      value: _permissions[index].write,
+                      onChanged: null,
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
         ],
       ),
