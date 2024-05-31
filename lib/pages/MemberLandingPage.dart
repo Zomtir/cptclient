@@ -18,6 +18,7 @@ import 'package:cptclient/pages/ItemcatOverviewPage.dart';
 import 'package:cptclient/pages/LocationOverviewPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
+import 'package:cptclient/pages/PossessionPersonalPage.dart';
 import 'package:cptclient/pages/PossessionUserManagementPage.dart';
 import 'package:cptclient/pages/SkillOverviewPage.dart';
 import 'package:cptclient/pages/StockManagementPage.dart';
@@ -170,7 +171,8 @@ class MemberLandingPage extends StatelessWidget {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.pagePossessionPersonal,
-            onPressed: () => {},
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => PossessionPersonalPage(session: session))),
           ),
           if (session.right!.inventory.read)
             AppButton(
