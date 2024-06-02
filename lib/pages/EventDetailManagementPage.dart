@@ -7,6 +7,7 @@ import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/pages/EventStatisticPreparationPage.dart';
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -195,6 +196,15 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
     );
   }
 
+  Future<void> _handleStatisticPreparation() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventStatisticPreparationPage(session: widget.session, event: event!),
+      ),
+    );
+  }
+
   @override
   Widget build (BuildContext context) {
     if (event == null) {
@@ -251,6 +261,11 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
             onPressed: _handleOwnerRegistrations,
+          ),
+          Divider(),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventStatisticPreparation,
+            onPressed: _handleStatisticPreparation,
           ),
         ],
       ),

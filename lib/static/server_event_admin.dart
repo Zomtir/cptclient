@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/event.dart';
+import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -85,8 +86,7 @@ Future<bool> event_edit(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_password_edit(
-    Session session, Event event, String password) async {
+Future<bool> event_password_edit(Session session, Event event, String password) async {
   if (password.isEmpty) return true;
 
   final response = await http.post(
@@ -168,9 +168,7 @@ Future<List<User>> event_owner_pool(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json
-      .decode(utf8.decode(response.bodyBytes))
-      .map((data) => User.fromJson(data)));
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_owner_list(Session session, Event event) async {
@@ -186,9 +184,7 @@ Future<List<User>> event_owner_list(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json
-      .decode(utf8.decode(response.bodyBytes))
-      .map((data) => User.fromJson(data)));
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
 Future<bool> event_owner_add(Session session, Event event, User user) async {
@@ -232,9 +228,7 @@ Future<List<User>> event_owner_registration_list(Session session, Event event) a
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json
-      .decode(utf8.decode(response.bodyBytes))
-      .map((data) => User.fromJson(data)));
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_owner_invite_list(Session session, int eventID) async {
@@ -254,8 +248,7 @@ Future<List<User>> event_owner_invite_list(Session session, int eventID) async {
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_owner_invite_add(
-    Session session, int eventID, int userID) async {
+Future<bool> event_owner_invite_add(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_owner_invite_add', {
       'event_id': eventID.toString(),
@@ -269,8 +262,7 @@ Future<bool> event_owner_invite_add(
   return (response.statusCode == 200);
 }
 
-Future<bool> event_owner_invite_remove(
-    Session session, int eventID, int userID) async {
+Future<bool> event_owner_invite_remove(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_owner_invite_remove', {
       'event_id': eventID.toString(),
@@ -301,8 +293,7 @@ Future<List<User>> event_owner_uninvite_list(Session session, int eventID) async
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_owner_uninvite_add(
-    Session session, int eventID, int userID) async {
+Future<bool> event_owner_uninvite_add(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_owner_uninvite_add', {
       'event_id': eventID.toString(),
@@ -316,8 +307,7 @@ Future<bool> event_owner_uninvite_add(
   return (response.statusCode == 200);
 }
 
-Future<bool> event_owner_uninvite_remove(
-    Session session, int eventID, int userID) async {
+Future<bool> event_owner_uninvite_remove(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_owner_uninvite_remove', {
       'event_id': eventID.toString(),
@@ -344,9 +334,7 @@ Future<List<User>> event_participant_pool(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json
-      .decode(utf8.decode(response.bodyBytes))
-      .map((data) => User.fromJson(data)));
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_participant_list(Session session, Event event) async {
@@ -362,13 +350,10 @@ Future<List<User>> event_participant_list(Session session, Event event) async {
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json
-      .decode(utf8.decode(response.bodyBytes))
-      .map((data) => User.fromJson(data)));
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
-Future<bool> event_participant_add(
-    Session session, Event event, User user) async {
+Future<bool> event_participant_add(Session session, Event event, User user) async {
   final response = await http.head(
     server.uri('/admin/event_participant_add', {
       'event_id': event.id.toString(),
@@ -382,8 +367,7 @@ Future<bool> event_participant_add(
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_remove(
-    Session session, Event event, User user) async {
+Future<bool> event_participant_remove(Session session, Event event, User user) async {
   final response = await http.head(
     server.uri('/admin/event_participant_remove', {
       'event_id': event.id.toString(),
@@ -410,9 +394,7 @@ Future<List<User>> event_participant_registration_list(Session session, Event ev
 
   if (response.statusCode != 200) return [];
 
-  return List<User>.from(json
-      .decode(utf8.decode(response.bodyBytes))
-      .map((data) => User.fromJson(data)));
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
 Future<List<User>> event_participant_invite_list(Session session, int eventID) async {
@@ -432,8 +414,7 @@ Future<List<User>> event_participant_invite_list(Session session, int eventID) a
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_participant_invite_add(
-    Session session, int eventID, int userID) async {
+Future<bool> event_participant_invite_add(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_participant_invite_add', {
       'event_id': eventID.toString(),
@@ -447,8 +428,7 @@ Future<bool> event_participant_invite_add(
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_invite_remove(
-    Session session, int eventID, int userID) async {
+Future<bool> event_participant_invite_remove(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_participant_invite_remove', {
       'event_id': eventID.toString(),
@@ -479,8 +459,7 @@ Future<List<User>> event_participant_uninvite_list(Session session, int eventID)
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_participant_uninvite_add(
-    Session session, int eventID, int userID) async {
+Future<bool> event_participant_uninvite_add(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_participant_uninvite_add', {
       'event_id': eventID.toString(),
@@ -494,8 +473,7 @@ Future<bool> event_participant_uninvite_add(
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_uninvite_remove(
-    Session session, int eventID, int userID) async {
+Future<bool> event_participant_uninvite_remove(Session session, int eventID, int userID) async {
   final response = await http.head(
     server.uri('/admin/event_participant_uninvite_remove', {
       'event_id': eventID.toString(),
@@ -507,4 +485,34 @@ Future<bool> event_participant_uninvite_remove(
   );
 
   return (response.statusCode == 200);
+}
+
+Future<List<(User, int, int, int)>> event_statistic_preparation(
+    Session session, Event event, List<ItemCategory?> categories) async {
+  final response = await http.get(
+    server.uri('/admin/event_statistic_preparation', {
+      'event_id': event.id.toString(),
+      'category1': categories[0]?.id.toString(),
+      'category2': categories[1]?.id.toString(),
+      'category3': categories[2]?.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(User, int, int, int)>.from(
+    list.map((model) {
+      return (
+        User.fromJson(model[0]),
+        model[1],
+        model[2],
+        model[3],
+      );
+    }),
+  );
 }
