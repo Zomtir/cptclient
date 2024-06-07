@@ -487,10 +487,10 @@ Future<bool> event_participant_uninvite_remove(Session session, int eventID, int
   return (response.statusCode == 200);
 }
 
-Future<List<(User, int, int, int)>> event_statistic_preparation(
+Future<List<(User, int, int, int)>> event_statistic_packlist(
     Session session, Event event, List<ItemCategory?> categories) async {
   final response = await http.get(
-    server.uri('/admin/event_statistic_preparation', {
+    server.uri('/admin/event_statistic_packlist', {
       'event_id': event.id.toString(),
       'category1': categories[0]?.id.toString(),
       'category2': categories[1]?.id.toString(),
@@ -514,5 +514,24 @@ Future<List<(User, int, int, int)>> event_statistic_preparation(
         model[3],
       );
     }),
+  );
+}
+
+Future<List<User>> event_statistic_division(Session session, Event event) async {
+  final response = await http.get(
+    server.uri('/admin/event_statistic_division', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(
+    list.map((model) => User.fromJson(model)),
   );
 }

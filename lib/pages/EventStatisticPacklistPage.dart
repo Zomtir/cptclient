@@ -10,22 +10,22 @@ import 'package:cptclient/static/server_inventory_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EventStatisticPreparationPage extends StatefulWidget {
+class EventStatisticPacklistPage extends StatefulWidget {
   final Session session;
   final Event event;
 
-  EventStatisticPreparationPage({super.key, required this.session, required this.event});
+  EventStatisticPacklistPage({super.key, required this.session, required this.event});
 
   @override
-  EventStatisticPreparationPageState createState() => EventStatisticPreparationPageState();
+  EventStatisticPacklistPageState createState() => EventStatisticPacklistPageState();
 }
 
-class EventStatisticPreparationPageState extends State<EventStatisticPreparationPage> {
-  EventStatisticPreparationPageState();
+class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> {
+  EventStatisticPacklistPageState();
 
   final List<ItemCategory?> _ctrlCategories = List<ItemCategory?>.filled(3, null);
   List<(User, int, int, int)> _stats = [];
-  List<int> _missing = List<int>.filled(3, 0);
+  final List<int> _missing = List<int>.filled(3, 0);
 
 
   @override
@@ -36,7 +36,7 @@ class EventStatisticPreparationPageState extends State<EventStatisticPreparation
 
   void _update() async {
     List<(User, int, int, int)> stats =
-        await api_admin.event_statistic_preparation(widget.session, widget.event, _ctrlCategories);
+        await api_admin.event_statistic_packlist(widget.session, widget.event, _ctrlCategories);
     stats.sort((a, b) => a.$1.compareTo(b.$1));
     setState(() => _stats = stats);
     _missing[0] = _stats.length - _stats.where((stat) => stat.$2 > 0).length;

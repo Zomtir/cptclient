@@ -7,7 +7,8 @@ import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
-import 'package:cptclient/pages/EventStatisticPreparationPage.dart';
+import 'package:cptclient/pages/EventStatisticDivisionPage.dart';
+import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -196,11 +197,20 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
     );
   }
 
-  Future<void> _handleStatisticPreparation() async {
+  Future<void> _handleStatisticPacklist() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventStatisticPreparationPage(session: widget.session, event: event!),
+        builder: (context) => EventStatisticPacklistPage(session: widget.session, event: event!),
+      ),
+    );
+  }
+
+  Future<void> _handleStatisticDivision() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventStatisticDivisionPage(session: widget.session, event: event!),
       ),
     );
   }
@@ -264,8 +274,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           ),
           Divider(),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventStatisticPreparation,
-            onPressed: _handleStatisticPreparation,
+            text: AppLocalizations.of(context)!.pageEventStatisticPacklist,
+            onPressed: _handleStatisticPacklist,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventStatisticDivision,
+            onPressed: _handleStatisticDivision,
           ),
         ],
       ),
