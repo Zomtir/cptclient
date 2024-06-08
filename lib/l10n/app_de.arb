@@ -1,4 +1,6 @@
 {
+  "language_en": "Englisch",
+  "language_de": "Deutsch",
   "labelFilter": "Filter",
   "labelCalendar": "Kalender",
   "labelInventory": "Inventory",

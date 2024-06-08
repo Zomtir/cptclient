@@ -21,12 +21,13 @@ Session? session;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
 
-Future<void> connect() async {
+Future<void> connect(BuildContext context) async {
   // Simulate lag
   //await Future.delayed(const Duration(seconds: 10));
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 
+  html.window.localStorage.putIfAbsent('Language', () => Localizations.localeOf(context).languageCode);
   html.window.localStorage.putIfAbsent('ServerScheme', () => Env.serverScheme.fromString() ?? configMap['ServerScheme']);
   html.window.localStorage.putIfAbsent('ServerHost', () => Env.serverHost.fromString() ?? configMap['ServerHost']);
   html.window.localStorage.putIfAbsent('ServerPort', () => Env.serverPort.fromInt()?.toString() ?? configMap['ServerPort']);

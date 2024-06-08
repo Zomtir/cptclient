@@ -1,3 +1,5 @@
+import 'package:cptclient/json/language.dart';
+import 'package:cptclient/main.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
@@ -7,32 +9,26 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:universal_html/html.dart" as html;
 
 class ConnectionPage extends StatefulWidget {
+  ConnectionPage({super.key});
+
   @override
   State<StatefulWidget> createState() => ConnectionPageState();
 }
 
 class ConnectionPageState extends State<ConnectionPage> {
-  final TextEditingController _ctrlServerScheme = TextEditingController();
-  final TextEditingController _ctrlServerHost = TextEditingController();
-  final TextEditingController _ctrlServerPort = TextEditingController();
-  final TextEditingController _ctrlUser = TextEditingController();
-  final TextEditingController _ctrlEvent = TextEditingController();
-  final TextEditingController _ctrlCourse = TextEditingController();
-  final TextEditingController _ctrlLocation = TextEditingController();
+  final _ctrlLanguage = Language(Locale(html.window.localStorage['Language']!));
+  final TextEditingController _ctrlServerScheme = TextEditingController(text: html.window.localStorage['ServerScheme']!);
+  final TextEditingController _ctrlServerHost = TextEditingController(text: html.window.localStorage['ServerHost']!);
+  final TextEditingController _ctrlServerPort = TextEditingController(text: html.window.localStorage['ServerPort']!);
+  final TextEditingController _ctrlUser = TextEditingController(text: html.window.localStorage['DefaultUser']!);
+  final TextEditingController _ctrlEvent = TextEditingController(text: html.window.localStorage['DefaultEvent']!);
+  final TextEditingController _ctrlCourse = TextEditingController(text: html.window.localStorage['DefaultCourse']!);
+  final TextEditingController _ctrlLocation = TextEditingController(text: html.window.localStorage['DefaultLocation']!);
   bool _serverOnline = false;
 
   @override
   void initState() {
     super.initState();
-
-    _ctrlServerScheme.text = html.window.localStorage['ServerScheme']!;
-    _ctrlServerHost.text = html.window.localStorage['ServerHost']!;
-    _ctrlServerPort.text = html.window.localStorage['ServerPort']!;
-    _ctrlUser.text = html.window.localStorage['DefaultUser']!;
-    _ctrlEvent.text = html.window.localStorage['DefaultEvent']!;
-    _ctrlCourse.text = html.window.localStorage['DefaultCourse']!;
-    _ctrlLocation.text = html.window.localStorage['DefaultLocation']!;
-
     _testConnection();
   }
 
@@ -51,8 +47,28 @@ class ConnectionPageState extends State<ConnectionPage> {
         children: [
           AppInfoRow(
             info: "Language",
-            child: Text("EN"),
+            child: DropdownButton<Language>(
+              value: _ctrlLanguage,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.grey),
+              isExpanded: true,
+              underline: Container(
+                height: 2,
+                color: Colors.grey,
+              ),
+              onChanged: (Language? language) => context.findAncestorStateOfType<CptState>()!.changeLocale(language?.locale),
+              items: Language.entries.map<DropdownMenuItem<Language>>((Language l) {
+                return DropdownMenuItem<Language>(
+                  value: l,
+                  child: Text(l.localizedName(context)),
+                );
+              }).toList(),
+              //selectedItemBuilder,
+            ),
           ),
+          Divider(),
           AppInfoRow(
             info: "Server Scheme",
             child: TextField(

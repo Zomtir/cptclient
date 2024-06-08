@@ -11,8 +11,20 @@ void main() {
   runApp(CptApp());
 }
 
-class CptApp extends StatelessWidget {
+class CptApp extends StatefulWidget {
   const CptApp({super.key});
+
+  @override
+  CptState createState() => CptState();
+}
+
+class CptState extends State<CptApp> {
+  Locale _locale = const Locale('en');
+
+  void changeLocale(Locale? locale) {
+    if (locale == null) return;
+    setState(() => _locale = locale);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +36,7 @@ class CptApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      locale: _locale,
       supportedLocales: [
         Locale('en'), // English
         Locale('de'), // German
@@ -84,7 +97,7 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    navi.connect();
+    navi.connect(context);
   }
 
   @override
