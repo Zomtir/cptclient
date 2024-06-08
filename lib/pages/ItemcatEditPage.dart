@@ -82,7 +82,7 @@ class ItemcatEditPageState extends State<ItemcatEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.itemcatName),
+            info: AppLocalizations.of(context)!.itemcatName,
             child: TextField(
               maxLines: 1,
               controller: _ctrlName,

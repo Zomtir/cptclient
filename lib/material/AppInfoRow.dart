@@ -1,28 +1,58 @@
 import 'package:flutter/material.dart';
 
-class AppInfoRow<T> extends StatelessWidget {
-  final Widget info;
+class AppInfoRow extends StatelessWidget {
+  final String info;
   final Widget child;
-  final Widget? leading;
-  final Widget? trailing;
+  final List<Widget> leading;
+  final List<Widget> trailing;
 
-  AppInfoRow({required this.info, required this.child, this.leading, this.trailing});
+  const AppInfoRow({
+    super.key,
+    required this.info,
+    required this.child,
+    this.leading = const [],
+    this.trailing = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Stack(
       children: [
-        Container(
-          width: 130,
-          height: 48,
-          alignment: Alignment.centerLeft,
-          child: info,
+        Padding(
+          padding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+          child: Container(
+            padding: EdgeInsets.only(top: 5.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  ...leading,
+                  Expanded(child: child),
+                  ...trailing,
+                ],
+              ),
+            ),
+          ),
         ),
-        if (leading != null) leading!,
-        Expanded(
-          child: child,
+        Positioned(
+          left: 10.0,
+          top: 0.0,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 4.0),
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Text(
+              info,
+              style: TextStyle(
+                fontSize: 12.0,
+                color: Colors.black87,
+              ),
+            ),
+          ),
         ),
-        if (trailing != null) trailing!,
       ],
     );
   }

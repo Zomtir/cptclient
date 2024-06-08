@@ -130,27 +130,27 @@ class EventEditPageState extends State<EventEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventKey),
+            info: AppLocalizations.of(context)!.eventKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventTitle),
+            info: AppLocalizations.of(context)!.eventTitle,
             child: TextField(
               maxLines: 1,
               controller: _ctrlTitle,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventBegin),
+            info: AppLocalizations.of(context)!.eventBegin,
             child: DateTimeEdit(
               controller: _ctrlBegin,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventEnd),
+            info: AppLocalizations.of(context)!.eventEnd,
             child: DateTimeEdit(
               controller: _ctrlEnd,
             ),
@@ -162,21 +162,21 @@ class EventEditPageState extends State<EventEditPage> {
                 }),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventPublic),
+            info: AppLocalizations.of(context)!.eventPublic,
             child: Checkbox(
               value: _ctrlPublic,
               onChanged: (bool? active) => setState(() => _ctrlPublic = active!),
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventScrutable),
+            info: AppLocalizations.of(context)!.eventScrutable,
             child: Checkbox(
               value: _ctrlScrutable,
               onChanged: (bool? active) => setState(() => _ctrlScrutable = active!),
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventNote),
+            info: AppLocalizations.of(context)!.eventNote,
             child: TextField(
               maxLines: 4,
               controller: _ctrlNote,
@@ -189,7 +189,7 @@ class EventEditPageState extends State<EventEditPage> {
           if (widget.onPasswordChange != null) Divider(),
           if (widget.onPasswordChange != null)
             AppInfoRow(
-              info: Text(AppLocalizations.of(context)!.eventPassword),
+              info: AppLocalizations.of(context)!.eventPassword,
               child: TextField(
                 obscureText: true,
                 maxLines: 1,

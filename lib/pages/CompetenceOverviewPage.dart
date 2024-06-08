@@ -81,7 +81,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.competenceUser),
+                info: AppLocalizations.of(context)!.competenceUser,
                 child: AppField<User>(
                   controller: _ctrlUser,
                   onChanged: (User? user) =>
@@ -89,7 +89,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
                 ),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.competenceSkill),
+                info: AppLocalizations.of(context)!.competenceSkill,
                 child: AppField<Skill>(
                   controller: _ctrlSkill,
                   onChanged: (Skill? skill) =>

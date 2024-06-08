@@ -94,21 +94,21 @@ class LocationEditPageState extends State<LocationEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.locationKey),
+            info: AppLocalizations.of(context)!.locationKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.locationName),
+            info: AppLocalizations.of(context)!.locationName,
             child: TextField(
               maxLines: 1,
               controller: _ctrlName,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.locationDescription),
+            info: AppLocalizations.of(context)!.locationDescription,
             child: TextField(
               maxLines: 1,
               controller: _ctrlDescription,

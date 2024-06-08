@@ -55,7 +55,7 @@ class ClubStatisticMemberPageState extends State<ClubStatisticMemberPage> {
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.termDate),
+                info: AppLocalizations.of(context)!.termDate,
                 child: DateTimeEdit(
                   controller: _ctrlDate,
                   showTime: false,

@@ -90,7 +90,7 @@ class RequirementEditPageState extends State<RequirementEditPage> {
             ],
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceSkill),
+            info: AppLocalizations.of(context)!.competenceSkill,
             child: AppField<Skill>(
               controller: _ctrlSkill,
               onChanged: (Skill? skill) {
@@ -99,7 +99,7 @@ class RequirementEditPageState extends State<RequirementEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceSkillRank),
+            info: AppLocalizations.of(context)!.competenceSkillRank,
             child: Slider(
               value: _ctrlRank.toDouble(),
               min: _ctrlSkill.value?.min.toDouble() ?? 0,

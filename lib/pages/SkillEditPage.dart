@@ -103,21 +103,21 @@ class SkillEditPageState extends State<SkillEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.skillKey),
+            info: AppLocalizations.of(context)!.skillKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.skillTitle),
+            info: AppLocalizations.of(context)!.skillTitle,
             child: TextField(
               maxLines: 1,
               controller: _ctrlTitle,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.skillRange),
+            info: AppLocalizations.of(context)!.skillRange,
             child: RangeSlider(
               values: _ctrlRange,
               min: 0,

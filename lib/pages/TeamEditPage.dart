@@ -84,21 +84,21 @@ class TeamEditPageState extends State<TeamEditPage> {
           if (!widget.isDraft) AppTeamTile(team: widget.team),
           if (!widget.isDraft) Divider(),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.teamKey),
+            info: AppLocalizations.of(context)!.teamKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.teamName),
+            info: AppLocalizations.of(context)!.teamName,
             child: TextField(
               maxLines: 1,
               controller: _ctrlName,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.teamDescription),
+            info: AppLocalizations.of(context)!.teamDescription,
             child: TextField(
               maxLines: 1,
               controller: _ctrlDescription,

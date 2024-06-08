@@ -175,27 +175,21 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
 
   Future<void> _submitEvent(Event event) async {
     if (!await api_owner.event_submit(widget.session, event)) return;
-
     _update();
   }
 
   Future<void> _withdrawEvent(Event event) async {
     if (!await api_owner.event_withdraw(widget.session, event)) return;
-
     _update();
   }
 
   Future<void> _cancelEvent(Event event) async {
     if (!await api_owner.event_cancel(widget.session, event)) return;
-
     _update();
   }
 
   Future<void> _recycleEvent(Event event) async {
-    if (!await api_owner.event_recycle(widget.session, event)) {
-      return;
-    }
-
+    if (!await api_owner.event_recycle(widget.session, event)) return;
     _update();
   }
 
@@ -216,11 +210,11 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.eventBegin),
+                info: AppLocalizations.of(context)!.eventBegin,
                 child: DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.eventEnd),
+                info: AppLocalizations.of(context)!.eventEnd,
                 child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
               LocationDropdown(
@@ -230,7 +224,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
                 controller: _ctrlStatus,
               ),
               AppInfoRow(
-                info: Text("Show Courses"),
+                info: AppLocalizations.of(context)!.course,
                 child: Text("all/yes/no"),
               ),
             ],

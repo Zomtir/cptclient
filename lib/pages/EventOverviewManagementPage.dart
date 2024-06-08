@@ -33,18 +33,12 @@ class EventOverviewManagementPage extends StatefulWidget {
   State<StatefulWidget> createState() => EventOverviewManagementPageState();
 }
 
-class EventOverviewManagementPageState
-    extends State<EventOverviewManagementPage> {
-  final DateTimeController _ctrlDateBegin =
-      DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
-  final DateTimeController _ctrlDateEnd =
-      DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
-  final DropdownController<Status> _ctrlStatus =
-      DropdownController<Status>(items: server.cacheEventStatus);
-  final DropdownController<Location> _ctrlLocation =
-      DropdownController<Location>(items: []);
-  final DropdownController<User> _ctrlOwner =
-      DropdownController<User>(items: []);
+class EventOverviewManagementPageState extends State<EventOverviewManagementPage> {
+  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
+  final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheEventStatus);
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  final DropdownController<User> _ctrlOwner = DropdownController<User>(items: []);
 
   List<Event> _events = [];
   final _filterDaysMax = 366;
@@ -177,8 +171,7 @@ class EventOverviewManagementPageState
 
     if (newDateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;
 
-    if (newDateBegin
-        .isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) {
+    if (newDateBegin.isBefore(newDateEnd.add(Duration(days: -_filterDaysMax)))) {
       newDateBegin = newDateEnd.add(Duration(days: -_filterDaysMax));
     }
 
@@ -200,12 +193,11 @@ class EventOverviewManagementPageState
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.eventBegin),
-                child:
-                    DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
+                info: AppLocalizations.of(context)!.eventBegin,
+                child: DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.eventEnd),
+                info: AppLocalizations.of(context)!.eventEnd,
                 child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
               LocationDropdown(
@@ -215,22 +207,23 @@ class EventOverviewManagementPageState
                 controller: _ctrlStatus,
               ),
               AppInfoRow(
-                info: Text("User"),
+                info: AppLocalizations.of(context)!.user,
                 child: AppDropdown<User>(
                   controller: _ctrlOwner,
                   builder: (User user) {
                     return Text("${user.firstname} ${user.lastname}");
                   },
-                  onChanged: (User? user) =>
-                      setState(() => _ctrlOwner.value = user),
+                  onChanged: (User? user) => setState(() => _ctrlOwner.value = user),
                 ),
-                trailing: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () => setState(() => _ctrlOwner.value = null),
-                ),
+                trailing: [
+                  IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () => setState(() => _ctrlOwner.value = null),
+                  ),
+                ],
               ),
               AppInfoRow(
-                info: Text("Show Courses"),
+                info: AppLocalizations.of(context)!.course,
                 child: Text("all/yes/no"),
               ),
             ],

@@ -85,21 +85,21 @@ class ClubEditPageState extends State<ClubEditPage> {
           if (!widget.isDraft)
             AppClubTile(club: widget.club),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.clubKey),
+            info: AppLocalizations.of(context)!.clubKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.clubName),
+            info: AppLocalizations.of(context)!.clubName,
             child: TextField(
               maxLines: 1,
               controller: _ctrlName,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.clubDescription),
+            info: AppLocalizations.of(context)!.clubDescription,
             child: TextField(
               maxLines: 1,
               controller: _ctrlDescription,

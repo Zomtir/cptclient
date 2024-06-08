@@ -64,14 +64,14 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.termDate),
+                info: AppLocalizations.of(context)!.termDate,
                 child: DateTimeEdit(
                   controller: _ctrlDate,
                   showTime: false,
                 ),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.termClub),
+                info: AppLocalizations.of(context)!.termClub,
                 child: AppField<Team>(
                   controller: _ctrlTeam,
                   onChanged: (Team? team) =>

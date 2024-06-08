@@ -18,7 +18,7 @@ class LocationDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppInfoRow(
-      info: Text(AppLocalizations.of(context)!.eventLocation),
+      info: AppLocalizations.of(context)!.eventLocation,
       child: AppDropdown<Location>(
         controller: controller,
         builder: (Location location) {
@@ -29,15 +29,15 @@ class LocationDropdown extends StatelessWidget {
           onChanged?.call();
         },
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          controller.value = null;
-          onChanged?.call();
-        },
-      ),
+      trailing: [
+        IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            controller.value = null;
+            onChanged?.call();
+          },
+        ),
+      ],
     );
   }
 }
-
-

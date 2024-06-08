@@ -135,7 +135,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceUser),
+            info: AppLocalizations.of(context)!.competenceUser,
             child: AppField<User>(
               controller: _ctrlUser,
               onChanged: (User? user) {
@@ -146,7 +146,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceSkill),
+            info: AppLocalizations.of(context)!.competenceSkill,
             child: AppField<Skill>(
               controller: _ctrlSkill,
               onChanged: (Skill? skill) {
@@ -155,7 +155,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceSkillRank),
+            info: AppLocalizations.of(context)!.competenceSkillRank,
             child: Slider(
               value: _ctrlRank.toDouble(),
               min: 0,
@@ -168,7 +168,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceJudge),
+            info: AppLocalizations.of(context)!.competenceJudge,
             child: AppField<User>(
               controller: _ctrlJudge,
               onChanged: (User? user) {
@@ -179,7 +179,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.competenceDate),
+            info: AppLocalizations.of(context)!.competenceDate,
             child: DateTimeEdit(
               controller: _ctrlDate,
               showTime: false,

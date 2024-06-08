@@ -147,7 +147,7 @@ class UserEditPageState extends State<UserEditPage> {
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Details"),
+        title: Text(AppLocalizations.of(context)!.pageUserEdit),
       ),
       body: AppBody(
         children: [
@@ -165,14 +165,14 @@ class UserEditPageState extends State<UserEditPage> {
             ],
           ),
           if (!widget.isDraft) AppInfoRow(
-            info: Text("Key"),
+            info: AppLocalizations.of(context)!.userKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserKey,
             ),
           ),
           AppInfoRow(
-            info: Text("Login Enabled"),
+            info: AppLocalizations.of(context)!.userEnabled,
             child: Align(
               alignment: Alignment.centerLeft,
               child: Checkbox(
@@ -182,7 +182,7 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Active Participation"),
+            info: AppLocalizations.of(context)!.userActive,
             child: Align(
               alignment: Alignment.centerLeft,
               child: Checkbox(
@@ -192,56 +192,56 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("${AppLocalizations.of(context)!.userFirstname} *"),
+            info: "${AppLocalizations.of(context)!.userFirstname} *",
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserFirstname,
             ),
           ),
           AppInfoRow(
-            info: Text("${AppLocalizations.of(context)!.userLastname} *"),
+            info: "${AppLocalizations.of(context)!.userLastname} *",
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserLastname,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userNickname),
+            info: AppLocalizations.of(context)!.userNickname,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserNickname,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userAddress),
+            info: AppLocalizations.of(context)!.userAddress,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserAddress,
             ),
           ),
           AppInfoRow(
-            info: Text("E-Mail"),
+            info: AppLocalizations.of(context)!.userEmail,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserEmail,
             ),
           ),
           AppInfoRow(
-            info: Text("Phone"),
+            info: AppLocalizations.of(context)!.userPhone,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserPhone,
             ),
           ),
           AppInfoRow(
-            info: Text("IBAN"),
+            info: AppLocalizations.of(context)!.userIban,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserIban,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userBirthday),
+            info: AppLocalizations.of(context)!.userBirthday,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
@@ -249,35 +249,35 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userBirthlocation),
+            info: AppLocalizations.of(context)!.userBirthlocation,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserBirthlocation,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userNationality),
+            info: AppLocalizations.of(context)!.userNationality,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserNationality,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userGender),
+            info: AppLocalizations.of(context)!.userGender,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserGender,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userFederationNumber),
+            info: AppLocalizations.of(context)!.userFederationNumber,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserFederationNumber,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userParicipationDateSolo),
+            info: AppLocalizations.of(context)!.userFederationPermissionSoloDate,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
@@ -285,7 +285,7 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userParicipationDateTeam),
+            info: AppLocalizations.of(context)!.userFederationPermissionTeamDate,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
@@ -293,7 +293,7 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Moving Date to\nResidency in Federation"),
+            info: AppLocalizations.of(context)!.userFederationResidencyDate,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
@@ -301,21 +301,21 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Data Declaration Version"),
+            info: AppLocalizations.of(context)!.userDataDeclaration,
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserDataDeclaration,
             ),
           ),
           AppInfoRow(
-            info: Text("Data Declaration Disclaimer"),
+            info: AppLocalizations.of(context)!.userDataDisclaimer,
             child: TextField(
               maxLines: 8,
               controller: _ctrlUserDataDisclaimer,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userNote),
+            info: AppLocalizations.of(context)!.userNote,
             child: TextField(
               maxLines: 8,
               controller: _ctrlUserNote,
@@ -327,7 +327,7 @@ class UserEditPageState extends State<UserEditPage> {
           ),
           if (!widget.isDraft) Divider(),
           if (!widget.isDraft) AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userPassword),
+            info: AppLocalizations.of(context)!.userPassword,
             child: TextField(
               obscureText: true,
               maxLines: 1,

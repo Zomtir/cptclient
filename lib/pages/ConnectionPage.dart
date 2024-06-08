@@ -50,11 +50,11 @@ class ConnectionPageState extends State<ConnectionPage> {
       body: AppBody(
         children: [
           AppInfoRow(
-            info: Text("Language"),
+            info: "Language",
             child: Text("EN"),
           ),
           AppInfoRow(
-            info: Text("Server Scheme"),
+            info: "Server Scheme",
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerScheme,
@@ -65,7 +65,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Server Host"),
+            info: "Server Host",
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerHost,
@@ -76,7 +76,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Server Port"),
+            info: "Server Port",
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerPort,
@@ -99,7 +99,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             },
           ),
           AppInfoRow(
-            info: Text("Default User Key"),
+            info: "Default User Key",
             child: TextField(
               maxLines: 1,
               controller: _ctrlUser,
@@ -107,7 +107,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Default Event Key"),
+            info: "Default Event Key",
             child: TextField(
               maxLines: 1,
               controller: _ctrlEvent,
@@ -115,7 +115,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Default Course Key"),
+            info: "Default Course Key",
             child: TextField(
               maxLines: 1,
               controller: _ctrlCourse,
@@ -123,7 +123,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Default Location Key"),
+            info: "Default Location Key",
             child: TextField(
               maxLines: 1,
               controller: _ctrlLocation,

@@ -98,21 +98,21 @@ class CourseManagementPageState extends State<CourseManagementPage> {
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.courseModerator),
+                info: AppLocalizations.of(context)!.courseModerator,
                 child: AppField<User>(
                   controller: _ctrlModerator,
                   onChanged: (User? user) => setState(() => _ctrlModerator.value = user),
                 ),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.courseActive),
+                info: AppLocalizations.of(context)!.courseActive,
                 child: Tribox(
                   value: _ctrlActive,
                   onChanged: (bool? active) => setState(() => _ctrlActive = active),
                 ),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.coursePublic),
+                info: AppLocalizations.of(context)!.coursePublic,
                 child: Tribox(
                   value: _ctrlPublic,
                   onChanged: (bool? public) => setState(() => _ctrlPublic = public),

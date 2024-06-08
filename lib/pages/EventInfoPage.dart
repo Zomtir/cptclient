@@ -122,74 +122,74 @@ class EventInfoPageState extends State<EventInfoPage> {
         children: [
           if (widget.session.right!.event.read) AppButton(text: "Go to Admin Page", onPressed: _handleSwitchAdmin),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventKey),
+            info: AppLocalizations.of(context)!.eventKey,
             child: Text(widget.event.key),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventTitle),
+            info: AppLocalizations.of(context)!.eventTitle,
             child: Text(widget.event.title),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventBegin),
+            info: AppLocalizations.of(context)!.eventBegin,
             child: Text(widget.event.begin.fmtDate(context)),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventEnd),
+            info: AppLocalizations.of(context)!.eventEnd,
             child: Text(widget.event.end.fmtDate(context)),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventLocation),
+            info: AppLocalizations.of(context)!.eventLocation,
             child: Text(widget.event.location!.name),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventPublic),
+            info: AppLocalizations.of(context)!.eventPublic,
             child: Checkbox(
               value: widget.event.public,
               onChanged: null,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventScrutable),
+            info: AppLocalizations.of(context)!.eventScrutable,
             child: Checkbox(
               value: widget.event.scrutable,
               onChanged: null,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.eventNote),
+            info: AppLocalizations.of(context)!.eventNote,
             child: Text(widget.event.note),
           ),
           Divider(),
           AppInfoRow(
-            info: Text("Bookmark"),
+            info: "Bookmark",
             child: IconButton(
               icon: _bookmarked ? Icon(Icons.star) : Icon(Icons.star_border),
               onPressed: () => _handleBookmarkChange(!_bookmarked),
             ),
           ),
           AppInfoRow(
-            info: Text("Register as Participant"),
+            info: "Register as Participant",
             child: IconButton(
               icon: _registeredParticipant ? Icon(Icons.person_remove) : Icon(Icons.person_add_outlined),
               onPressed: () => _handleParticipationRegistrationChange(!_registeredParticipant),
             ),
           ),
           AppInfoRow(
-            info: Text("Participation"),
+            info: "Participation",
             child: IconButton(
               icon: _actualParticipant ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
               onPressed: () => _handleParticipationChange(!_actualParticipant),
             ),
           ),
           AppInfoRow(
-            info: Text("Register as Owner"),
+            info: "Register as Owner",
             child: IconButton(
               icon: _registeredOwner ? Icon(Icons.remove_moderator) : Icon(Icons.add_moderator_outlined),
               onPressed: () => _handleOwnerRegistrationChange(!_registeredOwner),
             ),
           ),
           AppInfoRow(
-            info: Text("Ownership"),
+            info: "Ownership",
             child: IconButton(
               icon: _actualOwner ? Icon(Icons.house) : Icon(Icons.house_outlined),
               onPressed: null,

@@ -143,21 +143,21 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
       body: AppBody(
         children: [
           AppInfoRow(
-            info: Text("Title"),
+            info: AppLocalizations.of(context)!.eventTitle,
             child: TextField(
               maxLines: 1,
               controller: _ctrlTitle,
             ),
           ),
           AppInfoRow(
-            info: Text("Start Time"),
+            info: AppLocalizations.of(context)!.eventBegin,
             child: DateTimeEdit(
               controller: _ctrlBegin,
               showDate: false,
             ),
           ),
           AppInfoRow(
-            info: Text("End Time"),
+            info: AppLocalizations.of(context)!.eventEnd,
             child: DateTimeEdit(
               controller: _ctrlEnd,
               showDate: false,
@@ -170,35 +170,35 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
                 }),
           ),
           AppInfoRow(
-            info: Text("Public"),
+            info: AppLocalizations.of(context)!.eventPublic,
             child: Checkbox(
               value: _ctrlPublic,
               onChanged: (bool? active) => setState(() => _ctrlPublic = active!),
             ),
           ),
           AppInfoRow(
-            info: Text("Scrutable"),
+            info: AppLocalizations.of(context)!.eventScrutable,
             child: Checkbox(
               value: _ctrlScrutable,
               onChanged: (bool? active) => setState(() => _ctrlScrutable = active!),
             ),
           ),
           AppInfoRow(
-            info: Text("Weekdays"),
+            info: AppLocalizations.of(context)!.dateWeekday,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: _buildDays(context),
             ),
           ),
           AppInfoRow(
-            info: Text("From Date"),
+            info: AppLocalizations.of(context)!.dateFrameBegin,
             child: DateTimeEdit(
               controller: _ctrlBatchBegin,
               showTime: false,
             ),
           ),
           AppInfoRow(
-            info: Text("To Date"),
+            info: AppLocalizations.of(context)!.dateFrameEnd,
             child: DateTimeEdit(
               controller: _ctrlBatchEnd,
               showTime: false,

@@ -42,7 +42,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Profile"),
+        title: Text(AppLocalizations.of(context)!.pageUserProfile),
       ),
       body: AppBody(
         children: <Widget>[
@@ -54,11 +54,11 @@ class MemberProfilePageState extends State<MemberProfilePage> {
               ]
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.user),
+            info: AppLocalizations.of(context)!.user,
             child: Text("${widget.session.user!.toFieldString()}"),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.userPassword),
+            info: AppLocalizations.of(context)!.userPassword,
             child: TextField(
               obscureText: true,
               maxLines: 1,

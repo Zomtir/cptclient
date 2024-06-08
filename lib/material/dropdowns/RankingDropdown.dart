@@ -22,27 +22,30 @@ class CompetenceDropdown extends StatelessWidget {
     return Column(
       children: [
         AppInfoRow(
-          info: Text(AppLocalizations.of(context)!.skillTitle),
+          info: AppLocalizations.of(context)!.skillTitle,
           child: AppField<Skill>(
             controller: controller,
             onChanged: (Skill? skill) => onChanged(skill, range),
           ),
-          trailing: IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () => onChanged(null, range),
-          ),
+          trailing: [
+            IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () => onChanged(null, range),
+            ),
+          ],
         ),
-        if (controller.value != null) AppInfoRow(
-          info: Text(AppLocalizations.of(context)!.skillRange),
-          child: RangeSlider(
-            values: range,
-            min: 0,
-            max: 10,
-            divisions: 10,
-            onChanged: (RangeValues values) => onChanged(controller.value, values),
-            labels: RangeLabels("${range.start}", "${range.end}"),
+        if (controller.value != null)
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.skillRange,
+            child: RangeSlider(
+              values: range,
+              min: 0,
+              max: 10,
+              divisions: 10,
+              onChanged: (RangeValues values) => onChanged(controller.value, values),
+              labels: RangeLabels("${range.start}", "${range.end}"),
+            ),
           ),
-        ),
       ],
     );
   }

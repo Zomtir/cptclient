@@ -106,7 +106,7 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event details"),
+        title: Text(AppLocalizations.of(context)!.pageEventDetails),
       ),
       body: AppBody(
         children: [
@@ -124,14 +124,14 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
             ],
           ),
           AppInfoRow(
-            info: Text("Register"),
+            info: AppLocalizations.of(context)!.eventParticipantRegistration,
             child: Checkbox(
               value: false,
               onChanged: (bool? value) {  },
             ),
           ),
           AppInfoRow(
-            info: Text("Participate"),
+            info: AppLocalizations.of(context)!.eventParticipantConfirmation,
             child: Checkbox(
               value: false,
               onChanged: (bool? value) {  },

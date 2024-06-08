@@ -28,8 +28,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
 
   bool _isActive = true;
   bool _isPublic = true;
-  final DropdownController<Skill> _ctrlDropdownSkill =
-      DropdownController<Skill>(items: []);
+  final DropdownController<Skill> _ctrlDropdownSkill = DropdownController<Skill>(items: []);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
   CourseResponsiblePageState();
@@ -42,8 +41,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
 
   void _update() async {
     List<Skill> skills = await api_anon.skill_list();
-    List<Course> courses = await api_regular.course_responsibility(
-        widget.session, _isActive, _isPublic);
+    List<Course> courses = await api_regular.course_responsibility(widget.session, _isActive, _isPublic);
 
     setState(() {
       _ctrlDropdownSkill.items = skills;
@@ -80,7 +78,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                 onApply: _update,
                 children: [
                   AppInfoRow(
-                    info: Text("Active"),
+                    info: AppLocalizations.of(context)!.courseActive,
                     child: Checkbox(
                       value: _isActive,
                       onChanged: (bool? active) {
@@ -89,7 +87,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                     ),
                   ),
                   AppInfoRow(
-                    info: Text("Public"),
+                    info: AppLocalizations.of(context)!.coursePublic,
                     child: Checkbox(
                       value: _isPublic,
                       onChanged: (bool? public) {
@@ -98,7 +96,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                     ),
                   ),
                   AppInfoRow(
-                    info: Text("Skill"),
+                    info: AppLocalizations.of(context)!.skill,
                     child: AppDropdown<Skill>(
                       controller: _ctrlDropdownSkill,
                       builder: (Skill skill) {
@@ -108,15 +106,17 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                         _ctrlDropdownSkill.value = skill;
                       },
                     ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        _ctrlDropdownSkill.value = null;
-                      },
-                    ),
+                    trailing: [
+                      IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          _ctrlDropdownSkill.value = null;
+                        },
+                      ),
+                    ],
                   ),
                   AppInfoRow(
-                    info: Text("Thresholds"),
+                    info: AppLocalizations.of(context)!.skillRange,
                     child: RangeSlider(
                       values: _thresholdRange,
                       min: 0,
@@ -125,8 +125,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
                       onChanged: (RangeValues values) {
                         _thresholdRange = values;
                       },
-                      labels: RangeLabels(
-                          "${_thresholdRange.start}", "${_thresholdRange.end}"),
+                      labels: RangeLabels("${_thresholdRange.start}", "${_thresholdRange.end}"),
                     ),
                   ),
                 ],

@@ -6,6 +6,7 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseEditPage extends StatefulWidget {
   final Session session;
@@ -81,7 +82,7 @@ class CourseEditPageState extends State<CourseEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Edit"),
+        title: Text(AppLocalizations.of(context)!.pageCourseEdit),
       ),
       body: AppBody(
         children: <Widget>[
@@ -97,35 +98,35 @@ class CourseEditPageState extends State<CourseEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text("Key"),
+            info: AppLocalizations.of(context)!.courseKey,
             child: TextField(
               maxLines: 1,
               controller: _ctrlCourseKey,
             ),
           ),
           AppInfoRow(
-            info: Text("Title"),
+            info: AppLocalizations.of(context)!.courseTitle,
             child: TextField(
               maxLines: 1,
               controller: _ctrlCourseTitle,
             ),
           ),
           AppInfoRow(
-            info: Text("Active"),
+            info: AppLocalizations.of(context)!.courseActive,
             child: Checkbox(
               value: _ctrlCourseActive,
               onChanged: (bool? active) => setState(() => _ctrlCourseActive = active!),
             ),
           ),
           AppInfoRow(
-            info: Text("Public"),
+            info: AppLocalizations.of(context)!.coursePublic,
             child: Checkbox(
               value: _ctrlCoursePublic,
               onChanged: (bool? public) => setState(() => _ctrlCoursePublic = public!),
             ),
           ),
           AppButton(
-            text: "Save",
+            text: AppLocalizations.of(context)!.actionConfirm,
             onPressed: _submitCourse,
           ),
         ],

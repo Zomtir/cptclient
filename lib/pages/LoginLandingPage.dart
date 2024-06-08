@@ -59,36 +59,30 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         if (html.window.localStorage['Session']!.isNotEmpty) Divider(),
         AppButton(
           text: AppLocalizations.of(context)!.loginUser,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LoginUserPage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginEvent,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LoginEventPage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginEventPage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginCourse,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LoginCoursePage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
         ),
         AppButton(
           text: AppLocalizations.of(context)!.loginLocation,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LoginLocationPage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
         ),
         Divider(),
         AppButton(
           leading: Icon(Icons.settings, color: Colors.white),
           text: AppLocalizations.of(context)!.pageSettings,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ConnectionPage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionPage())),
         ),
         AppButton(
           leading: Icon(Icons.info, color: Colors.white),
           text: AppLocalizations.of(context)!.pageCredits,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreditPage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
         ),
       ]),
     );

@@ -94,14 +94,14 @@ class ItemEditPageState extends State<ItemEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.itemName),
+            info: AppLocalizations.of(context)!.itemName,
             child: TextField(
               maxLines: 1,
               controller: _ctrlName,
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.itemCategory),
+            info: AppLocalizations.of(context)!.itemCategory,
             child: AppField<ItemCategory>(
               controller: _ctrlCategory,
               onChanged: (ItemCategory? category) {

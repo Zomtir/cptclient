@@ -116,12 +116,12 @@ class EventOverviewAvailablePageState
             onApply: _update,
             children: [
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.eventBegin),
+                info: AppLocalizations.of(context)!.eventBegin,
                 child:
                     DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
-                info: Text(AppLocalizations.of(context)!.eventEnd),
+                info: AppLocalizations.of(context)!.eventEnd,
                 child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
               LocationDropdown(

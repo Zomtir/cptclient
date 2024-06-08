@@ -125,21 +125,21 @@ class TermEditPageState extends State<TermEditPage> {
             ),
           if (!widget.isDraft) Divider(),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.termUser),
+            info: AppLocalizations.of(context)!.termUser,
             child: AppField<User>(
               controller: _ctrlTermUser,
               onChanged: (user) => setState(() => _ctrlTermUser.value = user),
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.termClub),
+            info: AppLocalizations.of(context)!.termClub,
             child: AppField<Club>(
               controller: _ctrlTermClub,
               onChanged: (club) => setState(() => _ctrlTermClub.value = club),
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.termBegin),
+            info: AppLocalizations.of(context)!.termBegin,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
@@ -147,7 +147,7 @@ class TermEditPageState extends State<TermEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text(AppLocalizations.of(context)!.termEnd),
+            info: AppLocalizations.of(context)!.termEnd,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
