@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/static/datetime.dart';
@@ -48,6 +48,7 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
   final DateTimeController _ctrlBatchEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 7)));
 
   bool _enabled = true;
+
   EventCreateBatchPageState();
 
   @override
@@ -163,11 +164,13 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
               showDate: false,
             ),
           ),
-          LocationDropdown(
-            controller: _ctrlLocation,
-            onChanged: () => setState(() => {
-                  /* Location has changed */
-                }),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.eventLocation,
+            child: AppDropdown<Location>(
+              controller: _ctrlLocation,
+              builder: (Location location) => Text(location.key),
+              onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
+            ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventPublic,
@@ -217,7 +220,11 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
     List<String> weekdays = getWeekdaysShort(context);
     return List.generate(7, (index) {
       return Column(
-        children: [Text("${weekdays[index]}"), Checkbox(value: _ctrlBatchDays[index], onChanged: (bool? value) => setState(() => _ctrlBatchDays[index] = value!))],
+        children: [
+          Text("${weekdays[index]}"),
+          Checkbox(
+              value: _ctrlBatchDays[index], onChanged: (bool? value) => setState(() => _ctrlBatchDays[index] = value!))
+        ],
       );
     });
   }

@@ -2,6 +2,7 @@
 
 import 'dart:core';
 
+import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/static/format.dart';
@@ -23,7 +24,7 @@ class User extends FieldInterface implements Comparable {
   DateTime? birthday;
   String? birthlocation;
   String? nationality;
-  String? gender;
+  Gender? gender;
   int? federationnumber;
   DateTime? federationpermissionsolo;
   DateTime? federationpermissionteam;
@@ -57,7 +58,7 @@ class User extends FieldInterface implements Comparable {
         birthday = parseNaiveDate(json['birthday']),
         birthlocation = json['birthlocation'],
         nationality = json['nationality'],
-        gender = json['gender'],
+        gender = Gender.fromNullString(json['gender']),
         federationnumber = convertNullInt(json['federationnumber']),
         federationpermissionsolo = parseNaiveDate(json['federationpermissionsolo']),
         federationpermissionteam = parseNaiveDate(json['federationpermissionteam']),
@@ -81,7 +82,7 @@ class User extends FieldInterface implements Comparable {
         'birthday': formatNaiveDate(birthday),
         'birthlocation': birthlocation,
         'nationality': nationality,
-        'gender': gender,
+        'gender': gender?.status.name,
         'federationnumber': federationnumber,
         'federationpermissionsolo': formatNaiveDate(federationpermissionsolo),
         'federationpermissionteam': formatNaiveDate(federationpermissionteam),

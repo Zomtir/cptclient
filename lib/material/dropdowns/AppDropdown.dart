@@ -11,26 +11,36 @@ class AppDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<T>(
-      hint: hint,
-      value: controller.value,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      isExpanded: true,
-      style: TextStyle(color: Colors.grey),
-      underline: Container(
-        height: 2,
-        color: Colors.grey,
-      ),
-      onChanged: onChanged,
-      items: controller.items.map<DropdownMenuItem<T>>((T t) {
-        return DropdownMenuItem<T>(
-          value: t,
-          child: builder(t),
-          );
-        }).toList(),
-      //selectedItemBuilder,
+    return Row(
+      children: [
+        Expanded(
+          child: DropdownButton<T>(
+            hint: hint,
+            value: controller.value,
+            icon: Icon(Icons.arrow_downward),
+            iconSize: 24,
+            elevation: 16,
+            style: TextStyle(color: Colors.grey),
+            isExpanded: true,
+            underline: Container(
+              height: 2,
+              color: Colors.grey,
+            ),
+            onChanged: onChanged,
+            items: controller.items.map<DropdownMenuItem<T>>((T t) {
+              return DropdownMenuItem<T>(
+                value: t,
+                child: builder(t),
+              );
+            }).toList(),
+            //selectedItemBuilder,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () => onChanged(null),
+        ),
+      ],
     );
   }
 }

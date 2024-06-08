@@ -19,6 +19,7 @@ class LoginLandingPage extends StatefulWidget {
 }
 
 class LoginLandingPageState extends State<LoginLandingPage> {
+
   void _resume() async {
     switch (html.window.localStorage['Session']!) {
       case 'user':

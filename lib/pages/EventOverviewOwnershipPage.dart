@@ -8,8 +8,7 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
-import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
-import 'package:cptclient/material/dropdowns/StatusDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
@@ -217,11 +216,18 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
                 info: AppLocalizations.of(context)!.eventEnd,
                 child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
               ),
-              LocationDropdown(
-                controller: _ctrlLocation,
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventLocation,
+                child: AppDropdown<Location>(
+                  controller: _ctrlLocation,
+                  builder: (Location location) => Text(location.key),
+                  onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
+                ),
               ),
-              StatusDropdown(
+              AppDropdown<Status>(
                 controller: _ctrlStatus,
+                builder: (Status status) => Text(status.name),
+                onChanged: (Status? status) => setState(() => _ctrlStatus.value = status),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.course,

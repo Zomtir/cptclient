@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
-import 'package:cptclient/material/dropdowns/LocationDropdown.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
@@ -155,11 +155,13 @@ class EventEditPageState extends State<EventEditPage> {
               controller: _ctrlEnd,
             ),
           ),
-          LocationDropdown(
-            controller: _ctrlLocation,
-            onChanged: () => setState(() => {
-                  /* Location has changed */
-                }),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.eventLocation,
+            child: AppDropdown<Location>(
+              controller: _ctrlLocation,
+              builder: (Location location) => Text(location.key),
+              onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
+            ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventPublic,

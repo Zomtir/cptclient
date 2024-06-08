@@ -1,4 +1,5 @@
 import 'package:cptclient/json/event.dart';
+import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -65,7 +66,7 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
               DataColumn(
                 label: InkWell(
                   child: Text(AppLocalizations.of(context)!.userGender),
-                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.gender, b.gender))),
+                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo<Gender>(a.gender, b.gender))),
                 ),
               ),
               DataColumn(

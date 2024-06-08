@@ -1,8 +1,11 @@
+import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/DropdownController.dart';
+import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
@@ -37,7 +40,7 @@ class UserEditPageState extends State<UserEditPage> {
   final DateTimeController    _ctrlUserBirthday = DateTimeController();
   final TextEditingController _ctrlUserBirthlocation = TextEditingController();
   final TextEditingController _ctrlUserNationality = TextEditingController();
-  final TextEditingController _ctrlUserGender = TextEditingController();
+  final DropdownController<Gender> _ctrlUserGender = DropdownController<Gender>(items: Gender.entries);
   final TextEditingController _ctrlUserFederationNumber = TextEditingController();
   final DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
   final DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();
@@ -67,7 +70,7 @@ class UserEditPageState extends State<UserEditPage> {
     _ctrlUserIban.text = widget.user.iban ?? '';
     _ctrlUserBirthday.setDateTime(widget.user.birthday);
     _ctrlUserBirthlocation.text = widget.user.birthlocation ?? '';
-    _ctrlUserGender.text = widget.user.gender ?? '';
+    _ctrlUserGender.value = widget.user.gender;
     _ctrlUserNationality.text = widget.user.nationality ?? '';
     _ctrlUserFederationNumber.text = widget.user.federationnumber?.toString() ?? '';
     _ctrlUserFederationPermissionSolo.setDateTime(widget.user.federationpermissionsolo);
@@ -91,7 +94,7 @@ class UserEditPageState extends State<UserEditPage> {
     widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
     widget.user.birthday = _ctrlUserBirthday.getDateTime();
     widget.user.birthlocation = _ctrlUserBirthlocation.text.isNotEmpty ? _ctrlUserBirthlocation.text : null;
-    widget.user.gender = _ctrlUserGender.text.isNotEmpty ? _ctrlUserGender.text : null;
+    widget.user.gender = _ctrlUserGender.value;
     widget.user.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
     widget.user.federationnumber = parseNullInt(_ctrlUserFederationNumber.text);
     widget.user.federationpermissionsolo = _ctrlUserFederationPermissionSolo.getDateTime();
@@ -263,10 +266,11 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.userGender,
-            child: TextField(
-              maxLines: 1,
+            info: AppLocalizations.of(context)!.eventLocation,
+            child: AppDropdown<Gender>(
               controller: _ctrlUserGender,
+              builder: (Gender gender) => Text(gender.name),
+              onChanged: (Gender? gender) => setState(() => _ctrlUserGender.value = gender),
             ),
           ),
           AppInfoRow(
