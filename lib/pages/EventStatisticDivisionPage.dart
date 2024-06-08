@@ -40,7 +40,7 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
+        title: Text(AppLocalizations.of(context)!.pageEventStatisticDivision),
       ),
       body: AppBody(
         maxWidth: 1000,
@@ -76,7 +76,7 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
               ),
               DataColumn(
                 label: InkWell(
-                  child: Text("Age EOY"), //end of year
+                  child: Text(AppLocalizations.of(context)!.userAgeEOY),
                   onTap: () => setState(() => _stats.sort((a, b) => -nullCompareTo(a.birthday, b.birthday))),
                 ),
               ),

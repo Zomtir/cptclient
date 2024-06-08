@@ -56,7 +56,7 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
+        title: Text(AppLocalizations.of(context)!.pageEventStatisticPacklist),
       ),
       body: AppBody(
         maxWidth: 1000,
@@ -66,7 +66,7 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
           ),
           DataTable(
             columns: [
-              DataColumn(label: Text('User')),
+              DataColumn(label: Text(AppLocalizations.of(context)!.user)),
               DataColumn(
                 label: InkWell(
                   child: Text(_ctrlCategories[0]?.name ?? AppLocalizations.of(context)!.undefined),
@@ -99,7 +99,7 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
               }),
               DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("Missing", style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataCell(Text(AppLocalizations.of(context)!.labelMissing, style: TextStyle(fontWeight: FontWeight.bold))),
                   DataCell(Text("${_missing[0]}")),
                   DataCell(Text("${_missing[1]}")),
                   DataCell(Text("${_missing[2]}")),

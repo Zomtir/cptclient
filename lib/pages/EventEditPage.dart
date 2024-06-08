@@ -87,7 +87,8 @@ class EventEditPageState extends State<EventEditPage> {
     _gatherEvent();
 
     if (widget.event.location == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Location is required.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${AppLocalizations.of(context)!.labelRequired}: ${AppLocalizations.of(context)!.location}")));
       return;
     }
 
@@ -129,51 +130,53 @@ class EventEditPageState extends State<EventEditPage> {
               ],
             ),
           AppInfoRow(
-            info: Text("Key"),
+            info: Text(AppLocalizations.of(context)!.eventKey),
             child: TextField(
               maxLines: 1,
               controller: _ctrlKey,
             ),
           ),
           AppInfoRow(
-            info: Text("Title"),
+            info: Text(AppLocalizations.of(context)!.eventTitle),
             child: TextField(
               maxLines: 1,
               controller: _ctrlTitle,
             ),
           ),
           AppInfoRow(
-            info: Text("Start Time"),
+            info: Text(AppLocalizations.of(context)!.eventBegin),
             child: DateTimeEdit(
               controller: _ctrlBegin,
             ),
           ),
           AppInfoRow(
-            info: Text("End Time"),
+            info: Text(AppLocalizations.of(context)!.eventEnd),
             child: DateTimeEdit(
               controller: _ctrlEnd,
             ),
           ),
           LocationDropdown(
             controller: _ctrlLocation,
-            onChanged: () => setState(() => {/* Location has changed */}),
+            onChanged: () => setState(() => {
+                  /* Location has changed */
+                }),
           ),
           AppInfoRow(
-            info: Text("Public"),
+            info: Text(AppLocalizations.of(context)!.eventPublic),
             child: Checkbox(
               value: _ctrlPublic,
               onChanged: (bool? active) => setState(() => _ctrlPublic = active!),
             ),
           ),
           AppInfoRow(
-            info: Text("Scrutable"),
+            info: Text(AppLocalizations.of(context)!.eventScrutable),
             child: Checkbox(
               value: _ctrlScrutable,
               onChanged: (bool? active) => setState(() => _ctrlScrutable = active!),
             ),
           ),
           AppInfoRow(
-            info: Text("Notes"),
+            info: Text(AppLocalizations.of(context)!.eventNote),
             child: TextField(
               maxLines: 4,
               controller: _ctrlNote,
@@ -186,16 +189,19 @@ class EventEditPageState extends State<EventEditPage> {
           if (widget.onPasswordChange != null) Divider(),
           if (widget.onPasswordChange != null)
             AppInfoRow(
-              info: Text("Password"),
+              info: Text(AppLocalizations.of(context)!.eventPassword),
               child: TextField(
                 obscureText: true,
                 maxLines: 1,
                 controller: _ctrlPassword,
                 decoration: InputDecoration(
-                  hintText: "Reset password (leave empty to keep current)",
+                  hintText: AppLocalizations.of(context)!.eventPasswordChange,
+                  suffixIcon: IconButton(
+                    onPressed: _handlePasswordChange,
+                    icon: Icon(Icons.save),
+                  ),
                 ),
               ),
-              trailing: IconButton(icon: Icon(Icons.save), onPressed: _handlePasswordChange),
             ),
         ],
       ),

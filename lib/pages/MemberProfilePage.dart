@@ -4,6 +4,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberProfilePage extends StatefulWidget {
   final Session session;
@@ -53,17 +54,17 @@ class MemberProfilePageState extends State<MemberProfilePage> {
               ]
           ),
           AppInfoRow(
-            info: Text("Name"),
-            child: Text("${widget.session.user!.lastname}, ${widget.session.user!.firstname}"),
+            info: Text(AppLocalizations.of(context)!.user),
+            child: Text("${widget.session.user!.toFieldString()}"),
           ),
           AppInfoRow(
-            info: Text("Password"),
+            info: Text(AppLocalizations.of(context)!.userPassword),
             child: TextField(
               obscureText: true,
               maxLines: 1,
               controller: _ctrlUserPassword,
               decoration: InputDecoration(
-                hintText: "Change password (leave empty to keep current)",
+                hintText: AppLocalizations.of(context)!.userPasswordChange,
                 suffixIcon: IconButton(
                   onPressed: _savePassword,
                   icon: Icon(Icons.save),

@@ -122,23 +122,25 @@ class UserEditPageState extends State<UserEditPage> {
       return;
     }
 
-    bool? pwdsuccess = await server.user_edit_password(widget.session, widget.user, _ctrlUserPassword.text);
-    if (pwdsuccess != null && !pwdsuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionSuccessExceptPassword)));
-    }
-
-    _ctrlUserPassword.text = '';
-
     Navigator.pop(context);
   }
 
   void _deleteUser() async {
     if (!await server.user_delete(widget.session, widget.user)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.deletionFail)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
       return;
     }
 
     Navigator.pop(context);
+  }
+
+  void _handlePasswordChange() async {
+    bool? success = await server.user_edit_password(widget.session, widget.user, _ctrlUserPassword.text);
+    if (success != null && !success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
+    }
+
+    _ctrlUserPassword.text = '';
   }
 
   @override
@@ -167,17 +169,6 @@ class UserEditPageState extends State<UserEditPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUserKey,
-            ),
-          ),
-          if (!widget.isDraft) AppInfoRow(
-            info: Text("Password"),
-            child: TextField(
-              obscureText: true,
-              maxLines: 1,
-              controller: _ctrlUserPassword,
-              decoration: InputDecoration(
-                hintText: "Reset password (leave empty to keep current password)",
-              ),
             ),
           ),
           AppInfoRow(
@@ -324,7 +315,7 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: Text("Notes"),
+            info: Text(AppLocalizations.of(context)!.userNote),
             child: TextField(
               maxLines: 8,
               controller: _ctrlUserNote,
@@ -333,6 +324,22 @@ class UserEditPageState extends State<UserEditPage> {
           AppButton(
             text: "Save",
             onPressed: _submitUser,
+          ),
+          if (!widget.isDraft) Divider(),
+          if (!widget.isDraft) AppInfoRow(
+            info: Text(AppLocalizations.of(context)!.userPassword),
+            child: TextField(
+              obscureText: true,
+              maxLines: 1,
+              controller: _ctrlUserPassword,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.userPasswordChange,
+                suffixIcon: IconButton(
+                  onPressed: _handlePasswordChange,
+                  icon: Icon(Icons.save),
+                ),
+              ),
+            ),
           ),
         ],
       ),

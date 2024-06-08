@@ -98,7 +98,7 @@ class TermEditPageState extends State<TermEditPage> {
   void _deleteTerm() async {
     if (!await api_admin.term_delete(widget.session, widget.term)) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.deletionFail)));
+          SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
       return;
     }
 
