@@ -1,17 +1,19 @@
+import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/pages/TermEditPage.dart';
-import 'package:cptclient/static/server_term_admin.dart' as server;
+import 'package:cptclient/static/server_term_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TermOverviewPage extends StatefulWidget {
   final Session session;
+  final Club club;
 
-  TermOverviewPage({super.key, required this.session});
+  TermOverviewPage({super.key, required this.session, required this.club});
 
   @override
   TermOverviewPageState createState() => TermOverviewPageState();
@@ -27,7 +29,7 @@ class TermOverviewPageState extends State<TermOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Term> terms = await server.term_list(widget.session);
+    List<Term> terms = await api_admin.term_list(widget.session, widget.club);
     searchPanelKey.currentState?.setItems(terms);
   }
 
@@ -39,6 +41,7 @@ class TermOverviewPageState extends State<TermOverviewPage> {
           session: widget.session,
           term: term,
           isDraft: false,
+          club: widget.club,
         ),
       ),
     );
@@ -54,6 +57,7 @@ class TermOverviewPageState extends State<TermOverviewPage> {
           session: widget.session,
           term: Term.fromVoid(),
           isDraft: true,
+          club: widget.club,
         ),
       ),
     );
@@ -69,7 +73,6 @@ class TermOverviewPageState extends State<TermOverviewPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          // three pages, choose user, users that should be active, users that should be inactive
           AppButton(
             leading: Icon(Icons.add),
             text: AppLocalizations.of(context)!.actionCreate,

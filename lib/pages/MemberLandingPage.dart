@@ -1,8 +1,7 @@
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppIconButton.dart';
-import 'package:cptclient/material/AppModuleSection.dart';
+import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/pages/CalendarMonthPage.dart';
 import 'package:cptclient/pages/ClubOverviewPage.dart';
 import 'package:cptclient/pages/CompetenceOverviewPage.dart';
@@ -23,7 +22,6 @@ import 'package:cptclient/pages/PossessionUserManagementPage.dart';
 import 'package:cptclient/pages/SkillOverviewPage.dart';
 import 'package:cptclient/pages/StockManagementPage.dart';
 import 'package:cptclient/pages/TeamOverviewPage.dart';
-import 'package:cptclient/pages/TermOverviewPage.dart';
 import 'package:cptclient/pages/UserOverviewPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
@@ -42,7 +40,7 @@ class MemberLandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Welcome ${session.user!.firstname}"),
+        title: Text("${AppLocalizations.of(context)!.labelWelcome} ${session.user!.firstname}"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.perm_identity, color: Colors.white),
@@ -57,175 +55,238 @@ class MemberLandingPage extends StatelessWidget {
       ),
       body: AppBody(
         children: <Widget>[
-          AppIconButton(
-            image: const AssetImage('assets/icons/icon_calendar.png'),
-            text: AppLocalizations.of(context)!.labelCalendar,
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CalendarMonthPage(
-                          session: session,
-                        ))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.labelCalendar,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_calendar.png'),
+            ),
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCalendarMonth),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CalendarMonthPage(session: session))),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCalendarDay),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CalendarDayPage(
+                              session: session,
+                              initialDate: DateTime.now(),
+                            ))),
+              ),
+            ],
           ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_course.png'),
-            text: AppLocalizations.of(context)!.course,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseAvailable,
-            onPressed: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CourseAvailablePage(session: session))),
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseResponsible,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CourseResponsiblePage(session: session))),
-          ),
-          if (session.right!.course.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageCourseManagement,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CourseManagementPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.course,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_course.png'),
             ),
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseAvailable),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CourseAvailablePage(session: session))),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseResponsible),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CourseResponsiblePage(session: session))),
+              ),
+              if (session.right!.course.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageCourseManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => CourseManagementPage(session: session))),
+                ),
+            ],
+          ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_event.png'),
-            text: AppLocalizations.of(context)!.event,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventAvailable,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => EventOverviewAvailablePage(session: session))),
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwnership,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => EventOverviewOwnershipPage(session: session))),
-          ),
-          if (session.right!.event.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageEventManagement,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => EventOverviewManagementPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.event,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_event.png'),
             ),
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventAvailable),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => EventOverviewAvailablePage(session: session))),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnership),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => EventOverviewOwnershipPage(session: session))),
+              ),
+              if (session.right!.event.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageEventManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => EventOverviewManagementPage(session: session))),
+                ),
+            ],
+          ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_rankings.png'),
-            text: AppLocalizations.of(context)!.competence,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCompetencePersonal,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
-          ),
-          if (session.right!.competence.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageCompetenceManagement,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CompetenceOverviewPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.competence,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_rankings.png'),
             ),
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCompetencePersonal),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
+              ),
+              if (session.right!.competence.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageCompetenceManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => CompetenceOverviewPage(session: session))),
+                ),
+            ],
+          ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_teams.png'),
-            text: AppLocalizations.of(context)!.team,
-          ),
-          if (session.right!.team.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageTeamManagement,
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TeamOverviewPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.competence,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_teams.png'),
             ),
+            children: [
+              if (session.right!.team.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageTeamManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => TeamOverviewPage(session: session))),
+                ),
+            ],
+          ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_membership.png'),
-            text: AppLocalizations.of(context)!.term,
+          MenuSection(
+            title: AppLocalizations.of(context)!.term,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_membership.png'),
+            ),
+            children: [
+              if (session.right!.club.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageClubManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ClubOverviewPage(session: session))),
+                ),
+            ],
           ),
-          if (session.right!.club.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageClubManagement,
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClubOverviewPage(session: session))),
-            ),
-          if (session.right!.club.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageTermManagement,
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TermOverviewPage(session: session))),
-            ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_user.png'),
-            text: AppLocalizations.of(context)!.user,
-          ),
-          if (session.right!.user.write)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageUserManagement,
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.user,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_user.png'),
             ),
+            children: [
+              if (session.right!.user.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageUserManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => UserOverviewPage(session: session))),
+                ),
+            ],
+          ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_inventory.png'),
-            text: AppLocalizations.of(context)!.labelInventory,
+          MenuSection(
+            title: AppLocalizations.of(context)!.labelInventory,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_inventory.png'),
+            ),
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pagePossessionPersonal),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => PossessionPersonalPage(session: session))),
+              ),
+              if (session.right!.inventory.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pagePossessionUser),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => PossessionUserManagementPage(session: session))),
+                ),
+              if (session.right!.inventory.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pagePossessionClub),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => PossessionClubManagementPage(session: session))),
+                ),
+              if (session.right!.inventory.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageStockManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => StockManagementPage(session: session))),
+                ),
+              if (session.right!.inventory.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageItemOverview),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ItemOverviewPage(session: session))),
+                ),
+              if (session.right!.inventory.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageItemcatOverview),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ItemcatOverviewPage(session: session))),
+                ),
+            ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pagePossessionPersonal,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PossessionPersonalPage(session: session))),
-          ),
-          if (session.right!.inventory.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pagePossessionUser,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PossessionUserManagementPage(session: session))),
-            ),
-          if (session.right!.inventory.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pagePossessionClub,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PossessionClubManagementPage(session: session))),
-            ),
-          if (session.right!.inventory.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageStockManagement,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => StockManagementPage(session: session))),
-            ),
-          if (session.right!.inventory.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageItemOverview,
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ItemOverviewPage(session: session))),
-            ),
-          if (session.right!.inventory.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageItemcatOverview,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => ItemcatOverviewPage(session: session))),
-            ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_skill.png'),
-            text: AppLocalizations.of(context)!.skill,
-          ),
-          if (session.right!.competence.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageSkillManagement,
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SkillOverviewPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.skill,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_skill.png'),
             ),
+            children: [
+              if (session.right!.competence.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageSkillManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => SkillOverviewPage(session: session))),
+                ),
+            ],
+          ),
           Divider(),
-          AppModuleSection(
-            image: const AssetImage('assets/icons/icon_location.png'),
-            text: AppLocalizations.of(context)!.location,
-          ),
-          if (session.right!.location.read)
-            AppButton(
-              text: AppLocalizations.of(context)!.pageLocationManagement,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => LocationOverviewPage(session: session))),
+          MenuSection(
+            title: AppLocalizations.of(context)!.location,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_location.png'),
             ),
+            children: [
+              if (session.right!.location.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageLocationManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => LocationOverviewPage(session: session))),
+                ),
+            ],
+          ),
         ],
       ),
     );

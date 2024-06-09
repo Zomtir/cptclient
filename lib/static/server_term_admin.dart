@@ -2,14 +2,17 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Term>> term_list(Session session) async {
+Future<List<Term>> term_list(Session session, Club? club) async {
   final response = await http.get(
-    server.uri('/admin/term_list'),
+    server.uri('/admin/term_list', {
+      'club_id': club?.id.toString(),
+    }),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',

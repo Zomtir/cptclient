@@ -1,5 +1,5 @@
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/LoginCoursePage.dart';
@@ -33,6 +33,10 @@ class LoginLandingPageState extends State<LoginLandingPage> {
     }
   }
 
+  void _logout() async {
+    navi.logout();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,37 +57,58 @@ class LoginLandingPageState extends State<LoginLandingPage> {
       ),
       body: AppBody(children: [
         if (html.window.localStorage['Session']!.isNotEmpty)
-          AppButton(
-            text: AppLocalizations.of(context)!.loginResume,
-            onPressed: _resume,
+          MenuSection(
+            title: AppLocalizations.of(context)!.sessionActive,
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.sessionResume),
+                onTap: _resume,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.sessionLogout),
+                onTap: _logout,
+              ),
+            ],
           ),
-        if (html.window.localStorage['Session']!.isNotEmpty) Divider(),
-        AppButton(
-          text: AppLocalizations.of(context)!.loginUser,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
+        MenuSection(
+          title: AppLocalizations.of(context)!.sessionLogin,
+          children: [
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.loginUser),
+              leading: Icon(Icons.person),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.loginEvent),
+              leading: Icon(Icons.event),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginEventPage())),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.loginCourse),
+              leading: Icon(Icons.sports_soccer),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.loginLocation),
+              leading: Icon(Icons.house),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
+            ),
+          ],
         ),
-        AppButton(
-          text: AppLocalizations.of(context)!.loginEvent,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginEventPage())),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.loginCourse,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.loginLocation,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
-        ),
-        Divider(),
-        AppButton(
-          leading: Icon(Icons.settings, color: Colors.white),
-          text: AppLocalizations.of(context)!.pageSettings,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionPage())),
-        ),
-        AppButton(
-          leading: Icon(Icons.info, color: Colors.white),
-          text: AppLocalizations.of(context)!.pageCredits,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
+        MenuSection(
+          title: AppLocalizations.of(context)!.labelMiscellaneous,
+          children: [
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.pageSettings),
+              leading: Icon(Icons.settings),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionPage())),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.pageCredits),
+              leading: Icon(Icons.info),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
+            ),
+          ],
         ),
       ]),
     );

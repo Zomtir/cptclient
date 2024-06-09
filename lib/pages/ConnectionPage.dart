@@ -16,8 +16,9 @@ class ConnectionPage extends StatefulWidget {
 }
 
 class ConnectionPageState extends State<ConnectionPage> {
-  final _ctrlLanguage = Language(Locale(html.window.localStorage['Language']!));
-  final TextEditingController _ctrlServerScheme = TextEditingController(text: html.window.localStorage['ServerScheme']!);
+  Language _ctrlLanguage = Language(Locale(html.window.localStorage['Language']!));
+  final TextEditingController _ctrlServerScheme =
+      TextEditingController(text: html.window.localStorage['ServerScheme']!);
   final TextEditingController _ctrlServerHost = TextEditingController(text: html.window.localStorage['ServerHost']!);
   final TextEditingController _ctrlServerPort = TextEditingController(text: html.window.localStorage['ServerPort']!);
   final TextEditingController _ctrlUser = TextEditingController(text: html.window.localStorage['DefaultUser']!);
@@ -58,7 +59,11 @@ class ConnectionPageState extends State<ConnectionPage> {
                 height: 2,
                 color: Colors.grey,
               ),
-              onChanged: (Language? language) => context.findAncestorStateOfType<CptState>()!.changeLocale(language?.locale),
+              onChanged: (Language? language) {
+                if (language == null) return;
+                context.findAncestorStateOfType<CptState>()!.changeLocale(language.locale);
+                setState(() => _ctrlLanguage = language);
+              },
               items: Language.entries.map<DropdownMenuItem<Language>>((Language l) {
                 return DropdownMenuItem<Language>(
                   value: l,

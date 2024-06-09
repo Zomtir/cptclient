@@ -20,12 +20,14 @@ class TermEditPage extends StatefulWidget {
   final Session session;
   final Term term;
   final bool isDraft;
+  final Club? club;
 
   TermEditPage(
       {super.key,
       required this.session,
       required this.term,
-      required this.isDraft});
+      required this.isDraft,
+      this.club});
 
   @override
   TermEditPageState createState() => TermEditPageState();
@@ -60,7 +62,7 @@ class TermEditPageState extends State<TermEditPage> {
 
   void _gatherTerm() {
     widget.term.user = _ctrlTermUser.value;
-    widget.term.club = _ctrlTermClub.value;
+    widget.term.club = widget.club ?? _ctrlTermClub.value;
     widget.term.begin = _ctrlTermBegin.getDateTime();
     widget.term.end = _ctrlTermEnd.getDateTime();
   }
@@ -75,7 +77,7 @@ class TermEditPageState extends State<TermEditPage> {
       return;
     }
 
-    if (_ctrlTermClub.value == null) {
+    if (widget.club == null && _ctrlTermClub.value == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
               "${AppLocalizations.of(context)!.termClub} ${AppLocalizations.of(context)!.isInvalid}")));
@@ -131,7 +133,7 @@ class TermEditPageState extends State<TermEditPage> {
               onChanged: (user) => setState(() => _ctrlTermUser.value = user),
             ),
           ),
-          AppInfoRow(
+          if (widget.club == null) AppInfoRow(
             info: AppLocalizations.of(context)!.termClub,
             child: AppField<Club>(
               controller: _ctrlTermClub,
