@@ -6,6 +6,7 @@ import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 class CalendarMonthPage extends StatefulWidget {
@@ -92,7 +93,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Calendar"),
+        title: Text(AppLocalizations.of(context)!.pageCalendarMonth),
       ),
       body: AppBody(
         maxWidth: 720,
@@ -148,6 +149,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
         child: Text(
           '${weekdays[index]}',
           textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
       );
     });
@@ -165,7 +167,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
             InkWell(
                 child: Text(
                   '${index + 1}',
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context).textTheme.labelLarge,
                   textAlign: TextAlign.center,
                 ),
                 onTap: () => _handleDay(index + 1)),

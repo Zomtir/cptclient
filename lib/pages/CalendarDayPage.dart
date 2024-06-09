@@ -5,6 +5,7 @@ import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CalendarDayPage extends StatefulWidget {
   final Session session;
@@ -70,7 +71,7 @@ class CalendarDayPageState extends State<CalendarDayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Calendar Day"),
+        title: Text(AppLocalizations.of(context)!.pageCalendarDay),
       ),
       body: AppBody(
         children: [
@@ -98,19 +99,10 @@ class CalendarDayPageState extends State<CalendarDayPage> {
 
   List<Widget> buildDay(BuildContext context) {
     return List.generate(_eventsFiltered.length, (index) {
-      return InkWell(
-        onTap: () => _handleSelectEvent(_eventsFiltered[index]),
-        child: Container(
-          child: Text(
-            _eventsFiltered[index].title,
-            style: Theme.of(context).textTheme.labelSmall,
-            maxLines: 1,
-            softWrap: false,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(5.0),
-          ),
+      return Card(
+        child: ListTile(
+          title: Text(_eventsFiltered[index].title),
+          onTap: () => _handleSelectEvent(_eventsFiltered[index]),
         ),
       );
     });
