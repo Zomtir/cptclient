@@ -47,7 +47,7 @@ class ConnectionPageState extends State<ConnectionPage> {
       body: AppBody(
         children: [
           AppInfoRow(
-            info: "Language",
+            info: AppLocalizations.of(context)!.labelLanguage,
             child: DropdownButton<Language>(
               value: _ctrlLanguage,
               icon: Icon(Icons.arrow_downward),
@@ -75,7 +75,7 @@ class ConnectionPageState extends State<ConnectionPage> {
           ),
           Divider(),
           AppInfoRow(
-            info: "Server Scheme",
+            info: AppLocalizations.of(context)!.labelServerScheme,
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerScheme,
@@ -86,7 +86,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: "Server Host",
+            info: AppLocalizations.of(context)!.labelServerHost,
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerHost,
@@ -97,7 +97,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppInfoRow(
-            info: "Server Port",
+            info: AppLocalizations.of(context)!.labelServerPort,
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerPort,
@@ -108,12 +108,12 @@ class ConnectionPageState extends State<ConnectionPage> {
             ),
           ),
           AppButton(
-            text: "Test",
+            text: AppLocalizations.of(context)!.actionTest,
             onPressed: _testConnection,
             trailing: Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
           ),
           AppButton(
-            text: "Reconnect",
+            text: AppLocalizations.of(context)!.actionConnect,
             onPressed: () {
               Navigator.popUntil(context, (route) => route.isFirst);
               Navigator.pushReplacementNamed(context, '/');
