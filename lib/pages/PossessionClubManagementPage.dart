@@ -1,4 +1,5 @@
 import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -13,8 +14,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PossessionClubManagementPage extends StatefulWidget {
   final Session session;
+  final Club? club;
+  final Item? item;
 
-  PossessionClubManagementPage({super.key, required this.session});
+  PossessionClubManagementPage({super.key, required this.session, this.club, this.item});
 
   @override
   PossessionClubManagementPageState createState() => PossessionClubManagementPageState();
@@ -32,20 +35,24 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
   }
 
   Future<void> _prepare() async {
-    List<Club> clubs = await api_anon.club_list();
-    Club? club = await showTilePicker(context: context, items: clubs);
+    if (widget.club == null) {
+      List<Club> clubs = await api_anon.club_list();
+      Club? club = await showTilePicker(context: context, items: clubs);
 
-    if (club == null) {
-      Navigator.pop(context);
-      return;
+      if (club == null) {
+        Navigator.pop(context);
+        return;
+      }
+      setState(() => _club = club);
+    } else {
+      setState(() => _club = widget.club);
     }
 
-    setState(() => _club = club);
     _update();
   }
 
   Future<void> _update() async {
-    List<Possession> possessions = await api_admin.possession_list(widget.session, null, false, _club!);
+    List<Possession> possessions = await api_admin.possession_list(widget.session, null, widget.item, false, _club!);
     possessions.sort();
 
     setState(() {
@@ -72,7 +79,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
       body: AppBody(
         maxWidth: 1000,
         children: <Widget>[
-          AppButton(
+          if (widget.club == null) AppButton(
             text: AppLocalizations.of(context)!.possessionClub,
             onPressed: _prepare,
             leading: Icon(Icons.refresh),
@@ -102,7 +109,6 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
                               icon: Icon(Icons.undo),
                               onPressed: () => _handleReturn(_possessions[index]),
                             ),
-                            Spacer(),
                             IconButton(
                               icon: Icon(Icons.card_giftcard),
                               onPressed: () => _handleHandout(_possessions[index]),

@@ -6,6 +6,7 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/pages/PossessionClubManagementPage.dart';
 import 'package:cptclient/static/server_club_anon.dart' as api_anon;
 import 'package:cptclient/static/server_inventory_admin.dart' as api_admin;
 import 'package:cptclient/static/server_item_admin.dart' as api_admin;
@@ -61,7 +62,6 @@ class StockManagementPageState extends State<StockManagementPage> {
 
     Stock stock = Stock(club: _club!, item: item, owned: 1, loaned: 0);
     await api_admin.stock_edit(widget.session, stock);
-
     _update();
   }
 
@@ -71,7 +71,20 @@ class StockManagementPageState extends State<StockManagementPage> {
     stock.owned = stock.owned + delta;
 
     await api_admin.stock_edit(widget.session, stock);
+    _update();
+  }
 
+  void _viewLoans(Stock stock) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PossessionClubManagementPage(
+          session: widget.session,
+          club: stock.club,
+          item: stock.item,
+        ),
+      ),
+    );
     _update();
   }
 
@@ -82,7 +95,6 @@ class StockManagementPageState extends State<StockManagementPage> {
     if (user == null) return;
 
     await api_admin.item_loan(widget.session, stock, user);
-
     _update();
   }
 
@@ -128,6 +140,10 @@ class StockManagementPageState extends State<StockManagementPage> {
                   DataCell(
                     Row(
                       children: [
+                        IconButton(
+                          icon: Icon(Icons.list_alt_outlined),
+                          onPressed: () => _viewLoans(_stocks[index]),
+                        ),
                         Text("${_stocks[index].loaned}"),
                         IconButton(
                           icon: Icon(Icons.arrow_forward),

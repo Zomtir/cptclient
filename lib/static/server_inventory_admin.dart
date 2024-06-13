@@ -43,10 +43,11 @@ Future<bool> stock_edit(Session session, Stock stock) async {
   return (response.statusCode == 200);
 }
 
-Future<List<Possession>> possession_list(Session session, User? user, bool? owned, Club? club) async {
+Future<List<Possession>> possession_list(Session session, User? user, Item? item, bool? owned, Club? club) async {
   final response = await http.get(
     server.uri('/admin/possession_list', {
       'user_id': user?.id.toString(),
+      'item_id': item?.id.toString(),
       'owned': owned?.toString(),
       'club_id': club?.id.toString(),
     }),

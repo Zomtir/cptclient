@@ -47,7 +47,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   }
 
   Future<void> _update() async {
-    List<Possession> possessions = await api_admin.possession_list(widget.session, _user!, null, null);
+    List<Possession> possessions = await api_admin.possession_list(widget.session, _user!, null, null, null);
     possessions.sort();
 
     setState(() {
