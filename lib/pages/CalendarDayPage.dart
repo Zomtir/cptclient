@@ -4,8 +4,8 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class CalendarDayPage extends StatefulWidget {
   final Session session;

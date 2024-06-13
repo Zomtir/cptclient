@@ -55,13 +55,11 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
 
   void _handleReturn(Possession possession) async {
     await api_admin.item_return(widget.session, possession);
-
     _update();
   }
 
   void _handleHandout(Possession possession) async {
     await api_admin.item_handout(widget.session, possession);
-
     _update();
   }
 

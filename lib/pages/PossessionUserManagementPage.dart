@@ -57,13 +57,16 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
 
   void _handleHandout(Possession possession) async {
     await api_admin.item_handout(widget.session, possession);
-
     _update();
   }
 
   void _handleHandback(Possession possession) async {
     await api_admin.item_handback(widget.session, possession);
+    _update();
+  }
 
+  void _handleReturn(Possession possession) async {
+    await api_admin.item_return(widget.session, possession);
     _update();
   }
 
@@ -74,13 +77,11 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
     if (item == null) return;
 
     await api_admin.possession_create(widget.session, _user!, item);
-
     _update();
   }
 
   void _handleDelete(Possession possession) async {
     await api_admin.possession_delete(widget.session, possession);
-
     _update();
   }
 
@@ -133,13 +134,18 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                           children: [
                             if (!_possessions[index].owned)
                               IconButton(
-                                icon: Icon(Icons.arrow_back),
+                                icon: Icon(Icons.card_giftcard),
                                 onPressed: () => _handleHandout(_possessions[index]),
                               ),
                             if (_possessions[index].owned && _possessions[index].club != null)
                               IconButton(
-                                icon: Icon(Icons.arrow_forward),
+                                icon: Icon(Icons.do_not_disturb),
                                 onPressed: () => _handleHandback(_possessions[index]),
+                              ),
+                            if (!_possessions[index].owned && _possessions[index].club != null)
+                              IconButton(
+                                icon: Icon(Icons.redo),
+                                onPressed: () => _handleReturn(_possessions[index]),
                               ),
                             if (_possessions[index].owned)
                               IconButton(
