@@ -6,6 +6,7 @@ import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/static/server_ranking_regular.dart' as server;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetenceSummaryPage extends StatefulWidget {
   final Session session;
@@ -43,16 +44,16 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Competence"),
+        title: Text(AppLocalizations.of(context)!.pageCompetencePersonal),
       ),
       body: AppBody(
         children: <Widget>[
           DataTable(
-            columns: const [
-              DataColumn(label: Text('Skill')),
-              DataColumn(label: Text('Min')),
-              DataColumn(label: Text('Max')),
-              DataColumn(label: Text('Current')),
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.competenceSkill)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.skillRangeMin)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.skillRangeMax)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.competenceSkillRank)),
             ],
             rows: List<DataRow>.generate(_summary.length, (index) {
               return DataRow(

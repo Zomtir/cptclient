@@ -158,7 +158,7 @@ class MemberLandingPage extends StatelessWidget {
           ),
           Divider(),
           MenuSection(
-            title: AppLocalizations.of(context)!.competence,
+            title: AppLocalizations.of(context)!.team,
             icon: Image(
               width: 40,
               alignment: Alignment.center,
