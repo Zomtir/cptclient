@@ -18,7 +18,7 @@ class AppIconButton extends StatelessWidget {
       width: 150,
       child: ElevatedButton(
         style: ButtonStyle(
-          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+          padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
