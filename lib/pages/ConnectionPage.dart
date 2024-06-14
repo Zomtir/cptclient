@@ -129,7 +129,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             onPressed: () {
               navi.applyServer();
               Navigator.popUntil(context, (route) => route.isFirst);
-              Navigator.pushReplacementNamed(context, '/');
+              Navigator.pushReplacementNamed(context, '/login');
             },
           ),
           AppInfoRow(
