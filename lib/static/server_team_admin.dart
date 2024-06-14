@@ -8,7 +8,7 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Team>> team_list(Session session) async {
+Future<List<Team>> team_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/team_list'),
     headers: {
@@ -23,7 +23,7 @@ Future<List<Team>> team_list(Session session) async {
   return List<Team>.from(l.map((model) => Team.fromJson(model)));
 }
 
-Future<int?> team_create(Session session, Team team) async {
+Future<int?> team_create(UserSession session, Team team) async {
   final response = await http.post(
     server.uri('/admin/team_create'),
     headers: {
@@ -39,7 +39,7 @@ Future<int?> team_create(Session session, Team team) async {
   return int.tryParse(utf8.decode(response.bodyBytes));
 }
 
-Future<bool> team_edit(Session session, Team team) async {
+Future<bool> team_edit(UserSession session, Team team) async {
   final response = await http.post(
     server.uri('/admin/team_edit', {
       'team_id': team.id.toString(),
@@ -54,7 +54,7 @@ Future<bool> team_edit(Session session, Team team) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> team_right_edit(Session session, Team team) async {
+Future<bool> team_right_edit(UserSession session, Team team) async {
   final response = await http.post(
     server.uri('/admin/team_right_edit', {
       'team_id': team.id.toString(),
@@ -69,7 +69,7 @@ Future<bool> team_right_edit(Session session, Team team) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> team_delete(Session session, Team team) async {
+Future<bool> team_delete(UserSession session, Team team) async {
   final response = await http.head(
     server.uri('/admin/team_delete', {
       'team_id': team.id.toString(),
@@ -82,7 +82,7 @@ Future<bool> team_delete(Session session, Team team) async {
   return (response.statusCode == 200);
 }
 
-Future<List<User>> team_member_list(Session session, int teamID) async {
+Future<List<User>> team_member_list(UserSession session, int teamID) async {
   final response = await http.get(
     server.uri('/admin/team_member_list', {'team_id': teamID.toString()}),
     headers: {
@@ -97,7 +97,7 @@ Future<List<User>> team_member_list(Session session, int teamID) async {
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> team_member_add(Session session, int teamID, int userID) async {
+Future<bool> team_member_add(UserSession session, int teamID, int userID) async {
   final response = await http.head(
     server.uri('/admin/team_member_add', {
       'team_id': teamID.toString(),
@@ -111,7 +111,7 @@ Future<bool> team_member_add(Session session, int teamID, int userID) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> team_member_remove(Session session, int teamID, int userID) async {
+Future<bool> team_member_remove(UserSession session, int teamID, int userID) async {
   final response = await http.head(
     server.uri('/admin/team_member_remove', {
       'team_id': teamID.toString(),

@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventDetailManagementPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final int eventID;
   
   EventDetailManagementPage({super.key, required this.session, required this.eventID});
@@ -72,13 +72,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: event!),
-          onCallAvailable: (session) => api_admin.event_participant_pool(session, event!),
-          onCallSelected: (session) => api_admin.event_participant_list(session, event!),
-          onCallAdd: (session, user) => api_admin.event_participant_add(session, event!, user),
-          onCallRemove: (session, user) => api_admin.event_participant_remove(session, event!, user),
+          onCallAvailable: () => api_admin.event_participant_pool(widget.session, event!),
+          onCallSelected: () => api_admin.event_participant_list(widget.session, event!),
+          onCallAdd: (user) => api_admin.event_participant_add(widget.session, event!, user),
+          onCallRemove: (user) => api_admin.event_participant_remove(widget.session, event!, user),
         ),
       ),
     );
@@ -89,10 +88,9 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => ListPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
           tile: AppEventTile(event: event!),
-          onCallList: (session) => api_admin.event_participant_registration_list(session, event!),
+          onCallList: () => api_admin.event_participant_registration_list(widget.session, event!),
         ),
       ),
     );
@@ -103,13 +101,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipantInvites,
           tile: AppEventTile(event: event!),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_admin.event_participant_invite_list(session, event!.id),
-          onCallAdd: (session, user) => api_admin.event_participant_invite_add(session, event!.id, user.id),
-          onCallRemove: (session, user) => api_admin.event_participant_invite_remove(session, event!.id, user.id),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_admin.event_participant_invite_list(widget.session, event!.id),
+          onCallAdd: (user) => api_admin.event_participant_invite_add(widget.session, event!.id, user.id),
+          onCallRemove: (user) => api_admin.event_participant_invite_remove(widget.session, event!.id, user.id),
         ),
       ),
     );
@@ -120,13 +117,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipantUninvites,
           tile: AppEventTile(event: event!),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_admin.event_participant_uninvite_list(session, event!.id),
-          onCallAdd: (session, user) => api_admin.event_participant_uninvite_add(session, event!.id, user.id),
-          onCallRemove: (session, user) => api_admin.event_participant_uninvite_remove(session, event!.id, user.id),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_admin.event_participant_uninvite_list(widget.session, event!.id),
+          onCallAdd: (user) => api_admin.event_participant_uninvite_add(widget.session, event!.id, user.id),
+          onCallRemove: (user) => api_admin.event_participant_uninvite_remove(widget.session, event!.id, user.id),
         ),
       ),
     );
@@ -137,13 +133,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppEventTile(event: event!),
-          onCallAvailable: (session) => api_admin.event_owner_pool(session, event!),
-          onCallSelected: (session) => api_admin.event_owner_list(session, event!),
-          onCallAdd: (session, user) => api_admin.event_owner_add(session, event!, user),
-          onCallRemove: (session, user) => api_admin.event_owner_remove(session, event!, user),
+          onCallAvailable: () => api_admin.event_owner_pool(widget.session, event!),
+          onCallSelected: () => api_admin.event_owner_list(widget.session, event!),
+          onCallAdd: (user) => api_admin.event_owner_add(widget.session, event!, user),
+          onCallRemove: (user) => api_admin.event_owner_remove(widget.session, event!, user),
         ),
       ),
     );
@@ -154,10 +149,9 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => ListPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
           tile: AppEventTile(event: event!),
-          onCallList: (session) => api_admin.event_owner_registration_list(session, event!),
+          onCallList: () => api_admin.event_owner_registration_list(widget.session, event!),
         ),
       ),
     );
@@ -168,13 +162,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwnerInvites,
           tile: AppEventTile(event: event!),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_admin.event_owner_invite_list(session, event!.id),
-          onCallAdd: (session, user) => api_admin.event_owner_invite_add(session, event!.id, user.id),
-          onCallRemove: (session, user) => api_admin.event_owner_invite_remove(session, event!.id, user.id),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_admin.event_owner_invite_list(widget.session, event!.id),
+          onCallAdd: (user) => api_admin.event_owner_invite_add(widget.session, event!.id, user.id),
+          onCallRemove: (user) => api_admin.event_owner_invite_remove(widget.session, event!.id, user.id),
         ),
       ),
     );
@@ -185,13 +178,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwnerUninvites,
           tile: AppEventTile(event: event!),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_admin.event_owner_uninvite_list(session, event!.id),
-          onCallAdd: (session, user) => api_admin.event_owner_uninvite_add(session, event!.id, user.id),
-          onCallRemove: (session, user) => api_admin.event_owner_uninvite_remove(session, event!.id, user.id),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_admin.event_owner_uninvite_list(widget.session, event!.id),
+          onCallAdd: (user) => api_admin.event_owner_uninvite_add(widget.session, event!.id, user.id),
+          onCallRemove: (user) => api_admin.event_owner_uninvite_remove(widget.session, event!.id, user.id),
         ),
       ),
     );

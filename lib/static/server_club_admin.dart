@@ -10,7 +10,7 @@ import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Club>> club_list(Session session) async {
+Future<List<Club>> club_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/club_list'),
     headers: {
@@ -24,7 +24,7 @@ Future<List<Club>> club_list(Session session) async {
   return List<Club>.from(l.map((model) => Club.fromJson(model)));
 }
 
-Future<bool> club_create(Session session, Club club) async {
+Future<bool> club_create(UserSession session, Club club) async {
   final response = await http.post(
     server.uri('/admin/club_create'),
     headers: {
@@ -37,7 +37,7 @@ Future<bool> club_create(Session session, Club club) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> club_edit(Session session, Club club) async {
+Future<bool> club_edit(UserSession session, Club club) async {
   final response = await http.post(
     server.uri('/admin/club_edit', {
       'club_id': club.id.toString(),
@@ -52,7 +52,7 @@ Future<bool> club_edit(Session session, Club club) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> club_delete(Session session, Club club) async {
+Future<bool> club_delete(UserSession session, Club club) async {
   final response = await http.head(
     server.uri('/admin/club_delete', {
       'club_id': club.id.toString(),
@@ -65,7 +65,7 @@ Future<bool> club_delete(Session session, Club club) async {
   return (response.statusCode == 200);
 }
 
-Future<List<(User, int)>> club_statistic_members(Session session, Club club, DateTime point_in_time) async {
+Future<List<(User, int)>> club_statistic_members(UserSession session, Club club, DateTime point_in_time) async {
   final response = await http.get(
     server.uri('/admin/club_statistic_members', {
       'club_id': club.id.toString(),
@@ -82,7 +82,7 @@ Future<List<(User, int)>> club_statistic_members(Session session, Club club, Dat
   return List<(User, int)>.from(l.map((model) => (User.fromJson(model[0]), model[1])));
 }
 
-Future<List<User>> club_statistic_team(Session session, Club club, DateTime point_in_time, Team team) async {
+Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime point_in_time, Team team) async {
   final response = await http.get(
     server.uri('/admin/club_statistic_team', {
       'club_id': club.id.toString(),

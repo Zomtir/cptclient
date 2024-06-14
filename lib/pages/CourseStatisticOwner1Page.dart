@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseStatisticOwner1Page extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Course course;
   final int ownerID;
 

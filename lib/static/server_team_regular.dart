@@ -7,7 +7,7 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Team>> team_list(Session session) async {
+Future<List<Team>> team_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/team_list'),
     headers: {

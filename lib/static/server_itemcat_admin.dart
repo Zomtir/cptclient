@@ -7,7 +7,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<ItemCategory>> itemcat_list(Session session) async {
+Future<List<ItemCategory>> itemcat_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/itemcat_list'),
     headers: {
@@ -21,7 +21,7 @@ Future<List<ItemCategory>> itemcat_list(Session session) async {
   return List<ItemCategory>.from(l.map((model) => ItemCategory.fromJson(model)));
 }
 
-Future<bool> itemcat_create(Session session, ItemCategory category) async {
+Future<bool> itemcat_create(UserSession session, ItemCategory category) async {
   final response = await http.post(
     server.uri('/admin/itemcat_create'),
     headers: {
@@ -34,7 +34,7 @@ Future<bool> itemcat_create(Session session, ItemCategory category) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> itemcat_edit(Session session, ItemCategory category) async {
+Future<bool> itemcat_edit(UserSession session, ItemCategory category) async {
   final response = await http.post(
     server.uri('/admin/itemcat_edit', {
       'category_id': category.id.toString(),
@@ -49,7 +49,7 @@ Future<bool> itemcat_edit(Session session, ItemCategory category) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> itemcat_delete(Session session, ItemCategory category) async {
+Future<bool> itemcat_delete(UserSession session, ItemCategory category) async {
   final response = await http.head(
     server.uri('/admin/itemcat_delete', {
       'category_id': category.id.toString(),

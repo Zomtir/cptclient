@@ -7,7 +7,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Location>> location_list(Session session) async {
+Future<List<Location>> location_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/location_list'),
     headers: {
@@ -21,7 +21,7 @@ Future<List<Location>> location_list(Session session) async {
   return List<Location>.from(l.map((model) => Location.fromJson(model)));
 }
 
-Future<bool> location_create(Session session, Location location) async {
+Future<bool> location_create(UserSession session, Location location) async {
   final response = await http.post(
     server.uri('/admin/location_create'),
     headers: {
@@ -34,7 +34,7 @@ Future<bool> location_create(Session session, Location location) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> location_edit(Session session, Location location) async {
+Future<bool> location_edit(UserSession session, Location location) async {
   final response = await http.post(
     server.uri('/admin/location_edit'),
     headers: {
@@ -47,7 +47,7 @@ Future<bool> location_edit(Session session, Location location) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> location_delete(Session session, Location location) async {
+Future<bool> location_delete(UserSession session, Location location) async {
   final response = await http.head(
     server.uri('/admin/location_delete', {'location': location.id.toString()}),
     headers: {

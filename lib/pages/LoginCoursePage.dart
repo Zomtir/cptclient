@@ -8,7 +8,6 @@ import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_course_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import "package:universal_html/html.dart" as html;
 
 class LoginCoursePage extends StatefulWidget {
   LoginCoursePage({super.key});
@@ -24,9 +23,6 @@ class LoginCoursePageState extends State<LoginCoursePage> {
   @override
   void initState() {
     super.initState();
-
-    _ctrlLogin.text = html.window.localStorage['DefaultCourse']!;
-    _cache = [];
     _load();
   }
 
@@ -36,11 +32,8 @@ class LoginCoursePageState extends State<LoginCoursePage> {
   }
 
   void _loginCourse() async {
-    bool success = await server.loginCourse(_ctrlLogin.text);
-
-    _ctrlLogin.text = html.window.localStorage['DefaultCourse']!;
-
-    if (success) navi.loginEvent();
+    String? token = await server.loginCourse(_ctrlLogin.text);
+    if (token != null) navi.loginEvent(token);
   }
 
   @override
@@ -58,7 +51,7 @@ class LoginCoursePageState extends State<LoginCoursePage> {
           textInputAction: TextInputAction.next,
           onEditingComplete: () => node.nextFocus(),
           decoration: InputDecoration(
-            labelText: "Course Key",
+            labelText: AppLocalizations.of(context)!.courseKey,
             hintText: "Only alphanumeric characters",
             suffixIcon: IconButton(
               focusNode: FocusNode(skipTraversal: true),

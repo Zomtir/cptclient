@@ -8,7 +8,6 @@ import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import "package:universal_html/html.dart" as html;
 
 class LoginLocationPage extends StatefulWidget {
   LoginLocationPage({super.key});
@@ -24,8 +23,6 @@ class LoginLocationPageState extends State<LoginLocationPage> {
   @override
   void initState() {
     super.initState();
-
-    _ctrlLogin.text = html.window.localStorage['DefaultLocation']!;
     _receiveLocations();
   }
 
@@ -38,11 +35,8 @@ class LoginLocationPageState extends State<LoginLocationPage> {
   }
 
   void _loginLocation() async {
-    bool success = await server.loginLocation(_ctrlLogin.text);
-
-    _ctrlLogin.text = html.window.localStorage['DefaultLocation']!;
-
-    if (success) navi.loginEvent();
+    String? token = await server.loginLocation(_ctrlLogin.text);
+    if (token != null) navi.loginEvent(token);
   }
 
   @override

@@ -9,7 +9,7 @@ import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<User>> user_list(Session session) async {
+Future<List<User>> user_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/user_list'),
     headers: {
@@ -24,7 +24,7 @@ Future<List<User>> user_list(Session session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<User?> user_detailed(Session session, User user) async {
+Future<User?> user_detailed(UserSession session, User user) async {
   final response = await http.get(
     server.uri('/admin/user_detailed', {
       'user_id': user.id.toString(),
@@ -40,7 +40,7 @@ Future<User?> user_detailed(Session session, User user) async {
   return User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<bool> user_create(Session session, User user) async {
+Future<bool> user_create(UserSession session, User user) async {
   final response = await http.post(
     server.uri('/admin/user_create'),
     headers: {
@@ -53,7 +53,7 @@ Future<bool> user_create(Session session, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> user_edit(Session session, User user) async {
+Future<bool> user_edit(UserSession session, User user) async {
   final response = await http.post(
     server.uri('/admin/user_edit', {
       'user_id': user.id.toString(),
@@ -68,7 +68,7 @@ Future<bool> user_edit(Session session, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<bool?> user_edit_password(Session session, User user, String password) async {
+Future<bool?> user_edit_password(UserSession session, User user, String password) async {
   if (password.isEmpty) return null;
   if (password.length < 6) return false;
 
@@ -89,7 +89,7 @@ Future<bool?> user_edit_password(Session session, User user, String password) as
   return (response.statusCode == 200);
 }
 
-Future<bool> user_delete(Session session, User user) async {
+Future<bool> user_delete(UserSession session, User user) async {
   final response = await http.head(
     server.uri('/admin/user_delete', {
       'user_id': user.id.toString(),

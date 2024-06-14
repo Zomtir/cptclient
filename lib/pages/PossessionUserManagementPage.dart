@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PossessionUserManagementPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
 
   PossessionUserManagementPage({super.key, required this.session});
 

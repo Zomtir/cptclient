@@ -8,7 +8,7 @@ import 'package:cptclient/json/term.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Term>> term_list(Session session, Club? club) async {
+Future<List<Term>> term_list(UserSession session, Club? club) async {
   final response = await http.get(
     server.uri('/admin/term_list', {
       'club_id': club?.id.toString(),
@@ -25,7 +25,7 @@ Future<List<Term>> term_list(Session session, Club? club) async {
   return List<Term>.from(l.map((model) => Term.fromJson(model)));
 }
 
-Future<bool> term_create(Session session, Term term) async {
+Future<bool> term_create(UserSession session, Term term) async {
   final response = await http.post(
     server.uri('/admin/term_create'),
     headers: {
@@ -38,7 +38,7 @@ Future<bool> term_create(Session session, Term term) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> term_edit(Session session, Term term) async {
+Future<bool> term_edit(UserSession session, Term term) async {
   final response = await http.post(
     server.uri('/admin/term_edit', {
       'term_id': term.id.toString(),
@@ -53,7 +53,7 @@ Future<bool> term_edit(Session session, Term term) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> term_delete(Session session, Term term) async {
+Future<bool> term_delete(UserSession session, Term term) async {
   final response = await http.head(
     server.uri('/admin/term_delete', {
       'term_id': term.id.toString(),

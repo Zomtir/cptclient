@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 class CalendarMonthPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
 
   CalendarMonthPage({super.key, required this.session});
 

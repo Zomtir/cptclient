@@ -10,7 +10,7 @@ import 'package:cptclient/static/message.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Event>> event_list(Session session, {DateTime? begin, DateTime? end, Location? location, Status? status, bool? courseTrue, int? courseID}) async {
+Future<List<Event>> event_list(UserSession session, {DateTime? begin, DateTime? end, Location? location, Status? status, bool? courseTrue, int? courseID}) async {
   final response = await http.get(
     server.uri('/regular/event_list', {
       'begin': formatWebDateTime(begin),
@@ -32,7 +32,7 @@ Future<List<Event>> event_list(Session session, {DateTime? begin, DateTime? end,
   return List<Event>.from(l.map((model) => Event.fromJson(model)));
 }
 
-Future<bool> event_create(Session session, Event event) async {
+Future<bool> event_create(UserSession session, Event event) async {
   if (event.key.isEmpty) return false;
 
   final response = await http.post(
@@ -49,7 +49,7 @@ Future<bool> event_create(Session session, Event event) async {
   return success;
 }
 
-Future<bool?> event_owner_true(Session session, Event event) async {
+Future<bool?> event_owner_true(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_owner_true', {
       'event_id': event.id.toString(),
@@ -65,7 +65,7 @@ Future<bool?> event_owner_true(Session session, Event event) async {
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool?> event_owner_registration_true(Session session, Event event) async {
+Future<bool?> event_owner_registration_true(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_owner_registration_true', {
       'event_id': event.id.toString(),
@@ -81,7 +81,7 @@ Future<bool?> event_owner_registration_true(Session session, Event event) async 
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool> event_owner_registration_edit(Session session, Event event, bool registration) async {
+Future<bool> event_owner_registration_edit(UserSession session, Event event, bool registration) async {
   final response = await http.head(
     server.uri('/regular/event_owner_registration_edit', {
       'event_id': event.id.toString(),
@@ -96,7 +96,7 @@ Future<bool> event_owner_registration_edit(Session session, Event event, bool re
   return (response.statusCode != 200);
 }
 
-Future<bool?> event_participant_true(Session session, Event event) async {
+Future<bool?> event_participant_true(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_participant_true', {
       'event_id': event.id.toString(),
@@ -112,7 +112,7 @@ Future<bool?> event_participant_true(Session session, Event event) async {
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool> event_participant_add(Session session, Event event) async {
+Future<bool> event_participant_add(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/regular/event_participant_add', {
       'event_id': event.id.toString(),
@@ -125,7 +125,7 @@ Future<bool> event_participant_add(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_remove(Session session, Event event) async {
+Future<bool> event_participant_remove(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/regular/event_participant_remove', {
       'event_id': event.id.toString(),
@@ -138,7 +138,7 @@ Future<bool> event_participant_remove(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool?> event_participant_registration_true(Session session, Event event) async {
+Future<bool?> event_participant_registration_true(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_participant_registration_true', {
       'event_id': event.id.toString(),
@@ -154,7 +154,7 @@ Future<bool?> event_participant_registration_true(Session session, Event event) 
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool> event_participant_registration_edit(Session session, Event event, bool registration) async {
+Future<bool> event_participant_registration_edit(UserSession session, Event event, bool registration) async {
   final response = await http.head(
     server.uri('/regular/event_participant_registration_edit', {
       'event_id': event.id.toString(),
@@ -169,7 +169,7 @@ Future<bool> event_participant_registration_edit(Session session, Event event, b
   return (response.statusCode != 200);
 }
 
-Future<bool?> event_bookmark_true(Session session, Event event) async {
+Future<bool?> event_bookmark_true(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_bookmark_true', {
       'event_id': event.id.toString(),
@@ -185,7 +185,7 @@ Future<bool?> event_bookmark_true(Session session, Event event) async {
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool> event_bookmark_edit(Session session, Event event, bool bookmark) async {
+Future<bool> event_bookmark_edit(UserSession session, Event event, bool bookmark) async {
   final response = await http.head(
     server.uri('/regular/event_bookmark_edit', {
       'event_id': event.id.toString(),

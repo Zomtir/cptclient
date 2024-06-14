@@ -14,12 +14,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventEditPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Event event;
   final bool isDraft;
-  final Future<bool> Function(Session, Event) onSubmit;
-  final Future<bool> Function(Session, Event, String)? onPasswordChange;
-  final Future<bool> Function(Session, Event)? onDelete;
+  final Future<bool> Function(UserSession, Event) onSubmit;
+  final Future<bool> Function(UserSession, Event, String)? onPasswordChange;
+  final Future<bool> Function(UserSession, Event)? onDelete;
 
   EventEditPage({
     super.key,

@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RequirementOverviewPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Course course;
 
   RequirementOverviewPage({super.key, required this.session, required this.course});

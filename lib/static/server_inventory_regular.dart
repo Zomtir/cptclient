@@ -9,7 +9,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Possession>> possession_list(Session session, bool? owned, Club? club) async {
+Future<List<Possession>> possession_list(UserSession session, bool? owned, Club? club) async {
   final response = await http.get(
     server.uri('/regular/possession_list', {
       'owned': owned?.toString(),
@@ -26,7 +26,7 @@ Future<List<Possession>> possession_list(Session session, bool? owned, Club? clu
   return List<Possession>.from(l.map((model) => Possession.fromJson(model)));
 }
 
-Future<List<ItemCategory>> itemcat_list(Session session) async {
+Future<List<ItemCategory>> itemcat_list(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/itemcat_list'),
     headers: {

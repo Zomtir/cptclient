@@ -10,7 +10,7 @@ import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Event>> event_list(Session session, DateTime begin, DateTime end, Status? status, Location? location) async {
+Future<List<Event>> event_list(UserSession session, DateTime begin, DateTime end, Status? status, Location? location) async {
   final response = await http.get(
     server.uri('/owner/event_list', {
       'begin': formatWebDateTime(begin),
@@ -29,7 +29,7 @@ Future<List<Event>> event_list(Session session, DateTime begin, DateTime end, St
   return List<Event>.from(l.map((model) => Event.fromJson(model)));
 }
 
-Future<Event?> event_info(Session session, int eventID) async {
+Future<Event?> event_info(UserSession session, int eventID) async {
   final response = await http.get(
     server.uri('/owner/event_info', {
       'event_id': eventID.toString(),
@@ -45,7 +45,7 @@ Future<Event?> event_info(Session session, int eventID) async {
   return Event.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<bool> event_edit(Session session, Event event) async {
+Future<bool> event_edit(UserSession session, Event event) async {
   final response = await http.post(
     server.uri('/owner/event_edit', {
       'event_id': event.id.toString(),
@@ -60,7 +60,7 @@ Future<bool> event_edit(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_password_edit(Session session, Event event, String password) async {
+Future<bool> event_password_edit(UserSession session, Event event, String password) async {
   if (password.isEmpty) return true;
 
   final response = await http.post(
@@ -77,7 +77,7 @@ Future<bool> event_password_edit(Session session, Event event, String password) 
   return (response.statusCode == 200);
 }
 
-Future<bool> event_delete(Session session, Event event) async {
+Future<bool> event_delete(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/owner/event_edit', {
       'event_id': event.id.toString(),
@@ -90,7 +90,7 @@ Future<bool> event_delete(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_submit(Session session, Event event) async {
+Future<bool> event_submit(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/owner/event_submit', {
       'event_id': event.id.toString(),
@@ -103,7 +103,7 @@ Future<bool> event_submit(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_withdraw(Session session, Event event) async {
+Future<bool> event_withdraw(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/owner/event_withdraw', {
       'event_id': event.id.toString(),
@@ -116,7 +116,7 @@ Future<bool> event_withdraw(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_cancel(Session session, Event event) async {
+Future<bool> event_cancel(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/owner/event_cancel', {
       'event_id': event.id.toString(),
@@ -129,7 +129,7 @@ Future<bool> event_cancel(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_recycle(Session session, Event event) async {
+Future<bool> event_recycle(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/owner/event_recycle', {
       'event_id': event.id.toString(),
@@ -142,7 +142,7 @@ Future<bool> event_recycle(Session session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<List<User>> event_owner_list(Session session, Event event) async {
+Future<List<User>> event_owner_list(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/owner/event_owner_list', {
       'event_id': event.id.toString(),
@@ -158,7 +158,7 @@ Future<List<User>> event_owner_list(Session session, Event event) async {
   return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
-Future<bool> event_owner_add(Session session, Event event, User user) async {
+Future<bool> event_owner_add(UserSession session, Event event, User user) async {
   final response = await http.head(
     server.uri('/owner/event_owner_add', {
       'event_id': event.id.toString(),
@@ -172,7 +172,7 @@ Future<bool> event_owner_add(Session session, Event event, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_owner_remove(Session session, Event event, User user) async {
+Future<bool> event_owner_remove(UserSession session, Event event, User user) async {
   final response = await http.head(
     server.uri('/owner/event_owner_remove', {
       'event_id': event.id.toString(),
@@ -186,7 +186,7 @@ Future<bool> event_owner_remove(Session session, Event event, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<List<User>> event_participant_list(Session session, Event event) async {
+Future<List<User>> event_participant_list(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/owner/event_participant_list', {
       'event_id': event.id.toString(),
@@ -202,7 +202,7 @@ Future<List<User>> event_participant_list(Session session, Event event) async {
   return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
-Future<bool> event_participant_add(Session session, Event event, User user) async {
+Future<bool> event_participant_add(UserSession session, Event event, User user) async {
   final response = await http.head(
     server.uri('/owner/event_participant_add', {
       'event_id': event.id.toString(),
@@ -216,7 +216,7 @@ Future<bool> event_participant_add(Session session, Event event, User user) asyn
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_remove(Session session, Event event, User user) async {
+Future<bool> event_participant_remove(UserSession session, Event event, User user) async {
   final response = await http.head(
     server.uri('/owner/event_participant_remove', {
       'event_id': event.id.toString(),

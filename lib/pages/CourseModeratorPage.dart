@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CourseModeratorPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Course course;
   final bool isDraft;
 

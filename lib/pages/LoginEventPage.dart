@@ -4,7 +4,7 @@ import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import "package:universal_html/html.dart" as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginEventPage extends StatefulWidget {
   LoginEventPage({super.key});
@@ -14,23 +14,29 @@ class LoginEventPage extends StatefulWidget {
 }
 
 class LoginEventPageState extends State<LoginEventPage> {
+  String _eventDefault = '';
   final TextEditingController _ctrlLogin = TextEditingController();
   final TextEditingController _ctrlPasswd = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _loadPreferences();
+  }
 
-    _ctrlLogin.text = html.window.localStorage['DefaultEvent']!;
+  _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _eventDefault = prefs.getString('EventDefault')!;
+    _ctrlLogin.text = _eventDefault;
   }
 
   void _loginEvent() async {
-    bool success = await server.loginEvent(_ctrlLogin.text, _ctrlPasswd.text);
+    String? token = await server.loginEvent(_ctrlLogin.text, _ctrlPasswd.text);
 
-    _ctrlLogin.text = html.window.localStorage['DefaultEvent']!;
+    _ctrlLogin.text = _eventDefault;
     _ctrlPasswd.text = "";
 
-    if (success) navi.loginEvent();
+    if (token != null) navi.loginEvent(token);
   }
 
   @override

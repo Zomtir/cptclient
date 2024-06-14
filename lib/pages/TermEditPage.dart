@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TermEditPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Term term;
   final bool isDraft;
   final Club? club;

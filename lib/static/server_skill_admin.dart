@@ -7,7 +7,7 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Skill>> skill_list(Session session) async {
+Future<List<Skill>> skill_list(UserSession session) async {
   final response = await http.get(
     server.uri('/admin/skill_list'),
     headers: {
@@ -21,7 +21,7 @@ Future<List<Skill>> skill_list(Session session) async {
   return List<Skill>.from(l.map((model) => Skill.fromJson(model)));
 }
 
-Future<bool> skill_create(Session session, Skill skill) async {
+Future<bool> skill_create(UserSession session, Skill skill) async {
   final response = await http.post(
     server.uri('/admin/skill_create'),
     headers: {
@@ -34,7 +34,7 @@ Future<bool> skill_create(Session session, Skill skill) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> skill_edit(Session session, Skill skill) async {
+Future<bool> skill_edit(UserSession session, Skill skill) async {
   final response = await http.post(
     server.uri('/admin/skill_edit', {
       'skill_id': skill.id.toString(),
@@ -49,7 +49,7 @@ Future<bool> skill_edit(Session session, Skill skill) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> skill_delete(Session session, Skill skill) async {
+Future<bool> skill_delete(UserSession session, Skill skill) async {
   final response = await http.head(
     server.uri('/admin/skill_delete', {
       'skill_id': skill.id.toString(),

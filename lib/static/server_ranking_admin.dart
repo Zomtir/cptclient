@@ -10,7 +10,7 @@ import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
 Future<List<Competence>> competence_list(
-    Session session, User? user, Skill? skill) async {
+    UserSession session, User? user, Skill? skill) async {
   final response = await http.get(
     server.uri('/admin/competence_list', {
       if (user != null) 'user_id': user.id.toString(),
@@ -29,7 +29,7 @@ Future<List<Competence>> competence_list(
   return List<Competence>.from(l.map((model) => Competence.fromJson(model)));
 }
 
-Future<bool> competence_create(Session session, Competence ranking) async {
+Future<bool> competence_create(UserSession session, Competence ranking) async {
   final response = await http.post(
     server.uri('/admin/competence_create'),
     headers: {
@@ -42,7 +42,7 @@ Future<bool> competence_create(Session session, Competence ranking) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> competence_edit(Session session, Competence competence) async {
+Future<bool> competence_edit(UserSession session, Competence competence) async {
   final response = await http.post(
     server.uri('/admin/competence_edit', {
       'competence_id': competence.id.toString(),
@@ -57,7 +57,7 @@ Future<bool> competence_edit(Session session, Competence competence) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> competence_delete(Session session, Competence competence) async {
+Future<bool> competence_delete(UserSession session, Competence competence) async {
   final response = await http.head(
     server.uri('/admin/competence_delete', {
       'competence_id': competence.id.toString(),

@@ -7,7 +7,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Course>?> course_availability(Session session) async {
+Future<List<Course>?> course_availability(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/course_availability'),
     headers: {
@@ -21,7 +21,7 @@ Future<List<Course>?> course_availability(Session session) async {
   return List<Course>.from(list.map((model) => Course.fromJson(model)));
 }
 
-Future<bool> course_mod(Session session, int courseID, int userID) async {
+Future<bool> course_mod(UserSession session, int courseID, int userID) async {
   final response = await http.head(
     server.uri('course_mod', {
       'course_id': courseID.toString(),
@@ -35,7 +35,7 @@ Future<bool> course_mod(Session session, int courseID, int userID) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> course_unmod(Session session, int courseID, int userID) async {
+Future<bool> course_unmod(UserSession session, int courseID, int userID) async {
   final response = await http.head(
     server.uri('course_unmod', {
       'course': courseID.toString(),

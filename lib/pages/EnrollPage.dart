@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EnrollPage extends StatefulWidget {
-  final Session session;
+  final EventSession session;
 
   EnrollPage({super.key, required this.session}) {
-    if (session.token.isEmpty) navi.logout();
+    if (session.token.isEmpty) navi.logoutEvent();
   }
 
   @override
@@ -48,13 +48,12 @@ class EnrollPageState extends State<EnrollPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: _event!),
-          onCallAvailable: (session) => api_service.event_participant_pool(session),
-          onCallSelected: (session) => api_service.event_participant_list(session),
-          onCallAdd: (session, user) => api_service.event_participant_add(session, user),
-          onCallRemove: (session, user) => api_service.event_participant_remove(session, user),
+          onCallAvailable: () => api_service.event_participant_pool(widget.session),
+          onCallSelected: () => api_service.event_participant_list(widget.session),
+          onCallAdd: (user) => api_service.event_participant_add(widget.session, user),
+          onCallRemove: (user) => api_service.event_participant_remove(widget.session, user),
         ),
       ),
     );
@@ -65,13 +64,12 @@ class EnrollPageState extends State<EnrollPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppEventTile(event: _event!),
-          onCallAvailable: (session) => api_service.event_owner_pool(session),
-          onCallSelected: (session) => api_service.event_owner_list(session),
-          onCallAdd: (session, user) => api_service.event_owner_add(session, user),
-          onCallRemove: (session, user) => api_service.event_owner_remove(session, user),
+          onCallAvailable: () => api_service.event_owner_pool(widget.session),
+          onCallSelected: () => api_service.event_owner_list(widget.session),
+          onCallAdd: (user) => api_service.event_owner_add(widget.session, user),
+          onCallRemove: (user) => api_service.event_owner_remove(widget.session, user),
         ),
       ),
     );
@@ -90,7 +88,7 @@ class EnrollPageState extends State<EnrollPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: () => navi.logout(),
+            onPressed: navi.logoutEvent,
           )
         ],
       ),

@@ -4,11 +4,16 @@ import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
-import "package:universal_html/html.dart" as html;
 
-String serverScheme = html.window.localStorage['ServerScheme']!;
-String serverHost = html.window.localStorage['ServerHost']!;
-int serverPort = int.tryParse(html.window.localStorage['ServerPort']!)?? 443;
+String serverScheme = 'https';
+String serverHost = 'localhost';
+int serverPort = 443;
+
+void configServer(String scheme, String host, int port) {
+  serverScheme = scheme;
+  serverHost = host;
+  port = port;
+}
 
 Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
   return Uri(
@@ -19,6 +24,7 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
       queryParameters: queryParameters);
 }
 
+// TODO OccuranceStatus, DraftingStatus, AcceptanceStatus
 List<Status> cacheEventStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
@@ -48,11 +54,11 @@ Future<String?> getUserSalt(String key) async {
   return utf8.decode(response.bodyBytes);
 }
 
-Future<bool> loginUser(String key, String pwd) async {
-  if (key.isEmpty || pwd.isEmpty) return false;
+Future<String?> loginUser(String key, String pwd) async {
+  if (key.isEmpty || pwd.isEmpty) return null;
 
   String? salt = await getUserSalt(key);
-  if (salt == null || salt.isEmpty) return false;
+  if (salt == null || salt.isEmpty) return null;
 
   Credential credential = Credential(key, crypto.hashPassword(pwd, salt), salt);
 
@@ -65,18 +71,16 @@ Future<bool> loginUser(String key, String pwd) async {
     body: json.encode(credential),
   );
 
-  if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'user';
-    html.window.localStorage['Token'] = response.body;
-    return true;
-  } else {
+  if (response.statusCode != 200) {
     print("User login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return false;
+    return null;
   }
+
+  return response.body;
 }
 
-Future<bool> loginEvent(String key, String pwd) async {
-  if (key.isEmpty || pwd.isEmpty) return false;
+Future<String?> loginEvent(String key, String pwd) async {
+  if (key.isEmpty || pwd.isEmpty) return null;
 
   Credential credential = Credential(key, pwd, "");
 
@@ -89,18 +93,16 @@ Future<bool> loginEvent(String key, String pwd) async {
     body: json.encode(credential),
   );
 
-  if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'event';
-    html.window.localStorage['Token'] = response.body;
-    return true;
-  } else {
+  if (response.statusCode != 200) {
     print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return false;
+    return null;
   }
+
+  return response.body;
 }
 
-Future<bool> loginCourse(String key) async {
-  if (key.isEmpty) return false;
+Future<String?> loginCourse(String key) async {
+  if (key.isEmpty) return null;
 
   final response = await http.get(
     uri('course_login', {'course_key': key}),
@@ -109,18 +111,16 @@ Future<bool> loginCourse(String key) async {
     },
   );
 
-  if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'event';
-    html.window.localStorage['Token'] = response.body;
-    return true;
-  } else {
-    print("Course login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return false;
+  if (response.statusCode != 200) {
+    print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
+    return null;
   }
+
+  return response.body;
 }
 
-Future<bool> loginLocation(String key) async {
-  if (key.isEmpty) return false;
+Future<String?> loginLocation(String key) async {
+  if (key.isEmpty) return null;
 
   final response = await http.get(
     uri('location_login', {'location_key': key}),
@@ -129,12 +129,10 @@ Future<bool> loginLocation(String key) async {
     },
   );
 
-  if (response.statusCode == 200) {
-    html.window.localStorage['Session'] = 'event';
-    html.window.localStorage['Token'] = response.body;
-    return true;
-  } else {
-    print("Location login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return false;
+  if (response.statusCode != 200) {
+    print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
+    return null;
   }
+
+  return response.body;
 }

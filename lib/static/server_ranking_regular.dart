@@ -8,7 +8,7 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Competence>> competence_list(Session session) async {
+Future<List<Competence>> competence_list(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/competence_list'),
     headers: {
@@ -22,7 +22,7 @@ Future<List<Competence>> competence_list(Session session) async {
   return List<Competence>.from(l.map((model) => Competence.fromJson(model)));
 }
 
-Future<List<(Skill, int)>> competence_summary(Session session) async {
+Future<List<(Skill, int)>> competence_summary(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/competence_summary'),
     headers: {

@@ -1,4 +1,3 @@
-import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
@@ -9,17 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectionPage<T extends FieldInterface> extends StatefulWidget {
-  final Session session;
   final String title;
   final Widget tile;
-  final Future<List<T>> Function(Session) onCallAvailable;
-  final Future<List<T>> Function(Session) onCallSelected;
-  final Future<bool> Function(Session, T) onCallAdd;
-  final Future<bool> Function(Session, T) onCallRemove;
+  final Future<List<T>> Function() onCallAvailable;
+  final Future<List<T>> Function() onCallSelected;
+  final Future<bool> Function(T) onCallAdd;
+  final Future<bool> Function(T) onCallRemove;
 
   SelectionPage({
     super.key,
-    required this.session,
     required this.title,
     required this.tile,
     required this.onCallAvailable,
@@ -45,10 +42,10 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
   }
 
   void _update() async {
-    List<T> available = await widget.onCallAvailable(widget.session);
+    List<T> available = await widget.onCallAvailable();
     available.sort();
 
-    List<T> selected = await widget.onCallSelected(widget.session);
+    List<T> selected = await widget.onCallSelected();
     selected.sort();
 
     setState(() {
@@ -58,12 +55,12 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
   }
 
   void _add(T item) async {
-    if (!await widget.onCallAdd(widget.session, item)) return;
+    if (!await widget.onCallAdd(item)) return;
     _update();
   }
 
   void _remove(T item) async {
-    if (!await widget.onCallRemove(widget.session, item)) return;
+    if (!await widget.onCallRemove(item)) return;
     _update();
   }
 

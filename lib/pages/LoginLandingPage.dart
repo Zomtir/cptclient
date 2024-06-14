@@ -9,7 +9,7 @@ import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import "package:universal_html/html.dart" as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginLandingPage extends StatefulWidget {
   LoginLandingPage({super.key});
@@ -19,22 +19,19 @@ class LoginLandingPage extends StatefulWidget {
 }
 
 class LoginLandingPageState extends State<LoginLandingPage> {
+  String userToken = '';
+  String eventToken = '';
 
-  void _resume() async {
-    switch (html.window.localStorage['Session']!) {
-      case 'user':
-        navi.loginUser();
-        break;
-      case 'event':
-        navi.loginEvent();
-        break;
-      default:
-        break;
-    }
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
   }
 
-  void _logout() async {
-    navi.logout();
+  Future<void> _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userToken = prefs.getString('UserToken')!;
+    eventToken = prefs.getString('EventToken')!;
   }
 
   @override
@@ -56,17 +53,31 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         ),
       ),
       body: AppBody(children: [
-        if (html.window.localStorage['Session']!.isNotEmpty)
+        if (userToken.isNotEmpty)
           MenuSection(
             title: AppLocalizations.of(context)!.sessionActive,
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionResume),
-                onTap: _resume,
+                onTap: () => navi.loginUser(userToken),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionLogout),
-                onTap: _logout,
+                onTap: navi.logoutUser,
+              ),
+            ],
+          ),
+        if (eventToken.isNotEmpty)
+          MenuSection(
+            title: AppLocalizations.of(context)!.sessionActive,
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.sessionResume),
+                onTap: () => navi.loginUser(eventToken),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.sessionLogout),
+                onTap: navi.logoutEvent,
               ),
             ],
           ),
@@ -76,12 +87,22 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             ListTile(
               title: Text(AppLocalizations.of(context)!.loginUser),
               leading: Icon(Icons.person),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginUserPage())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginUserPage(),
+                ),
+              ),
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)!.loginEvent),
               leading: Icon(Icons.event),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginEventPage())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginEventPage(),
+                ),
+              ),
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)!.loginCourse),

@@ -6,6 +6,7 @@ import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(CptApp());
@@ -19,9 +20,33 @@ class CptApp extends StatefulWidget {
 }
 
 class CptState extends State<CptApp> {
+  GlobalKey<CptState> cptKey = GlobalKey();
+
   Locale _locale = const Locale('en');
 
-  void changeLocale(Locale? locale) {
+  @override
+  void initState() {
+    super.initState();
+    lazyLoad();
+  }
+
+  lazyLoad() async {
+    await navi.preferences(cptKey);
+
+    // Cannot modify the current state before it is 100% initialized
+    // navi.applyLocale();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setLocale(Locale(prefs.getString('Language')!));
+
+    navi.applyServer();
+    navi.connectServer();
+  }
+
+  Locale getLocale() {
+    return Localizations.localeOf(context);
+  }
+
+  void setLocale(Locale? locale) {
     if (locale == null) return;
     setState(() => _locale = locale);
   }
@@ -74,31 +99,20 @@ class CptState extends State<CptApp> {
         '/config': (context) => ConnectionPage(),
         '/login': (context) => LoginLandingPage(),
         '/user': (context) {
-          if (navi.session == null || navi.session?.user == null) {
+          if (navi.uSession == null || navi.uSession?.user == null) {
             return LoginLandingPage();
           } else {
-            return MemberLandingPage(session: navi.session!);
+            return MemberLandingPage(session: navi.uSession!);
           }
         },
-        '/event': (context) => EnrollPage(session: navi.session!),
+        '/event': (context) => EnrollPage(session: navi.eSession!),
       },
     );
   }
 }
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   MainPage({super.key});
-
-  @override
-  State<StatefulWidget> createState() => MainPageState();
-}
-
-class MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-    navi.connect(context);
-  }
 
   @override
   Widget build(BuildContext context) {

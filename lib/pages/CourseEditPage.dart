@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseEditPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Course course;
   final bool isDraft;
-  final Future<bool> Function(Session, Course) onSubmit;
-  final Future<bool> Function(Session, Course)? onDelete;
+  final Future<bool> Function(UserSession, Course) onSubmit;
+  final Future<bool> Function(UserSession, Course)? onDelete;
 
   CourseEditPage({super.key, required this.session, required this.course, required this.isDraft, required this.onSubmit, this.onDelete});
 

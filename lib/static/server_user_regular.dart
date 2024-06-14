@@ -10,7 +10,7 @@ import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<User>> user_list(Session session) async {
+Future<List<User>> user_list(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/user_list'),
     headers: {
@@ -25,7 +25,7 @@ Future<List<User>> user_list(Session session) async {
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<User?> user_info(Session session) async {
+Future<User?> user_info(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/user_info'),
     headers: {
@@ -39,7 +39,7 @@ Future<User?> user_info(Session session) async {
   return User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<Right?> right_info(Session session) async {
+Future<Right?> right_info(UserSession session) async {
   final response = await http.get(
     server.uri('/regular/user_right'),
     headers: {
@@ -53,7 +53,7 @@ Future<Right?> right_info(Session session) async {
   return Right.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<bool> put_password(Session session, String password) async {
+Future<bool> put_password(UserSession session, String password) async {
   if (password.isEmpty) return false;
   if (password.length < 6) return false;
 

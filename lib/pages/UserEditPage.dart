@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserEditPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final User user;
   final bool isDraft;
 

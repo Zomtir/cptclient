@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClassOverviewManagementPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Course course;
   final bool isDraft;
 
@@ -52,7 +52,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           session: widget.session,
           event: Event.fromCourse(widget.course),
           isDraft: true,
-          onSubmit: (Session session, Event event) async {
+          onSubmit: (UserSession session, Event event) async {
             if (!await api_admin.event_create(session, widget.course.id, event)) return false;
             _update();
             return true;
@@ -70,7 +70,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           session: widget.session,
           event: Event.fromCourse(widget.course),
           isDraft: true,
-          onSubmit: (Session session, Event event) async {
+          onSubmit: (UserSession session, Event event) async {
             if (!await api_admin.event_create(session, widget.course.id, event)) return false;
             _update();
             return true;

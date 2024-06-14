@@ -4,7 +4,7 @@ import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import "package:universal_html/html.dart" as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginUserPage extends StatefulWidget {
   LoginUserPage({super.key});
@@ -14,22 +14,29 @@ class LoginUserPage extends StatefulWidget {
 }
 
 class LoginUserPageState extends State<LoginUserPage> {
+  String _userDefault = '';
   final TextEditingController _ctrlUserLogin = TextEditingController();
   final TextEditingController _ctrlUserPasswd = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    _ctrlUserLogin.text = html.window.localStorage['DefaultUser']!;
+    _loadPreferences();
   }
-  void _loginUser() async {
-    bool success = await server.loginUser(_ctrlUserLogin.text, _ctrlUserPasswd.text);
 
-    _ctrlUserLogin.text = html.window.localStorage['DefaultUser']!;
+  _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _userDefault = prefs.getString('UserDefault')!;
+    _ctrlUserLogin.text = _userDefault;
+  }
+
+  void _loginUser() async {
+    String? token = await server.loginUser(_ctrlUserLogin.text, _ctrlUserPasswd.text);
+
+    _ctrlUserLogin.text = _userDefault;
     _ctrlUserPasswd.text = "";
 
-    if (success) navi.loginUser();
+    if (token != null) navi.loginUser(token);
   }
 
   @override

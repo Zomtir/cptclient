@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TeamDetailManagementPage extends StatelessWidget {
-  final Session session;
+  final UserSession session;
   final Team team;
 
   TeamDetailManagementPage({super.key, required this.session, required this.team});
@@ -23,13 +23,12 @@ class TeamDetailManagementPage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: session,
           title: AppLocalizations.of(context)!.pageTeamMember,
           tile: AppTeamTile(team: team),
-          onCallAvailable: (session) => api_admin.user_list(session),
-          onCallSelected: (session) => api_admin.team_member_list(session, team.id),
-          onCallAdd: (session, user) => api_admin.team_member_add(session, team.id, user.id),
-          onCallRemove: (session, user) => api_admin.team_member_remove(session, team.id, user.id),
+          onCallAvailable: () => api_admin.user_list(session),
+          onCallSelected: () => api_admin.team_member_list(session, team.id),
+          onCallAdd: (user) => api_admin.team_member_add(session, team.id, user.id),
+          onCallRemove: (user) => api_admin.team_member_remove(session, team.id, user.id),
         ),
       ),
     );

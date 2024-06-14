@@ -8,7 +8,7 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Course>> course_responsibility(Session session, bool? active, bool? public) async {
+Future<List<Course>> course_responsibility(UserSession session, bool? active, bool? public) async {
   final response = await http.get(
     server.uri('/mod/course_responsibility', {
       if (active != null) 'active': active.toString(),
@@ -25,7 +25,7 @@ Future<List<Course>> course_responsibility(Session session, bool? active, bool? 
   return List<Course>.from(list.map((model) => Course.fromJson(model)));
 }
 
-Future<List<User>?> course_moderator_list(Session session, int courseID) async {
+Future<List<User>?> course_moderator_list(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/mod/course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
@@ -40,7 +40,7 @@ Future<List<User>?> course_moderator_list(Session session, int courseID) async {
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> course_moderator_add(Session session, int courseID, int userID) async {
+Future<bool> course_moderator_add(UserSession session, int courseID, int userID) async {
   final response = await http.head(
     server.uri('/mod/course_moderator_add', {
       'course_id': courseID.toString(),
@@ -54,7 +54,7 @@ Future<bool> course_moderator_add(Session session, int courseID, int userID) asy
   return (response.statusCode == 200);
 }
 
-Future<bool> course_moderator_remove(Session session, int courseID, int userID) async {
+Future<bool> course_moderator_remove(UserSession session, int courseID, int userID) async {
   final response = await http.head(
     server.uri('/mod/course_moderator_remove', {
       'course': courseID.toString(),

@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseDetailManagementPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Course course;
   final bool isDraft;
 
@@ -91,13 +91,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseModerators,
           tile: AppCourseTile(course: widget.course),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_admin.course_moderator_list(session, widget.course.id),
-          onCallAdd: (session, user) => api_admin.course_moderator_add(session, widget.course.id, user.id),
-          onCallRemove: (session, user) => api_admin.course_moderator_remove(session, widget.course.id, user.id),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_admin.course_moderator_list(widget.session, widget.course.id),
+          onCallAdd: (user) => api_admin.course_moderator_add(widget.session, widget.course.id, user.id),
+          onCallRemove: (user) => api_admin.course_moderator_remove(widget.session, widget.course.id, user.id),
         ),
       ),
     );
@@ -117,13 +116,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<Team>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseParticipantSummons,
           tile: AppCourseTile(course: widget.course),
-          onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_participant_summon_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_participant_summon_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_participant_summon_remove(session, widget.course.id, team.id),
+          onCallAvailable: () => api_regular.team_list(widget.session),
+          onCallSelected: () => api_admin.course_participant_summon_list(widget.session, widget.course.id),
+          onCallAdd: (team) => api_admin.course_participant_summon_add(widget.session, widget.course.id, team.id),
+          onCallRemove: (team) => api_admin.course_participant_summon_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
@@ -134,13 +132,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<Team>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseParticipantUnsummons,
           tile: AppCourseTile(course: widget.course),
-          onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_participant_unsummon_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_participant_unsummon_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_participant_unsummon_remove(session, widget.course.id, team.id),
+          onCallAvailable: () => api_regular.team_list(widget.session),
+          onCallSelected: () => api_admin.course_participant_unsummon_list(widget.session, widget.course.id),
+          onCallAdd: (team) => api_admin.course_participant_unsummon_add(widget.session, widget.course.id, team.id),
+          onCallRemove: (team) => api_admin.course_participant_unsummon_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
@@ -151,13 +148,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<Team>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseOwnerSummons,
           tile: AppCourseTile(course: widget.course),
-          onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_owner_summon_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_owner_summon_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_owner_summon_remove(session, widget.course.id, team.id),
+          onCallAvailable: () => api_regular.team_list(widget.session),
+          onCallSelected: () => api_admin.course_owner_summon_list(widget.session, widget.course.id),
+          onCallAdd: (team) => api_admin.course_owner_summon_add(widget.session, widget.course.id, team.id),
+          onCallRemove: (team) => api_admin.course_owner_summon_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
@@ -168,13 +164,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<Team>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageCourseOwnerUnsummons,
           tile: AppCourseTile(course: widget.course),
-          onCallAvailable: (session) => api_regular.team_list(session),
-          onCallSelected: (session) => api_admin.course_owner_unsummon_list(session, widget.course.id),
-          onCallAdd: (session, team) => api_admin.course_owner_unsummon_add(session, widget.course.id, team.id),
-          onCallRemove: (session, team) => api_admin.course_owner_unsummon_remove(session, widget.course.id, team.id),
+          onCallAvailable: () => api_regular.team_list(widget.session),
+          onCallSelected: () => api_admin.course_owner_unsummon_list(widget.session, widget.course.id),
+          onCallAdd: (team) => api_admin.course_owner_unsummon_add(widget.session, widget.course.id, team.id),
+          onCallRemove: (team) => api_admin.course_owner_unsummon_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );

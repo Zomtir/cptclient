@@ -12,7 +12,7 @@ import 'package:cptclient/static/message.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Course>> course_list(Session session, User? user, bool? active, bool? public) async {
+Future<List<Course>> course_list(UserSession session, User? user, bool? active, bool? public) async {
   final response = await http.get(
     server.uri('/admin/course_list', {
       if (user != null) 'mod_id': user.id.toString(),
@@ -30,7 +30,7 @@ Future<List<Course>> course_list(Session session, User? user, bool? active, bool
   return List<Course>.from(l.map((model) => Course.fromJson(model)));
 }
 
-Future<bool> course_create(Session session, Course course) async {
+Future<bool> course_create(UserSession session, Course course) async {
   final response = await http.post(
     server.uri('/admin/course_create'),
     headers: {
@@ -45,7 +45,7 @@ Future<bool> course_create(Session session, Course course) async {
   return success;
 }
 
-Future<bool> course_edit(Session session, Course course) async {
+Future<bool> course_edit(UserSession session, Course course) async {
   final response = await http.post(
     server.uri('/admin/course_edit', {
       'course_id': course.id.toString(),
@@ -60,7 +60,7 @@ Future<bool> course_edit(Session session, Course course) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> course_delete(Session session, Course course) async {
+Future<bool> course_delete(UserSession session, Course course) async {
   final response = await http.head(
     server.uri('/admin/course_delete', {'course_id': course.id.toString()}),
     headers: {
@@ -71,7 +71,7 @@ Future<bool> course_delete(Session session, Course course) async {
   return (response.statusCode == 200);
 }
 
-Future<List<User>> course_moderator_list(Session session, int courseID) async {
+Future<List<User>> course_moderator_list(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
@@ -86,7 +86,7 @@ Future<List<User>> course_moderator_list(Session session, int courseID) async {
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<bool> course_moderator_add(Session session, int courseID, int userID) async {
+Future<bool> course_moderator_add(UserSession session, int courseID, int userID) async {
   final response = await http.head(
     server.uri('/admin/course_moderator_add', {
       'course_id': courseID.toString(),
@@ -100,7 +100,7 @@ Future<bool> course_moderator_add(Session session, int courseID, int userID) asy
   return (response.statusCode == 200);
 }
 
-Future<bool> course_moderator_remove(Session session, int courseID, int userID) async {
+Future<bool> course_moderator_remove(UserSession session, int courseID, int userID) async {
   final response = await http.head(
     server.uri('/admin/course_moderator_remove', {
       'course_id': courseID.toString(),
@@ -114,7 +114,7 @@ Future<bool> course_moderator_remove(Session session, int courseID, int userID) 
   return (response.statusCode == 200);
 }
 
-Future<List<Team>> course_owner_summon_list(Session session, int courseID) async {
+Future<List<Team>> course_owner_summon_list(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_owner_summon_list', {'course_id': courseID.toString()}),
     headers: {
@@ -129,7 +129,7 @@ Future<List<Team>> course_owner_summon_list(Session session, int courseID) async
   return List<Team>.from(list.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> course_owner_summon_add(Session session, int courseID, int teamID) async {
+Future<bool> course_owner_summon_add(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_owner_summon_add', {
       'course_id': courseID.toString(),
@@ -143,7 +143,7 @@ Future<bool> course_owner_summon_add(Session session, int courseID, int teamID) 
   return (response.statusCode == 200);
 }
 
-Future<bool> course_owner_summon_remove(Session session, int courseID, int teamID) async {
+Future<bool> course_owner_summon_remove(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_owner_summon_remove', {
       'course_id': courseID.toString(),
@@ -157,7 +157,7 @@ Future<bool> course_owner_summon_remove(Session session, int courseID, int teamI
   return (response.statusCode == 200);
 }
 
-Future<List<Team>> course_owner_unsummon_list(Session session, int courseID) async {
+Future<List<Team>> course_owner_unsummon_list(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_owner_unsummon_list', {'course_id': courseID.toString()}),
     headers: {
@@ -172,7 +172,7 @@ Future<List<Team>> course_owner_unsummon_list(Session session, int courseID) asy
   return List<Team>.from(list.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> course_owner_unsummon_add(Session session, int courseID, int teamID) async {
+Future<bool> course_owner_unsummon_add(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_owner_unsummon_add', {
       'course_id': courseID.toString(),
@@ -186,7 +186,7 @@ Future<bool> course_owner_unsummon_add(Session session, int courseID, int teamID
   return (response.statusCode == 200);
 }
 
-Future<bool> course_owner_unsummon_remove(Session session, int courseID, int teamID) async {
+Future<bool> course_owner_unsummon_remove(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_owner_unsummon_remove', {
       'course_id': courseID.toString(),
@@ -200,7 +200,7 @@ Future<bool> course_owner_unsummon_remove(Session session, int courseID, int tea
   return (response.statusCode == 200);
 }
 
-Future<List<Team>> course_participant_summon_list(Session session, int courseID) async {
+Future<List<Team>> course_participant_summon_list(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_participant_summon_list', {'course_id': courseID.toString()}),
     headers: {
@@ -215,7 +215,7 @@ Future<List<Team>> course_participant_summon_list(Session session, int courseID)
   return List<Team>.from(list.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> course_participant_summon_add(Session session, int courseID, int teamID) async {
+Future<bool> course_participant_summon_add(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_participant_summon_add', {
       'course_id': courseID.toString(),
@@ -229,7 +229,7 @@ Future<bool> course_participant_summon_add(Session session, int courseID, int te
   return (response.statusCode == 200);
 }
 
-Future<bool> course_participant_summon_remove(Session session, int courseID, int teamID) async {
+Future<bool> course_participant_summon_remove(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_participant_summon_remove', {
       'course_id': courseID.toString(),
@@ -243,7 +243,7 @@ Future<bool> course_participant_summon_remove(Session session, int courseID, int
   return (response.statusCode == 200);
 }
 
-Future<List<Team>> course_participant_unsummon_list(Session session, int courseID) async {
+Future<List<Team>> course_participant_unsummon_list(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_participant_unsummon_list', {'course_id': courseID.toString()}),
     headers: {
@@ -258,7 +258,7 @@ Future<List<Team>> course_participant_unsummon_list(Session session, int courseI
   return List<Team>.from(list.map((model) => Team.fromJson(model)));
 }
 
-Future<bool> course_participant_unsummon_add(Session session, int courseID, int teamID) async {
+Future<bool> course_participant_unsummon_add(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_participant_unsummon_add', {
       'course_id': courseID.toString(),
@@ -272,7 +272,7 @@ Future<bool> course_participant_unsummon_add(Session session, int courseID, int 
   return (response.statusCode == 200);
 }
 
-Future<bool> course_participant_unsummon_remove(Session session, int courseID, int teamID) async {
+Future<bool> course_participant_unsummon_remove(UserSession session, int courseID, int teamID) async {
   final response = await http.head(
     server.uri('/admin/course_participant_unsummon_remove', {
       'course_id': courseID.toString(),
@@ -286,7 +286,7 @@ Future<bool> course_participant_unsummon_remove(Session session, int courseID, i
   return (response.statusCode == 200);
 }
 
-Future<List<Requirement>> course_requirement_list(Session session, Course course) async {
+Future<List<Requirement>> course_requirement_list(UserSession session, Course course) async {
   final response = await http.get(
     server.uri('/admin/course_requirement_list', {
       'course_id': course.id.toString(),
@@ -302,7 +302,7 @@ Future<List<Requirement>> course_requirement_list(Session session, Course course
   return List<Requirement>.from(l.map((model) => Requirement.fromJson(model)));
 }
 
-Future<bool> course_requirement_add(Session session, Requirement requirement) async {
+Future<bool> course_requirement_add(UserSession session, Requirement requirement) async {
   final response = await http.head(
     server.uri('/admin/course_requirement_add', {
       'course_id': requirement.course!.id.toString(),
@@ -319,7 +319,7 @@ Future<bool> course_requirement_add(Session session, Requirement requirement) as
   return success;
 }
 
-Future<bool> course_requirement_remove(Session session, Requirement requirement) async {
+Future<bool> course_requirement_remove(UserSession session, Requirement requirement) async {
   final response = await http.head(
     server.uri('/admin/course_requirement_remove', {
       'requirement_id': requirement.id.toString(),
@@ -334,7 +334,7 @@ Future<bool> course_requirement_remove(Session session, Requirement requirement)
   return success;
 }
 
-Future<List<(int, String, DateTime, DateTime, int, int)>> course_statistic_class(Session session, int courseID) async {
+Future<List<(int, String, DateTime, DateTime, int, int)>> course_statistic_class(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_class', {
       'course_id': courseID.toString(),
@@ -362,7 +362,7 @@ Future<List<(int, String, DateTime, DateTime, int, int)>> course_statistic_class
   );
 }
 
-Future<List<(int, String, String, int)>> course_statistic_participant(Session session, int courseID) async {
+Future<List<(int, String, String, int)>> course_statistic_participant(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_participant', {'course_id': courseID.toString()}),
     headers: {
@@ -387,7 +387,7 @@ Future<List<(int, String, String, int)>> course_statistic_participant(Session se
 }
 
 Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
-    Session session, int courseID, int participantID) async {
+    UserSession session, int courseID, int participantID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_participant1', {
       'course_id': courseID.toString(),
@@ -414,7 +414,7 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
   );
 }
 
-Future<List<(int, String, String, int)>> course_statistic_owner(Session session, int courseID) async {
+Future<List<(int, String, String, int)>> course_statistic_owner(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_owner', {'course_id': courseID.toString()}),
     headers: {
@@ -439,7 +439,7 @@ Future<List<(int, String, String, int)>> course_statistic_owner(Session session,
 }
 
 Future<List<(int, String, DateTime, DateTime)>> course_statistic_owner1(
-    Session session, int courseID, int ownerID) async {
+    UserSession session, int courseID, int ownerID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_owner1', {
       'course_id': courseID.toString(),

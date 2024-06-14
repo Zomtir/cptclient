@@ -1,12 +1,12 @@
 import 'package:cptclient/json/language.dart';
-import 'package:cptclient/main.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import "package:universal_html/html.dart" as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConnectionPage extends StatefulWidget {
   ConnectionPage({super.key});
@@ -16,20 +16,31 @@ class ConnectionPage extends StatefulWidget {
 }
 
 class ConnectionPageState extends State<ConnectionPage> {
-  Language _ctrlLanguage = Language(Locale(html.window.localStorage['Language']!));
-  final TextEditingController _ctrlServerScheme =
-      TextEditingController(text: html.window.localStorage['ServerScheme']!);
-  final TextEditingController _ctrlServerHost = TextEditingController(text: html.window.localStorage['ServerHost']!);
-  final TextEditingController _ctrlServerPort = TextEditingController(text: html.window.localStorage['ServerPort']!);
-  final TextEditingController _ctrlUser = TextEditingController(text: html.window.localStorage['DefaultUser']!);
-  final TextEditingController _ctrlEvent = TextEditingController(text: html.window.localStorage['DefaultEvent']!);
-  final TextEditingController _ctrlCourse = TextEditingController(text: html.window.localStorage['DefaultCourse']!);
-  final TextEditingController _ctrlLocation = TextEditingController(text: html.window.localStorage['DefaultLocation']!);
+  late SharedPreferences _prefs;
+
+  final TextEditingController _ctrlServerScheme = TextEditingController();
+  final TextEditingController _ctrlServerHost = TextEditingController();
+  final TextEditingController _ctrlServerPort = TextEditingController();
+
+  Language? _ctrlLanguage;
+  final TextEditingController _ctrlUser = TextEditingController();
+  final TextEditingController _ctrlEvent = TextEditingController();
   bool _serverOnline = false;
 
   @override
   void initState() {
     super.initState();
+    _loadPreferences();
+  }
+
+  _loadPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _ctrlServerScheme.text = _prefs.getString('ServerScheme')!;
+    _ctrlServerHost.text = _prefs.getString('ServerHost')!;
+    _ctrlServerPort.text = _prefs.getString('ServerPort')!;
+    _ctrlLanguage = Language(Locale(_prefs.getString('Language')!));
+    _ctrlUser.text = _prefs.getString('UserDefault')!;
+    _ctrlEvent.text = _prefs.getString('EventDefault')!;
     _testConnection();
   }
 
@@ -59,9 +70,10 @@ class ConnectionPageState extends State<ConnectionPage> {
                 height: 2,
                 color: Colors.grey,
               ),
-              onChanged: (Language? language) {
+              onChanged: (Language? language) async {
                 if (language == null) return;
-                context.findAncestorStateOfType<CptState>()!.changeLocale(language.locale);
+                await _prefs.setString('Language', language.locale.languageCode);
+                navi.applyLocale(context);
                 setState(() => _ctrlLanguage = language);
               },
               items: Language.entries.map<DropdownMenuItem<Language>>((Language l) {
@@ -80,7 +92,7 @@ class ConnectionPageState extends State<ConnectionPage> {
               maxLines: 1,
               controller: _ctrlServerScheme,
               onChanged: (String text) {
-                html.window.localStorage['ServerScheme'] = text;
+                _prefs.setString('ServerScheme', text);
                 server.serverScheme = text;
               },
             ),
@@ -91,7 +103,7 @@ class ConnectionPageState extends State<ConnectionPage> {
               maxLines: 1,
               controller: _ctrlServerHost,
               onChanged: (String text) {
-                html.window.localStorage['ServerHost'] = text;
+                _prefs.setString('ServerHost', text);
                 server.serverHost = text;
               },
             ),
@@ -102,7 +114,7 @@ class ConnectionPageState extends State<ConnectionPage> {
               maxLines: 1,
               controller: _ctrlServerPort,
               onChanged: (String text) {
-                html.window.localStorage['ServerPort'] = text;
+                _prefs.setString('ServerPort', text);
                 server.serverPort = int.tryParse(text) ?? 443;
               },
             ),
@@ -115,6 +127,7 @@ class ConnectionPageState extends State<ConnectionPage> {
           AppButton(
             text: AppLocalizations.of(context)!.actionConnect,
             onPressed: () {
+              navi.applyServer();
               Navigator.popUntil(context, (route) => route.isFirst);
               Navigator.pushReplacementNamed(context, '/');
             },
@@ -124,7 +137,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlUser,
-              onChanged: (String text) => {html.window.localStorage['DefaultUser'] = text},
+              onChanged: (String text) => _prefs.setString('UserDefault', text),
             ),
           ),
           AppInfoRow(
@@ -132,23 +145,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlEvent,
-              onChanged: (String text) => {html.window.localStorage['DefaultEvent'] = text},
-            ),
-          ),
-          AppInfoRow(
-            info: "Default Course Key",
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlCourse,
-              onChanged: (String text) => {html.window.localStorage['DefaultCourse'] = text},
-            ),
-          ),
-          AppInfoRow(
-            info: "Default Location Key",
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlLocation,
-              onChanged: (String text) => {html.window.localStorage['DefaultLocation'] = text},
+              onChanged: (String text) => _prefs.setString('EventDefault', text),
             ),
           ),
         ],

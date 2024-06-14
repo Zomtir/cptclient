@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClubDetailPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Club club;
 
   ClubDetailPage({super.key, required this.session, required this.club});

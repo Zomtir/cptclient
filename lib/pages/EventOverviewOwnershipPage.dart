@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventOverviewOwnershipPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
 
   EventOverviewOwnershipPage({super.key, required this.session});
 
@@ -138,13 +138,12 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventOwners,
           tile: AppEventTile(event: event),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_owner.event_owner_list(session, event),
-          onCallAdd: (session, user) => api_owner.event_owner_add(session, event, user),
-          onCallRemove: (session, user) => api_owner.event_owner_remove(session, event, user),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_owner.event_owner_list(widget.session, event),
+          onCallAdd: (user) => api_owner.event_owner_add(widget.session, event, user),
+          onCallRemove: (user) => api_owner.event_owner_remove(widget.session, event, user),
         ),
       ),
     );
@@ -158,13 +157,12 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          session: widget.session,
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: event),
-          onCallAvailable: (session) => api_regular.user_list(session),
-          onCallSelected: (session) => api_owner.event_participant_list(session, event),
-          onCallAdd: (session, user) => api_owner.event_participant_add(session, event, user),
-          onCallRemove: (session, user) => api_owner.event_participant_remove(session, event, user),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_owner.event_participant_list(widget.session, event),
+          onCallAdd: (user) => api_owner.event_participant_add(widget.session, event, user),
+          onCallRemove: (user) => api_owner.event_participant_remove(widget.session, event, user),
         ),
       ),
     );

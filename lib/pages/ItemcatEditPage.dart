@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemcatEditPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final ItemCategory category;
   final bool isDraft;
 

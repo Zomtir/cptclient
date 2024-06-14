@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventStatisticDivisionPage extends StatefulWidget {
-  final Session session;
+  final UserSession session;
   final Event event;
 
   EventStatisticDivisionPage({super.key, required this.session, required this.event});

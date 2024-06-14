@@ -28,7 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberLandingPage extends StatelessWidget {
-  final Session session;
+  final UserSession session;
 
   MemberLandingPage({super.key, required this.session}) {
     if (session.user == null) {
@@ -49,7 +49,7 @@ class MemberLandingPage extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: () => navi.logout(),
+            onPressed: navi.logoutUser,
           ),
         ],
       ),
