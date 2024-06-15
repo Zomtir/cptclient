@@ -9,6 +9,7 @@ import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
+import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/static/server_ranking_admin.dart' as api_admin;
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
@@ -155,16 +156,14 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.competenceSkillRank,
-            child: Slider(
-              value: _ctrlRank.toDouble(),
-              min: 0,
-              max: 10,
-              divisions: 10,
-              onChanged: (double value) {
-                setState(() => _ctrlRank = value.toInt());
-              },
-              label: "$_ctrlRank",
+            info: AppLocalizations.of(context)!.competenceSkill,
+            child: SkillRankField(
+              controller: _ctrlSkill,
+              rank: _ctrlRank,
+              onChanged: (Skill? skill, int rank) => setState(() {
+                _ctrlSkill.value = skill;
+                _ctrlRank = rank;
+              }),
             ),
           ),
           AppInfoRow(

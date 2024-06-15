@@ -5,8 +5,8 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
+import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/tiles/AppRequirementTile.dart';
 import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
@@ -91,28 +91,13 @@ class RequirementEditPageState extends State<RequirementEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceSkill,
-            child: AppField<Skill>(
+            child: SkillRankField(
               controller: _ctrlSkill,
-              onChanged: (Skill? skill) {
-                setState(() => _ctrlSkill.value = skill);
-              },
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.competenceSkillRank,
-            child: Slider(
-              value: _ctrlRank.toDouble(),
-              min: _ctrlSkill.value?.min.toDouble() ?? 0,
-              max: _ctrlSkill.value?.max.toDouble() ?? 0,
-              divisions: (){
-                int div = (_ctrlSkill.value?.max ?? 0) - (_ctrlSkill.value?.min ?? 0);
-                div = div < 1 ? 1 : div;
-                return div;
-              }.call(),
-              onChanged: (double value) {
-                setState(() => _ctrlRank = value.toInt());
-              },
-              label: "$_ctrlRank",
+              rank: _ctrlRank,
+              onChanged: (Skill? skill, int rank) => setState(() {
+                _ctrlSkill.value = skill;
+                _ctrlRank = rank;
+              }),
             ),
           ),
           if (widget.isDraft) AppButton(

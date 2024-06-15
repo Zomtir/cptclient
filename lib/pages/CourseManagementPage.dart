@@ -8,9 +8,9 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/Tribox.dart';
-import 'package:cptclient/material/dropdowns/RankingDropdown.dart';
 import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
+import 'package:cptclient/material/fields/SkillRangeField.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
@@ -118,13 +118,16 @@ class CourseManagementPageState extends State<CourseManagementPage> {
                   onChanged: (bool? public) => setState(() => _ctrlPublic = public),
                 ),
               ),
-              CompetenceDropdown(
-                controller: _ctrlSkill,
-                range: _ctrlSkillRange,
-                onChanged: (Skill? skill, RangeValues range) => setState(() {
-                  _ctrlSkill.value = skill;
-                  _ctrlSkillRange = range;
-                }),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.skill,
+                child: SkillRangeField(
+                  controller: _ctrlSkill,
+                  range: _ctrlSkillRange,
+                  onChanged: (Skill? skill, RangeValues range) => setState(() {
+                    _ctrlSkill.value = skill;
+                    _ctrlSkillRange = range;
+                  }),
+                ),
               ),
             ],
           ),
