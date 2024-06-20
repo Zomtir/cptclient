@@ -28,9 +28,12 @@ class SettingsPageState extends State<SettingsPage> {
 
   _loadPreferences() async {
     _prefs = await SharedPreferences.getInstance();
-    _ctrlLanguage = Language(Locale(_prefs.getString('Language')!));
-    _ctrlUser.text = _prefs.getString('UserDefault')!;
-    _ctrlEvent.text = _prefs.getString('EventDefault')!;
+
+    setState(() {
+      _ctrlLanguage = Language(Locale(_prefs.getString('Language')!));
+      _ctrlUser.text = _prefs.getString('UserDefault')!;
+      _ctrlEvent.text = _prefs.getString('EventDefault')!;
+    });
   }
 
   @override
