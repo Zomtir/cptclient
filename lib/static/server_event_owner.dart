@@ -79,7 +79,7 @@ Future<bool> event_password_edit(UserSession session, Event event, String passwo
 
 Future<bool> event_delete(UserSession session, Event event) async {
   final response = await http.head(
-    server.uri('/owner/event_edit', {
+    server.uri('/owner/event_delete', {
       'event_id': event.id.toString(),
     }),
     headers: {
