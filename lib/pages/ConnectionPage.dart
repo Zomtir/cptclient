@@ -89,7 +89,7 @@ class ConnectionPageState extends State<ConnectionPage> {
           AppButton(
             text: AppLocalizations.of(context)!.actionTest,
             onPressed: _testConnection,
-            trailing: Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
+            leading: Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionConnect,

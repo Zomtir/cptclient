@@ -2,7 +2,6 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/design/AppButtonLightStyle.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
@@ -65,10 +64,9 @@ class LoginLocationPageState extends State<LoginLocationPage> {
         ),
         AppListView(
           items: _locations,
-          itemBuilder: (location) => AppButton(
-            text: location.name,
-            onPressed: () => _ctrlLogin.text = location.key,
-            style: AppButtonLightStyle(),
+          itemBuilder: (location) => ListTile(
+            title: Text(location.name),
+            onTap: () => _ctrlLogin.text = location.key,
           ),
         ),
         AppButton(

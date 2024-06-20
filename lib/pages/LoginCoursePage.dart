@@ -2,7 +2,6 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppListView.dart';
-import 'package:cptclient/material/design/AppButtonLightStyle.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_course_anon.dart' as api_anon;
@@ -62,10 +61,9 @@ class LoginCoursePageState extends State<LoginCoursePage> {
         ),
         AppListView(
           items: _cache,
-          itemBuilder: (course) => AppButton(
-            text: course.title,
-            onPressed: () => _ctrlLogin.text = course.key,
-            style: AppButtonLightStyle(),
+          itemBuilder: (course) => ListTile(
+            title: Text(course.title),
+            onTap: () => _ctrlLogin.text = course.key,
           ),
         ),
         AppButton(
