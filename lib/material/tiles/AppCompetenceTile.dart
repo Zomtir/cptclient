@@ -27,7 +27,7 @@ class AppCompetenceTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${competence.user!.firstname} ${competence.user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${competence.skill!.key} ${competence.rank}"),
+                Text("${competence.skill!.title} ${competence.rank}"),
                 Text("${competence.date.fmtDate(context)} ${competence.judge!.firstname} ${competence.judge!.lastname}", style: TextStyle(color: Colors.black54)),
               ],
             ),

@@ -71,7 +71,7 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
                 ),
               ),
               AppInfoRow(
-                info: AppLocalizations.of(context)!.termClub,
+                info: AppLocalizations.of(context)!.team,
                 child: AppField<Team>(
                   controller: _ctrlTeam,
                   onChanged: (Team? team) =>
@@ -85,14 +85,14 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
             child: SizedBox(
               width: 600,
               child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('ID')),
-                  DataColumn(label: Text('Member')),
+                columns: [
+                  DataColumn(label: Text(AppLocalizations.of(context)!.userKey)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.user)),
                 ],
                 rows: List<DataRow>.generate(stats.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(Text("${stats[index].id}")),
+                      DataCell(Text("${stats[index].key}")),
                       DataCell(Text("${stats[index].firstname} ${stats[index].lastname}")),
                     ],
                   );
