@@ -96,7 +96,7 @@ class CptState extends State<CptApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
-        '/config': (context) => ConnectionPage(),
+        '/connect': (context) => ConnectionPage(),
         '/login': (context) => LoginLandingPage(),
         '/user': (context) {
           if (navi.uSession == null || navi.uSession?.user == null) {

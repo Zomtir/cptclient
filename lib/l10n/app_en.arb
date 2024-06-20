@@ -130,6 +130,7 @@
   "pageUserManagement": "Manage Users",
   "pageUserEdit": "Edit User",
   "pageUserProfile": "User Profile",
+  "pageConnection": "Server Connection",
   "pageSettings": "Settings",
   "pageCredits": "Credits",
   "sessionActive": "Current Session",

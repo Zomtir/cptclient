@@ -1,7 +1,9 @@
-import 'package:cptclient/json/language.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/pages/CreditPage.dart';
+import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
@@ -22,9 +24,6 @@ class ConnectionPageState extends State<ConnectionPage> {
   final TextEditingController _ctrlServerHost = TextEditingController();
   final TextEditingController _ctrlServerPort = TextEditingController();
 
-  Language? _ctrlLanguage;
-  final TextEditingController _ctrlUser = TextEditingController();
-  final TextEditingController _ctrlEvent = TextEditingController();
   bool _serverOnline = false;
 
   @override
@@ -38,9 +37,6 @@ class ConnectionPageState extends State<ConnectionPage> {
     _ctrlServerScheme.text = _prefs.getString('ServerScheme')!;
     _ctrlServerHost.text = _prefs.getString('ServerHost')!;
     _ctrlServerPort.text = _prefs.getString('ServerPort')!;
-    _ctrlLanguage = Language(Locale(_prefs.getString('Language')!));
-    _ctrlUser.text = _prefs.getString('UserDefault')!;
-    _ctrlEvent.text = _prefs.getString('EventDefault')!;
     _testConnection();
   }
 
@@ -53,39 +49,10 @@ class ConnectionPageState extends State<ConnectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageSettings),
+        title: Text(AppLocalizations.of(context)!.pageConnection),
       ),
       body: AppBody(
         children: [
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.labelLanguage,
-            child: DropdownButton<Language>(
-              value: _ctrlLanguage,
-              icon: Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 16,
-              style: TextStyle(color: Colors.grey),
-              isExpanded: true,
-              underline: Container(
-                height: 2,
-                color: Colors.grey,
-              ),
-              onChanged: (Language? language) async {
-                if (language == null) return;
-                await _prefs.setString('Language', language.locale.languageCode);
-                navi.applyLocale(context);
-                setState(() => _ctrlLanguage = language);
-              },
-              items: Language.entries.map<DropdownMenuItem<Language>>((Language l) {
-                return DropdownMenuItem<Language>(
-                  value: l,
-                  child: Text(l.localizedName(context)),
-                );
-              }).toList(),
-              //selectedItemBuilder,
-            ),
-          ),
-          Divider(),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelServerScheme,
             child: TextField(
@@ -128,25 +95,24 @@ class ConnectionPageState extends State<ConnectionPage> {
             text: AppLocalizations.of(context)!.actionConnect,
             onPressed: () {
               navi.applyServer();
-              Navigator.popUntil(context, (route) => route.isFirst);
-              Navigator.pushReplacementNamed(context, '/login');
+              navi.gotoRoute('/login');
             },
+            leading: Icon(Icons.link),
           ),
-          AppInfoRow(
-            info: "Default User Key",
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUser,
-              onChanged: (String text) => _prefs.setString('UserDefault', text),
-            ),
-          ),
-          AppInfoRow(
-            info: "Default Event Key",
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlEvent,
-              onChanged: (String text) => _prefs.setString('EventDefault', text),
-            ),
+          MenuSection(
+            title: AppLocalizations.of(context)!.labelMiscellaneous,
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageSettings),
+                leading: Icon(Icons.settings),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCredits),
+                leading: Icon(Icons.info),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
+              ),
+            ],
           ),
         ],
       ),

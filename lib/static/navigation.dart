@@ -63,7 +63,7 @@ Future<void> connectServer() async {
   if (await server.loadStatus()) {
     gotoRoute('/login');
   } else {
-    gotoRoute('/config');
+    gotoRoute('/connect');
   }
 }
 
@@ -75,7 +75,7 @@ Future<void> loginUser(String token) async {
       logoutUser();
     }
   } else {
-    gotoRoute('/config');
+    gotoRoute('/connect');
   }
 }
 
@@ -87,7 +87,7 @@ Future<void> loginEvent(String token) async {
       logoutEvent();
     }
   } else {
-    gotoRoute('/config');
+    gotoRoute('/connect');
   }
 }
 
@@ -98,7 +98,7 @@ Future<void> logoutUser() async {
   if (await server.loadStatus()) {
     gotoRoute('/login');
   } else {
-    gotoRoute('/config');
+    gotoRoute('/connect');
   }
 }
 
@@ -109,7 +109,7 @@ Future<void> logoutEvent() async {
   if (await server.loadStatus()) {
     gotoRoute('/login');
   } else {
-    gotoRoute('/config');
+    gotoRoute('/connect');
   }
 }
 

@@ -130,6 +130,7 @@
   "pageUserManagement": "Benutzerverwaltung",
   "pageUserEdit": "Benutzer bearbeiten",
   "pageUserProfile": "Benutzerprofil",
+  "pageConnection": "Server-Verbindung",
   "pageSettings": "Einstellungen",
   "pageCredits": "Programmhinweise",
   "sessionActive": "Aktuelle Sitzung",

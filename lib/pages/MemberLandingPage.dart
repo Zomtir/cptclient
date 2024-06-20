@@ -19,6 +19,7 @@ import 'package:cptclient/pages/MemberProfilePage.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
 import 'package:cptclient/pages/PossessionPersonalPage.dart';
 import 'package:cptclient/pages/PossessionUserManagementPage.dart';
+import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/pages/SkillOverviewPage.dart';
 import 'package:cptclient/pages/StockManagementPage.dart';
 import 'package:cptclient/pages/TeamOverviewPage.dart';
@@ -46,6 +47,10 @@ class MemberLandingPage extends StatelessWidget {
             icon: Icon(Icons.perm_identity, color: Colors.white),
             onPressed: () =>
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MemberProfilePage(session: session))),
+          ),
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.white),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
           ),
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),

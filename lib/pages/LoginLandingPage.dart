@@ -1,11 +1,11 @@
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/MenuSection.dart';
-import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/LoginCoursePage.dart';
 import 'package:cptclient/pages/LoginEventPage.dart';
 import 'package:cptclient/pages/LoginLocationPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
+import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -122,7 +122,12 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             ListTile(
               title: Text(AppLocalizations.of(context)!.pageSettings),
               leading: Icon(Icons.settings),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionPage())),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.pageConnection),
+              leading: Icon(Icons.link_off),
+              onTap: () => navi.gotoRoute('/connect'),
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)!.pageCredits),
