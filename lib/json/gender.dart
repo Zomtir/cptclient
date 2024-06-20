@@ -16,6 +16,8 @@ class Gender implements Comparable {
 
   static Gender? fromNullString(String? status) {
     if (status == null) return null;
+    if (status == 'NULL') return null;
+
     return Gender(GenderStatus.values.byName(status));
   }
 

@@ -1,8 +1,10 @@
+import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/fields/ConfirmationField.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
@@ -26,10 +28,10 @@ class EventInfoPage extends StatefulWidget {
 class EventInfoPageState extends State<EventInfoPage> {
   bool _bookmarked = false;
 
-  bool _registeredParticipant = false;
-  bool _actualParticipant = false;
-  bool _registeredOwner = false;
-  bool _actualOwner = false;
+  Confirmation _participantRegistration = Confirmation.empty;
+  bool _participantPresence = false;
+  Confirmation _ownerRegistration = Confirmation.empty;
+  bool _ownerPresence = false;
 
   EventInfoPageState();
 
@@ -51,28 +53,28 @@ class EventInfoPageState extends State<EventInfoPage> {
   }
 
   Future<void> _updateParticipant() async {
-    bool? actualParticipant = await api_regular.event_participant_true(widget.session, widget.event);
-    if (actualParticipant == null) return;
+    bool? participantPresence = await api_regular.event_participant_status(widget.session, widget.event);
+    if (participantPresence == null) return;
 
-    bool? registeredParticipant = await api_regular.event_participant_registration_true(widget.session, widget.event);
-    if (registeredParticipant == null) return;
+    Confirmation? participantRegistration = await api_regular.event_participant_registration_status(widget.session, widget.event);
+    if (participantRegistration == null) return;
 
     setState(() {
-      _actualParticipant = actualParticipant;
-      _registeredParticipant = registeredParticipant;
+      _participantPresence = participantPresence;
+      _participantRegistration = participantRegistration;
     });
   }
 
   Future<void> _updateOwner() async {
-    bool? actualOwner = await api_regular.event_owner_true(widget.session, widget.event);
-    if (actualOwner == null) return;
+    bool? ownerPresence = await api_regular.event_owner_true(widget.session, widget.event);
+    if (ownerPresence == null) return;
 
-    bool? registeredOwner = await api_regular.event_owner_registration_true(widget.session, widget.event);
-    if (registeredOwner == null) return;
+    Confirmation? ownerRegistration = await api_regular.event_owner_registration_status(widget.session, widget.event);
+    if (ownerRegistration == null) return;
 
     setState(() {
-      _actualOwner = actualOwner;
-      _registeredOwner = registeredOwner;
+      _ownerPresence = ownerPresence;
+      _ownerRegistration = ownerRegistration;
     });
   }
 
@@ -92,24 +94,24 @@ class EventInfoPageState extends State<EventInfoPage> {
     await api_regular.event_bookmark_edit(widget.session, widget.event, bookmark);
     _updateBookmark();
   }
-  
-  void _handleParticipationRegistrationChange(bool registration) async {
-    await api_regular.event_participant_registration_edit(widget.session, widget.event, registration);
+
+  void _handleParticipantRegistrationChange(Confirmation? confirmation) async {
+    await api_regular.event_participant_registration_edit(widget.session, widget.event, confirmation);
     _updateParticipant();
   }
 
-  void _handleOwnerRegistrationChange(bool registration) async {
-    await api_regular.event_owner_registration_edit(widget.session, widget.event, registration);
-    _updateOwner();
-  }
-
-  void _handleParticipationChange(bool participated) async {
+  void _handleParticipantPresenceChange(bool participated) async {
     if (participated) {
       await api_regular.event_participant_add(widget.session, widget.event);
     } else {
       await api_regular.event_participant_remove(widget.session, widget.event);
     }
     _updateParticipant();
+  }
+
+  void _handleOwnerRegistrationChange(Confirmation? confirmation) async {
+    await api_regular.event_owner_registration_edit(widget.session, widget.event, confirmation);
+    _updateOwner();
   }
 
   @override
@@ -169,29 +171,29 @@ class EventInfoPageState extends State<EventInfoPage> {
           ),
           AppInfoRow(
             info: "Register as Participant",
-            child: IconButton(
-              icon: _registeredParticipant ? Icon(Icons.person_remove) : Icon(Icons.person_add_outlined),
-              onPressed: () => _handleParticipationRegistrationChange(!_registeredParticipant),
+            child: ConfirmationField(
+              confirmation: _participantRegistration,
+              onChanged: _handleParticipantRegistrationChange,
             ),
           ),
           AppInfoRow(
             info: "Participation",
             child: IconButton(
-              icon: _actualParticipant ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleParticipationChange(!_actualParticipant),
+              icon: _participantPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
+              onPressed: () => _handleParticipantPresenceChange(!_participantPresence),
             ),
           ),
           AppInfoRow(
             info: "Register as Owner",
-            child: IconButton(
-              icon: _registeredOwner ? Icon(Icons.remove_moderator) : Icon(Icons.add_moderator_outlined),
-              onPressed: () => _handleOwnerRegistrationChange(!_registeredOwner),
+            child: ConfirmationField(
+              confirmation: _ownerRegistration,
+              onChanged: _handleOwnerRegistrationChange,
             ),
           ),
           AppInfoRow(
             info: "Ownership",
             child: IconButton(
-              icon: _actualOwner ? Icon(Icons.house) : Icon(Icons.house_outlined),
+              icon: _ownerPresence ? Icon(Icons.house) : Icon(Icons.house_outlined),
               onPressed: null,
             ),
           ),

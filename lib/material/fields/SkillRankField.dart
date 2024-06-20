@@ -19,27 +19,23 @@ class SkillRankField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
-          children: [
-            AppField<Skill>(
-              controller: controller,
-              onChanged: (Skill? skill) => onChanged(skill, rank),
-            ),
-            if (controller.value != null)
-             Slider(
-                value: rank.toDouble(),
-                min: controller.value?.min.toDouble() ?? 0,
-                max: controller.value?.max.toDouble() ?? 0,
-                divisions: (){
-                  int div = (controller.value?.max ?? 0) - (controller.value?.min ?? 0);
-                  div = div < 1 ? 1 : div;
-                  return div;
-                }.call(),
-                onChanged: (double value) => onChanged(controller.value, value.toInt()),
-                label: "$rank",
-              ),
-          ],
+        AppField<Skill>(
+          controller: controller,
+          onChanged: (Skill? skill) => onChanged(skill, rank),
         ),
+        if (controller.value != null)
+         Slider(
+            value: rank.toDouble(),
+            min: controller.value?.min.toDouble() ?? 0,
+            max: controller.value?.max.toDouble() ?? 0,
+            divisions: (){
+              int div = (controller.value?.max ?? 0) - (controller.value?.min ?? 0);
+              div = div < 1 ? 1 : div;
+              return div;
+            }.call(),
+            onChanged: (double value) => onChanged(controller.value, value.toInt()),
+            label: "$rank",
+          ),
       ],
     );
   }

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
@@ -65,9 +66,9 @@ Future<bool?> event_owner_true(UserSession session, Event event) async {
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool?> event_owner_registration_true(UserSession session, Event event) async {
+Future<Confirmation?> event_owner_registration_status(UserSession session, Event event) async {
   final response = await http.get(
-    server.uri('/regular/event_owner_registration_true', {
+    server.uri('/regular/event_owner_registration_status', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -78,14 +79,14 @@ Future<bool?> event_owner_registration_true(UserSession session, Event event) as
 
   if (response.statusCode != 200) return null;
 
-  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+  return Confirmation.fromNullString(utf8.decode(response.bodyBytes));
 }
 
-Future<bool> event_owner_registration_edit(UserSession session, Event event, bool registration) async {
+Future<bool> event_owner_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
   final response = await http.head(
     server.uri('/regular/event_owner_registration_edit', {
       'event_id': event.id.toString(),
-      'registration': registration.toString(),
+      'status': confirmation?.name ?? 'NULL',
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',
@@ -96,7 +97,7 @@ Future<bool> event_owner_registration_edit(UserSession session, Event event, boo
   return (response.statusCode != 200);
 }
 
-Future<bool?> event_participant_true(UserSession session, Event event) async {
+Future<bool?> event_participant_status(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/regular/event_participant_true', {
       'event_id': event.id.toString(),
@@ -138,9 +139,9 @@ Future<bool> event_participant_remove(UserSession session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool?> event_participant_registration_true(UserSession session, Event event) async {
+Future<Confirmation?> event_participant_registration_status(UserSession session, Event event) async {
   final response = await http.get(
-    server.uri('/regular/event_participant_registration_true', {
+    server.uri('/regular/event_participant_registration_status', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -151,14 +152,14 @@ Future<bool?> event_participant_registration_true(UserSession session, Event eve
 
   if (response.statusCode != 200) return null;
 
-  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+  return Confirmation.fromNullString(utf8.decode(response.bodyBytes));
 }
 
-Future<bool> event_participant_registration_edit(UserSession session, Event event, bool registration) async {
+Future<bool> event_participant_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
   final response = await http.head(
     server.uri('/regular/event_participant_registration_edit', {
       'event_id': event.id.toString(),
-      'registration': registration.toString(),
+      'status': confirmation?.name ?? 'NULL',
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',

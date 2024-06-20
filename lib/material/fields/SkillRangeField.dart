@@ -19,23 +19,19 @@ class SkillRangeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
-          children: [
-            AppField<Skill>(
-              controller: controller,
-              onChanged: (Skill? skill) => onChanged(skill, range),
-            ),
-            if (controller.value != null)
-              RangeSlider(
-                values: range,
-                min: controller.value?.min.toDouble() ?? 0,
-                max: controller.value?.max.toDouble() ?? 0,
-                divisions: 10,
-                onChanged: (RangeValues values) => onChanged(controller.value, values),
-                labels: RangeLabels("${range.start}", "${range.end}"),
-              ),
-          ],
+        AppField<Skill>(
+          controller: controller,
+          onChanged: (Skill? skill) => onChanged(skill, range),
         ),
+        if (controller.value != null)
+          RangeSlider(
+            values: range,
+            min: controller.value?.min.toDouble() ?? 0,
+            max: controller.value?.max.toDouble() ?? 0,
+            divisions: 10,
+            onChanged: (RangeValues values) => onChanged(controller.value, values),
+            labels: RangeLabels("${range.start}", "${range.end}"),
+          ),
       ],
     );
   }
