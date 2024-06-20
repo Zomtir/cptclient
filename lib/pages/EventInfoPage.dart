@@ -39,43 +39,10 @@ class EventInfoPageState extends State<EventInfoPage> {
   void initState() {
     super.initState();
     _updateBookmark();
-    _updateParticipant();
-    _updateOwner();
-  }
-
-  Future<void> _updateBookmark() async {
-    bool? bookmarked = await api_regular.event_bookmark_true(widget.session, widget.event);
-    if (bookmarked == null) return;
-
-    setState(() {
-      _bookmarked = bookmarked;
-    });
-  }
-
-  Future<void> _updateParticipant() async {
-    bool? participantPresence = await api_regular.event_participant_status(widget.session, widget.event);
-    if (participantPresence == null) return;
-
-    Confirmation? participantRegistration = await api_regular.event_participant_registration_status(widget.session, widget.event);
-    if (participantRegistration == null) return;
-
-    setState(() {
-      _participantPresence = participantPresence;
-      _participantRegistration = participantRegistration;
-    });
-  }
-
-  Future<void> _updateOwner() async {
-    bool? ownerPresence = await api_regular.event_owner_true(widget.session, widget.event);
-    if (ownerPresence == null) return;
-
-    Confirmation? ownerRegistration = await api_regular.event_owner_registration_status(widget.session, widget.event);
-    if (ownerRegistration == null) return;
-
-    setState(() {
-      _ownerPresence = ownerPresence;
-      _ownerRegistration = ownerRegistration;
-    });
+    _updateParticipantRegistration();
+    _updateParticipantPresence();
+    _updateOwnerRegistration();
+    _updateOwnerPresence();
   }
 
   Future<void> _handleSwitchAdmin() async {
@@ -90,28 +57,65 @@ class EventInfoPageState extends State<EventInfoPage> {
     );
   }
 
-  void _handleBookmarkChange(bool bookmark) async {
+  void _handleBookmark(bool bookmark) async {
     await api_regular.event_bookmark_edit(widget.session, widget.event, bookmark);
     _updateBookmark();
   }
 
-  void _handleParticipantRegistrationChange(Confirmation? confirmation) async {
-    await api_regular.event_participant_registration_edit(widget.session, widget.event, confirmation);
-    _updateParticipant();
+  Future<void> _updateBookmark() async {
+    bool? bookmarked = await api_regular.event_bookmark_true(widget.session, widget.event);
+    if (bookmarked == null) return;
+
+    setState(() {
+      _bookmarked = bookmarked;
+    });
   }
 
-  void _handleParticipantPresenceChange(bool participated) async {
+  void _handleParticipantRegistration(Confirmation? confirmation) async {
+    await api_regular.event_participant_registration_edit(widget.session, widget.event, confirmation);
+    _updateParticipantRegistration();
+  }
+
+  Future<void> _updateParticipantRegistration() async {
+    Confirmation? participantRegistration = await api_regular.event_participant_registration_status(widget.session, widget.event);
+    if (participantRegistration == null) return;
+
+    setState(() => _participantRegistration = participantRegistration);
+  }
+
+  void _handleParticipantPresence(bool participated) async {
     if (participated) {
       await api_regular.event_participant_add(widget.session, widget.event);
     } else {
       await api_regular.event_participant_remove(widget.session, widget.event);
     }
-    _updateParticipant();
+    _updateParticipantPresence();
   }
 
-  void _handleOwnerRegistrationChange(Confirmation? confirmation) async {
+  Future<void> _updateParticipantPresence() async {
+    bool? participantPresence = await api_regular.event_participant_status(widget.session, widget.event);
+    if (participantPresence == null) return;
+
+    setState(() => _participantPresence = participantPresence);
+  }
+
+  void _handleOwnerRegistration(Confirmation? confirmation) async {
     await api_regular.event_owner_registration_edit(widget.session, widget.event, confirmation);
-    _updateOwner();
+    _updateOwnerRegistration();
+  }
+
+  Future<void> _updateOwnerRegistration() async {
+    Confirmation? ownerRegistration = await api_regular.event_owner_registration_status(widget.session, widget.event);
+    if (ownerRegistration == null) return;
+
+    setState(() => _ownerRegistration = ownerRegistration);
+  }
+
+  Future<void> _updateOwnerPresence() async {
+    bool? ownerPresence = await api_regular.event_owner_true(widget.session, widget.event);
+    if (ownerPresence == null) return;
+
+    setState(() => _ownerPresence = ownerPresence);
   }
 
   @override
@@ -163,35 +167,35 @@ class EventInfoPageState extends State<EventInfoPage> {
           ),
           Divider(),
           AppInfoRow(
-            info: "Bookmark",
+            info: AppLocalizations.of(context)!.actionBookmark,
             child: IconButton(
               icon: _bookmarked ? Icon(Icons.star) : Icon(Icons.star_border),
-              onPressed: () => _handleBookmarkChange(!_bookmarked),
+              onPressed: () => _handleBookmark(!_bookmarked),
             ),
           ),
           AppInfoRow(
             info: "Register as Participant",
             child: ConfirmationField(
               confirmation: _participantRegistration,
-              onChanged: _handleParticipantRegistrationChange,
+              onChanged: _handleParticipantRegistration,
             ),
           ),
           AppInfoRow(
-            info: "Participation",
+            info: "Present as Participant",
             child: IconButton(
               icon: _participantPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleParticipantPresenceChange(!_participantPresence),
+              onPressed: () => _handleParticipantPresence(!_participantPresence),
             ),
           ),
           AppInfoRow(
             info: "Register as Owner",
             child: ConfirmationField(
               confirmation: _ownerRegistration,
-              onChanged: _handleOwnerRegistrationChange,
+              onChanged: _handleOwnerRegistration,
             ),
           ),
           AppInfoRow(
-            info: "Ownership",
+            info: "Present as Owner",
             child: IconButton(
               icon: _ownerPresence ? Icon(Icons.house) : Icon(Icons.house_outlined),
               onPressed: null,

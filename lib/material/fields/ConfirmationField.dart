@@ -20,20 +20,11 @@ class ConfirmationField extends StatelessWidget {
       children: [
         Expanded(
           child: RadioListTile<Confirmation>(
-            value: Confirmation.empty,
-            groupValue: confirmation,
-            title: Text(AppLocalizations.of(context)!.unknown),
-            onChanged: onChanged,
-            dense: true,
-            contentPadding: EdgeInsets.all(0),
-          ),
-        ),
-        Expanded(
-          child: RadioListTile<Confirmation>(
             value: Confirmation.positive,
             groupValue: confirmation,
             title: Text(AppLocalizations.of(context)!.confirmationPositive),
             onChanged: onChanged,
+            toggleable: true,
             dense: true,
             contentPadding: EdgeInsets.all(0),
           ),
@@ -44,6 +35,7 @@ class ConfirmationField extends StatelessWidget {
             groupValue: confirmation,
             title: Text(AppLocalizations.of(context)!.confirmationNeutral),
             onChanged: onChanged,
+            toggleable: true,
             dense: true,
             contentPadding: EdgeInsets.all(0),
           ),
@@ -54,6 +46,7 @@ class ConfirmationField extends StatelessWidget {
             groupValue: confirmation,
             title: Text(AppLocalizations.of(context)!.confirmationNegative),
             onChanged: onChanged,
+            toggleable: true,
             dense: true,
             contentPadding: EdgeInsets.all(0),
           ),

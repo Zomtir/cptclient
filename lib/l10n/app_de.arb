@@ -34,6 +34,7 @@
   "actionHide": "Verstecken",
   "actionTest": "Testen",
   "actionConnect": "Verbinden",
+  "actionBookmark": "Lesezeichen setzen",
   "submissionFail": "Übermittlung der Information fehlgeschlagen",
   "submissionSuccess": "Übermittlung der Information erfolgreich",
   "responseSuccess": "Erfolgreich",

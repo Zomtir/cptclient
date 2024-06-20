@@ -34,6 +34,7 @@
   "actionHide": "Hide",
   "actionTest": "Test",
   "actionConnect": "Connect",
+  "actionBookmark": "Bookmark",
   "submissionFail": "Failed to submit the information",
   "submissionSuccess": "Succeeded to submit the information",
   "responseSuccess": "Success",
