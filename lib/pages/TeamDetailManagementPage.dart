@@ -2,7 +2,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
@@ -114,13 +114,17 @@ class TeamDetailManagementPage extends StatelessWidget {
               ),
             ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageTeamMember,
-            onPressed: () => _handleMember(context),
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageTeamRight,
-            onPressed: () => _handleRight(context),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageTeamMember),
+                onTap: () => _handleMember(context),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageTeamRight),
+                onTap: () => _handleRight(context),
+              ),
+            ],
           ),
         ],
       ),

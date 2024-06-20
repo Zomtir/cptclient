@@ -2,7 +2,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
@@ -231,47 +231,59 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
               ),
             ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipants,
-            onPressed: _handleParticipants,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipantInvites,
-            onPressed: _handleParticipantInvites,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipantUninvites,
-            onPressed: _handleParticipantUninvites,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
-            onPressed: _handleParticipantRegistrations,
-          ),
-          Divider(),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwners,
-            onPressed: _handleOwners,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwnerInvites,
-            onPressed: _handleOwnerInvites,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwnerUninvites,
-            onPressed: _handleOwnerUninvites,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwnerRegistrations,
-            onPressed: _handleOwnerRegistrations,
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipants),
+                onTap: _handleParticipants,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantInvites),
+                onTap: _handleParticipantInvites,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantUninvites),
+                onTap: _handleParticipantUninvites,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantRegistrations),
+                onTap: _handleParticipantRegistrations,
+              ),
+            ],
           ),
           Divider(),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventStatisticPacklist,
-            onPressed: _handleStatisticPacklist,
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwners),
+                onTap: _handleOwners,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnerInvites),
+                onTap: _handleOwnerInvites,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnerUninvites),
+                onTap: _handleOwnerUninvites,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnerRegistrations),
+                onTap: _handleOwnerRegistrations,
+              ),
+            ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventStatisticDivision,
-            onPressed: _handleStatisticDivision,
+          Divider(),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventStatisticPacklist),
+                onTap: _handleStatisticPacklist,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventStatisticDivision),
+                onTap: _handleStatisticDivision,
+              ),
+            ],
           ),
         ],
       ),

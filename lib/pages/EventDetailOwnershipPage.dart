@@ -3,7 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
@@ -121,26 +121,6 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
               ),
             ],
           ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.eventParticipantRegistration,
-            child: Checkbox(
-              value: false,
-              onChanged: (bool? value) {  },
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.eventParticipantConfirmation,
-            child: Checkbox(
-              value: false,
-              onChanged: (bool? value) {  },
-            ),
-          ),
-          /*
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventRegistrants,
-            onPressed: _handleRegistrants,
-          ),
-          */
           AppButton(
             text: AppLocalizations.of(context)!.pageEventParticipants,
             onPressed: _handleParticipants,
@@ -148,6 +128,47 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           AppButton(
             text: AppLocalizations.of(context)!.pageEventOwners,
             onPressed: _handleOwners,
+          ),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipants),
+                onTap: _handleParticipants,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantInvites),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantUninvites),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantRegistrations),
+                onTap: null,
+              ),
+            ],
+          ),
+          Divider(),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwners),
+                onTap: _handleOwners,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnerInvites),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnerUninvites),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventOwnerRegistrations),
+                onTap: null,
+              ),
+            ],
           ),
         ],
       ),

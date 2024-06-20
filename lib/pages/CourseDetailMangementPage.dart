@@ -3,7 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
@@ -236,47 +236,59 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
               ),
             ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseClasses,
-            onPressed: _handleClasses,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseRequirements,
-            onPressed: _handleRequirements,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseModerators,
-            onPressed: _handleModerators,
-          ),
-          Divider(),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseParticipantSummons,
-            onPressed: _handleParticipantSummons,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseParticipantUnsummons,
-            onPressed: _handleParticipantUnsummons,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseOwnerSummons,
-            onPressed: _handleOwnerSummons,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseOwnerUnsummons,
-            onPressed: _handleOwnerUnsummons,
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseClasses),
+                onTap: _handleClasses,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseRequirements),
+                onTap: _handleRequirements,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseModerators),
+                onTap: _handleModerators,
+              ),
+            ],
           ),
           Divider(),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseStatisticClasses,
-            onPressed: _handleStatisticClass,
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseParticipantSummons),
+                onTap: _handleParticipantSummons,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseParticipantUnsummons),
+                onTap: _handleParticipantUnsummons,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseOwnerSummons),
+                onTap: _handleOwnerSummons,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseOwnerUnsummons),
+                onTap: _handleOwnerUnsummons,
+              ),
+            ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseStatisticParticipants,
-            onPressed: _handleStatisticParticipant,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageCourseStatisticOwners,
-            onPressed: _handleStatisticOwner,
+          Divider(),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
+                onTap: _handleStatisticClass,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseStatisticParticipants),
+                onTap: _handleStatisticParticipant,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseStatisticOwners),
+                onTap: _handleStatisticOwner,
+              ),
+            ],
           ),
         ],
       ),
