@@ -30,8 +30,11 @@ class LoginLandingPageState extends State<LoginLandingPage> {
 
   Future<void> _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userToken = prefs.getString('UserToken')!;
-    eventToken = prefs.getString('EventToken')!;
+
+    setState(() {
+      userToken = prefs.getString('UserToken')!;
+      eventToken = prefs.getString('EventToken')!;
+    });
   }
 
   @override
@@ -73,7 +76,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionResume),
-                onTap: () => navi.loginUser(eventToken),
+                onTap: () => navi.loginEvent(eventToken),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionLogout),

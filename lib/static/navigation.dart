@@ -79,6 +79,17 @@ Future<void> loginUser(String token) async {
   }
 }
 
+Future<void> logoutUser() async {
+  await prefs.setString('UserToken', '');
+  uSession = null;
+
+  if (await server.loadStatus()) {
+    gotoRoute('/login');
+  } else {
+    gotoRoute('/connect');
+  }
+}
+
 Future<void> loginEvent(String token) async {
   if (await server.loadStatus()) {
     if (await confirmEvent(token)) {
@@ -86,17 +97,6 @@ Future<void> loginEvent(String token) async {
     } else {
       logoutEvent();
     }
-  } else {
-    gotoRoute('/connect');
-  }
-}
-
-Future<void> logoutUser() async {
-  await prefs.setString('UserToken', '');
-  uSession = null;
-
-  if (await server.loadStatus()) {
-    gotoRoute('/login');
   } else {
     gotoRoute('/connect');
   }
