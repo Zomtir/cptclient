@@ -266,7 +266,7 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.eventLocation,
+            info: AppLocalizations.of(context)!.userGender,
             child: AppDropdown<Gender>(
               controller: _ctrlUserGender,
               builder: (Gender gender) => Text(gender.name),
