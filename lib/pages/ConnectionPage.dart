@@ -37,7 +37,26 @@ class ConnectionPageState extends State<ConnectionPage> {
     _ctrlServerScheme.text = _prefs.getString('ServerScheme')!;
     _ctrlServerHost.text = _prefs.getString('ServerHost')!;
     _ctrlServerPort.text = _prefs.getString('ServerPort')!;
+
+    _updateServerScheme(_ctrlServerScheme.text);
+    _updateServerHost(_ctrlServerHost.text);
+    _updateServerPort(_ctrlServerPort.text);
     _testConnection();
+  }
+
+  _updateServerScheme(String text) {
+    _prefs.setString('ServerScheme', text);
+    server.serverScheme = text;
+  }
+
+  _updateServerHost(String text) {
+    _prefs.setString('ServerHost', text);
+    server.serverHost = text;
+  }
+
+  _updateServerPort(String text) {
+    _prefs.setString('ServerPort', text);
+    server.serverPort = int.tryParse(text) ?? 443;
   }
 
   void _testConnection() async {
@@ -58,10 +77,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerScheme,
-              onChanged: (String text) {
-                _prefs.setString('ServerScheme', text);
-                server.serverScheme = text;
-              },
+              onChanged: _updateServerScheme,
             ),
           ),
           AppInfoRow(
@@ -69,10 +85,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerHost,
-              onChanged: (String text) {
-                _prefs.setString('ServerHost', text);
-                server.serverHost = text;
-              },
+              onChanged: _updateServerHost,
             ),
           ),
           AppInfoRow(
@@ -80,10 +93,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlServerPort,
-              onChanged: (String text) {
-                _prefs.setString('ServerPort', text);
-                server.serverPort = int.tryParse(text) ?? 443;
-              },
+              onChanged: _updateServerPort,
             ),
           ),
           AppButton(

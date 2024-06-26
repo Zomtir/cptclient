@@ -11,7 +11,7 @@ int serverPort = 443;
 void configServer(String scheme, String host, int port) {
   serverScheme = scheme;
   serverHost = host;
-  port = port;
+  serverPort = port;
 }
 
 Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
