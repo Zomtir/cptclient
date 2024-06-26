@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -165,7 +166,7 @@ Future<bool> course_requirement_remove(UserSession session, Requirement requirem
   return success;
 }
 
-Future<List<(int, String, DateTime, DateTime, int, int)>> course_statistic_class(UserSession session, int courseID) async {
+Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {
   final response = await http.get(
     server.uri('/admin/course_statistic_class', {
       'course_id': courseID.toString(),
@@ -179,15 +180,13 @@ Future<List<(int, String, DateTime, DateTime, int, int)>> course_statistic_class
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, DateTime, DateTime, int, int)>.from(
+  return List<(Event, int, int, int)>.from(
     list.map((model) {
       return (
-        model[0],
+        Event.fromJson(model[0]),
         model[1],
-        parseNaiveDateTime(model[2])!.toLocal(),
-        parseNaiveDateTime(model[3])!.toLocal(),
-        model[4],
-        model[5],
+        model[2],
+        model[3],
       );
     }),
   );
@@ -245,9 +244,61 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
   );
 }
 
-Future<List<(int, String, String, int)>> course_statistic_owner(UserSession session, int courseID) async {
+Future<List<(int, String, String, int)>> course_statistic_supporter(UserSession session, int courseID) async {
   final response = await http.get(
-    server.uri('/admin/course_statistic_owner', {'course_id': courseID.toString()}),
+    server.uri('/admin/course_statistic_supporter', {'course_id': courseID.toString()}),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, String, int)>.from(
+    list.map((model) {
+      return (
+      model[0],
+      model[1],
+      model[2],
+      model[3],
+      );
+    }),
+  );
+}
+
+Future<List<(int, String, DateTime, DateTime)>> course_statistic_supporter1(
+    UserSession session, int courseID, int supporterID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_supporter1', {
+      'course_id': courseID.toString(),
+      'supporter_id': supporterID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<(int, String, DateTime, DateTime)>.from(
+    list.map((model) {
+      return (
+      model[0],
+      model[1],
+      parseNaiveDateTime(model[2])!.toLocal(),
+      parseNaiveDateTime(model[3])!.toLocal(),
+      );
+    }),
+  );
+}
+
+Future<List<(int, String, String, int)>> course_statistic_leader(UserSession session, int courseID) async {
+  final response = await http.get(
+    server.uri('/admin/course_statistic_leader', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -269,12 +320,12 @@ Future<List<(int, String, String, int)>> course_statistic_owner(UserSession sess
   );
 }
 
-Future<List<(int, String, DateTime, DateTime)>> course_statistic_owner1(
-    UserSession session, int courseID, int ownerID) async {
+Future<List<(int, String, DateTime, DateTime)>> course_statistic_leader1(
+    UserSession session, int courseID, int leaderID) async {
   final response = await http.get(
-    server.uri('/admin/course_statistic_owner1', {
+    server.uri('/admin/course_statistic_leader1', {
       'course_id': courseID.toString(),
-      'owner_id': ownerID.toString(),
+      'leader_id': leaderID.toString(),
     }),
     headers: {
       'Token': session.token,

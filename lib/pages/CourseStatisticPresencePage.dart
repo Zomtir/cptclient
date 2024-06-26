@@ -1,24 +1,31 @@
-import 'package:cptclient/api/admin/course/imports.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/pages/CourseStatisticParticipant1Page.dart';
+import 'package:cptclient/pages/CourseStatisticPresence1Page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CourseStatisticParticipantPage extends StatefulWidget {
+class CourseStatisticPresencePage extends StatefulWidget {
   final UserSession session;
   final Course course;
+  final String title;
+  final Future<List<(int, String, String, int)>> Function() presence;
+  final Future<List<(int, String, DateTime, DateTime)>> Function(int) presence1;
 
-  CourseStatisticParticipantPage({super.key, required this.session, required this.course});
+  CourseStatisticPresencePage(
+      {super.key,
+      required this.session,
+      required this.course,
+      required this.title,
+      required this.presence,
+      required this.presence1});
 
   @override
-  CourseStatisticParticipantPageState createState() => CourseStatisticParticipantPageState();
+  CourseStatisticPresencePageState createState() => CourseStatisticPresencePageState();
 }
 
-class CourseStatisticParticipantPageState extends State<CourseStatisticParticipantPage> {
-  CourseStatisticParticipantPageState();
+class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage> {
+  CourseStatisticPresencePageState();
 
   List<(int, String, String, int)> stats = [];
 
@@ -29,19 +36,21 @@ class CourseStatisticParticipantPageState extends State<CourseStatisticParticipa
   }
 
   void _update() async {
-    List<(int, String, String, int)> stats = await api_admin.course_statistic_participant(widget.session, widget.course.id);
+    List<(int, String, String, int)> stats = await widget.presence();
     stats.sort((a, b) => a.$4.compareTo(b.$4));
     setState(() => this.stats = stats);
   }
 
-  Future<void> _handleParticipant(int participantID) async {
+  Future<void> _handleOwner(int ownerID) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseStatisticParticipant1Page(
+        builder: (context) => CourseStatisticPresence1Page(
           session: widget.session,
           course: widget.course,
-          participantID: participantID,
+          ownerID: ownerID,
+          title: widget.title,
+          presence1: widget.presence1,
         ),
       ),
     );
@@ -51,7 +60,7 @@ class CourseStatisticParticipantPageState extends State<CourseStatisticParticipa
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageCourseStatisticParticipants),
+        title: Text(widget.title),
       ),
       body: AppBody(
         maxWidth: 1000,
@@ -69,7 +78,7 @@ class CourseStatisticParticipantPageState extends State<CourseStatisticParticipa
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleParticipant(stats[index].$1))),
+                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleOwner(stats[index].$1))),
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3}")),
                   DataCell(Text("${stats[index].$4}")),

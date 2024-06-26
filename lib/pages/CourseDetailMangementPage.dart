@@ -11,8 +11,7 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/CourseStatisticClassPage.dart';
-import 'package:cptclient/pages/CourseStatisticOwnerPage.dart';
-import 'package:cptclient/pages/CourseStatisticParticipantPage.dart';
+import 'package:cptclient/pages/CourseStatisticPresencePage.dart';
 import 'package:cptclient/pages/RequirementOverviewPage.dart';
 import 'package:cptclient/static/server_team_regular.dart' as api_regular;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
@@ -176,21 +175,42 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseStatisticParticipantPage(
+        builder: (context) => CourseStatisticPresencePage(
           session: widget.session,
           course: widget.course,
+          title: AppLocalizations.of(context)!.pageCourseStatisticParticipants,
+          presence: () => api_admin.course_statistic_participant(widget.session, widget.course.id),
+          presence1: (int ownerID) => api_admin.course_statistic_participant1(widget.session, widget.course.id, ownerID),
         ),
       ),
     );
   }
 
-  Future<void> _handleStatisticOwner() async {
+  Future<void> _handleStatisticSupporter() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseStatisticOwnerPage(
+        builder: (context) => CourseStatisticPresencePage(
           session: widget.session,
           course: widget.course,
+          title: AppLocalizations.of(context)!.pageCourseStatisticSupporters,
+          presence: () => api_admin.course_statistic_supporter(widget.session, widget.course.id),
+          presence1: (int ownerID) => api_admin.course_statistic_supporter1(widget.session, widget.course.id, ownerID),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleStatisticLeader() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseStatisticPresencePage(
+          session: widget.session,
+          course: widget.course,
+          title: AppLocalizations.of(context)!.pageCourseStatisticLeaders,
+          presence: () => api_admin.course_statistic_leader(widget.session, widget.course.id),
+          presence1: (int ownerID) => api_admin.course_statistic_leader1(widget.session, widget.course.id, ownerID),
         ),
       ),
     );
@@ -266,8 +286,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
                 onTap: _handleStatisticParticipant,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseStatisticOwners),
-                onTap: _handleStatisticOwner,
+                title: Text(AppLocalizations.of(context)!.pageCourseStatisticSupporters),
+                onTap: _handleStatisticSupporter,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseStatisticLeaders),
+                onTap: _handleStatisticLeader,
               ),
             ],
           ),

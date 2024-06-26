@@ -72,8 +72,8 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
     _ctrlEnd.setDateTime(widget.event.end);
     _ctrlTitle.text = widget.event.title;
     _ctrlLocation.value = widget.event.location;
-    _ctrlPublic = widget.event.public;
-    _ctrlScrutable = widget.event.scrutable;
+    _ctrlPublic = widget.event.public!;
+    _ctrlScrutable = widget.event.scrutable!;
   }
 
   void _gatherEvent() {

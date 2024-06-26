@@ -39,7 +39,7 @@ class EnrollPageState extends State<EnrollPage> {
 
     setState(() {
       _event = event;
-      _ctrlNote.text = event.note;
+      _ctrlNote.text = event.note!;
     });
   }
 

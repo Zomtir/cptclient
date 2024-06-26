@@ -1,5 +1,6 @@
 import 'package:cptclient/api/admin/course/imports.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
@@ -21,7 +22,7 @@ class CourseStatisticClassPage extends StatefulWidget {
 class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   CourseStatisticClassPageState();
 
-  List<(int, String, DateTime, DateTime, int, int)> stats = [];
+  List<(Event, int, int, int)> stats = [];
 
   @override
   void initState() {
@@ -30,8 +31,8 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   }
 
   void _update() async {
-    List<(int, String, DateTime, DateTime, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
-    stats.sort((a, b) => a.$3.compareTo(b.$3));
+    List<(Event, int, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
+    stats.sort((a, b) => a.$1.compareTo(b.$1));
     setState(() => this.stats = stats);
   }
 
@@ -65,18 +66,20 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
               DataColumn(label: Text('Name')),
               DataColumn(label: Text('Begin')),
               DataColumn(label: Text('End')),
+              DataColumn(label: Text('Leaders')),
+              DataColumn(label: Text('Supporters')),
               DataColumn(label: Text('Participants')),
-              DataColumn(label: Text('Owners')),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleClass(stats[index].$1))),
+                  DataCell(InkWell(child: Text("${stats[index].$1.id}"), onTap: () => _handleClass(stats[index].$1.id))),
+                  DataCell(Text("${stats[index].$1.title}")),
+                  DataCell(Text("${stats[index].$1.begin.fmtDateTime(context)}")),
+                  DataCell(Text("${stats[index].$1.end.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].$2}")),
-                  DataCell(Text("${stats[index].$3.fmtDateTime(context)}")),
-                  DataCell(Text("${stats[index].$4.fmtDateTime(context)}")),
-                  DataCell(Text("${stats[index].$5}")),
-                  DataCell(Text("${stats[index].$6}")),
+                  DataCell(Text("${stats[index].$3}")),
+                  DataCell(Text("${stats[index].$4}")),
                 ],
               );
             }),

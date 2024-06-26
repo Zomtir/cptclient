@@ -227,7 +227,7 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventNote,
-            child: Text(widget.event.note),
+            child: Text(widget.event.note!),
           ),
           Divider(),
           AppInfoRow(

@@ -70,9 +70,9 @@ class EventEditPageState extends State<EventEditPage> {
     _ctrlEnd.setDateTime(widget.event.end);
     _ctrlLocation.value = widget.event.location;
     _ctrlOccurrence.value = widget.event.occurrence;
-    _ctrlPublic = widget.event.public;
-    _ctrlScrutable = widget.event.scrutable;
-    _ctrlNote.text = widget.event.note;
+    _ctrlPublic = widget.event.public!;
+    _ctrlScrutable = widget.event.scrutable!;
+    _ctrlNote.text = widget.event.note!;
   }
 
   void _gatherEvent() {

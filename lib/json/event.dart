@@ -18,9 +18,9 @@ class Event implements Comparable {
   Location? location;
   Occurrence? occurrence;
   Acceptance? acceptance;
-  bool public;
-  bool scrutable;
-  String note = "";
+  bool? public;
+  bool? scrutable;
+  String? note = "";
 
   Event({
     required this.id,
@@ -52,7 +52,7 @@ class Event implements Comparable {
         title = json['title'],
         begin = parseNaiveDateTime(json['begin'])!,
         end = parseNaiveDateTime(json['end'])!,
-        location = Location.fromJson(json['location']),
+        location = json['location'] == null ? null : Location.fromJson(json['location']),
         occurrence = Occurrence.fromNullString(json['occurrence']),
         acceptance = Acceptance.fromNullString(json['acceptance']),
         public = json['public'],
