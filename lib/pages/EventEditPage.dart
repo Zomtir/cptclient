@@ -1,5 +1,6 @@
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
@@ -38,10 +39,11 @@ class EventEditPage extends StatefulWidget {
 class EventEditPageState extends State<EventEditPage> {
   final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlPassword = TextEditingController();
+  final TextEditingController _ctrlTitle = TextEditingController();
   final DateTimeController _ctrlBegin = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
-  final TextEditingController _ctrlTitle = TextEditingController();
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  final DropdownController<Occurrence> _ctrlOccurrence = DropdownController<Occurrence>(items: Occurrence.values);
   bool _ctrlPublic = false;
   bool _ctrlScrutable = true;
   final TextEditingController _ctrlNote = TextEditingController();
@@ -63,10 +65,11 @@ class EventEditPageState extends State<EventEditPage> {
 
   void _applyEvent() {
     _ctrlKey.text = widget.event.key;
+    _ctrlTitle.text = widget.event.title;
     _ctrlBegin.setDateTime(widget.event.begin);
     _ctrlEnd.setDateTime(widget.event.end);
-    _ctrlTitle.text = widget.event.title;
     _ctrlLocation.value = widget.event.location;
+    _ctrlOccurrence.value = widget.event.occurrence;
     _ctrlPublic = widget.event.public;
     _ctrlScrutable = widget.event.scrutable;
     _ctrlNote.text = widget.event.note;
@@ -74,10 +77,11 @@ class EventEditPageState extends State<EventEditPage> {
 
   void _gatherEvent() {
     widget.event.key = _ctrlKey.text;
-    widget.event.location = _ctrlLocation.value;
+    widget.event.title = _ctrlTitle.text;
     widget.event.begin = _ctrlBegin.getDateTime()!;
     widget.event.end = _ctrlEnd.getDateTime()!;
-    widget.event.title = _ctrlTitle.text;
+    widget.event.location = _ctrlLocation.value;
+    widget.event.occurrence = _ctrlOccurrence.value;
     widget.event.public = _ctrlPublic;
     widget.event.scrutable = _ctrlScrutable;
     widget.event.note = _ctrlNote.text;
@@ -161,6 +165,14 @@ class EventEditPageState extends State<EventEditPage> {
               controller: _ctrlLocation,
               builder: (Location location) => Text(location.key),
               onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.eventOccurrence,
+            child: AppDropdown<Occurrence>(
+              controller: _ctrlOccurrence,
+              builder: (Occurrence occurrence) => Text(occurrence.name),
+              onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
             ),
           ),
           AppInfoRow(
