@@ -164,6 +164,22 @@ Future<bool> event_owner_remove(UserSession session, Event event, User user) asy
   return (response.statusCode == 200);
 }
 
+Future<List<User>> event_participant_presence_pool(UserSession session, Event event) async {
+  final response = await http.get(
+    server.uri('/owner/event_participant_presence_pool', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+}
+
 Future<List<User>> event_participant_presence_list(UserSession session, Event event) async {
   final response = await http.get(
     server.uri('/owner/event_participant_presence_list', {

@@ -42,8 +42,6 @@ Future<void> preferences(GlobalKey<CptState> key) async {
 }
 
 applyLocale(BuildContext context) {
-  print(cptKey.currentState);
-  print(prefs.getString('Language'));
   context.findAncestorStateOfType<CptState>()!.setLocale(Locale(prefs.getString('Language')!));
 }
 

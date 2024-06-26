@@ -89,9 +89,9 @@ Future<bool> event_participant_presence_remove(EventSession session, User user) 
   return (response.statusCode == 200);
 }
 
-Future<List<User>> event_owner_pool(EventSession session) async {
+Future<List<User>> event_supporter_presence_pool(EventSession session) async {
   final response = await http.get(
-    server.uri('/service/event_owner_pool'),
+    server.uri('/service/event_supporter_presence_pool'),
     headers: {
       'Token': session.token,
     },
@@ -103,9 +103,9 @@ Future<List<User>> event_owner_pool(EventSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<List<User>> event_owner_list(EventSession session) async {
+Future<List<User>> event_supporter_presence_list(EventSession session) async {
   final response = await http.get(
-    server.uri('/service/event_owner_list'),
+    server.uri('/service/event_supporter_presence_list'),
     headers: {
       'Token': session.token,
     },
@@ -117,9 +117,9 @@ Future<List<User>> event_owner_list(EventSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_owner_add(EventSession session, User user) async {
+Future<bool> event_supporter_presence_add(EventSession session, User user) async {
   final response = await http.head(
-    server.uri('/service/event_owner_add', {
+    server.uri('/service/event_supporter_presence_add', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -130,9 +130,63 @@ Future<bool> event_owner_add(EventSession session, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_owner_remove(EventSession session, User user) async {
+Future<bool> event_supporter_presence_remove(EventSession session, User user) async {
   final response = await http.head(
-    server.uri('/service/event_owner_remove', {
+    server.uri('/service/event_supporter_presence_remove', {
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<List<User>> event_leader_presence_pool(EventSession session) async {
+  final response = await http.get(
+    server.uri('/service/event_leader_presence_pool'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(l.map((model) => User.fromJson(model)));
+}
+
+Future<List<User>> event_leader_presence_list(EventSession session) async {
+  final response = await http.get(
+    server.uri('/service/event_leader_presence_list'),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(l.map((model) => User.fromJson(model)));
+}
+
+Future<bool> event_leader_presence_add(EventSession session, User user) async {
+  final response = await http.head(
+    server.uri('/service/event_leader_presence_add', {
+      'user_id': user.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> event_leader_presence_remove(EventSession session, User user) async {
+  final response = await http.head(
+    server.uri('/service/event_leader_presence_remove', {
       'user_id': user.id.toString(),
     }),
     headers: {

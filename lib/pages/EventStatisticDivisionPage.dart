@@ -1,3 +1,4 @@
+import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/session.dart';
@@ -5,7 +6,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

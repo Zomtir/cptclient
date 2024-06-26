@@ -48,7 +48,7 @@ class EnrollPageState extends State<EnrollPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventParticipants,
+          title: AppLocalizations.of(context)!.pageEventParticipantPresences,
           tile: AppEventTile(event: _event!),
           onCallAvailable: () => api_service.event_participant_presence_pool(widget.session),
           onCallSelected: () => api_service.event_participant_presence_list(widget.session),
@@ -59,17 +59,33 @@ class EnrollPageState extends State<EnrollPage> {
     );
   }
 
-  Future<void> _handleOwners() async {
+  Future<void> _handleSupporter() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventOwners,
+          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
           tile: AppEventTile(event: _event!),
-          onCallAvailable: () => api_service.event_owner_pool(widget.session),
-          onCallSelected: () => api_service.event_owner_list(widget.session),
-          onCallAdd: (user) => api_service.event_owner_add(widget.session, user),
-          onCallRemove: (user) => api_service.event_owner_remove(widget.session, user),
+          onCallAvailable: () => api_service.event_supporter_presence_pool(widget.session),
+          onCallSelected: () => api_service.event_supporter_presence_list(widget.session),
+          onCallAdd: (user) => api_service.event_supporter_presence_add(widget.session, user),
+          onCallRemove: (user) => api_service.event_supporter_presence_remove(widget.session, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleLeaders() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          title: AppLocalizations.of(context)!.pageEventLeaderPresences,
+          tile: AppEventTile(event: _event!),
+          onCallAvailable: () => api_service.event_leader_presence_pool(widget.session),
+          onCallSelected: () => api_service.event_leader_presence_list(widget.session),
+          onCallAdd: (user) => api_service.event_leader_presence_add(widget.session, user),
+          onCallRemove: (user) => api_service.event_leader_presence_remove(widget.session, user),
         ),
       ),
     );
@@ -96,12 +112,16 @@ class EnrollPageState extends State<EnrollPage> {
         children: [
           AppEventTile(event: _event!),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipants,
+            text: AppLocalizations.of(context)!.pageEventParticipantPresences,
             onPressed: _handleParticipants,
           ),
           AppButton(
-            text: AppLocalizations.of(context)!.pageEventOwners,
-            onPressed: _handleOwners,
+            text: AppLocalizations.of(context)!.pageEventSupporterPresences,
+            onPressed: _handleSupporter,
+          ),
+          AppButton(
+            text: AppLocalizations.of(context)!.pageEventLeaderPresences,
+            onPressed: _handleLeaders,
           ),
           ListTile(
             title: TextField(
@@ -109,7 +129,7 @@ class EnrollPageState extends State<EnrollPage> {
               maxLines: 10,
               controller: _ctrlNote,
               decoration: InputDecoration(
-                labelText: "Notes",
+                labelText: AppLocalizations.of(context)!.eventNote,
                 suffixIcon: IconButton(
                   onPressed: _handleNote,
                   icon: Icon(Icons.save),

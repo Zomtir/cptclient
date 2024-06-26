@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class FieldInterface {
+abstract class FieldInterface implements Comparable {
   String toFieldString();
 
   Widget buildTile();

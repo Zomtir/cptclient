@@ -160,7 +160,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventParticipants,
+          title: AppLocalizations.of(context)!.pageEventParticipantPresences,
           tile: AppEventTile(event: event),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_owner.event_participant_presence_list(widget.session, event),

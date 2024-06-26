@@ -1,3 +1,4 @@
+import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
 import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
@@ -16,7 +17,6 @@ import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
-import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
