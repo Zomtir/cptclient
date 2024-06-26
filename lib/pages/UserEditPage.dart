@@ -40,7 +40,7 @@ class UserEditPageState extends State<UserEditPage> {
   final DateTimeController    _ctrlUserBirthday = DateTimeController();
   final TextEditingController _ctrlUserBirthlocation = TextEditingController();
   final TextEditingController _ctrlUserNationality = TextEditingController();
-  final DropdownController<Gender> _ctrlUserGender = DropdownController<Gender>(items: Gender.entries);
+  final DropdownController<Gender> _ctrlUserGender = DropdownController<Gender>(items: Gender.values);
   final TextEditingController _ctrlUserFederationNumber = TextEditingController();
   final DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
   final DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();

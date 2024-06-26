@@ -1,57 +1,57 @@
-// ignore_for_file: constant_identifier_names
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-enum GenderStatus {
-  MALE,
-  FEMALE,
-  OTHER,
-}
-
 class Gender implements Comparable {
-  GenderStatus status;
+  final String _value;
 
-  Gender(this.status);
+  const Gender._init(this._value);
 
-  static Gender? fromNullString(String? status) {
-    if (status == null) return null;
-    if (status == 'NULL') return null;
+  static const List<Gender> values = [
+    Gender._init('NULL'),
+    Gender._init('MALE'),
+    Gender._init('FEMALE'),
+    Gender._init('OTHER'),
+  ];
 
-    return Gender(GenderStatus.values.byName(status));
-  }
+  String get name => _value;
 
-  static List<Gender> get entries {
-    return List<Gender>.from(GenderStatus.values.map((model) => Gender(model)));
-  }
+  static Gender get empty => const Gender._init('NULL');
 
-  String get name {
-    return status.name;
+  static Gender get male => const Gender._init('MALE');
+
+  static Gender get female => const Gender._init('FEMALE');
+
+  static Gender get other => const Gender._init('OTHER');
+
+  static Gender? fromNullString(String? value) {
+    if (value == null) return null;
+
+    return values.firstWhere((confirmation) => confirmation._value == value.toUpperCase(),
+        orElse: () => throw ArgumentError('Invalid gender value'));
   }
 
   @override
-  bool operator ==(other) => other is Gender && status == other.status;
+  bool operator ==(other) => other is Gender && _value == other._value;
 
   @override
-  int get hashCode => status.hashCode;
+  int get hashCode => _value.hashCode;
 
   @override
   int compareTo(other) {
-    return status.name.compareTo(other.acceptance.name);
+    return name.compareTo(other.name);
   }
 }
 
-extension LocalelizationExtension on GenderStatus {
+extension LocalelizationExtension on Gender {
   String localizedName(BuildContext context) {
-    switch (this) {
-      case GenderStatus.MALE:
-        return AppLocalizations.of(context)!.genderMale;
-      case GenderStatus.FEMALE:
-        return AppLocalizations.of(context)!.genderFemale;
-      case GenderStatus.OTHER:
-        return AppLocalizations.of(context)!.genderOther;
-      default:
-        return '';
+    if (this == Gender.male) {
+      return AppLocalizations.of(context)!.genderMale;
+    } else if (this == Gender.male) {
+      return AppLocalizations.of(context)!.genderFemale;
+    } else if (this == Gender.other) {
+      return AppLocalizations.of(context)!.genderOther;
+    } else {
+      return '';
     }
   }
 }

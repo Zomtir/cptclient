@@ -82,7 +82,7 @@ class User extends FieldInterface implements Comparable {
         'birthday': formatNaiveDate(birthday),
         'birthlocation': birthlocation,
         'nationality': nationality,
-        'gender': gender?.status.name,
+        'gender': gender?.name,
         'federationnumber': federationnumber,
         'federationpermissionsolo': formatNaiveDate(federationpermissionsolo),
         'federationpermissionteam': formatNaiveDate(federationpermissionteam),
