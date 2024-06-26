@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/credential.dart';
-import 'package:cptclient/json/event.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 
@@ -23,9 +22,6 @@ Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
       path: path,
       queryParameters: queryParameters);
 }
-
-// TODO OccuranceStatus, DraftingStatus, AcceptanceStatus
-List<Status> cacheEventStatus = [Status.OCCURRING, Status.DRAFT, Status.PENDING, Status.REJECTED, Status.CANCELED];
 
 Future<bool> loadStatus() async {
   final http.Response response;

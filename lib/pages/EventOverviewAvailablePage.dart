@@ -1,5 +1,7 @@
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
@@ -13,7 +15,6 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
@@ -28,16 +29,12 @@ class EventOverviewAvailablePage extends StatefulWidget {
   State<StatefulWidget> createState() => EventOverviewAvailablePageState();
 }
 
-class EventOverviewAvailablePageState
-    extends State<EventOverviewAvailablePage> {
-  final DropdownController<Location> _ctrlLocation =
-      DropdownController<Location>(items: []);
-  final DropdownController<Status> _ctrlStatus =
-      DropdownController<Status>(items: server.cacheEventStatus);
-  final DateTimeController _ctrlDateBegin =
-      DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
-  final DateTimeController _ctrlDateEnd =
-      DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> {
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  final DropdownController<Occurrence> _ctrlOccurrence = DropdownController<Occurrence>(items: Occurrence.values);
+  final DropdownController<Acceptance> _ctrlAcceptance = DropdownController<Acceptance>(items: Acceptance.values);
+  final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
+  final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
 
   List<Event> _events = [];
 
@@ -57,7 +54,8 @@ class EventOverviewAvailablePageState
       begin: _ctrlDateBegin.getDate(),
       end: _ctrlDateEnd.getDate(),
       location: _ctrlLocation.value,
-      status: _ctrlStatus.value,
+      occurrence: _ctrlOccurrence.value,
+      acceptance: _ctrlAcceptance.value,
       courseTrue: false,
     );
 
@@ -130,10 +128,15 @@ class EventOverviewAvailablePageState
                   onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
                 ),
               ),
-              AppDropdown<Status>(
-                controller: _ctrlStatus,
-                builder: (Status status) => Text(status.name),
-                onChanged: (Status? status) => setState(() => _ctrlStatus.value = status),
+              AppDropdown<Occurrence>(
+                controller: _ctrlOccurrence,
+                builder: (Occurrence occurrence) => Text(occurrence.name),
+                onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
+              ),
+              AppDropdown<Acceptance>(
+                controller: _ctrlAcceptance,
+                builder: (Acceptance acceptance) => Text(acceptance.name),
+                onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
               ),
             ],
           ),

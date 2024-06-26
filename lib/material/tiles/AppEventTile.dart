@@ -29,7 +29,7 @@ class AppEventTile extends StatelessWidget {
                 Text("${event.title}", style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(compressDate(context, event.begin, event.end)),
                 Text("${event.location!.name}", style: TextStyle(color: Colors.black54)),
-                Text(event.status!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
+                Text(event.acceptance!.name, textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
               ],
             ),
           ),

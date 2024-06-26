@@ -2,21 +2,25 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Event>> event_list(UserSession session, DateTime begin, DateTime end, Status? status, Location? location) async {
+Future<List<Event>> event_list(UserSession session, DateTime begin, DateTime end, Location? location,
+    Occurrence? occurence, Acceptance? acceptance) async {
   final response = await http.get(
     server.uri('/owner/event_list', {
       'begin': formatWebDateTime(begin),
       'end': formatWebDateTime(end),
-      if (status != null) 'status': status.name,
-      if (location != null) 'location_id': location.id.toString(),
+      'occurence': occurence?.name,
+      'acceptance': acceptance?.name,
+      'location_id': location?.id.toString(),
     }),
     headers: {
       'Token': session.token,
@@ -106,32 +110,6 @@ Future<bool> event_submit(UserSession session, Event event) async {
 Future<bool> event_withdraw(UserSession session, Event event) async {
   final response = await http.head(
     server.uri('/owner/event_withdraw', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> event_cancel(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/owner/event_cancel', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> event_recycle(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/owner/event_recycle', {
       'event_id': event.id.toString(),
     }),
     headers: {

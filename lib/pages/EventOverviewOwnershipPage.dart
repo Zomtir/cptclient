@@ -1,5 +1,7 @@
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -15,7 +17,6 @@ import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
@@ -33,10 +34,11 @@ class EventOverviewOwnershipPage extends StatefulWidget {
 }
 
 class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> {
-  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
-  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheEventStatus);
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
   final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
+  final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  final DropdownController<Occurrence> _ctrlOccurrence = DropdownController<Occurrence>(items: Occurrence.values);
+  final DropdownController<Acceptance> _ctrlAcceptance = DropdownController<Acceptance>(items: Acceptance.values);
 
   List<Event> _events = [];
 
@@ -58,7 +60,8 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
   }
 
   Future<void> _update() async {
-    List<Event> events = await api_owner.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(), _ctrlStatus.value, _ctrlLocation.value);
+    List<Event> events = await api_owner.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(),
+        _ctrlLocation.value, _ctrlOccurrence.value, _ctrlAcceptance.value);
 
     setState(() {
       _events = events;
@@ -84,7 +87,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
 
   Future<void> _handleDuplicate(Event event) async {
     Event newEvent = Event.fromEvent(event);
-    newEvent.status = Status.DRAFT;
+    newEvent.acceptance = Acceptance.draft;
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -180,16 +183,6 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     _update();
   }
 
-  Future<void> _cancelEvent(Event event) async {
-    if (!await api_owner.event_cancel(widget.session, event)) return;
-    _update();
-  }
-
-  Future<void> _recycleEvent(Event event) async {
-    if (!await api_owner.event_recycle(widget.session, event)) return;
-    _update();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -222,10 +215,15 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
                   onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
                 ),
               ),
-              AppDropdown<Status>(
-                controller: _ctrlStatus,
-                builder: (Status status) => Text(status.name),
-                onChanged: (Status? status) => setState(() => _ctrlStatus.value = status),
+              AppDropdown<Occurrence>(
+                controller: _ctrlOccurrence,
+                builder: (Occurrence occurrence) => Text(occurrence.name),
+                onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
+              ),
+              AppDropdown<Acceptance>(
+                controller: _ctrlAcceptance,
+                builder: (Acceptance acceptance) => Text(acceptance.name),
+                onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.course,
@@ -252,33 +250,26 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
 
   List<Widget> _buildTrailing(Event event) {
     return [
-      if (event.status == Status.DRAFT) IconButton(
-        icon: const Icon(Icons.check),
-        onPressed: () => _submitEvent(event),
-      ),
-      if (event.status == Status.PENDING) IconButton(
-        icon: const Icon(Icons.undo),
-        onPressed: () => _withdrawEvent(event),
-      ),
-      if (event.status == Status.OCCURRING) IconButton(
-        icon: const Icon(Icons.cancel_outlined),
-        onPressed: () => _cancelEvent(event),
-      ),
-      if (event.status == Status.REJECTED) IconButton(
-        icon: const Icon(Icons.restore),
-        onPressed: () => _recycleEvent(event),
-      ),
-      if (event.status == Status.CANCELED) IconButton(
-        icon: const Icon(Icons.play_arrow),
-        onPressed: () => {},
-      ),
+      if (event.acceptance == Acceptance.draft)
+        IconButton(
+          icon: const Icon(Icons.check),
+          onPressed: () => _submitEvent(event),
+        ),
+      if (event.acceptance == Acceptance.pending ||
+          event.acceptance == Acceptance.accepted ||
+          event.acceptance == Acceptance.rejected)
+        IconButton(
+          icon: const Icon(Icons.restore),
+          onPressed: () => _withdrawEvent(event),
+        ),
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),
         itemBuilder: (context) => [
-          if (event.status == Status.DRAFT) PopupMenuItem<VoidCallback>(
-            value: () => _handleEdit(event),
-            child: Text(AppLocalizations.of(context)!.actionEdit),
-          ),
+          if (event.acceptance == Acceptance.draft)
+            PopupMenuItem<VoidCallback>(
+              value: () => _handleEdit(event),
+              child: Text(AppLocalizations.of(context)!.actionEdit),
+            ),
           PopupMenuItem<VoidCallback>(
             value: () => _handleDuplicate(event),
             child: Text(AppLocalizations.of(context)!.actionDuplicate),

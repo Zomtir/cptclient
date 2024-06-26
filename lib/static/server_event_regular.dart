@@ -2,23 +2,33 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/message.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
 
-Future<List<Event>> event_list(UserSession session, {DateTime? begin, DateTime? end, Location? location, Status? status, bool? courseTrue, int? courseID}) async {
+Future<List<Event>> event_list(UserSession session,
+    {DateTime? begin,
+    DateTime? end,
+    Location? location,
+    Occurrence? occurrence,
+    Acceptance? acceptance,
+    bool? courseTrue,
+    int? courseID}) async {
   final response = await http.get(
     server.uri('/regular/event_list', {
       'begin': formatWebDateTime(begin),
       'end': formatWebDateTime(end),
-      'location_id' : location?.id.toString(),
-      'status': status?.name,
-      'course_true' : courseTrue?.toString(),
+      'location_id': location?.id.toString(),
+      'occurrence': occurrence?.name,
+      'acceptance': acceptance?.name,
+      'course_true': courseTrue?.toString(),
       'course_id': courseID?.toString(),
     }),
     headers: {

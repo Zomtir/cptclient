@@ -2,9 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/format.dart';
@@ -14,8 +16,9 @@ import 'package:http/http.dart' as http;
 Future<List<Event>> event_list(UserSession session,
     {DateTime? begin,
     DateTime? end,
-    Status? status,
     Location? location,
+    Occurrence? occurrence,
+    Acceptance? acceptance,
     bool? courseTrue,
     int? courseID,
     int? ownerID}) async {
@@ -23,8 +26,9 @@ Future<List<Event>> event_list(UserSession session,
     server.uri('/admin/event_list', {
       'begin': formatWebDateTime(begin),
       'end': formatWebDateTime(end),
-      'status': status?.name,
       'location_id': location?.id.toString(),
+      'occurrence': occurrence?.name,
+      'acceptance': acceptance?.name,
       'course_true': courseTrue?.toString(),
       'course_id': courseID?.toString(),
       'owner_id': ownerID?.toString(),

@@ -1,5 +1,7 @@
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
@@ -14,7 +16,6 @@ import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventInfoPage.dart';
-import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_event_admin.dart' as api_admin;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
@@ -34,8 +35,9 @@ class EventOverviewManagementPage extends StatefulWidget {
 class EventOverviewManagementPageState extends State<EventOverviewManagementPage> {
   final DateTimeController _ctrlDateBegin = DateTimeController(dateTime: DateTime.now().add(Duration(days: -7)));
   final DateTimeController _ctrlDateEnd = DateTimeController(dateTime: DateTime.now().add(Duration(days: 30)));
-  final DropdownController<Status> _ctrlStatus = DropdownController<Status>(items: server.cacheEventStatus);
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  final DropdownController<Occurrence> _ctrlOccurrence = DropdownController<Occurrence>(items: Occurrence.values);
+  final DropdownController<Acceptance> _ctrlAcceptance = DropdownController<Acceptance>(items: Acceptance.values);
   final DropdownController<User> _ctrlOwner = DropdownController<User>(items: []);
 
   List<Event> _events = [];
@@ -56,8 +58,9 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
       widget.session,
       begin: _ctrlDateBegin.getDate(),
       end: _ctrlDateEnd.getDate(),
-      status: _ctrlStatus.value,
       location: _ctrlLocation.value,
+      occurrence: _ctrlOccurrence.value,
+      acceptance: _ctrlAcceptance.value,
       courseTrue: false,
       ownerID: _ctrlOwner.value?.id,
     );
@@ -131,7 +134,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
   Future<void> _handleDuplicate(Event event) async {
     Event newEvent = Event.fromEvent(event);
-    newEvent.status = Status.DRAFT;
+    newEvent.acceptance = Acceptance.draft;
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -183,7 +186,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Management"),
+        title: Text(AppLocalizations.of(context)!.pageEventManagement),
       ),
       body: AppBody(
         children: <Widget>[
@@ -206,10 +209,15 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
                   onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
                 ),
               ),
-              AppDropdown<Status>(
-                controller: _ctrlStatus,
-                builder: (Status status) => Text(status.name),
-                onChanged: (Status? status) => setState(() => _ctrlStatus.value = status),
+              AppDropdown<Occurrence>(
+                controller: _ctrlOccurrence,
+                builder: (Occurrence occurrence) => Text(occurrence.name),
+                onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
+              ),
+              AppDropdown<Acceptance>(
+                controller: _ctrlAcceptance,
+                builder: (Acceptance acceptance) => Text(acceptance.name),
+                onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.user,
@@ -252,19 +260,19 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
   List<Widget> _buildTrailing(Event event) {
     return [
-      if (event.status == Status.PENDING)
-        IconButton(
-          icon: const Icon(Icons.highlight_remove),
-          onPressed: () => _denyEvent(event),
-        ),
-      if (event.status == Status.PENDING)
+      if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.rejected)
         IconButton(
           icon: const Icon(Icons.check_circle_outline),
           onPressed: () => _acceptEvent(event),
         ),
-      if (event.status == Status.OCCURRING || event.status == Status.REJECTED)
+      if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.accepted)
         IconButton(
-          icon: const Icon(Icons.undo),
+          icon: const Icon(Icons.highlight_remove),
+          onPressed: () => _denyEvent(event),
+        ),
+      if (event.acceptance == Acceptance.accepted || event.acceptance == Acceptance.rejected)
+        IconButton(
+          icon: const Icon(Icons.hourglass_bottom),
           onPressed: () => _suspendEvent(event),
         ),
       PopupMenuButton<VoidCallback>(

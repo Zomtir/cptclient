@@ -37,7 +37,7 @@ class Gender implements Comparable {
 
   @override
   int compareTo(other) {
-    return status.name.compareTo(other.status.name);
+    return status.name.compareTo(other.acceptance.name);
   }
 }
 

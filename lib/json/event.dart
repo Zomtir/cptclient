@@ -1,22 +1,23 @@
 // ignore_for_file: constant_identifier_names
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/crypto.dart';
 import 'package:cptclient/static/format.dart';
-
-enum Status { DRAFT, PENDING, OCCURRING, REJECTED, CANCELED }
 
 class Event implements Comparable {
   final int id;
   String key;
   String title;
-  Location? location;
   DateTime begin;
   DateTime end;
-  Status? status;
+  Location? location;
+  Occurrence? occurrence;
+  Acceptance? acceptance;
   bool public;
   bool scrutable;
   String note = "";
@@ -37,10 +38,11 @@ class Event implements Comparable {
       : id = 0,
         key = assembleKey([5]),
         title = event.title,
-        location = event.location,
         begin = event.begin,
         end = event.end,
-        status = event.status,
+        location = event.location,
+        occurrence = event.occurrence,
+        acceptance = event.acceptance,
         public = event.public,
         scrutable = event.scrutable;
 
@@ -48,10 +50,11 @@ class Event implements Comparable {
       : id = json['id'],
         key = json['key'],
         title = json['title'],
-        location = Location.fromJson(json['location']),
         begin = parseNaiveDateTime(json['begin'])!,
         end = parseNaiveDateTime(json['end'])!,
-        status = Status.values.firstWhere((x) => x.name == json['status']),
+        location = Location.fromJson(json['location']),
+        occurrence = Occurrence.fromNullString(json['occurrence']),
+        acceptance = Acceptance.fromNullString(json['acceptance']),
         public = json['public'],
         scrutable = json['scrutable'],
         note = json['note'];
@@ -60,10 +63,11 @@ class Event implements Comparable {
         'id': id,
         'key': key,
         'title': title,
-        'location': location?.toJson(),
         'begin': formatNaiveDateTime(begin),
         'end': formatNaiveDateTime(end),
-        'status': status.toString(),
+        'location': location?.toJson(),
+        'occurrence': occurrence?.name,
+        'acceptance': acceptance?.name,
         'public': public,
         'scrutable': scrutable,
         'note': note,
@@ -73,10 +77,11 @@ class Event implements Comparable {
       : id = 0,
         key = assembleKey([3,3,3]),
         title = course.title,
-        location = null,
         begin = DateTime.now(),
         end = DateTime.now().add(Duration(hours: 1)),
-        status = null,
+        location = null,
+        occurrence = null,
+        acceptance = null,
         public = true,
         scrutable = false;
 
@@ -84,10 +89,11 @@ class Event implements Comparable {
       : id = 0,
         key = assembleKey([3,3,3]),
         title = "${user.key}'s individual reservation",
-        location = null,
         begin = DateTime.now(),
         end = DateTime.now().add(Duration(hours: 1)),
-        status = null,
+        location = null,
+        occurrence = null,
+        acceptance = null,
         public = false,
         scrutable = true;
 
