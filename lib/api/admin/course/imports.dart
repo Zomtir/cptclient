@@ -5,12 +5,15 @@ import 'dart:convert';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/message.dart';
 import 'package:cptclient/static/server.dart' as server;
 import 'package:http/http.dart' as http;
+
+export 'leader.dart';
+export 'participant.dart';
+export 'supporter.dart';
 
 Future<List<Course>> course_list(UserSession session, User? user, bool? active, bool? public) async {
   final response = await http.get(
@@ -105,178 +108,6 @@ Future<bool> course_moderator_remove(UserSession session, int courseID, int user
     server.uri('/admin/course_moderator_remove', {
       'course_id': courseID.toString(),
       'user_id': userID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<List<Team>> course_owner_summon_list(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_owner_summon_list', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Team>.from(list.map((model) => Team.fromJson(model)));
-}
-
-Future<bool> course_owner_summon_add(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_owner_summon_add', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> course_owner_summon_remove(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_owner_summon_remove', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<List<Team>> course_owner_unsummon_list(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_owner_unsummon_list', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Team>.from(list.map((model) => Team.fromJson(model)));
-}
-
-Future<bool> course_owner_unsummon_add(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_owner_unsummon_add', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> course_owner_unsummon_remove(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_owner_unsummon_remove', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<List<Team>> course_participant_summon_list(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_participant_summon_list', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Team>.from(list.map((model) => Team.fromJson(model)));
-}
-
-Future<bool> course_participant_summon_add(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_participant_summon_add', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> course_participant_summon_remove(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_participant_summon_remove', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<List<Team>> course_participant_unsummon_list(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_participant_unsummon_list', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Team>.from(list.map((model) => Team.fromJson(model)));
-}
-
-Future<bool> course_participant_unsummon_add(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_participant_unsummon_add', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> course_participant_unsummon_remove(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/admin/course_participant_unsummon_remove', {
-      'course_id': courseID.toString(),
-      'team_id': teamID.toString(),
     }),
     headers: {
       'Token': session.token,

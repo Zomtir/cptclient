@@ -1,3 +1,4 @@
+import 'package:cptclient/api/admin/course/imports.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
@@ -8,7 +9,6 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/tiles/AppRequirementTile.dart';
-import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

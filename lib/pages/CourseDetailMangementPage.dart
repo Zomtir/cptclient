@@ -1,9 +1,11 @@
+import 'package:cptclient/api/admin/course/imports.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/material/pages/FilterPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
@@ -12,7 +14,6 @@ import 'package:cptclient/pages/CourseStatisticClassPage.dart';
 import 'package:cptclient/pages/CourseStatisticOwnerPage.dart';
 import 'package:cptclient/pages/CourseStatisticParticipantPage.dart';
 import 'package:cptclient/pages/RequirementOverviewPage.dart';
-import 'package:cptclient/static/server_course_admin.dart' as api_admin;
 import 'package:cptclient/static/server_team_regular.dart' as api_regular;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
@@ -111,65 +112,49 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
-  Future<void> _handleParticipantSummons() async {
+  Future<void> _handleParticipantSieves() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SelectionPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseParticipantSummons,
+        builder: (context) => FilterPage<Team>(
+          title: AppLocalizations.of(context)!.pageCourseParticipantSieves,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_admin.course_participant_summon_list(widget.session, widget.course.id),
-          onCallAdd: (team) => api_admin.course_participant_summon_add(widget.session, widget.course.id, team.id),
-          onCallRemove: (team) => api_admin.course_participant_summon_remove(widget.session, widget.course.id, team.id),
+          onCallSelected: () => api_admin.course_participant_sieve_list(widget.session, widget.course.id),
+          onCallEdit: (team, access) => api_admin.course_participant_sieve_edit(widget.session, widget.course.id, team.id, access),
+          onCallRemove: (team) => api_admin.course_participant_sieve_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
   }
 
-  Future<void> _handleParticipantUnsummons() async {
+  Future<void> _handleSupporterSieves() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SelectionPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseParticipantUnsummons,
+        builder: (context) => FilterPage<Team>(
+          title: AppLocalizations.of(context)!.pageCourseSupporterSieves,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_admin.course_participant_unsummon_list(widget.session, widget.course.id),
-          onCallAdd: (team) => api_admin.course_participant_unsummon_add(widget.session, widget.course.id, team.id),
-          onCallRemove: (team) => api_admin.course_participant_unsummon_remove(widget.session, widget.course.id, team.id),
+          onCallSelected: () => api_admin.course_supporter_sieve_list(widget.session, widget.course.id),
+          onCallEdit: (team, access) => api_admin.course_supporter_sieve_edit(widget.session, widget.course.id, team.id, access),
+          onCallRemove: (team) => api_admin.course_supporter_sieve_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
   }
 
-  Future<void> _handleOwnerSummons() async {
+  Future<void> _handleLeaderSieves() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SelectionPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseOwnerSummons,
+        builder: (context) => FilterPage<Team>(
+          title: AppLocalizations.of(context)!.pageCourseLeaderSieves,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_admin.course_owner_summon_list(widget.session, widget.course.id),
-          onCallAdd: (team) => api_admin.course_owner_summon_add(widget.session, widget.course.id, team.id),
-          onCallRemove: (team) => api_admin.course_owner_summon_remove(widget.session, widget.course.id, team.id),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleOwnerUnsummons() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseOwnerUnsummons,
-          tile: AppCourseTile(course: widget.course),
-          onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_admin.course_owner_unsummon_list(widget.session, widget.course.id),
-          onCallAdd: (team) => api_admin.course_owner_unsummon_add(widget.session, widget.course.id, team.id),
-          onCallRemove: (team) => api_admin.course_owner_unsummon_remove(widget.session, widget.course.id, team.id),
+          onCallSelected: () => api_admin.course_leader_sieve_list(widget.session, widget.course.id),
+          onCallEdit: (team, access) => api_admin.course_leader_sieve_edit(widget.session, widget.course.id, team.id, access),
+          onCallRemove: (team) => api_admin.course_leader_sieve_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
@@ -256,20 +241,16 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           MenuSection(
             children: [
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseParticipantSummons),
-                onTap: _handleParticipantSummons,
+                title: Text(AppLocalizations.of(context)!.pageCourseParticipantSieves),
+                onTap: _handleParticipantSieves,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseParticipantUnsummons),
-                onTap: _handleParticipantUnsummons,
+                title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
+                onTap: _handleSupporterSieves,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseOwnerSummons),
-                onTap: _handleOwnerSummons,
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseOwnerUnsummons),
-                onTap: _handleOwnerUnsummons,
+                title: Text(AppLocalizations.of(context)!.pageCourseLeaderSieves),
+                onTap: _handleLeaderSieves,
               ),
             ],
           ),
