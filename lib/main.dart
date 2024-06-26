@@ -3,7 +3,6 @@ import 'package:cptclient/pages/EnrollPage.dart';
 import 'package:cptclient/pages/LoginLandingPage.dart';
 import 'package:cptclient/pages/MemberLandingPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
