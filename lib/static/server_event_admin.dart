@@ -325,9 +325,9 @@ Future<bool> event_owner_uninvite_remove(UserSession session, int eventID, int u
   return (response.statusCode == 200);
 }
 
-Future<List<User>> event_participant_pool(UserSession session, Event event) async {
+Future<List<User>> event_participant_presence_pool(UserSession session, Event event) async {
   final response = await http.get(
-    server.uri('/admin/event_participant_pool', {
+    server.uri('/admin/event_participant_presence_pool', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -341,9 +341,9 @@ Future<List<User>> event_participant_pool(UserSession session, Event event) asyn
   return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
-Future<List<User>> event_participant_list(UserSession session, Event event) async {
+Future<List<User>> event_participant_presence_list(UserSession session, Event event) async {
   final response = await http.get(
-    server.uri('/admin/event_participant_list', {
+    server.uri('/admin/event_participant_presence_list', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -357,9 +357,9 @@ Future<List<User>> event_participant_list(UserSession session, Event event) asyn
   return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
 }
 
-Future<bool> event_participant_add(UserSession session, Event event, User user) async {
+Future<bool> event_participant_presence_add(UserSession session, Event event, User user) async {
   final response = await http.head(
-    server.uri('/admin/event_participant_add', {
+    server.uri('/admin/event_participant_presence_add', {
       'event_id': event.id.toString(),
       'user_id': user.id.toString(),
     }),
@@ -371,9 +371,9 @@ Future<bool> event_participant_add(UserSession session, Event event, User user) 
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_remove(UserSession session, Event event, User user) async {
+Future<bool> event_participant_presence_remove(UserSession session, Event event, User user) async {
   final response = await http.head(
-    server.uri('/admin/event_participant_remove', {
+    server.uri('/admin/event_participant_presence_remove', {
       'event_id': event.id.toString(),
       'user_id': user.id.toString(),
     }),

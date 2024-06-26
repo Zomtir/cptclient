@@ -15,8 +15,8 @@ import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventDetailOwnershipPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
-import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/server_event_owner.dart' as api_owner;
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
@@ -107,9 +107,9 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventInfoPage(
+        builder: (context) => EventDetailOwnershipPage(
           session: widget.session,
-          event: event,
+          eventID: event.id,
         ),
       ),
     );
@@ -163,9 +163,9 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: event),
           onCallAvailable: () => api_regular.user_list(widget.session),
-          onCallSelected: () => api_owner.event_participant_list(widget.session, event),
-          onCallAdd: (user) => api_owner.event_participant_add(widget.session, event, user),
-          onCallRemove: (user) => api_owner.event_participant_remove(widget.session, event, user),
+          onCallSelected: () => api_owner.event_participant_presence_list(widget.session, event),
+          onCallAdd: (user) => api_owner.event_participant_presence_add(widget.session, event, user),
+          onCallRemove: (user) => api_owner.event_participant_presence_remove(widget.session, event, user),
         ),
       ),
     );

@@ -5,7 +5,7 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/pages/EventInfoPage.dart';
+import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -55,7 +55,7 @@ class ClassOverviewAvailablePageState
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventInfoPage(
+        builder: (context) => EventDetailRegularPage(
           session: widget.session,
           event: event,
         ),

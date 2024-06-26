@@ -35,9 +35,9 @@ Future<bool?> event_note_edit(EventSession session, String note) async {
   return (response.statusCode == 200);
 }
 
-Future<List<User>> event_participant_pool(EventSession session) async {
+Future<List<User>> event_participant_presence_pool(EventSession session) async {
   final response = await http.get(
-    server.uri('/service/event_participant_pool'),
+    server.uri('/service/event_participant_presence_pool'),
     headers: {
       'Token': session.token,
     },
@@ -49,9 +49,9 @@ Future<List<User>> event_participant_pool(EventSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<List<User>> event_participant_list(EventSession session) async {
+Future<List<User>> event_participant_presence_list(EventSession session) async {
   final response = await http.get(
-    server.uri('/service/event_participant_list'),
+    server.uri('/service/event_participant_presence_list'),
     headers: {
       'Token': session.token,
     },
@@ -63,9 +63,9 @@ Future<List<User>> event_participant_list(EventSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_participant_add(EventSession session, User user) async {
+Future<bool> event_participant_presence_add(EventSession session, User user) async {
   final response = await http.head(
-    server.uri('/service/event_participant_add', {
+    server.uri('/service/event_participant_presence_add', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -76,9 +76,9 @@ Future<bool> event_participant_add(EventSession session, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_remove(EventSession session, User user) async {
+Future<bool> event_participant_presence_remove(EventSession session, User user) async {
   final response = await http.head(
-    server.uri('/service/event_participant_remove', {
+    server.uri('/service/event_participant_presence_remove', {
       'user_id': user.id.toString(),
     }),
     headers: {

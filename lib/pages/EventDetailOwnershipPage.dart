@@ -73,9 +73,9 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: event!),
           onCallAvailable: () => api_regular.user_list(widget.session),
-          onCallSelected: () => api_owner.event_participant_list(widget.session, event!),
-          onCallAdd: (user) => api_owner.event_participant_add(widget.session, event!, user),
-          onCallRemove: (user) => api_owner.event_participant_remove(widget.session, event!, user),
+          onCallSelected: () => api_owner.event_participant_presence_list(widget.session, event!),
+          onCallAdd: (user) => api_owner.event_participant_presence_add(widget.session, event!, user),
+          onCallRemove: (user) => api_owner.event_participant_presence_remove(widget.session, event!, user),
         ),
       ),
     );

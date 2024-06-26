@@ -74,10 +74,10 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_admin.event_participant_pool(widget.session, event!),
-          onCallSelected: () => api_admin.event_participant_list(widget.session, event!),
-          onCallAdd: (user) => api_admin.event_participant_add(widget.session, event!, user),
-          onCallRemove: (user) => api_admin.event_participant_remove(widget.session, event!, user),
+          onCallAvailable: () => api_admin.event_participant_presence_pool(widget.session, event!),
+          onCallSelected: () => api_admin.event_participant_presence_list(widget.session, event!),
+          onCallAdd: (user) => api_admin.event_participant_presence_add(widget.session, event!, user),
+          onCallRemove: (user) => api_admin.event_participant_presence_remove(widget.session, event!, user),
         ),
       ),
     );

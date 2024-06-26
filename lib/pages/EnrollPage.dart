@@ -50,10 +50,10 @@ class EnrollPageState extends State<EnrollPage> {
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventParticipants,
           tile: AppEventTile(event: _event!),
-          onCallAvailable: () => api_service.event_participant_pool(widget.session),
-          onCallSelected: () => api_service.event_participant_list(widget.session),
-          onCallAdd: (user) => api_service.event_participant_add(widget.session, user),
-          onCallRemove: (user) => api_service.event_participant_remove(widget.session, user),
+          onCallAvailable: () => api_service.event_participant_presence_pool(widget.session),
+          onCallSelected: () => api_service.event_participant_presence_list(widget.session),
+          onCallAdd: (user) => api_service.event_participant_presence_add(widget.session, user),
+          onCallRemove: (user) => api_service.event_participant_presence_remove(widget.session, user),
         ),
       ),
     );

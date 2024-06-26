@@ -13,8 +13,8 @@ import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
-import 'package:cptclient/pages/EventInfoPage.dart';
 import 'package:cptclient/static/server_event_regular.dart' as api_regular;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
@@ -86,7 +86,7 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventInfoPage(
+        builder: (context) => EventDetailRegularPage(
           session: widget.session,
           event: event,
         ),
