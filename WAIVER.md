@@ -1,6 +1,9 @@
-# COPYRIGHT WAIVER
+The following details pertain to the software at the current point in
+time and may be subject to change. These details solely serve the
+identification of the software, but do not limit the waiver to them.
 
-This is a copyright waiver for [https://github.com/Zomtir/cptclient/](https://github.com/Zomtir/cptclient/).
+* Name: Course Participation Tracker
+* Repository: <https://github.com/Zomtir/cptclient/>
 
 I dedicate any and all copyright interest in this software to the
 public domain. I make this dedication for the benefit of the public at
@@ -17,3 +20,4 @@ To the best of my knowledge and belief, no individual, business,
 organization, government, or other entity has any copyright interest
 in my contributions, and I affirm that I will not make contributions
 that are otherwise encumbered.
+

@@ -93,11 +93,13 @@ while listing yourself as [Author](AUTHORS.md).
 ```bash
 # Generate a GPG key
 gpg --full-generate-key
-# Sign the waiver
-gpg --no-version --armor --sign WAIVER.md
-# Copy the signature
-cat WAIVER.md.asc
 # Optionally export your public key and add it to your Github account and/or a keyserver.
 gpg --list-keys
 gpg --armor --export <KEYID>
+# Sign the waiver
+gpg --detach-sig --armor WAIVER.md
+# View the signature
+cat WAIVER.md.asc
+# Verify the signature
+gpg --verify WAIVER.md.asc WAIVER.md
 ```
