@@ -36,7 +36,7 @@ class LoginEventPageState extends State<LoginEventPage> {
     _ctrlLogin.text = _eventDefault;
     _ctrlPasswd.text = "";
 
-    if (token != null) navi.loginEvent(token);
+    if (token != null) navi.loginEvent(context, token);
   }
 
   @override

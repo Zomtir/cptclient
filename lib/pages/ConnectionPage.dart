@@ -5,6 +5,7 @@ import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/router.dart' as router;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -105,7 +106,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             text: AppLocalizations.of(context)!.actionConnect,
             onPressed: () {
               navi.applyServer();
-              navi.gotoRoute('/login');
+              router.gotoRoute(context, '/login');
             },
             leading: Icon(Icons.link),
           ),

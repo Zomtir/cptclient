@@ -5,6 +5,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/main.dart';
 import 'package:cptclient/static/environment.dart';
+import 'package:cptclient/static/router.dart' as router;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
@@ -12,19 +13,14 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yaml/yaml.dart';
 
-late GlobalKey<CptState> cptKey;
 late SharedPreferences prefs;
 UserSession? uSession;
 EventSession? eSession;
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
-
-Future<void> preferences(GlobalKey<CptState> key) async {
+Future<void> preferences() async {
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 
-  cptKey = key;
   prefs = await SharedPreferences.getInstance();
 
   pufIfMissing(String key, String value) async {
@@ -54,60 +50,49 @@ applyServer() {
   );
 }
 
-Future<void> connectServer() async {
-  // Simulate lag
-  //await Future.delayed(const Duration(seconds: 10));
-
-  if (await server.loadStatus()) {
-    gotoRoute('/login');
-  } else {
-    gotoRoute('/connect');
-  }
-}
-
-Future<void> loginUser(String token) async {
+Future<void> loginUser(BuildContext context, String token) async {
   if (await server.loadStatus()) {
     if (await confirmUser(token)) {
-      gotoRoute('/user');
+      router.gotoRoute(context, '/user');
     } else {
-      logoutUser();
+      logoutUser(context);
     }
   } else {
-    gotoRoute('/connect');
+    router.gotoRoute(context, '/connect');
   }
 }
 
-Future<void> logoutUser() async {
+Future<void> logoutUser(BuildContext context) async {
   await prefs.setString('UserToken', '');
   uSession = null;
 
   if (await server.loadStatus()) {
-    gotoRoute('/login');
+    router.gotoRoute(context, '/login');
   } else {
-    gotoRoute('/connect');
+    router.gotoRoute(context, '/connect');
   }
 }
 
-Future<void> loginEvent(String token) async {
+Future<void> loginEvent(BuildContext context, String token) async {
   if (await server.loadStatus()) {
     if (await confirmEvent(token)) {
-      gotoRoute('/event');
+      router.gotoRoute(context, '/event');
     } else {
-      logoutEvent();
+      logoutEvent(context);
     }
   } else {
-    gotoRoute('/connect');
+    router.gotoRoute(context, '/connect');
   }
 }
 
-Future<void> logoutEvent() async {
+Future<void> logoutEvent(BuildContext context) async {
   await prefs.setString('EventToken', '');
   uSession = null;
 
   if (await server.loadStatus()) {
-    gotoRoute('/login');
+    router.gotoRoute(context, '/login');
   } else {
-    gotoRoute('/connect');
+    router.gotoRoute(context, '/connect');
   }
 }
 
@@ -133,8 +118,4 @@ Future<bool> confirmEvent(String token) async {
   eSession = EventSession(token);
 
   return true;
-}
-
-void gotoRoute(String path) {
-  navigatorKey.currentState?.pushNamedAndRemoveUntil(path, (route) => false);
 }

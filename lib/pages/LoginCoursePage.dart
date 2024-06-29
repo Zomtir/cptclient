@@ -32,7 +32,7 @@ class LoginCoursePageState extends State<LoginCoursePage> {
 
   void _loginCourse() async {
     String? token = await server.loginCourse(_ctrlLogin.text);
-    if (token != null) navi.loginEvent(token);
+    if (token != null) navi.loginEvent(context, token);
   }
 
   @override

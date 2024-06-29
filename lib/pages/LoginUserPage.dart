@@ -36,7 +36,7 @@ class LoginUserPageState extends State<LoginUserPage> {
     _ctrlUserLogin.text = _userDefault;
     _ctrlUserPasswd.text = "";
 
-    if (token != null) navi.loginUser(token);
+    if (token != null) navi.loginUser(context, token);
   }
 
   @override

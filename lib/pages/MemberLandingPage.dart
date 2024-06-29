@@ -54,7 +54,7 @@ class MemberLandingPage extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: navi.logoutUser,
+            onPressed: () => navi.logoutUser(context),
           ),
         ],
       ),

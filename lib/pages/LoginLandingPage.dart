@@ -7,6 +7,7 @@ import 'package:cptclient/pages/LoginLocationPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/router.dart' as router;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,11 +63,17 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionResume),
-                onTap: () => navi.loginUser(userToken),
+                onTap: () {
+                  navi.loginUser(context, userToken);
+                  _loadPreferences();
+                },
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionLogout),
-                onTap: navi.logoutUser,
+                onTap: () {
+                  navi.logoutUser(context);
+                  _loadPreferences();
+                },
               ),
             ],
           ),
@@ -76,11 +83,17 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionResume),
-                onTap: () => navi.loginEvent(eventToken),
+                onTap: () {
+                  navi.loginEvent(context, eventToken);
+                  _loadPreferences();
+                },
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionLogout),
-                onTap: navi.logoutEvent,
+                onTap: () {
+                  navi.logoutEvent(context);
+                  _loadPreferences();
+                },
               ),
             ],
           ),
@@ -130,7 +143,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             ListTile(
               title: Text(AppLocalizations.of(context)!.pageConnection),
               leading: Icon(Icons.link_off),
-              onTap: () => navi.gotoRoute('/connect'),
+              onTap: () => router.gotoRoute(context, '/connect'),
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)!.pageCredits),

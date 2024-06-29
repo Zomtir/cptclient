@@ -35,7 +35,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
 
   void _loginLocation() async {
     String? token = await server.loginLocation(_ctrlLogin.text);
-    if (token != null) navi.loginEvent(token);
+    if (token != null) navi.loginEvent(context, token);
   }
 
   @override

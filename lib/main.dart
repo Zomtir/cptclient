@@ -1,14 +1,16 @@
-import 'package:cptclient/pages/ConnectionPage.dart';
-import 'package:cptclient/pages/EnrollPage.dart';
-import 'package:cptclient/pages/LoginLandingPage.dart';
-import 'package:cptclient/pages/MemberLandingPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
+import 'package:cptclient/static/router.dart' as router;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await navi.preferences();
+  await navi.applyServer();
+
   runApp(CptApp());
 }
 
@@ -20,26 +22,21 @@ class CptApp extends StatefulWidget {
 }
 
 class CptState extends State<CptApp> {
-  GlobalKey<CptState> cptKey = GlobalKey();
+  final GoRouter _router = router.createRouter();
 
   Locale _locale = const Locale('en');
 
   @override
   void initState() {
     super.initState();
-    lazyLoad();
+    lazyLoad(context);
   }
 
-  lazyLoad() async {
-    await navi.preferences(cptKey);
-
+  lazyLoad(BuildContext context) async {
     // Cannot modify the current state before it is 100% initialized
     // navi.applyLocale();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setLocale(Locale(prefs.getString('Language')!));
-
-    navi.applyServer();
-    navi.connectServer();
   }
 
   Locale getLocale() {
@@ -53,7 +50,7 @@ class CptState extends State<CptApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'CPT Client',
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -90,39 +87,7 @@ class CptState extends State<CptApp> {
           columnSpacing: 10,
         )
       ),
-      navigatorObservers: [navi.routeObserver],
-      // onGenerateRoute: generateRoute,
-      navigatorKey: navi.navigatorKey,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => MainPage(),
-        '/connect': (context) => ConnectionPage(),
-        '/login': (context) => LoginLandingPage(),
-        '/user': (context) {
-          if (navi.uSession == null || navi.uSession?.user == null) {
-            return LoginLandingPage();
-          } else {
-            return MemberLandingPage(session: navi.uSession!);
-          }
-        },
-        '/event': (context) => EnrollPage(session: navi.eSession!),
-      },
-    );
-  }
-}
-
-class MainPage extends StatelessWidget {
-  MainPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(
-          value: null,
-          strokeWidth: 5,
-        ),
-      ),
+      routerConfig: _router,
     );
   }
 }

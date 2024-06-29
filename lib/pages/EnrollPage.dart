@@ -13,9 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EnrollPage extends StatefulWidget {
   final EventSession session;
 
-  EnrollPage({super.key, required this.session}) {
-    if (session.token.isEmpty) navi.logoutEvent();
-  }
+  EnrollPage({super.key, required this.session});
 
   @override
   State<StatefulWidget> createState() => EnrollPageState();
@@ -30,6 +28,7 @@ class EnrollPageState extends State<EnrollPage> {
   @override
   void initState() {
     super.initState();
+    if (widget.session.token.isEmpty) navi.logoutEvent(context);
     _update();
   }
 
@@ -104,7 +103,7 @@ class EnrollPageState extends State<EnrollPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: navi.logoutEvent,
+            onPressed: () => navi.logoutEvent(context),
           )
         ],
       ),

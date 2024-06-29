@@ -41,6 +41,9 @@ dependencies:
   # More icons
   cupertino_icons: ^1.0.8
 
+  # Dynamic routes
+  go_router: ^14.2.0
+
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0
