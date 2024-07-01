@@ -24,9 +24,6 @@ GoRouter createRouter() {
             if (!firstStart) return;
             firstStart = false;
 
-            // Also this delegate starts before drawing the page
-            var status = await server.loadStatus();
-            await Future.delayed(Duration(seconds: 1));
             if (await server.loadStatus()) {
               gotoRoute(context, '/login');
             } else {

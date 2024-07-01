@@ -59,7 +59,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
       body: AppBody(children: [
         if (userToken.isNotEmpty)
           MenuSection(
-            title: AppLocalizations.of(context)!.sessionActive,
+            title: AppLocalizations.of(context)!.sessionActiveUser,
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionResume),
@@ -79,7 +79,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
           ),
         if (eventToken.isNotEmpty)
           MenuSection(
-            title: AppLocalizations.of(context)!.sessionActive,
+            title: AppLocalizations.of(context)!.sessionActiveEvent,
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.sessionResume),
