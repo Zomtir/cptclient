@@ -23,18 +23,25 @@ Future<void> preferences() async {
 
   prefs = await SharedPreferences.getInstance();
 
-  pufIfMissing(String key, String value) async {
+  putMissingString(String key, String value) async {
     if (!prefs.containsKey(key)) await prefs.setString(key, value);
   }
 
-  await pufIfMissing('Language', 'en');
-  await pufIfMissing('ServerScheme', Env.serverScheme.fromString() ?? configMap['ServerScheme']);
-  await pufIfMissing('ServerHost', Env.serverHost.fromString() ?? configMap['ServerHost']);
-  await pufIfMissing('ServerPort', Env.serverPort.fromInt()?.toString() ?? configMap['ServerPort']);
-  await pufIfMissing('UserToken', '');
-  await pufIfMissing('EventToken', '');
-  await pufIfMissing('UserDefault', '');
-  await pufIfMissing('EventDefault', '');
+  putMissingInt(String key, int value) async {
+    if (!prefs.containsKey(key)) await prefs.setInt(key, value);
+  }
+
+  await putMissingString('Language', 'en');
+  await putMissingString('ServerScheme', Env.serverScheme.fromString() ?? configMap['ServerScheme']);
+  await putMissingString('ServerHost', Env.serverHost.fromString() ?? configMap['ServerHost']);
+  await putMissingInt('ServerPort', Env.serverPort.fromInt() ?? int.tryParse(configMap['ServerPort'])!);
+  await putMissingString('ClientScheme', Env.clientScheme.fromString() ?? configMap['ClientScheme']);
+  await putMissingString('ClientHost', Env.clientHost.fromString() ?? configMap['ClientHost']);
+  await putMissingInt('ClientPort', Env.clientPort.fromInt() ?? int.tryParse(configMap['ClientPort'])!);
+  await putMissingString('UserToken', '');
+  await putMissingString('EventToken', '');
+  await putMissingString('UserDefault', '');
+  await putMissingString('EventDefault', '');
 }
 
 applyLocale(BuildContext context) {
@@ -46,7 +53,7 @@ applyServer() {
   server.configServer(
     prefs.getString('ServerScheme')!,
     prefs.getString('ServerHost')!,
-    int.tryParse(prefs.getString('ServerPort')!) ?? 0,
+    prefs.getInt('ServerPort')!,
   );
 }
 

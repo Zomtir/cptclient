@@ -1,3 +1,7 @@
 ServerScheme: 'http'
 ServerHost: 'localhost'
 ServerPort: '8000'
+
+ClientScheme: 'https'
+ClientHost: 'cptclient.oberhauser.dev'
+ClientPort: '443'

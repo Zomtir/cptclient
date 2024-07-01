@@ -1,4 +1,5 @@
 import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -9,6 +10,7 @@ import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticDivisionPage.dart';
 import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
@@ -60,6 +62,20 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
     );
 
     _update();
+  }
+
+  _handleExport() async {
+    Credential? credits = await api_admin.event_credential(widget.session, widget.eventID);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventExportPage(
+          session: widget.session,
+          event: event!,
+          credits: credits!,
+        ),
+      ),
+    );
   }
 
   _handleDelete() async {
@@ -254,6 +270,10 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: _handleEdit,
+              ),
+              IconButton(
+                icon: const Icon(Icons.import_export),
+                onPressed: _handleExport,
               ),
               IconButton(
                 icon: const Icon(Icons.delete),

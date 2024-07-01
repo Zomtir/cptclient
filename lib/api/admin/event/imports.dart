@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/acceptance.dart';
+import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/location.dart';
@@ -63,6 +64,22 @@ Future<Event?> event_info(UserSession session, int eventID) async {
   if (response.statusCode != 200) return null;
 
   return Event.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+}
+
+Future<Credential?> event_credential(UserSession session, int eventID) async {
+  final response = await http.get(
+    server.uri('/admin/event_credential', {
+      'event_id': eventID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return Credential.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
 Future<bool> event_create(UserSession session, int course_id, Event event) async {

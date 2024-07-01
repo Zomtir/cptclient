@@ -25,6 +25,10 @@ class ConnectionPageState extends State<ConnectionPage> {
   final TextEditingController _ctrlServerHost = TextEditingController();
   final TextEditingController _ctrlServerPort = TextEditingController();
 
+  final TextEditingController _ctrlClientScheme = TextEditingController();
+  final TextEditingController _ctrlClientHost = TextEditingController();
+  final TextEditingController _ctrlClientPort = TextEditingController();
+
   bool _serverOnline = false;
 
   @override
@@ -37,11 +41,20 @@ class ConnectionPageState extends State<ConnectionPage> {
     _prefs = await SharedPreferences.getInstance();
     _ctrlServerScheme.text = _prefs.getString('ServerScheme')!;
     _ctrlServerHost.text = _prefs.getString('ServerHost')!;
-    _ctrlServerPort.text = _prefs.getString('ServerPort')!;
+    _ctrlServerPort.text = _prefs.getInt('ServerPort')!.toString();
 
     _updateServerScheme(_ctrlServerScheme.text);
     _updateServerHost(_ctrlServerHost.text);
     _updateServerPort(_ctrlServerPort.text);
+
+    _ctrlClientScheme.text = _prefs.getString('ClientScheme')!;
+    _ctrlClientHost.text = _prefs.getString('ClientHost')!;
+    _ctrlClientPort.text = _prefs.getInt('ClientPort')!.toString();
+
+    _updateClientScheme(_ctrlClientScheme.text);
+    _updateClientHost(_ctrlClientHost.text);
+    _updateClientPort(_ctrlClientPort.text);
+
     _testConnection();
   }
 
@@ -56,8 +69,22 @@ class ConnectionPageState extends State<ConnectionPage> {
   }
 
   _updateServerPort(String text) {
-    _prefs.setString('ServerPort', text);
-    server.serverPort = int.tryParse(text) ?? 443;
+    var port = int.tryParse(text) ?? 443;
+    _prefs.setInt('ServerPort', port);
+    server.serverPort = port;
+  }
+
+  _updateClientScheme(String text) {
+    _prefs.setString('ClientScheme', text);
+  }
+
+  _updateClientHost(String text) {
+    _prefs.setString('ClientHost', text);
+  }
+
+  _updateClientPort(String text) {
+    var port = int.tryParse(text) ?? 443;
+    _prefs.setInt('ClientPort', port);
   }
 
   void _testConnection() async {
@@ -73,6 +100,9 @@ class ConnectionPageState extends State<ConnectionPage> {
       ),
       body: AppBody(
         children: [
+          ListTile(
+            title: Text("Server"),
+          ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelServerScheme,
             child: TextField(
@@ -109,6 +139,33 @@ class ConnectionPageState extends State<ConnectionPage> {
               router.gotoRoute(context, '/login');
             },
             leading: Icon(Icons.link),
+          ),
+          ListTile(
+            title: Text("Client"),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.labelClientScheme,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlClientScheme,
+              onChanged: _updateClientScheme,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.labelClientHost,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlClientHost,
+              onChanged: _updateClientHost,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.labelClientPort,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlClientPort,
+              onChanged: _updateClientPort,
+            ),
           ),
           MenuSection(
             title: AppLocalizations.of(context)!.labelMiscellaneous,

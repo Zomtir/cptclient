@@ -44,6 +44,9 @@ dependencies:
   # Dynamic routes
   go_router: ^14.2.0
 
+  # QR codes
+  qr_flutter: ^4.1.0
+
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0
