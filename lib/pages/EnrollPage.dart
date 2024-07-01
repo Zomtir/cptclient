@@ -3,6 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
@@ -99,7 +100,7 @@ class EnrollPageState extends State<EnrollPage> {
     if (_event == null) return Container();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Participation"),
+        title: Text(AppLocalizations.of(context)!.pageEventDetails),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
@@ -110,17 +111,21 @@ class EnrollPageState extends State<EnrollPage> {
       body: AppBody(
         children: [
           AppEventTile(event: _event!),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventParticipantPresences,
-            onPressed: _handleParticipants,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventSupporterPresences,
-            onPressed: _handleSupporter,
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.pageEventLeaderPresences,
-            onPressed: _handleLeaders,
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventParticipantPresences),
+                onTap: _handleParticipants,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
+                onTap: _handleSupporter,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventLeaderPresences),
+                onTap: _handleLeaders,
+              ),
+            ],
           ),
           ListTile(
             title: TextField(
