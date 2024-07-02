@@ -43,11 +43,13 @@ GoRouter createRouter() {
       GoRoute(
         path: '/user',
         builder: (BuildContext context, GoRouterState state) {
+          return MemberLandingPage(session: navi.uSession!);
+        },
+        redirect: (BuildContext context, GoRouterState state) {
           if (navi.uSession == null || navi.uSession?.user == null) {
-            return LoginLandingPage();
-          } else {
-            return MemberLandingPage(session: navi.uSession!);
+            return '/login';
           }
+          return null;
         },
       ),
       GoRoute(
