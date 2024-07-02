@@ -46,6 +46,10 @@ dependencies:
 
   # QR codes
   qr_flutter: ^4.1.0
+  screenshot: ^3.0.0
+
+  # Save dialog
+  file_selector: ^1.0.3
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
