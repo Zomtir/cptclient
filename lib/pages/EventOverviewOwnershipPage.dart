@@ -259,7 +259,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           event.acceptance == Acceptance.accepted ||
           event.acceptance == Acceptance.rejected)
         IconButton(
-          icon: const Icon(Icons.restore),
+          icon: const Icon(Icons.drafts_outlined),
           onPressed: () => _withdrawEvent(event),
         ),
       PopupMenuButton<VoidCallback>(

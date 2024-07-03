@@ -14,16 +14,16 @@ import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CourseResponsiblePage extends StatefulWidget {
+class CourseOverviewModerationPage extends StatefulWidget {
   final UserSession session;
 
-  CourseResponsiblePage({super.key, required this.session});
+  CourseOverviewModerationPage({super.key, required this.session});
 
   @override
-  CourseResponsiblePageState createState() => CourseResponsiblePageState();
+  CourseOverviewModerationPageState createState() => CourseOverviewModerationPageState();
 }
 
-class CourseResponsiblePageState extends State<CourseResponsiblePage> {
+class CourseOverviewModerationPageState extends State<CourseOverviewModerationPage> {
   List<Course> _courses = [];
 
   bool _isActive = true;
@@ -31,7 +31,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
   final DropdownController<Skill> _ctrlDropdownSkill = DropdownController<Skill>(items: []);
   RangeValues _thresholdRange = RangeValues(0, 10);
 
-  CourseResponsiblePageState();
+  CourseOverviewModerationPageState();
 
   @override
   void initState() {

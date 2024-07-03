@@ -116,6 +116,7 @@
   "pageEventManagement": "Manage Events",
   "pageEventEdit": "Edit Event",
   "pageEventOwners": "Event Owners",
+  "pageEventCourse": "Course Assignment",
   "pageEventLeaderRegistrations": "Leader Registrations",
   "pageEventLeaderFilters": "Leader Suggestions",
   "pageEventLeaderPresences": "Leader Confirmations",

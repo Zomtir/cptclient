@@ -26,7 +26,7 @@ class LoginCoursePageState extends State<LoginCoursePage> {
   }
 
   void _load() async {
-    List<Course> courses = await api_anon.location_list();
+    List<Course> courses = await api_anon.course_list();
     setState(() => _cache = courses);
   }
 

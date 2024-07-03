@@ -9,6 +9,7 @@ import 'package:cptclient/material/pages/FilterPage.dart';
 import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventCourseEditPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticDivisionPage.dart';
@@ -95,6 +96,18 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           onCallSelected: () => api_admin.event_owner_list(widget.session, event!),
           onCallAdd: (user) => api_admin.event_owner_add(widget.session, event!, user),
           onCallRemove: (user) => api_admin.event_owner_remove(widget.session, event!, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleCourse() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventCourseEditPage(
+          session: widget.session,
+          event: event!,
         ),
       ),
     );
@@ -337,6 +350,14 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventOwners),
                 onTap: _handleOwners,
+              ),
+            ],
+          ),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventCourse),
+                onTap: _handleCourse,
               ),
             ],
           ),

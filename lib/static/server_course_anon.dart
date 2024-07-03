@@ -6,7 +6,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/static/server.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Course>> location_list() async {
+Future<List<Course>> course_list() async {
   final response = await http.get(
     uri('/anon/course_list'),
     headers: {

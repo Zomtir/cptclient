@@ -109,13 +109,18 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     _update();
   }
 
-  void _denyEvent(Event event) async {
-    if (!await api_admin.event_deny(widget.session, event)) return;
+  void _rejectEvent(Event event) async {
+    if (!await api_admin.event_reject(widget.session, event)) return;
     _update();
   }
 
   void _suspendEvent(Event event) async {
     if (!await api_admin.event_suspend(widget.session, event)) return;
+    _update();
+  }
+
+  Future<void> _withdrawEvent(Event event) async {
+    if (!await api_admin.event_withdraw(widget.session, event)) return;
     _update();
   }
 
@@ -289,20 +294,25 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
   List<Widget> _buildTrailing(Event event) {
     return [
+      if (event.acceptance == Acceptance.pending)
+        IconButton(
+          icon: const Icon(Icons.drafts_outlined),
+          onPressed: () => _withdrawEvent(event),
+        ),
+      if (event.acceptance == Acceptance.draft || event.acceptance == Acceptance.accepted || event.acceptance == Acceptance.rejected)
+        IconButton(
+          icon: const Icon(Icons.hourglass_bottom),
+          onPressed: () => _suspendEvent(event),
+        ),
+      if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.pending || event.acceptance == Acceptance.accepted)
+        IconButton(
+          icon: const Icon(Icons.highlight_remove),
+          onPressed: () => _rejectEvent(event),
+        ),
       if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.rejected)
         IconButton(
           icon: const Icon(Icons.check_circle_outline),
           onPressed: () => _acceptEvent(event),
-        ),
-      if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.accepted)
-        IconButton(
-          icon: const Icon(Icons.highlight_remove),
-          onPressed: () => _denyEvent(event),
-        ),
-      if (event.acceptance == Acceptance.accepted || event.acceptance == Acceptance.rejected)
-        IconButton(
-          icon: const Icon(Icons.hourglass_bottom),
-          onPressed: () => _suspendEvent(event),
         ),
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),

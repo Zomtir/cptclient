@@ -238,46 +238,46 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
             ),
           ),
           AppInfoRow(
-            info: "Ownership",
+            info: AppLocalizations.of(context)!.eventOwner,
             child: _ownership ? Icon(Icons.castle) : Icon(Icons.castle_outlined),
           ),
           AppInfoRow(
-            info: "Register as Participant",
+            info: "${AppLocalizations.of(context)!.eventParticipant}: ${AppLocalizations.of(context)!.eventRegistration}",
             child: ConfirmationField(
               confirmation: _participantRegistration,
               onChanged: _handleParticipantRegistration,
             ),
           ),
           AppInfoRow(
-            info: "Present as Participant",
+            info: "${AppLocalizations.of(context)!.eventParticipant}: ${AppLocalizations.of(context)!.eventPresence}",
             child: IconButton(
               icon: _participantPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
               onPressed: () => _handleParticipantPresence(!_participantPresence),
             ),
           ),
           AppInfoRow(
-            info: "Register as Leader",
+            info: "${AppLocalizations.of(context)!.eventLeader}: ${AppLocalizations.of(context)!.eventRegistration}",
             child: ConfirmationField(
               confirmation: _leaderRegistration,
               onChanged: _handleLeaderRegistration,
             ),
           ),
           AppInfoRow(
-            info: "Present as Leader",
+            info: "${AppLocalizations.of(context)!.eventLeader}: ${AppLocalizations.of(context)!.eventPresence}",
             child: IconButton(
               icon: _leaderPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
               onPressed: () => _handleLeaderPresence(!_leaderPresence),
             ),
           ),
           AppInfoRow(
-            info: "Register as Supporter",
+            info: "${AppLocalizations.of(context)!.eventSupporter}: ${AppLocalizations.of(context)!.eventRegistration}",
             child: ConfirmationField(
               confirmation: _supporterRegistration,
               onChanged: _handleSupporterRegistration,
             ),
           ),
           AppInfoRow(
-            info: "Present as Supporter",
+            info: "${AppLocalizations.of(context)!.eventSupporter}: ${AppLocalizations.of(context)!.eventPresence}",
             child: IconButton(
               icon: _supporterPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
               onPressed: () => _handleSupporterPresence(!_supporterPresence),

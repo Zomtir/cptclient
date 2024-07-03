@@ -74,7 +74,7 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
               DataColumn(label: Text(AppLocalizations.of(context)!.user)),
               DataColumn(label: Text(AppLocalizations.of(context)!.userFirstname)),
               DataColumn(label: Text(AppLocalizations.of(context)!.userLastname)),
-              DataColumn(label: Text("Presence")),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventPresence)),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(

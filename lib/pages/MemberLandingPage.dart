@@ -7,8 +7,8 @@ import 'package:cptclient/pages/ClubOverviewPage.dart';
 import 'package:cptclient/pages/CompetenceOverviewPage.dart';
 import 'package:cptclient/pages/CompetenceSummaryPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
-import 'package:cptclient/pages/CourseManagementPage.dart';
-import 'package:cptclient/pages/CourseResponsiblePage.dart';
+import 'package:cptclient/pages/CourseOverviewManagementPage.dart';
+import 'package:cptclient/pages/CourseOverviewModerationPage.dart';
 import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
 import 'package:cptclient/pages/EventOverviewManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
@@ -102,13 +102,13 @@ class MemberLandingPage extends StatelessWidget {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseResponsible),
                 onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => CourseResponsiblePage(session: session))),
+                    context, MaterialPageRoute(builder: (context) => CourseOverviewModerationPage(session: session))),
               ),
               if (session.right!.course.read)
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.pageCourseManagement),
                   onTap: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => CourseManagementPage(session: session))),
+                      context, MaterialPageRoute(builder: (context) => CourseOverviewManagementPage(session: session))),
                 ),
             ],
           ),

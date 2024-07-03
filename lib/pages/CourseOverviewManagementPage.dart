@@ -20,16 +20,16 @@ import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CourseManagementPage extends StatefulWidget {
+class CourseOverviewManagementPage extends StatefulWidget {
   final UserSession session;
 
-  CourseManagementPage({super.key, required this.session});
+  CourseOverviewManagementPage({super.key, required this.session});
 
   @override
-  CourseManagementPageState createState() => CourseManagementPageState();
+  CourseOverviewManagementPageState createState() => CourseOverviewManagementPageState();
 }
 
-class CourseManagementPageState extends State<CourseManagementPage> {
+class CourseOverviewManagementPageState extends State<CourseOverviewManagementPage> {
   List<Course> _courses = [];
   final FieldController<User> _ctrlModerator = FieldController<User>();
   bool? _ctrlPublic;
@@ -37,7 +37,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   final FieldController<Skill> _ctrlSkill = FieldController<Skill>();
   RangeValues _ctrlSkillRange = RangeValues(0, 10);
 
-  CourseManagementPageState();
+  CourseOverviewManagementPageState();
 
   @override
   void initState() {

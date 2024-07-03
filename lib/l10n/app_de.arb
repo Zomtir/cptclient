@@ -116,6 +116,7 @@
   "pageEventManagement": "Ereignisse verwalten",
   "pageEventEdit": "Ereignis bearbeiten",
   "pageEventOwners": "Verwalter des Ereignisses",
+  "pageEventCourse": "Kurszugehörigkeit",
   "pageEventLeaderRegistrations": "Anmeldung als Verantworlicher",
   "pageEventLeaderFilters": "Vorschläge als Verantworlicher",
   "pageEventLeaderPresences": "Präsenz als Verantworlicher",
