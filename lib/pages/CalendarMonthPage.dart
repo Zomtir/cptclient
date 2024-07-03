@@ -1,4 +1,5 @@
 import 'package:cptclient/json/event.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
@@ -32,8 +33,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   void _update() async {
-    _eventsAll = await api_regular.event_list(widget.session,
-        begin: _monthFirst, end: _monthLast);
+    _eventsAll = await api_regular.event_list(widget.session, begin: _monthFirst, end: _monthLast);
     _filterEvents();
   }
 
@@ -102,17 +102,12 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () => _setMonth(
-                      DateTime(_monthFirst.year, _monthFirst.month - 1)),
+                  onPressed: () => _setMonth(DateTime(_monthFirst.year, _monthFirst.month - 1)),
                   icon: Icon(Icons.chevron_left)),
-              IconButton(
-                  onPressed: () =>
-                      _setMonth(DateUtils.dateOnly(DateTime.now())),
-                  icon: Icon(Icons.home)),
+              IconButton(onPressed: () => _setMonth(DateUtils.dateOnly(DateTime.now())), icon: Icon(Icons.home)),
               Text(DateFormat("yyyy-MM").format(_monthFirst)),
               IconButton(
-                  onPressed: () => _setMonth(
-                      DateTime(_monthFirst.year, _monthFirst.month + 1)),
+                  onPressed: () => _setMonth(DateTime(_monthFirst.year, _monthFirst.month + 1)),
                   icon: Icon(Icons.chevron_right)),
             ],
           ),
@@ -191,7 +186,10 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
         child: Container(
           child: Text(
             _eventsFiltered[day]![index].title,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                decoration: _eventsFiltered[day]![index].occurrence == Occurrence.canceled
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none),
             maxLines: 1,
             softWrap: false,
           ),

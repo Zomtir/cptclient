@@ -1,4 +1,5 @@
 import 'package:cptclient/json/event.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
@@ -11,8 +12,7 @@ class CalendarDayPage extends StatefulWidget {
   final UserSession session;
   final DateTime initialDate;
 
-  CalendarDayPage(
-      {super.key, required this.session, required this.initialDate});
+  CalendarDayPage({super.key, required this.session, required this.initialDate});
 
   @override
   State<StatefulWidget> createState() => CalendarDayPageState();
@@ -32,8 +32,7 @@ class CalendarDayPageState extends State<CalendarDayPage> {
   }
 
   void _update() async {
-    _eventsAll =
-        await api_regular.event_list(widget.session, begin: _dayFirst, end: _dayLast);
+    _eventsAll = await api_regular.event_list(widget.session, begin: _dayFirst, end: _dayLast);
     _filterEvents();
   }
 
@@ -79,16 +78,10 @@ class CalendarDayPageState extends State<CalendarDayPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () =>
-                      _setDay(_dayFirst.subtract(Duration(days: 1))),
-                  icon: Icon(Icons.chevron_left)),
-              IconButton(
-                  onPressed: () => _setDay(DateUtils.dateOnly(DateTime.now())),
-                  icon: Icon(Icons.home)),
+                  onPressed: () => _setDay(_dayFirst.subtract(Duration(days: 1))), icon: Icon(Icons.chevron_left)),
+              IconButton(onPressed: () => _setDay(DateUtils.dateOnly(DateTime.now())), icon: Icon(Icons.home)),
               Text(DateFormat("yyyy-MM-dd").format(_dayFirst)),
-              IconButton(
-                  onPressed: () => _setDay(_dayFirst.add(Duration(days: 1))),
-                  icon: Icon(Icons.chevron_right)),
+              IconButton(onPressed: () => _setDay(_dayFirst.add(Duration(days: 1))), icon: Icon(Icons.chevron_right)),
             ],
           ),
           ...buildDay(context),
@@ -101,7 +94,13 @@ class CalendarDayPageState extends State<CalendarDayPage> {
     return List.generate(_eventsFiltered.length, (index) {
       return Card(
         child: ListTile(
-          title: Text(_eventsFiltered[index].title),
+          title: Text(
+            _eventsFiltered[index].title,
+            style: TextStyle(
+                decoration: _eventsFiltered[index].occurrence == Occurrence.canceled
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none),
+          ),
           onTap: () => _handleSelectEvent(_eventsFiltered[index]),
         ),
       );

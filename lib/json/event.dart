@@ -109,7 +109,7 @@ List<Event> filterEvents(List<Event> events, DateTime earliest, DateTime latest)
     bool tooEarly = earliest.isAfter(event.end);
     bool tooLate = latest.isBefore(event.begin);
 
-    //if (event.occurrence == Occurrence.voided) return false;
+    if (event.occurrence == Occurrence.voided) return false;
 
     return !(tooEarly || tooLate);
   }).toList();
