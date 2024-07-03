@@ -249,7 +249,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
                 ),
               ),
               AppInfoRow(
-                info: AppLocalizations.of(context)!.user,
+                info: AppLocalizations.of(context)!.eventOwner,
                 child: AppDropdown<User>(
                   controller: _ctrlOwner,
                   builder: (User user) {

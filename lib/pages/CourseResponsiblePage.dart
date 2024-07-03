@@ -1,3 +1,4 @@
+import 'package:cptclient/api/moderator/course/imports.dart' as api_moderator;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
@@ -8,8 +9,7 @@ import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/pages/CourseModeratorPage.dart';
-import 'package:cptclient/static/server_course_moderator.dart' as api_regular;
+import 'package:cptclient/pages/CourseDetailModerationPage.dart';
 import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -41,7 +41,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
 
   void _update() async {
     List<Skill> skills = await api_anon.skill_list();
-    List<Course> courses = await api_regular.course_responsibility(widget.session, _isActive, _isPublic);
+    List<Course> courses = await api_moderator.course_responsibility(widget.session, _isActive, _isPublic);
 
     setState(() {
       _ctrlDropdownSkill.items = skills;
@@ -53,7 +53,7 @@ class CourseResponsiblePageState extends State<CourseResponsiblePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseModeratorPage(
+        builder: (context) => CourseDetailModerationPage(
           session: widget.session,
           course: course,
           isDraft: isDraft,

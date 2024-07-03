@@ -85,7 +85,7 @@ class CourseManagementPageState extends State<CourseManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Course Management"),
+        title: Text(AppLocalizations.of(context)!.pageCourseManagement),
       ),
       body: AppBody(
         children: [
