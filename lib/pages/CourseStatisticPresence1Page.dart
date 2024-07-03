@@ -4,12 +4,15 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/static/datetime.dart';
+import 'package:cptclient/static/export.dart';
+import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseStatisticPresence1Page extends StatefulWidget {
   final UserSession session;
   final Course course;
-  final int ownerID;
+  final int userID;
   final String title;
   final Future<List<(int, String, DateTime, DateTime)>> Function(int) presence1;
 
@@ -17,7 +20,7 @@ class CourseStatisticPresence1Page extends StatefulWidget {
       {super.key,
       required this.session,
       required this.course,
-      required this.ownerID,
+      required this.userID,
       required this.title,
       required this.presence1});
 
@@ -37,7 +40,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
   }
 
   void _update() async {
-    List<(int, String, DateTime, DateTime)> stats = await widget.presence1(widget.ownerID);
+    List<(int, String, DateTime, DateTime)> stats = await widget.presence1(widget.userID);
     stats.sort((a, b) => a.$3.compareTo(b.$3));
     setState(() => this.stats = stats);
   }
@@ -54,6 +57,14 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     );
   }
 
+  _handleCSV() {
+    String filename = "CPT_course_${widget.course.id}_user_${widget.userID}_presence";
+    List<String> table = stats
+        .map((row) => "${row.$2}, ${formatNaiveDateTime(row.$3)}, ${formatNaiveDateTime(row.$4)}, ${row.$4.difference(row.$3).inMinutes}")
+        .toList();
+    exportCSV(filename, table);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,13 +76,19 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
         children: <Widget>[
           AppCourseTile(
             course: widget.course,
+            trailing: [
+              IconButton(
+                icon: const Icon(Icons.import_export),
+                onPressed: _handleCSV,
+              ),
+            ],
           ),
           DataTable(
-            columns: const [
-              DataColumn(label: Text('ID')),
-              DataColumn(label: Text('Name')),
-              DataColumn(label: Text('Begin')),
-              DataColumn(label: Text('End')),
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.event)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventTitle)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventBegin)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventEnd)),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
