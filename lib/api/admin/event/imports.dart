@@ -82,10 +82,10 @@ Future<Credential?> event_credential(UserSession session, int eventID) async {
   return Credential.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<bool> event_create(UserSession session, int course_id, Event event) async {
+Future<bool> event_create(UserSession session, Event event, int? courseID) async {
   final response = await http.post(
     server.uri('/admin/event_create', {
-      'course_id': course_id.toString(),
+      'course_id': courseID?.toString(),
     }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',

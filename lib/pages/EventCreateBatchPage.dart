@@ -1,5 +1,6 @@
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/AppButton.dart';
@@ -40,6 +41,7 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
   final DateTimeController _ctrlEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
   final TextEditingController _ctrlTitle = TextEditingController();
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
+  final DropdownController<Occurrence> _ctrlOccurrence = DropdownController<Occurrence>(items: Occurrence.values);
   bool _ctrlPublic = false;
   bool _ctrlScrutable = true;
 
@@ -72,15 +74,17 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
     _ctrlEnd.setDateTime(widget.event.end);
     _ctrlTitle.text = widget.event.title;
     _ctrlLocation.value = widget.event.location;
+    _ctrlOccurrence.value = widget.event.occurrence;
     _ctrlPublic = widget.event.public!;
     _ctrlScrutable = widget.event.scrutable!;
   }
 
   void _gatherEvent() {
-    widget.event.location = _ctrlLocation.value;
+    widget.event.title = _ctrlTitle.text;
     widget.event.begin = _ctrlBegin.getDateTime()!;
     widget.event.end = _ctrlEnd.getDateTime()!;
-    widget.event.title = _ctrlTitle.text;
+    widget.event.location = _ctrlLocation.value;
+    widget.event.occurrence = _ctrlOccurrence.value;
     widget.event.public = _ctrlPublic;
     widget.event.scrutable = _ctrlScrutable;
   }
@@ -90,7 +94,15 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
     _gatherEvent();
 
     if (widget.event.location == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Location is required.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${AppLocalizations.of(context)!.labelRequired}: ${AppLocalizations.of(context)!.location}")));
+      setState(() => _enabled = true);
+      return;
+    }
+
+    if (widget.event.occurrence == null || widget.event.occurrence == Occurrence.empty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${AppLocalizations.of(context)!.labelRequired}: ${AppLocalizations.of(context)!.eventOccurrence}")));
       setState(() => _enabled = true);
       return;
     }
@@ -168,8 +180,16 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
             info: AppLocalizations.of(context)!.eventLocation,
             child: AppDropdown<Location>(
               controller: _ctrlLocation,
-              builder: (Location location) => Text(location.key),
+              builder: (Location location) => Text(location.name),
               onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.eventOccurrence,
+            child: AppDropdown<Occurrence>(
+              controller: _ctrlOccurrence,
+              builder: (Occurrence occurrence) => Text(occurrence.localizedName(context)),
+              onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
             ),
           ),
           AppInfoRow(

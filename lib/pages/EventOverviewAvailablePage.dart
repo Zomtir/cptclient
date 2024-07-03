@@ -124,18 +124,18 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
                 info: AppLocalizations.of(context)!.eventLocation,
                 child: AppDropdown<Location>(
                   controller: _ctrlLocation,
-                  builder: (Location location) => Text(location.key),
+                  builder: (Location location) => Text(location.name),
                   onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
                 ),
               ),
               AppDropdown<Occurrence>(
                 controller: _ctrlOccurrence,
-                builder: (Occurrence occurrence) => Text(occurrence.name),
+                builder: (Occurrence occurrence) => Text(occurrence.localizedName(context)),
                 onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
               ),
               AppDropdown<Acceptance>(
                 controller: _ctrlAcceptance,
-                builder: (Acceptance acceptance) => Text(acceptance.name),
+                builder: (Acceptance acceptance) => Text(acceptance.localizedName(context)),
                 onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
               ),
             ],

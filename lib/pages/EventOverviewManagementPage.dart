@@ -6,6 +6,7 @@ import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/AppButton.dart';
 import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/DropdownController.dart';
@@ -132,6 +133,23 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     _update();
   }
 
+  Future<void> _handleCreate() async {
+    Event event = Event.fromVoid();
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventEditPage(
+          session: widget.session,
+          event: event,
+          isDraft: true,
+          onSubmit: (session, event) => api_admin.event_create(session, event, null),
+        ),
+      ),
+    );
+
+    _update();
+  }
+
   Future<void> _handleDuplicate(Event event) async {
     Event newEvent = Event.fromEvent(event);
     newEvent.acceptance = Acceptance.draft;
@@ -190,6 +208,11 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
       ),
       body: AppBody(
         children: <Widget>[
+          AppButton(
+            leading: Icon(Icons.add),
+            text: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
           FilterToggle(
             onApply: _update,
             children: [
@@ -205,19 +228,25 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
                 info: AppLocalizations.of(context)!.eventLocation,
                 child: AppDropdown<Location>(
                   controller: _ctrlLocation,
-                  builder: (Location location) => Text(location.key),
+                  builder: (Location location) => Text(location.name),
                   onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
                 ),
               ),
-              AppDropdown<Occurrence>(
-                controller: _ctrlOccurrence,
-                builder: (Occurrence occurrence) => Text(occurrence.name),
-                onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventOccurrence,
+                  child: AppDropdown<Occurrence>(
+                    controller: _ctrlOccurrence,
+                    builder: (Occurrence occurrence) => Text(occurrence.localizedName(context)),
+                    onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
+                  ),
               ),
-              AppDropdown<Acceptance>(
-                controller: _ctrlAcceptance,
-                builder: (Acceptance acceptance) => Text(acceptance.name),
-                onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventAcceptance,
+                child: AppDropdown<Acceptance>(
+                  controller: _ctrlAcceptance,
+                  builder: (Acceptance acceptance) => Text(acceptance.localizedName(context)),
+                  onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
+                ),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.user,

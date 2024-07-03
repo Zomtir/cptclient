@@ -70,7 +70,7 @@ class EventExportPageState extends State<EventExportPage> {
                 ),
               ),
               IconButton(onPressed: () async {
-                String fileName = "CPT_QR_event_${widget.credits.login}";
+                String fileName = "CPT_QR_event_${widget.event.id}";
                 Uint8List? image;
                 await _ctrlSceenshot.capture().then((capturedImage) => image = capturedImage);
                 exportQR(fileName, image!);

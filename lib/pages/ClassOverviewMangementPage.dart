@@ -53,7 +53,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           event: Event.fromCourse(widget.course),
           isDraft: true,
           onSubmit: (UserSession session, Event event) async {
-            if (!await api_admin.event_create(session, widget.course.id, event)) return false;
+            if (!await api_admin.event_create(session, event, widget.course.id)) return false;
             _update();
             return true;
           },
@@ -71,7 +71,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           event: Event.fromCourse(widget.course),
           isDraft: true,
           onSubmit: (UserSession session, Event event) async {
-            if (!await api_admin.event_create(session, widget.course.id, event)) return false;
+            if (!await api_admin.event_create(session, event, widget.course.id)) return false;
             _update();
             return true;
           },

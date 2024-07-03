@@ -74,6 +74,18 @@ class Event implements Comparable {
         'note': note,
       };
 
+  Event.fromVoid()
+      : id = 0,
+        key = assembleKey([3,3,3]),
+        title = 'Event ${DateTime.now()}',
+        begin = DateTime.now(),
+        end = DateTime.now().add(Duration(hours: 1)),
+        location = null,
+        occurrence = null,
+        acceptance = Acceptance.draft,
+        public = false,
+        scrutable = false;
+
   Event.fromCourse(Course course)
       : id = 0,
         key = assembleKey([3,3,3]),
@@ -84,7 +96,7 @@ class Event implements Comparable {
         occurrence = null,
         acceptance = null,
         public = true,
-        scrutable = false;
+        scrutable = true;
 
   Event.fromUser(User user)
       : id = 0,

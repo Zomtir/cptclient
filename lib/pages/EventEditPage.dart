@@ -169,7 +169,7 @@ class EventEditPageState extends State<EventEditPage> {
             info: AppLocalizations.of(context)!.eventLocation,
             child: AppDropdown<Location>(
               controller: _ctrlLocation,
-              builder: (Location location) => Text(location.key),
+              builder: (Location location) => Text(location.name),
               onChanged: (Location? location) => setState(() => _ctrlLocation.value = location),
             ),
           ),
