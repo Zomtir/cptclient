@@ -14,6 +14,7 @@ import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticDivisionPage.dart';
 import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
+import 'package:cptclient/static/server_course_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -108,6 +109,9 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
         builder: (context) => EventCourseEditPage(
           session: widget.session,
           event: event!,
+          callList: () => api_anon.course_list(),
+          callInfo: () => api_admin.event_course_info(widget.session, event!),
+          callEdit: (course) => api_admin.event_course_edit(widget.session, event!, course),
         ),
       ),
     );

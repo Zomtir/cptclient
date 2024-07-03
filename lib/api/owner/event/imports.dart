@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/acceptance.dart';
+import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
@@ -80,6 +81,36 @@ Future<bool> event_password_edit(UserSession session, Event event, String passwo
       'Token': session.token,
     },
     body: utf8.encode(password),
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<int?> event_course_info(UserSession session, Event event) async {
+  final response = await http.get(
+    server.uri('/owner/event_course_info', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return json.decode(utf8.decode(response.bodyBytes));
+}
+
+Future<bool> event_course_edit(UserSession session, Event event, Course? course) async {
+  final response = await http.head(
+    server.uri('/owner/event_course_edit', {
+      'event_id': event.id.toString(),
+      'course_id': course?.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
   );
 
   return (response.statusCode == 200);

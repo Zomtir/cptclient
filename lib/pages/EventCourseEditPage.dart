@@ -1,4 +1,3 @@
-import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
@@ -7,15 +6,23 @@ import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/DropdownController.dart';
 import 'package:cptclient/material/dropdowns/AppDropdown.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/static/server_course_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventCourseEditPage extends StatefulWidget {
   final UserSession session;
   final Event event;
-  
-  EventCourseEditPage({super.key, required this.session, required this.event});
+  final Future<List<Course>> Function() callList;
+  final Future<int?> Function() callInfo;
+  final Future<void> Function(Course?) callEdit;
+
+  EventCourseEditPage(
+      {super.key,
+      required this.session,
+      required this.event,
+      required this.callList,
+      required this.callInfo,
+      required this.callEdit});
 
   @override
   EventCourseEditPageState createState() => EventCourseEditPageState();
@@ -33,8 +40,8 @@ class EventCourseEditPageState extends State<EventCourseEditPage> {
   }
 
   _update() async {
-    List<Course> courses = await api_anon.course_list();
-    int? courseID = await api_admin.event_course_info(widget.session, widget.event);
+    List<Course> courses = await widget.callList();
+    int? courseID = await widget.callInfo();
 
     setState(() {
       _ctrlCourse.items = courses;
@@ -43,12 +50,12 @@ class EventCourseEditPageState extends State<EventCourseEditPage> {
   }
 
   Future<void> _handleCourse(Course? course) async {
-    await api_admin.event_course_edit(widget.session, widget.event, course);
+    await widget.callEdit(course);
     setState(() => _ctrlCourse.value = course);
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventCourse),
@@ -70,5 +77,4 @@ class EventCourseEditPageState extends State<EventCourseEditPage> {
       ),
     );
   }
-
 }

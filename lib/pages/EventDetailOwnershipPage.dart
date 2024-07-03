@@ -6,7 +6,9 @@ import 'package:cptclient/material/AppBody.dart';
 import 'package:cptclient/material/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/pages/EventCourseEditPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/static/server_course_anon.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,7 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EventDetailOwnershipPage extends StatefulWidget {
   final UserSession session;
   final int eventID;
-  
+
   EventDetailOwnershipPage({super.key, required this.session, required this.eventID});
 
   @override
@@ -59,7 +61,7 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
   }
 
   _handleDelete() async {
-    if(!await api_owner.event_delete(widget.session, event!)) return;
+    if (!await api_owner.event_delete(widget.session, event!)) return;
 
     Navigator.pop(context);
   }
@@ -128,8 +130,23 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     );
   }
 
+  Future<void> _handleCourse() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventCourseEditPage(
+          session: widget.session,
+          event: event!,
+          callList: () => api_anon.course_list(),
+          callInfo: () => api_owner.event_course_info(widget.session, event!),
+          callEdit: (course) => api_owner.event_course_edit(widget.session, event!, course),
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     if (event == null) {
       return Icon(Icons.downloading);
     }
@@ -211,9 +228,16 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
               ),
             ],
           ),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventCourse),
+                onTap: _handleCourse,
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
-
 }
