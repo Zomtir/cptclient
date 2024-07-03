@@ -26,7 +26,7 @@ class AppRequirementTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${requirement.course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${requirement.skill!.key} ${requirement.rank}"),
+                Text("${requirement.skill!.title} ${requirement.rank}"),
               ],
             ),
           ),
