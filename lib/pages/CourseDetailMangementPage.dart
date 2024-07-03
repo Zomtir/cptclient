@@ -127,22 +127,6 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
-  Future<void> _handleSupporterSieves() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FilterPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseSupporterSieves,
-          tile: AppCourseTile(course: widget.course),
-          onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_admin.course_supporter_sieve_list(widget.session, widget.course.id),
-          onCallEdit: (team, access) => api_admin.course_supporter_sieve_edit(widget.session, widget.course.id, team.id, access),
-          onCallRemove: (team) => api_admin.course_supporter_sieve_remove(widget.session, widget.course.id, team.id),
-        ),
-      ),
-    );
-  }
-
   Future<void> _handleLeaderSieves() async {
     await Navigator.push(
       context,
@@ -154,6 +138,22 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           onCallSelected: () => api_admin.course_leader_sieve_list(widget.session, widget.course.id),
           onCallEdit: (team, access) => api_admin.course_leader_sieve_edit(widget.session, widget.course.id, team.id, access),
           onCallRemove: (team) => api_admin.course_leader_sieve_remove(widget.session, widget.course.id, team.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSupporterSieves() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterPage<Team>(
+          title: AppLocalizations.of(context)!.pageCourseSupporterSieves,
+          tile: AppCourseTile(course: widget.course),
+          onCallAvailable: () => api_regular.team_list(widget.session),
+          onCallSelected: () => api_admin.course_supporter_sieve_list(widget.session, widget.course.id),
+          onCallEdit: (team, access) => api_admin.course_supporter_sieve_edit(widget.session, widget.course.id, team.id, access),
+          onCallRemove: (team) => api_admin.course_supporter_sieve_remove(widget.session, widget.course.id, team.id),
         ),
       ),
     );
@@ -186,21 +186,6 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
-  Future<void> _handleStatisticSupporter() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CourseStatisticPresencePage(
-          session: widget.session,
-          course: widget.course,
-          title: AppLocalizations.of(context)!.pageCourseStatisticSupporters,
-          presence: () => api_admin.course_statistic_supporter(widget.session, widget.course.id),
-          presence1: (int ownerID) => api_admin.course_statistic_supporter1(widget.session, widget.course.id, ownerID),
-        ),
-      ),
-    );
-  }
-
   Future<void> _handleStatisticLeader() async {
     await Navigator.push(
       context,
@@ -211,6 +196,21 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           title: AppLocalizations.of(context)!.pageCourseStatisticLeaders,
           presence: () => api_admin.course_statistic_leader(widget.session, widget.course.id),
           presence1: (int ownerID) => api_admin.course_statistic_leader1(widget.session, widget.course.id, ownerID),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleStatisticSupporter() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseStatisticPresencePage(
+          session: widget.session,
+          course: widget.course,
+          title: AppLocalizations.of(context)!.pageCourseStatisticSupporters,
+          presence: () => api_admin.course_statistic_supporter(widget.session, widget.course.id),
+          presence1: (int ownerID) => api_admin.course_statistic_supporter1(widget.session, widget.course.id, ownerID),
         ),
       ),
     );
@@ -265,12 +265,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
                 onTap: _handleParticipantSieves,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
-                onTap: _handleSupporterSieves,
-              ),
-              ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseLeaderSieves),
                 onTap: _handleLeaderSieves,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
+                onTap: _handleSupporterSieves,
               ),
             ],
           ),
@@ -286,12 +286,12 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
                 onTap: _handleStatisticParticipant,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseStatisticSupporters),
-                onTap: _handleStatisticSupporter,
-              ),
-              ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseStatisticLeaders),
                 onTap: _handleStatisticLeader,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseStatisticSupporters),
+                onTap: _handleStatisticSupporter,
               ),
             ],
           ),

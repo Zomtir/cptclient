@@ -31,11 +31,11 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
   bool _ownership = false;
 
   Confirmation _leaderRegistration = Confirmation.empty;
+  Confirmation _participantRegistration = Confirmation.empty;
+  bool _participantPresence = false;
   bool _leaderPresence = false;
   Confirmation _supporterRegistration = Confirmation.empty;
   bool _supporterPresence = false;
-  Confirmation _participantRegistration = Confirmation.empty;
-  bool _participantPresence = false;
 
   EventDetailRegularPageState();
 
@@ -44,12 +44,12 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
     super.initState();
     _updateBookmark();
     _updateOwnership();
+    _updateParticipantRegistration();
+    _updateParticipantPresence();
     _updateLeaderRegistration();
     _updateLeaderPresence();
     _updateSupporterRegistration();
     _updateSupporterPresence();
-    _updateParticipantRegistration();
-    _updateParticipantPresence();
   }
 
   Future<void> _handleSwitchOwner() async {
@@ -97,6 +97,20 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
     setState(() => _ownership = ownership);
   }
 
+  Future<void> _updateParticipantRegistration() async {
+    Confirmation? registration = await api_regular.event_participant_registration_info(widget.session, widget.event);
+    if (registration == null) return;
+
+    setState(() => _participantRegistration = registration);
+  }
+
+  Future<void> _updateParticipantPresence() async {
+    bool? presence = await api_regular.event_participant_presence_true(widget.session, widget.event);
+    if (presence == null) return;
+
+    setState(() => _participantPresence = presence);
+  }
+
   Future<void> _updateLeaderRegistration() async {
     Confirmation? registration = await api_regular.event_leader_registration_info(widget.session, widget.event);
     if (registration == null) return;
@@ -125,18 +139,18 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
     setState(() => _supporterPresence = presence);
   }
 
-  Future<void> _updateParticipantRegistration() async {
-    Confirmation? registration = await api_regular.event_participant_registration_info(widget.session, widget.event);
-    if (registration == null) return;
-
-    setState(() => _participantRegistration = registration);
+  void _handleParticipantRegistration(Confirmation? confirmation) async {
+    await api_regular.event_participant_registration_edit(widget.session, widget.event, confirmation);
+    _updateParticipantRegistration();
   }
 
-  Future<void> _updateParticipantPresence() async {
-    bool? presence = await api_regular.event_participant_presence_true(widget.session, widget.event);
-    if (presence == null) return;
-
-    setState(() => _participantPresence = presence);
+  void _handleParticipantPresence(bool presence) async {
+    if (presence) {
+      await api_regular.event_participant_presence_add(widget.session, widget.event);
+    } else {
+      await api_regular.event_participant_presence_remove(widget.session, widget.event);
+    }
+    _updateParticipantPresence();
   }
 
   void _handleLeaderRegistration(Confirmation? confirmation) async {
@@ -167,20 +181,6 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
     _updateSupporterPresence();
   }
 
-  void _handleParticipantRegistration(Confirmation? confirmation) async {
-    await api_regular.event_participant_registration_edit(widget.session, widget.event, confirmation);
-    _updateParticipantRegistration();
-  }
-
-  void _handleParticipantPresence(bool presence) async {
-    if (presence) {
-      await api_regular.event_participant_presence_add(widget.session, widget.event);
-    } else {
-      await api_regular.event_participant_presence_remove(widget.session, widget.event);
-    }
-    _updateParticipantPresence();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,8 +189,8 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
       ),
       body: AppBody(
         children: [
-          if (_ownership) AppButton(text: "Go to Owner Page", onPressed: _handleSwitchOwner),
           if (widget.session.right!.event.read) AppButton(text: "Go to Admin Page", onPressed: _handleSwitchAdmin),
+          if (_ownership) AppButton(text: "Go to Owner Page", onPressed: _handleSwitchOwner),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventKey,
             child: Text(widget.event.key),
@@ -242,6 +242,20 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
             child: _ownership ? Icon(Icons.castle) : Icon(Icons.castle_outlined),
           ),
           AppInfoRow(
+            info: "Register as Participant",
+            child: ConfirmationField(
+              confirmation: _participantRegistration,
+              onChanged: _handleParticipantRegistration,
+            ),
+          ),
+          AppInfoRow(
+            info: "Present as Participant",
+            child: IconButton(
+              icon: _participantPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
+              onPressed: () => _handleParticipantPresence(!_participantPresence),
+            ),
+          ),
+          AppInfoRow(
             info: "Register as Leader",
             child: ConfirmationField(
               confirmation: _leaderRegistration,
@@ -267,20 +281,6 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
             child: IconButton(
               icon: _supporterPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
               onPressed: () => _handleSupporterPresence(!_supporterPresence),
-            ),
-          ),
-          AppInfoRow(
-            info: "Register as Participant",
-            child: ConfirmationField(
-              confirmation: _participantRegistration,
-              onChanged: _handleParticipantRegistration,
-            ),
-          ),
-          AppInfoRow(
-            info: "Present as Participant",
-            child: IconButton(
-              icon: _participantPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleParticipantPresence(!_participantPresence),
             ),
           ),
         ],

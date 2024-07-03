@@ -80,22 +80,6 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     );
   }
 
-  Future<void> _handleSupporterPresences() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
-          tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_owner.event_supporter_presence_pool(widget.session, event!),
-          onCallSelected: () => api_owner.event_supporter_presence_list(widget.session, event!),
-          onCallAdd: (user) => api_owner.event_supporter_presence_add(widget.session, event!, user),
-          onCallRemove: (user) => api_owner.event_supporter_presence_remove(widget.session, event!, user),
-        ),
-      ),
-    );
-  }
-
   Future<void> _handleLeaderPresences() async {
     await Navigator.push(
       context,
@@ -107,6 +91,22 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           onCallSelected: () => api_owner.event_leader_presence_list(widget.session, event!),
           onCallAdd: (user) => api_owner.event_leader_presence_add(widget.session, event!, user),
           onCallRemove: (user) => api_owner.event_leader_presence_remove(widget.session, event!, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSupporterPresences() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: () => api_owner.event_supporter_presence_pool(widget.session, event!),
+          onCallSelected: () => api_owner.event_supporter_presence_list(widget.session, event!),
+          onCallAdd: (user) => api_owner.event_supporter_presence_add(widget.session, event!, user),
+          onCallRemove: (user) => api_owner.event_supporter_presence_remove(widget.session, event!, user),
         ),
       ),
     );
@@ -172,23 +172,6 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           MenuSection(
             children: [
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
-                onTap: _handleSupporterPresences,
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventSupporterFilters),
-                onTap: null,
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventSupporterRegistrations),
-                onTap: null,
-              ),
-            ],
-          ),
-          Divider(),
-          MenuSection(
-            children: [
-              ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderPresences),
                 onTap: _handleLeaderPresences,
               ),
@@ -198,6 +181,23 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderRegistrations),
+                onTap: null,
+              ),
+            ],
+          ),
+          Divider(),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
+                onTap: _handleSupporterPresences,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventSupporterFilters),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventSupporterRegistrations),
                 onTap: null,
               ),
             ],
