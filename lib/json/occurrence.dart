@@ -7,7 +7,6 @@ class Occurrence implements Comparable {
   const Occurrence._init(this._value);
 
   static const List<Occurrence> values = [
-    Occurrence._init('NULL'),
     Occurrence._init('OCCURRING'),
     Occurrence._init('CANCELED'),
     Occurrence._init('VOIDED'),
@@ -27,7 +26,7 @@ class Occurrence implements Comparable {
     if (value == null) return null;
 
     return values.firstWhere((confirmation) => confirmation._value == value.toUpperCase(),
-        orElse: () => throw ArgumentError('Invalid occurrence value'));
+        orElse: () => throw ArgumentError('Invalid Occurrence value'));
   }
 
   String localizedName(BuildContext context) {
@@ -54,8 +53,4 @@ class Occurrence implements Comparable {
   int compareTo(other) {
     return name.compareTo(other.name);
   }
-}
-
-extension LocalelizationExtension on Occurrence {
-
 }

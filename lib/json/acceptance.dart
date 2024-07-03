@@ -7,7 +7,6 @@ class Acceptance implements Comparable {
   const Acceptance._init(this._value);
 
   static const List<Acceptance> values = [
-    Acceptance._init('NULL'),
     Acceptance._init('DRAFT'),
     Acceptance._init('PENDING'),
     Acceptance._init('ACCEPTED'),
@@ -30,7 +29,7 @@ class Acceptance implements Comparable {
     if (value == null) return null;
 
     return values.firstWhere((confirmation) => confirmation._value == value.toUpperCase(),
-        orElse: () => throw ArgumentError('Invalid acceptance value'));
+        orElse: () => throw ArgumentError('Invalid Acceptance value'));
   }
 
   String localizedName(BuildContext context) {

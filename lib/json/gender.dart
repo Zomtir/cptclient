@@ -7,7 +7,6 @@ class Gender implements Comparable {
   const Gender._init(this._value);
 
   static const List<Gender> values = [
-    Gender._init('NULL'),
     Gender._init('MALE'),
     Gender._init('FEMALE'),
     Gender._init('OTHER'),
@@ -27,7 +26,21 @@ class Gender implements Comparable {
     if (value == null) return null;
 
     return values.firstWhere((confirmation) => confirmation._value == value.toUpperCase(),
-        orElse: () => throw ArgumentError('Invalid gender value'));
+        orElse: () => throw ArgumentError('Invalid Gender value'));
+  }
+
+  String localizedName(BuildContext context) {
+    if (this == Gender.empty) {
+      return AppLocalizations.of(context)!.undefined;
+    } else if (this == Gender.male) {
+      return AppLocalizations.of(context)!.genderMale;
+    } else if (this == Gender.female) {
+      return AppLocalizations.of(context)!.genderFemale;
+    } else if (this == Gender.other) {
+      return AppLocalizations.of(context)!.genderOther;
+    } else {
+      return '';
+    }
   }
 
   @override
@@ -39,19 +52,5 @@ class Gender implements Comparable {
   @override
   int compareTo(other) {
     return name.compareTo(other.name);
-  }
-}
-
-extension LocalelizationExtension on Gender {
-  String localizedName(BuildContext context) {
-    if (this == Gender.male) {
-      return AppLocalizations.of(context)!.genderMale;
-    } else if (this == Gender.male) {
-      return AppLocalizations.of(context)!.genderFemale;
-    } else if (this == Gender.other) {
-      return AppLocalizations.of(context)!.genderOther;
-    } else {
-      return '';
-    }
   }
 }
