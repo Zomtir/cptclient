@@ -98,6 +98,7 @@ Future<bool> event_create(UserSession session, int course_id, Event event) async
 }
 
 Future<bool> event_edit(UserSession session, Event event) async {
+  print(event.occurrence!.name); //xxx
   final response = await http.post(
     server.uri('/admin/event_edit', {
       'event_id': event.id.toString(),

@@ -96,6 +96,12 @@ class EventEditPageState extends State<EventEditPage> {
       return;
     }
 
+    if (widget.event.occurrence == null || widget.event.occurrence == Occurrence.empty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${AppLocalizations.of(context)!.labelRequired}: ${AppLocalizations.of(context)!.eventOccurrence}")));
+      return;
+    }
+
     if (!await widget.onSubmit(widget.session, widget.event)) return;
 
     Navigator.pop(context);
@@ -171,7 +177,7 @@ class EventEditPageState extends State<EventEditPage> {
             info: AppLocalizations.of(context)!.eventOccurrence,
             child: AppDropdown<Occurrence>(
               controller: _ctrlOccurrence,
-              builder: (Occurrence occurrence) => Text(occurrence.name),
+              builder: (Occurrence occurrence) => Text(occurrence.localizedName(context)),
               onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
             ),
           ),

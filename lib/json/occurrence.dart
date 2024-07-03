@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Occurrence implements Comparable {
   final String _value;
 
@@ -27,6 +30,20 @@ class Occurrence implements Comparable {
         orElse: () => throw ArgumentError('Invalid occurrence value'));
   }
 
+  String localizedName(BuildContext context) {
+    if (this == Occurrence.empty) {
+      return AppLocalizations.of(context)!.undefined;
+    } else if (this == Occurrence.occurring) {
+      return AppLocalizations.of(context)!.occurrenceOccurring;
+    } else if (this == Occurrence.canceled) {
+      return AppLocalizations.of(context)!.occurrenceCanceled;
+    } else if (this == Occurrence.voided) {
+      return AppLocalizations.of(context)!.occurrenceVoided;
+    } else {
+      return '';
+    }
+  }
+
   @override
   bool operator ==(other) => other is Occurrence && _value == other._value;
 
@@ -37,4 +54,8 @@ class Occurrence implements Comparable {
   int compareTo(other) {
     return name.compareTo(other.name);
   }
+}
+
+extension LocalelizationExtension on Occurrence {
+
 }

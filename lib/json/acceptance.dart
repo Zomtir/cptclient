@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Acceptance implements Comparable {
   final String _value;
 
@@ -28,6 +31,22 @@ class Acceptance implements Comparable {
 
     return values.firstWhere((confirmation) => confirmation._value == value.toUpperCase(),
         orElse: () => throw ArgumentError('Invalid acceptance value'));
+  }
+
+  String localizedName(BuildContext context) {
+    if (this == Acceptance.empty) {
+      return AppLocalizations.of(context)!.undefined;
+    } else if (this == Acceptance.draft) {
+      return AppLocalizations.of(context)!.acceptanceDraft;
+    } else if (this == Acceptance.pending) {
+      return AppLocalizations.of(context)!.acceptancePending;
+    } else if (this == Acceptance.accepted) {
+      return AppLocalizations.of(context)!.acceptanceAccepted;
+    } else if (this == Acceptance.rejected) {
+      return AppLocalizations.of(context)!.acceptanceRejected;
+    } else {
+      return '';
+    }
   }
 
   @override

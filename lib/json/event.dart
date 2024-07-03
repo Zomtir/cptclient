@@ -26,9 +26,10 @@ class Event implements Comparable {
     required this.id,
     required this.key,
     required this.title,
-    this.location,
     required this.begin,
     required this.end,
+    this.location,
+    this.occurrence,
     required this.public,
     required this.scrutable,
     required this.note,
@@ -107,6 +108,8 @@ List<Event> filterEvents(List<Event> events, DateTime earliest, DateTime latest)
   List<Event> filtered = events.where((Event event) {
     bool tooEarly = earliest.isAfter(event.end);
     bool tooLate = latest.isBefore(event.begin);
+
+    //if (event.occurrence == Occurrence.voided) return false;
 
     return !(tooEarly || tooLate);
   }).toList();
