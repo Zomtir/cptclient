@@ -1,7 +1,7 @@
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/static/datetime.dart';

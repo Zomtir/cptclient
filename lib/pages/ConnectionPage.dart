@@ -1,7 +1,7 @@
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/layouts/MenuSection.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;

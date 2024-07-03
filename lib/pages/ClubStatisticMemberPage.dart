@@ -1,11 +1,11 @@
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
-import 'package:cptclient/material/FilterToggle.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/static/server_club_admin.dart' as api_admin;
 import 'package:flutter/material.dart';

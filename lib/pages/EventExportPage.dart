@@ -1,7 +1,7 @@
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/static/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,4 @@
-import 'package:cptclient/material/CollapseWidget.dart';
+import 'package:cptclient/material/layouts/CollapseSection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -47,7 +47,7 @@ class FilterToggleState extends State<FilterToggle> {
             ),
           ],
         ),
-        CollapseWidget(
+        CollapseSection(
           collapse: _hideFilters,
           children: widget.children,
         ),

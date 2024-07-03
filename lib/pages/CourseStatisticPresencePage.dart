@@ -1,6 +1,6 @@
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseStatisticPresence1Page.dart';
 import 'package:flutter/material.dart';

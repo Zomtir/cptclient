@@ -1,8 +1,8 @@
 import 'dart:core';
 
-import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/fields/AppSearchField.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:flutter/material.dart';
 
 class SearchablePanel<T extends FieldInterface> extends StatefulWidget {

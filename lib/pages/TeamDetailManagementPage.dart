@@ -1,8 +1,8 @@
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';

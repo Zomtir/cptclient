@@ -1,6 +1,6 @@
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:flutter/material.dart';
 
 class ListPage<T extends FieldInterface> extends StatefulWidget {

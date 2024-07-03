@@ -1,7 +1,7 @@
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewAvailablePage.dart';
 import 'package:cptclient/static/server_course_regular.dart' as server;

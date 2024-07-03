@@ -1,8 +1,8 @@
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/ClubDetailPage.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:cptclient/static/server_club_admin.dart' as api_admin;

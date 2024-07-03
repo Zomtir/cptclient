@@ -1,9 +1,9 @@
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/TermEditPage.dart';
 import 'package:cptclient/static/server_term_admin.dart' as api_admin;
 import 'package:flutter/material.dart';

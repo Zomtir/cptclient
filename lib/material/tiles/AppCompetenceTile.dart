@@ -1,5 +1,5 @@
 import 'package:cptclient/json/competence.dart';
-import 'package:cptclient/material/RoundBox.dart';
+import 'package:cptclient/material/widgets/RoundBox.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:flutter/material.dart';
 

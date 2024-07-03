@@ -1,8 +1,8 @@
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppListView.dart';
 import 'package:cptclient/material/dialogs/TileSelector.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/static/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

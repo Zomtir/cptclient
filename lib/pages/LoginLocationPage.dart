@@ -1,7 +1,7 @@
 import 'package:cptclient/json/location.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:cptclient/static/server_location_anon.dart' as api_anon;

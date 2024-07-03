@@ -1,10 +1,10 @@
 import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/fields/ConfirmationField.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventDetailOwnershipPage.dart';
 import 'package:cptclient/static/datetime.dart';

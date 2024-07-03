@@ -1,12 +1,12 @@
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
 import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppItemTile.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/static/server_item_admin.dart' as api_admin;
 import 'package:cptclient/static/server_itemcat_admin.dart' as api_admin;
 import 'package:flutter/material.dart';

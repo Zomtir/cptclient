@@ -1,9 +1,9 @@
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
-import 'package:cptclient/material/AppInfoRow.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppSkillTile.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/static/server_skill_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

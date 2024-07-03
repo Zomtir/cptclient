@@ -1,8 +1,8 @@
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';

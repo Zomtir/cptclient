@@ -1,5 +1,5 @@
 import 'package:cptclient/json/team.dart';
-import 'package:cptclient/material/RoundBox.dart';
+import 'package:cptclient/material/widgets/RoundBox.dart';
 import 'package:flutter/material.dart';
 
 class AppTeamTile extends StatelessWidget {

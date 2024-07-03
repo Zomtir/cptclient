@@ -1,8 +1,8 @@
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppListView.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/static/server_ranking_regular.dart' as server;
 import 'package:flutter/material.dart';

@@ -3,7 +3,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/datetime.dart';
 import 'package:cptclient/static/utils.dart';

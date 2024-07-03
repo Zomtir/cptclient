@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CollapseWidget extends StatefulWidget {
+class CollapseSection extends StatefulWidget {
   final List<Widget> children;
   final bool collapse;
 
-  CollapseWidget({this.collapse = false, required this.children});
+  CollapseSection({this.collapse = false, required this.children});
 
   @override
-  CollapseWidgetState createState() => CollapseWidgetState();
+  CollapseSectionState createState() => CollapseSectionState();
 }
 
-class CollapseWidgetState extends State<CollapseWidget> with SingleTickerProviderStateMixin {
+class CollapseSectionState extends State<CollapseSection> with SingleTickerProviderStateMixin {
   late AnimationController _ctrlAnimation;
   late Animation<double> _animation;
 
@@ -29,7 +29,7 @@ class CollapseWidgetState extends State<CollapseWidget> with SingleTickerProvide
   }
 
   @override
-  void didUpdateWidget(CollapseWidget oldWidget) {
+  void didUpdateWidget(CollapseSection oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.collapse ? _ctrlAnimation.reverse() : _ctrlAnimation.forward();
   }

@@ -1,5 +1,5 @@
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/AppButton.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';

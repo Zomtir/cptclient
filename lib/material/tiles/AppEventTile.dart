@@ -1,5 +1,5 @@
 import 'package:cptclient/json/event.dart';
-import 'package:cptclient/material/RoundBox.dart';
+import 'package:cptclient/material/widgets/RoundBox.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:flutter/material.dart';
 

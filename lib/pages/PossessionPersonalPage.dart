@@ -1,6 +1,6 @@
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/server_inventory_regular.dart' as api_regular;
 import 'package:flutter/material.dart';

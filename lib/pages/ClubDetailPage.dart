@@ -1,7 +1,7 @@
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:cptclient/pages/ClubStatisticMemberPage.dart';

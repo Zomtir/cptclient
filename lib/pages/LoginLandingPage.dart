@@ -1,5 +1,5 @@
-import 'package:cptclient/material/AppBody.dart';
-import 'package:cptclient/material/MenuSection.dart';
+import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/LoginCoursePage.dart';
 import 'package:cptclient/pages/LoginEventPage.dart';
