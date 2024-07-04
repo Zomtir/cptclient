@@ -16,7 +16,7 @@ import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
-import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -6,7 +6,7 @@ import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
-import 'package:cptclient/static/server_event_regular.dart' as api_regular;
+import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

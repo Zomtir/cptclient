@@ -6,7 +6,7 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/server_event_service.dart' as api_service;
+import 'package:cptclient/api/service/event.dart' as api_service;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
