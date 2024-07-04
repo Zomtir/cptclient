@@ -1,3 +1,4 @@
+import 'package:cptclient/api/anon/skill.dart' as api_anon;
 import 'package:cptclient/api/moderator/course/imports.dart' as api_moderator;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
@@ -10,7 +11,6 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/pages/CourseDetailModerationPage.dart';
-import 'package:cptclient/static/server_skill_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
