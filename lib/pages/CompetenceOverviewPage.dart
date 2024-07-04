@@ -1,3 +1,4 @@
+import 'package:cptclient/api/admin/competence/competence.dart' as api_admin;
 import 'package:cptclient/api/anon/skill.dart' as api_anon;
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
@@ -12,7 +13,6 @@ import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/CompetenceEditPage.dart';
-import 'package:cptclient/static/server_ranking_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
