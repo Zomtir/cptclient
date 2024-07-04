@@ -1,4 +1,5 @@
 import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/api/anon/course.dart' as api_anon;
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
@@ -14,7 +15,6 @@ import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticDivisionPage.dart';
 import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
-import 'package:cptclient/api/anon/course.dart' as api_anon;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

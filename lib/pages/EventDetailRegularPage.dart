@@ -1,3 +1,4 @@
+import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
@@ -8,7 +9,6 @@ import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventDetailOwnershipPage.dart';
 import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

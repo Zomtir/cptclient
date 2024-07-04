@@ -1,5 +1,6 @@
 import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
 import 'package:cptclient/api/anon/location.dart' as api_anon;
+import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
@@ -19,7 +20,6 @@ import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
-import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

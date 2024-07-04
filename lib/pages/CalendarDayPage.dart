@@ -1,9 +1,9 @@
+import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
-import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';

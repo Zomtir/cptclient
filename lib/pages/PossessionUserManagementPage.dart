@@ -1,3 +1,5 @@
+import 'package:cptclient/api/admin/inventory/inventory.dart' as api_admin;
+import 'package:cptclient/api/admin/inventory/item.dart' as api_admin;
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
@@ -7,8 +9,6 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/static/format.dart';
-import 'package:cptclient/static/server_inventory_admin.dart' as api_admin;
-import 'package:cptclient/static/server_item_admin.dart' as api_admin;
 import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

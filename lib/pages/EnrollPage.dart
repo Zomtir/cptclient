@@ -1,3 +1,4 @@
+import 'package:cptclient/api/service/event.dart' as api_service;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -6,7 +7,6 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/api/service/event.dart' as api_service;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

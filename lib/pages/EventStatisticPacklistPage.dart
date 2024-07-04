@@ -1,4 +1,5 @@
 import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/api/regular/inventory/inventory.dart' as api_regular;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/session.dart';
@@ -6,7 +7,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/static/server_inventory_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -1,10 +1,10 @@
+import 'package:cptclient/api/admin/inventory/itemcat.dart' as api_admin;
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppItemcatTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/static/server_itemcat_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
