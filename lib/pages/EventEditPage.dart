@@ -1,3 +1,4 @@
+import 'package:cptclient/api/anon/location.dart' as api_anon;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
@@ -10,7 +11,6 @@ import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
-import 'package:cptclient/static/server_location_anon.dart' as api_anon;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
