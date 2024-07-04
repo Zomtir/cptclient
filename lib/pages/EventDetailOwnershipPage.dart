@@ -4,6 +4,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
+import 'package:cptclient/material/pages/FilterPage.dart';
+import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventCourseEditPage.dart';
@@ -82,6 +84,35 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     );
   }
 
+  Future<void> _handleParticipantFilters() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterPage<User>(
+          title: AppLocalizations.of(context)!.pageEventParticipantFilters,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_owner.event_participant_filter_list(widget.session, event!.id),
+          onCallEdit: (user, access) => api_owner.event_participant_filter_edit(widget.session, event!.id, user.id, access),
+          onCallRemove: (user) => api_owner.event_participant_filter_remove(widget.session, event!.id, user.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleParticipantRegistrations() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListPage<User>(
+          title: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
+          tile: AppEventTile(event: event!),
+          onCallList: () => api_owner.event_participant_registration_list(widget.session, event!),
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleLeaderPresences() async {
     await Navigator.push(
       context,
@@ -98,6 +129,35 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     );
   }
 
+  Future<void> _handleLeaderFilters() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterPage<User>(
+          title: AppLocalizations.of(context)!.pageEventLeaderFilters,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_owner.event_leader_filter_list(widget.session, event!.id),
+          onCallEdit: (user, access) => api_owner.event_leader_filter_edit(widget.session, event!.id, user.id, access),
+          onCallRemove: (user) => api_owner.event_leader_filter_remove(widget.session, event!.id, user.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleLeaderRegistrations() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListPage<User>(
+          title: AppLocalizations.of(context)!.pageEventLeaderRegistrations,
+          tile: AppEventTile(event: event!),
+          onCallList: () => api_owner.event_leader_registration_list(widget.session, event!),
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleSupporterPresences() async {
     await Navigator.push(
       context,
@@ -109,6 +169,35 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           onCallSelected: () => api_owner.event_supporter_presence_list(widget.session, event!),
           onCallAdd: (user) => api_owner.event_supporter_presence_add(widget.session, event!, user),
           onCallRemove: (user) => api_owner.event_supporter_presence_remove(widget.session, event!, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSupporterFilters() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterPage<User>(
+          title: AppLocalizations.of(context)!.pageEventSupporterFilters,
+          tile: AppEventTile(event: event!),
+          onCallAvailable: () => api_regular.user_list(widget.session),
+          onCallSelected: () => api_owner.event_supporter_filter_list(widget.session, event!.id),
+          onCallEdit: (user, access) => api_owner.event_supporter_filter_edit(widget.session, event!.id, user.id, access),
+          onCallRemove: (user) => api_owner.event_supporter_filter_remove(widget.session, event!.id, user.id),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSupporterRegistrations() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListPage<User>(
+          title: AppLocalizations.of(context)!.pageEventSupporterRegistrations,
+          tile: AppEventTile(event: event!),
+          onCallList: () => api_owner.event_supporter_registration_list(widget.session, event!),
         ),
       ),
     );
@@ -177,11 +266,11 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventParticipantFilters),
-                onTap: null,
+                onTap: _handleParticipantFilters,
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventParticipantRegistrations),
-                onTap: null,
+                onTap: _handleParticipantRegistrations,
               ),
             ],
           ),
@@ -194,11 +283,11 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderFilters),
-                onTap: null,
+                onTap: _handleLeaderFilters,
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderRegistrations),
-                onTap: null,
+                onTap: _handleLeaderRegistrations,
               ),
             ],
           ),
@@ -211,11 +300,11 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventSupporterFilters),
-                onTap: null,
+                onTap: _handleSupporterFilters,
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventSupporterRegistrations),
-                onTap: null,
+                onTap: _handleSupporterRegistrations,
               ),
             ],
           ),
