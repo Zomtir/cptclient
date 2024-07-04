@@ -1,4 +1,6 @@
 import 'package:cptclient/api/moderator/course/imports.dart' as api_moderator;
+import 'package:cptclient/api/regular/team/team.dart' as api_regular;
+import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
@@ -11,8 +13,6 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/RequirementOverviewPage.dart';
-import 'package:cptclient/static/server_team_regular.dart' as api_regular;
-import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

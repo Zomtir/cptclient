@@ -1,4 +1,6 @@
+import 'package:cptclient/api/admin/club/term.dart' as api_admin;
 import 'package:cptclient/api/anon/club.dart' as api_anon;
+import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
@@ -11,8 +13,6 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppTermTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/static/server_term_admin.dart' as api_admin;
-import 'package:cptclient/static/server_user_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -1,5 +1,6 @@
 library navigation;
 
+import 'package:cptclient/api/regular/user/user.dart' as server;
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -7,7 +8,6 @@ import 'package:cptclient/main.dart';
 import 'package:cptclient/static/environment.dart';
 import 'package:cptclient/static/router.dart' as router;
 import 'package:cptclient/static/server.dart' as server;
-import 'package:cptclient/static/server_user_regular.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';

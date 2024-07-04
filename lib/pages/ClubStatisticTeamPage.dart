@@ -1,4 +1,5 @@
 import 'package:cptclient/api/admin/club/club.dart' as api_admin;
+import 'package:cptclient/api/regular/team/team.dart' as api_regular;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
@@ -11,7 +12,6 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
-import 'package:cptclient/static/server_team_regular.dart' as api_regular;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
