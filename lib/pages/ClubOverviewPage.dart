@@ -1,3 +1,4 @@
+import 'package:cptclient/api/admin/club/club.dart' as api_admin;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -5,7 +6,6 @@ import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/ClubDetailPage.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
-import 'package:cptclient/static/server_club_admin.dart' as api_admin;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
