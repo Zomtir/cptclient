@@ -58,22 +58,6 @@ class EnrollPageState extends State<EnrollPage> {
     );
   }
 
-  Future<void> _handleSupporter() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
-          tile: AppEventTile(event: _event!),
-          onCallAvailable: () => api_service.event_supporter_presence_pool(widget.session),
-          onCallSelected: () => api_service.event_supporter_presence_list(widget.session),
-          onCallAdd: (user) => api_service.event_supporter_presence_add(widget.session, user),
-          onCallRemove: (user) => api_service.event_supporter_presence_remove(widget.session, user),
-        ),
-      ),
-    );
-  }
-
   Future<void> _handleLeaders() async {
     await Navigator.push(
       context,
@@ -85,6 +69,22 @@ class EnrollPageState extends State<EnrollPage> {
           onCallSelected: () => api_service.event_leader_presence_list(widget.session),
           onCallAdd: (user) => api_service.event_leader_presence_add(widget.session, user),
           onCallRemove: (user) => api_service.event_leader_presence_remove(widget.session, user),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSupporter() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectionPage<User>(
+          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
+          tile: AppEventTile(event: _event!),
+          onCallAvailable: () => api_service.event_supporter_presence_pool(widget.session),
+          onCallSelected: () => api_service.event_supporter_presence_list(widget.session),
+          onCallAdd: (user) => api_service.event_supporter_presence_add(widget.session, user),
+          onCallRemove: (user) => api_service.event_supporter_presence_remove(widget.session, user),
         ),
       ),
     );
@@ -117,12 +117,12 @@ class EnrollPageState extends State<EnrollPage> {
                 onTap: _handleParticipants,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
-                onTap: _handleSupporter,
-              ),
-              ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderPresences),
                 onTap: _handleLeaders,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
+                onTap: _handleSupporter,
               ),
             ],
           ),
