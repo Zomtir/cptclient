@@ -54,16 +54,6 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
     });
   }
 
-  void _add(T item) async {
-    if (!await widget.onCallAdd(item)) return;
-    _update();
-  }
-
-  void _remove(T item) async {
-    if (!await widget.onCallRemove(item)) return;
-    _update();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +76,11 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
                     ),
                     IconButton(
                       icon: const Icon(Icons.add),
-                      onPressed: () {onSelect?.call(item); this._add(item);},
+                      onPressed: () async {
+                        if (!await widget.onCallAdd(item)) return;
+                        _update();
+                        onSelect?.call(item);
+                      },
                     ),
                   ],
                 );
@@ -103,7 +97,10 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
                   ),
                   IconButton(
                     icon: const Icon(Icons.remove),
-                    onPressed: () => this._remove(item),
+                    onPressed: () async {
+                      if (!await widget.onCallRemove(item)) return;
+                      _update();
+                    },
                   ),
                 ],
               );

@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 Future<void> showTileSelector<T extends FieldInterface>({
   required BuildContext context,
   required List<T> items,
-  Function(BuildContext, T)? onSelect,
   required Widget Function(T, Function(T)?) builder,
 }) async {
   return showDialog<void>(

@@ -21,8 +21,7 @@ class SearchablePanel<T extends FieldInterface> extends StatefulWidget {
   SearchablePanelState createState() => SearchablePanelState<T>();
 }
 
-class SearchablePanelState<T extends FieldInterface>
-    extends State<SearchablePanel<T>> {
+class SearchablePanelState<T extends FieldInterface> extends State<SearchablePanel<T>> {
   List<T> _all = [];
   List<T> _visible = [];
   final TextEditingController _ctrlFilter = TextEditingController();
@@ -45,8 +44,7 @@ class SearchablePanelState<T extends FieldInterface>
       return;
     }
 
-    setState(() => _visible =
-        _all.where((T item) => item.filter(_ctrlFilter.text)).toList());
+    setState(() => _visible = _all.where((T item) => item.filter(_ctrlFilter.text)).toList());
   }
 
   @override
