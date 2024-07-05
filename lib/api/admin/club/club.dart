@@ -98,3 +98,20 @@ Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
+
+Future<List<User>> club_statistic_organisation(UserSession session, Club club, DateTime point_in_time) async {
+  final response = await client.get(
+    uri('/admin/club_statistic_organisation', {
+      'club_id': club.id.toString(),
+      'point_in_time': formatWebDate(point_in_time),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable l = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(l.map((model) => User.fromJson(model)));
+}

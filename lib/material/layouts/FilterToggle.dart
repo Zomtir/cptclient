@@ -5,8 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class FilterToggle extends StatefulWidget {
   final List<Widget> children;
   final VoidCallback? onApply;
+  final bool hidden;
 
-  FilterToggle({required this.children, required this.onApply});
+  FilterToggle({required this.children, required this.onApply, this.hidden = true});
 
   @override
   FilterToggleState createState() => FilterToggleState();
@@ -14,6 +15,12 @@ class FilterToggle extends StatefulWidget {
 
 class FilterToggleState extends State<FilterToggle> {
   bool _hideFilters = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _hideFilters = widget.hidden;
+  }
 
   @override
   Widget build(BuildContext context) {

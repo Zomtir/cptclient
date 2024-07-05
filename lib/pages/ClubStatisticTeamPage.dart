@@ -61,6 +61,7 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
             club: widget.club,
           ),
           FilterToggle(
+            hidden: false,
             onApply: _update,
             children: [
               AppInfoRow(

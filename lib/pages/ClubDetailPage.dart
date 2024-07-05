@@ -6,6 +6,7 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:cptclient/pages/ClubStatisticMemberPage.dart';
+import 'package:cptclient/pages/ClubStatisticOrganisationPage.dart';
 import 'package:cptclient/pages/ClubStatisticTeamPage.dart';
 import 'package:cptclient/pages/TermOverviewPage.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,19 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     );
   }
 
+  Future<void> _handleStatisticOrganisation() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ClubStatisticOrganisationPage(
+              session: widget.session,
+              club: widget.club,
+            ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +137,10 @@ class ClubDetailPageState extends State<ClubDetailPage> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageClubStatisticTeam),
                 onTap: _handleStatisticTeams,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageClubStatisticOrganisation),
+                onTap: _handleStatisticOrganisation,
               ),
             ],
           ),

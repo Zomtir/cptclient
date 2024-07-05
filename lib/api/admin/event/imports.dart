@@ -245,10 +245,10 @@ Future<List<(User, int, int, int)>> event_statistic_packlist(
   return List<(User, int, int, int)>.from(
     list.map((model) {
       return (
-      User.fromJson(model[0]),
-      model[1],
-      model[2],
-      model[3],
+        User.fromJson(model[0]),
+        model[1],
+        model[2],
+        model[3],
       );
     }),
   );
@@ -268,7 +268,22 @@ Future<List<User>> event_statistic_division(UserSession session, Event event) as
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(
-    list.map((model) => User.fromJson(model)),
+  return List<User>.from(list.map((model) => User.fromJson(model)));
+}
+
+Future<List<User>> event_statistic_organisation(UserSession session, Event event) async {
+  final response = await client.get(
+    uri('/admin/event_statistic_organisation', {
+      'event_id': event.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
   );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<User>.from(list.map((model) => User.fromJson(model)));
 }
