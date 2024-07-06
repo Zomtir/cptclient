@@ -1,3 +1,4 @@
+import 'package:cptclient/api/login.dart' as api;
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
@@ -6,7 +7,6 @@ import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:cptclient/static/router.dart' as router;
-import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,18 +60,18 @@ class ConnectionPageState extends State<ConnectionPage> {
 
   _updateServerScheme(String text) {
     _prefs.setString('ServerScheme', text);
-    server.serverScheme = text;
+    navi.applyServer();
   }
 
   _updateServerHost(String text) {
     _prefs.setString('ServerHost', text);
-    server.serverHost = text;
+    navi.applyServer();
   }
 
   _updateServerPort(String text) {
     var port = int.tryParse(text) ?? 443;
     _prefs.setInt('ServerPort', port);
-    server.serverPort = port;
+    navi.applyServer();
   }
 
   _updateClientScheme(String text) {
@@ -88,7 +88,7 @@ class ConnectionPageState extends State<ConnectionPage> {
   }
 
   void _testConnection() async {
-    bool tmpStatus = await server.loadStatus();
+    bool tmpStatus = await api.loadStatus();
     setState(() => _serverOnline = tmpStatus);
   }
 

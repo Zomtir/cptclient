@@ -8,10 +8,9 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/message.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
 
 Future<List<Event>> event_list(UserSession session,
     {DateTime? begin,
@@ -21,8 +20,8 @@ Future<List<Event>> event_list(UserSession session,
     Acceptance? acceptance,
     bool? courseTrue,
     int? courseID}) async {
-  final response = await http.get(
-    server.uri('/regular/event_list', {
+  final response = await client.get(
+    uri('/regular/event_list', {
       'begin': formatWebDateTime(begin),
       'end': formatWebDateTime(end),
       'location_id': location?.id.toString(),
@@ -46,8 +45,8 @@ Future<List<Event>> event_list(UserSession session,
 Future<bool> event_create(UserSession session, Event event) async {
   if (event.key.isEmpty) return false;
 
-  final response = await http.post(
-    server.uri('/regular/event_create'),
+  final response = await client.post(
+    uri('/regular/event_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -61,8 +60,8 @@ Future<bool> event_create(UserSession session, Event event) async {
 }
 
 Future<bool?> event_owner_true(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_owner_true', {
+  final response = await client.get(
+    uri('/regular/event_owner_true', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -77,8 +76,8 @@ Future<bool?> event_owner_true(UserSession session, Event event) async {
 }
 
 Future<bool?> event_bookmark_true(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_bookmark_true', {
+  final response = await client.get(
+    uri('/regular/event_bookmark_true', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -93,8 +92,8 @@ Future<bool?> event_bookmark_true(UserSession session, Event event) async {
 }
 
 Future<bool> event_bookmark_edit(UserSession session, Event event, bool bookmark) async {
-  final response = await http.head(
-    server.uri('/regular/event_bookmark_edit', {
+  final response = await client.head(
+    uri('/regular/event_bookmark_edit', {
       'event_id': event.id.toString(),
       'bookmark': bookmark.toString(),
     }),
@@ -108,8 +107,8 @@ Future<bool> event_bookmark_edit(UserSession session, Event event, bool bookmark
 }
 
 Future<Confirmation?> event_leader_registration_info(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_leader_registration_info', {
+  final response = await client.get(
+    uri('/regular/event_leader_registration_info', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -124,8 +123,8 @@ Future<Confirmation?> event_leader_registration_info(UserSession session, Event 
 }
 
 Future<bool> event_leader_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
-  final response = await http.head(
-    server.uri('/regular/event_leader_registration_edit', {
+  final response = await client.head(
+    uri('/regular/event_leader_registration_edit', {
       'event_id': event.id.toString(),
       'status': confirmation?.name ?? 'NULL',
     }),
@@ -139,8 +138,8 @@ Future<bool> event_leader_registration_edit(UserSession session, Event event, Co
 }
 
 Future<bool?> event_leader_presence_true(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_leader_presence_true', {
+  final response = await client.get(
+    uri('/regular/event_leader_presence_true', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -155,8 +154,8 @@ Future<bool?> event_leader_presence_true(UserSession session, Event event) async
 }
 
 Future<bool> event_leader_presence_add(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/regular/event_leader_presence_add', {
+  final response = await client.head(
+    uri('/regular/event_leader_presence_add', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -168,8 +167,8 @@ Future<bool> event_leader_presence_add(UserSession session, Event event) async {
 }
 
 Future<bool> event_leader_presence_remove(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/regular/event_leader_presence_remove', {
+  final response = await client.head(
+    uri('/regular/event_leader_presence_remove', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -181,8 +180,8 @@ Future<bool> event_leader_presence_remove(UserSession session, Event event) asyn
 }
 
 Future<Confirmation?> event_supporter_registration_info(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_supporter_registration_info', {
+  final response = await client.get(
+    uri('/regular/event_supporter_registration_info', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -197,8 +196,8 @@ Future<Confirmation?> event_supporter_registration_info(UserSession session, Eve
 }
 
 Future<bool> event_supporter_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
-  final response = await http.head(
-    server.uri('/regular/event_supporter_registration_edit', {
+  final response = await client.head(
+    uri('/regular/event_supporter_registration_edit', {
       'event_id': event.id.toString(),
       'status': confirmation?.name ?? 'NULL',
     }),
@@ -212,8 +211,8 @@ Future<bool> event_supporter_registration_edit(UserSession session, Event event,
 }
 
 Future<bool?> event_supporter_presence_true(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_supporter_presence_true', {
+  final response = await client.get(
+    uri('/regular/event_supporter_presence_true', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -228,8 +227,8 @@ Future<bool?> event_supporter_presence_true(UserSession session, Event event) as
 }
 
 Future<bool> event_supporter_presence_add(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/regular/event_supporter_presence_add', {
+  final response = await client.head(
+    uri('/regular/event_supporter_presence_add', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -241,8 +240,8 @@ Future<bool> event_supporter_presence_add(UserSession session, Event event) asyn
 }
 
 Future<bool> event_supporter_presence_remove(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/regular/event_supporter_presence_remove', {
+  final response = await client.head(
+    uri('/regular/event_supporter_presence_remove', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -254,8 +253,8 @@ Future<bool> event_supporter_presence_remove(UserSession session, Event event) a
 }
 
 Future<Confirmation?> event_participant_registration_info(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_participant_registration_info', {
+  final response = await client.get(
+    uri('/regular/event_participant_registration_info', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -270,8 +269,8 @@ Future<Confirmation?> event_participant_registration_info(UserSession session, E
 }
 
 Future<bool> event_participant_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
-  final response = await http.head(
-    server.uri('/regular/event_participant_registration_edit', {
+  final response = await client.head(
+    uri('/regular/event_participant_registration_edit', {
       'event_id': event.id.toString(),
       'status': confirmation?.name ?? 'NULL',
     }),
@@ -285,8 +284,8 @@ Future<bool> event_participant_registration_edit(UserSession session, Event even
 }
 
 Future<bool?> event_participant_presence_true(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/regular/event_participant_presence_true', {
+  final response = await client.get(
+    uri('/regular/event_participant_presence_true', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -301,8 +300,8 @@ Future<bool?> event_participant_presence_true(UserSession session, Event event) 
 }
 
 Future<bool> event_participant_presence_add(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/regular/event_participant_presence_add', {
+  final response = await client.head(
+    uri('/regular/event_participant_presence_add', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -314,8 +313,8 @@ Future<bool> event_participant_presence_add(UserSession session, Event event) as
 }
 
 Future<bool> event_participant_presence_remove(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/regular/event_participant_presence_remove', {
+  final response = await client.head(
+    uri('/regular/event_participant_presence_remove', {
       'event_id': event.id.toString(),
     }),
     headers: {

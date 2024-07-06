@@ -6,13 +6,12 @@ import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Competence>> competence_list(
     UserSession session, User? user, Skill? skill) async {
-  final response = await http.get(
-    server.uri('/admin/competence_list', {
+  final response = await client.get(
+    uri('/admin/competence_list', {
       if (user != null) 'user_id': user.id.toString(),
       if (skill != null) 'skill_id': skill.id.toString(),
       if (skill != null) 'min': '0',
@@ -30,8 +29,8 @@ Future<List<Competence>> competence_list(
 }
 
 Future<bool> competence_create(UserSession session, Competence ranking) async {
-  final response = await http.post(
-    server.uri('/admin/competence_create'),
+  final response = await client.post(
+    uri('/admin/competence_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -43,8 +42,8 @@ Future<bool> competence_create(UserSession session, Competence ranking) async {
 }
 
 Future<bool> competence_edit(UserSession session, Competence competence) async {
-  final response = await http.post(
-    server.uri('/admin/competence_edit', {
+  final response = await client.post(
+    uri('/admin/competence_edit', {
       'competence_id': competence.id.toString(),
     }),
     headers: {
@@ -58,8 +57,8 @@ Future<bool> competence_edit(UserSession session, Competence competence) async {
 }
 
 Future<bool> competence_delete(UserSession session, Competence competence) async {
-  final response = await http.head(
-    server.uri('/admin/competence_delete', {
+  final response = await client.head(
+    uri('/admin/competence_delete', {
       'competence_id': competence.id.toString(),
     }),
     headers: {

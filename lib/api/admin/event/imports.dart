@@ -11,9 +11,8 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/format.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
 
 export 'leader.dart';
 export 'owner.dart';
@@ -29,8 +28,8 @@ Future<List<Event>> event_list(UserSession session,
     bool? courseTrue,
     int? courseID,
     int? ownerID}) async {
-  final response = await http.get(
-    server.uri('/admin/event_list', {
+  final response = await client.get(
+    uri('/admin/event_list', {
       'begin': formatWebDateTime(begin),
       'end': formatWebDateTime(end),
       'location_id': location?.id.toString(),
@@ -52,8 +51,8 @@ Future<List<Event>> event_list(UserSession session,
 }
 
 Future<Event?> event_info(UserSession session, int eventID) async {
-  final response = await http.get(
-    server.uri('/admin/event_info', {
+  final response = await client.get(
+    uri('/admin/event_info', {
       'event_id': eventID.toString(),
     }),
     headers: {
@@ -68,8 +67,8 @@ Future<Event?> event_info(UserSession session, int eventID) async {
 }
 
 Future<Credential?> event_credential(UserSession session, int eventID) async {
-  final response = await http.get(
-    server.uri('/admin/event_credential', {
+  final response = await client.get(
+    uri('/admin/event_credential', {
       'event_id': eventID.toString(),
     }),
     headers: {
@@ -84,8 +83,8 @@ Future<Credential?> event_credential(UserSession session, int eventID) async {
 }
 
 Future<bool> event_create(UserSession session, Event event, int? courseID) async {
-  final response = await http.post(
-    server.uri('/admin/event_create', {
+  final response = await client.post(
+    uri('/admin/event_create', {
       'course_id': courseID?.toString(),
     }),
     headers: {
@@ -99,9 +98,8 @@ Future<bool> event_create(UserSession session, Event event, int? courseID) async
 }
 
 Future<bool> event_edit(UserSession session, Event event) async {
-  print(event.occurrence!.name); //xxx
-  final response = await http.post(
-    server.uri('/admin/event_edit', {
+  final response = await client.post(
+    uri('/admin/event_edit', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -117,8 +115,8 @@ Future<bool> event_edit(UserSession session, Event event) async {
 Future<bool> event_password_edit(UserSession session, Event event, String password) async {
   if (password.isEmpty) return true;
 
-  final response = await http.post(
-    server.uri('/admin/event_password_edit', {
+  final response = await client.post(
+    uri('/admin/event_password_edit', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -132,8 +130,8 @@ Future<bool> event_password_edit(UserSession session, Event event, String passwo
 }
 
 Future<int?> event_course_info(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/admin/event_course_info', {
+  final response = await client.get(
+    uri('/admin/event_course_info', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -148,8 +146,8 @@ Future<int?> event_course_info(UserSession session, Event event) async {
 }
 
 Future<bool> event_course_edit(UserSession session, Event event, Course? course) async {
-  final response = await http.head(
-    server.uri('/admin/event_course_edit', {
+  final response = await client.head(
+    uri('/admin/event_course_edit', {
       'event_id': event.id.toString(),
       'course_id': course?.id.toString(),
     }),
@@ -162,8 +160,8 @@ Future<bool> event_course_edit(UserSession session, Event event, Course? course)
 }
 
 Future<bool> event_delete(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/admin/event_delete', {
+  final response = await client.head(
+    uri('/admin/event_delete', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -175,8 +173,8 @@ Future<bool> event_delete(UserSession session, Event event) async {
 }
 
 Future<bool> event_accept(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/admin/event_accept', {
+  final response = await client.head(
+    uri('/admin/event_accept', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -188,8 +186,8 @@ Future<bool> event_accept(UserSession session, Event event) async {
 }
 
 Future<bool> event_reject(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/admin/event_reject', {
+  final response = await client.head(
+    uri('/admin/event_reject', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -201,8 +199,8 @@ Future<bool> event_reject(UserSession session, Event event) async {
 }
 
 Future<bool> event_suspend(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/admin/event_suspend', {
+  final response = await client.head(
+    uri('/admin/event_suspend', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -214,8 +212,8 @@ Future<bool> event_suspend(UserSession session, Event event) async {
 }
 
 Future<bool> event_withdraw(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/admin/event_withdraw', {
+  final response = await client.head(
+    uri('/admin/event_withdraw', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -228,8 +226,8 @@ Future<bool> event_withdraw(UserSession session, Event event) async {
 
 Future<List<(User, int, int, int)>> event_statistic_packlist(
     UserSession session, Event event, List<ItemCategory?> categories) async {
-  final response = await http.get(
-    server.uri('/admin/event_statistic_packlist', {
+  final response = await client.get(
+    uri('/admin/event_statistic_packlist', {
       'event_id': event.id.toString(),
       'category1': categories[0]?.id.toString(),
       'category2': categories[1]?.id.toString(),
@@ -257,8 +255,8 @@ Future<List<(User, int, int, int)>> event_statistic_packlist(
 }
 
 Future<List<User>> event_statistic_division(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/admin/event_statistic_division', {
+  final response = await client.get(
+    uri('/admin/event_statistic_division', {
       'event_id': event.id.toString(),
     }),
     headers: {

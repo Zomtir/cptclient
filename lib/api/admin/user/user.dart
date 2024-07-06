@@ -5,13 +5,12 @@ import 'dart:convert';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
 
 Future<List<User>> user_list(UserSession session) async {
-  final response = await http.get(
-    server.uri('/admin/user_list'),
+  final response = await client.get(
+    uri('/admin/user_list'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -25,8 +24,8 @@ Future<List<User>> user_list(UserSession session) async {
 }
 
 Future<User?> user_detailed(UserSession session, User user) async {
-  final response = await http.get(
-    server.uri('/admin/user_detailed', {
+  final response = await client.get(
+    uri('/admin/user_detailed', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -41,8 +40,8 @@ Future<User?> user_detailed(UserSession session, User user) async {
 }
 
 Future<bool> user_create(UserSession session, User user) async {
-  final response = await http.post(
-    server.uri('/admin/user_create'),
+  final response = await client.post(
+    uri('/admin/user_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -54,8 +53,8 @@ Future<bool> user_create(UserSession session, User user) async {
 }
 
 Future<bool> user_edit(UserSession session, User user) async {
-  final response = await http.post(
-    server.uri('/admin/user_edit', {
+  final response = await client.post(
+    uri('/admin/user_edit', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -75,8 +74,8 @@ Future<bool?> user_edit_password(UserSession session, User user, String password
   String salt = crypto.generateSaltHex();
   Credential credential = Credential(user.key.toString(), crypto.hashPassword(password, salt), salt);
 
-  final response = await http.post(
-    server.uri('/admin/user_edit_password', {
+  final response = await client.post(
+    uri('/admin/user_edit_password', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -90,8 +89,8 @@ Future<bool?> user_edit_password(UserSession session, User user, String password
 }
 
 Future<bool> user_delete(UserSession session, User user) async {
-  final response = await http.head(
-    server.uri('/admin/user_delete', {
+  final response = await client.head(
+    uri('/admin/user_delete', {
       'user_id': user.id.toString(),
     }),
     headers: {

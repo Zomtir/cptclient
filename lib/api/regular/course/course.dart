@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Course>?> course_availability(UserSession session) async {
-  final response = await http.get(
-    server.uri('/regular/course_availability'),
+  final response = await client.get(
+    uri('/regular/course_availability'),
     headers: {
       'Token': session.token,
     },
@@ -22,8 +21,8 @@ Future<List<Course>?> course_availability(UserSession session) async {
 }
 
 Future<bool> course_mod(UserSession session, int courseID, int userID) async {
-  final response = await http.head(
-    server.uri('course_mod', {
+  final response = await client.head(
+    uri('course_mod', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
     }),
@@ -36,8 +35,8 @@ Future<bool> course_mod(UserSession session, int courseID, int userID) async {
 }
 
 Future<bool> course_unmod(UserSession session, int courseID, int userID) async {
-  final response = await http.head(
-    server.uri('course_unmod', {
+  final response = await client.head(
+    uri('course_unmod', {
       'course': courseID.toString(),
       'user' : userID.toString(),
     }),

@@ -5,12 +5,11 @@ import 'dart:convert';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<User>> event_participant_registration_list(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/admin/event_participant_registration_list', {
+  final response = await client.get(
+    uri('/admin/event_participant_registration_list', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -25,8 +24,8 @@ Future<List<User>> event_participant_registration_list(UserSession session, Even
 }
 
 Future<List<(User, bool)>> event_participant_filter_list(UserSession session, int eventID) async {
-  final response = await http.get(
-    server.uri('/admin/event_participant_filter_list', {
+  final response = await client.get(
+    uri('/admin/event_participant_filter_list', {
       'event_id': eventID.toString(),
     }),
     headers: {
@@ -49,8 +48,8 @@ Future<List<(User, bool)>> event_participant_filter_list(UserSession session, in
 }
 
 Future<bool> event_participant_filter_edit(UserSession session, int eventID, int userID, bool access) async {
-  final response = await http.head(
-    server.uri('/admin/event_participant_filter_edit', {
+  final response = await client.head(
+    uri('/admin/event_participant_filter_edit', {
       'event_id': eventID.toString(),
       'user_id': userID.toString(),
       'access': access.toString(),
@@ -64,8 +63,8 @@ Future<bool> event_participant_filter_edit(UserSession session, int eventID, int
 }
 
 Future<bool> event_participant_filter_remove(UserSession session, int eventID, int userID) async {
-  final response = await http.head(
-    server.uri('/admin/event_participant_filter_remove', {
+  final response = await client.head(
+    uri('/admin/event_participant_filter_remove', {
       'event_id': eventID.toString(),
       'user_id': userID.toString(),
     }),
@@ -78,8 +77,8 @@ Future<bool> event_participant_filter_remove(UserSession session, int eventID, i
 }
 
 Future<List<User>> event_participant_presence_pool(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/admin/event_participant_presence_pool', {
+  final response = await client.get(
+    uri('/admin/event_participant_presence_pool', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -94,8 +93,8 @@ Future<List<User>> event_participant_presence_pool(UserSession session, Event ev
 }
 
 Future<List<User>> event_participant_presence_list(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/admin/event_participant_presence_list', {
+  final response = await client.get(
+    uri('/admin/event_participant_presence_list', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -110,8 +109,8 @@ Future<List<User>> event_participant_presence_list(UserSession session, Event ev
 }
 
 Future<bool> event_participant_presence_add(UserSession session, Event event, User user) async {
-  final response = await http.head(
-    server.uri('/admin/event_participant_presence_add', {
+  final response = await client.head(
+    uri('/admin/event_participant_presence_add', {
       'event_id': event.id.toString(),
       'user_id': user.id.toString(),
     }),
@@ -124,8 +123,8 @@ Future<bool> event_participant_presence_add(UserSession session, Event event, Us
 }
 
 Future<bool> event_participant_presence_remove(UserSession session, Event event, User user) async {
-  final response = await http.head(
-    server.uri('/admin/event_participant_presence_remove', {
+  final response = await client.head(
+    uri('/admin/event_participant_presence_remove', {
       'event_id': event.id.toString(),
       'user_id': user.id.toString(),
     }),

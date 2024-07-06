@@ -7,10 +7,9 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/format.dart';
 import 'package:cptclient/static/message.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
 
 export 'leader.dart';
 export 'moderator.dart';
@@ -18,8 +17,8 @@ export 'participant.dart';
 export 'supporter.dart';
 
 Future<List<Course>> course_list(UserSession session, User? user, bool? active, bool? public) async {
-  final response = await http.get(
-    server.uri('/admin/course_list', {
+  final response = await client.get(
+    uri('/admin/course_list', {
       if (user != null) 'mod_id': user.id.toString(),
       if (active != null) 'active': active.toString(),
       if (public != null) 'public': public.toString(),
@@ -36,8 +35,8 @@ Future<List<Course>> course_list(UserSession session, User? user, bool? active, 
 }
 
 Future<bool> course_create(UserSession session, Course course) async {
-  final response = await http.post(
-    server.uri('/admin/course_create'),
+  final response = await client.post(
+    uri('/admin/course_create'),
     headers: {
       'Token': session.token,
       'Content-Type': 'application/json; charset=utf-8',
@@ -51,8 +50,8 @@ Future<bool> course_create(UserSession session, Course course) async {
 }
 
 Future<bool> course_edit(UserSession session, Course course) async {
-  final response = await http.post(
-    server.uri('/admin/course_edit', {
+  final response = await client.post(
+    uri('/admin/course_edit', {
       'course_id': course.id.toString(),
     }),
     headers: {
@@ -66,8 +65,8 @@ Future<bool> course_edit(UserSession session, Course course) async {
 }
 
 Future<bool> course_delete(UserSession session, Course course) async {
-  final response = await http.head(
-    server.uri('/admin/course_delete', {'course_id': course.id.toString()}),
+  final response = await client.head(
+    uri('/admin/course_delete', {'course_id': course.id.toString()}),
     headers: {
       'Token': session.token,
     },
@@ -77,8 +76,8 @@ Future<bool> course_delete(UserSession session, Course course) async {
 }
 
 Future<List<Requirement>> course_requirement_list(UserSession session, Course course) async {
-  final response = await http.get(
-    server.uri('/admin/course_requirement_list', {
+  final response = await client.get(
+    uri('/admin/course_requirement_list', {
       'course_id': course.id.toString(),
     }),
     headers: {
@@ -93,8 +92,8 @@ Future<List<Requirement>> course_requirement_list(UserSession session, Course co
 }
 
 Future<bool> course_requirement_add(UserSession session, Requirement requirement) async {
-  final response = await http.head(
-    server.uri('/admin/course_requirement_add', {
+  final response = await client.head(
+    uri('/admin/course_requirement_add', {
       'course_id': requirement.course!.id.toString(),
       'skill_id': requirement.skill!.id.toString(),
       'rank': requirement.rank.toString(),
@@ -110,8 +109,8 @@ Future<bool> course_requirement_add(UserSession session, Requirement requirement
 }
 
 Future<bool> course_requirement_remove(UserSession session, Requirement requirement) async {
-  final response = await http.head(
-    server.uri('/admin/course_requirement_remove', {
+  final response = await client.head(
+    uri('/admin/course_requirement_remove', {
       'requirement_id': requirement.id.toString(),
     }),
     headers: {
@@ -125,8 +124,8 @@ Future<bool> course_requirement_remove(UserSession session, Requirement requirem
 }
 
 Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_class', {
+  final response = await client.get(
+    uri('/admin/course_statistic_class', {
       'course_id': courseID.toString(),
     }),
     headers: {
@@ -151,8 +150,8 @@ Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session,
 }
 
 Future<List<(int, String, String, int)>> course_statistic_participant(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_participant', {'course_id': courseID.toString()}),
+  final response = await client.get(
+    uri('/admin/course_statistic_participant', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -176,8 +175,8 @@ Future<List<(int, String, String, int)>> course_statistic_participant(UserSessio
 
 Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
     UserSession session, int courseID, int participantID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_participant1', {
+  final response = await client.get(
+    uri('/admin/course_statistic_participant1', {
       'course_id': courseID.toString(),
       'participant_id': participantID.toString(),
     }),
@@ -203,8 +202,8 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
 }
 
 Future<List<(int, String, String, int)>> course_statistic_supporter(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_supporter', {'course_id': courseID.toString()}),
+  final response = await client.get(
+    uri('/admin/course_statistic_supporter', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -228,8 +227,8 @@ Future<List<(int, String, String, int)>> course_statistic_supporter(UserSession 
 
 Future<List<(int, String, DateTime, DateTime)>> course_statistic_supporter1(
     UserSession session, int courseID, int supporterID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_supporter1', {
+  final response = await client.get(
+    uri('/admin/course_statistic_supporter1', {
       'course_id': courseID.toString(),
       'supporter_id': supporterID.toString(),
     }),
@@ -255,8 +254,8 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_supporter1(
 }
 
 Future<List<(int, String, String, int)>> course_statistic_leader(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_leader', {'course_id': courseID.toString()}),
+  final response = await client.get(
+    uri('/admin/course_statistic_leader', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -280,8 +279,8 @@ Future<List<(int, String, String, int)>> course_statistic_leader(UserSession ses
 
 Future<List<(int, String, DateTime, DateTime)>> course_statistic_leader1(
     UserSession session, int courseID, int leaderID) async {
-  final response = await http.get(
-    server.uri('/admin/course_statistic_leader1', {
+  final response = await client.get(
+    uri('/admin/course_statistic_leader1', {
       'course_id': courseID.toString(),
       'leader_id': leaderID.toString(),
     }),

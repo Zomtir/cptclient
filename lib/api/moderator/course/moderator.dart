@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<User>> course_moderator_list(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/mod/course_moderator_list', {'course_id': courseID.toString()}),
+  final response = await client.get(
+    uri('/mod/course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -23,8 +22,8 @@ Future<List<User>> course_moderator_list(UserSession session, int courseID) asyn
 }
 
 Future<bool> course_moderator_add(UserSession session, int courseID, int userID) async {
-  final response = await http.head(
-    server.uri('/mod/course_moderator_add', {
+  final response = await client.head(
+    uri('/mod/course_moderator_add', {
       'course_id': courseID.toString(),
       'user_id' : userID.toString(),
     }),
@@ -37,8 +36,8 @@ Future<bool> course_moderator_add(UserSession session, int courseID, int userID)
 }
 
 Future<bool> course_moderator_remove(UserSession session, int courseID, int userID) async {
-  final response = await http.head(
-    server.uri('/mod/course_moderator_remove', {
+  final response = await client.head(
+    uri('/mod/course_moderator_remove', {
       'course': courseID.toString(),
       'user' : userID.toString(),
     }),

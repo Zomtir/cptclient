@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<(Team, bool)>> course_leader_sieve_list(UserSession session, int courseID) async {
-  final response = await http.get(
-    server.uri('/mod/course_leader_sieve_list', {'course_id': courseID.toString()}),
+  final response = await client.get(
+    uri('/mod/course_leader_sieve_list', {'course_id': courseID.toString()}),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -27,8 +26,8 @@ Future<List<(Team, bool)>> course_leader_sieve_list(UserSession session, int cou
 }
 
 Future<bool> course_leader_sieve_edit(UserSession session, int courseID, int teamID, bool access) async {
-  final response = await http.head(
-    server.uri('/mod/course_leader_sieve_edit', {
+  final response = await client.head(
+    uri('/mod/course_leader_sieve_edit', {
       'course_id': courseID.toString(),
       'team_id': teamID.toString(),
       'access': access.toString(),
@@ -42,8 +41,8 @@ Future<bool> course_leader_sieve_edit(UserSession session, int courseID, int tea
 }
 
 Future<bool> course_leader_sieve_remove(UserSession session, int courseID, int teamID) async {
-  final response = await http.head(
-    server.uri('/mod/course_leader_sieve_remove', {
+  final response = await client.head(
+    uri('/mod/course_leader_sieve_remove', {
       'course_id': courseID.toString(),
       'team_id': teamID.toString(),
     }),

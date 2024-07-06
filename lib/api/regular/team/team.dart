@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Team>> team_list(UserSession session) async {
-  final response = await http.get(
-    server.uri('/admin/team_list'),
+  final response = await client.get(
+    uri('/admin/team_list'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',

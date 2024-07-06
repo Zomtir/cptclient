@@ -1,13 +1,14 @@
 library navigation;
 
-import 'package:cptclient/api/regular/user/user.dart' as server;
+import 'package:cptclient/api/login.dart' as api;
+import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/main.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/environment.dart';
 import 'package:cptclient/static/router.dart' as router;
-import 'package:cptclient/static/server.dart' as server;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +51,7 @@ applyLocale(BuildContext context) {
 
 applyServer() {
   prefs.reload();
-  server.configServer(
+  configServer(
     prefs.getString('ServerScheme')!,
     prefs.getString('ServerHost')!,
     prefs.getInt('ServerPort')!,
@@ -58,7 +59,7 @@ applyServer() {
 }
 
 Future<void> loginUser(BuildContext context, String token) async {
-  if (await server.loadStatus()) {
+  if (await api.loadStatus()) {
     if (await confirmUser(token)) {
       router.gotoRoute(context, '/user');
     } else {
@@ -73,7 +74,7 @@ Future<void> logoutUser(BuildContext context) async {
   await prefs.setString('UserToken', '');
   uSession = null;
 
-  if (await server.loadStatus()) {
+  if (await api.loadStatus()) {
     router.gotoRoute(context, '/login');
   } else {
     router.gotoRoute(context, '/connect');
@@ -81,7 +82,7 @@ Future<void> logoutUser(BuildContext context) async {
 }
 
 Future<void> loginEvent(BuildContext context, String token) async {
-  if (await server.loadStatus()) {
+  if (await api.loadStatus()) {
     if (await confirmEvent(token)) {
       router.gotoRoute(context, '/event');
     } else {
@@ -96,7 +97,7 @@ Future<void> logoutEvent(BuildContext context) async {
   await prefs.setString('EventToken', '');
   uSession = null;
 
-  if (await server.loadStatus()) {
+  if (await api.loadStatus()) {
     router.gotoRoute(context, '/login');
   } else {
     router.gotoRoute(context, '/connect');
@@ -108,11 +109,11 @@ Future<bool> confirmUser(String token) async {
   await prefs.setString('UserToken', token);
   uSession = UserSession(token);
 
-  User? user = await server.user_info(uSession!);
+  User? user = await api_regular.user_info(uSession!);
   if (user == null) return false;
   uSession!.user = user;
 
-  Right? right = await server.right_info(uSession!);
+  Right? right = await api_regular.right_info(uSession!);
   if (right == null) return false;
   uSession!.right = right;
 

@@ -6,12 +6,11 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Possession>> possession_list(UserSession session, bool? owned, Club? club) async {
-  final response = await http.get(
-    server.uri('/regular/possession_list', {
+  final response = await client.get(
+    uri('/regular/possession_list', {
       'owned': owned?.toString(),
       'club_id': club?.id.toString(),
     }),
@@ -27,8 +26,8 @@ Future<List<Possession>> possession_list(UserSession session, bool? owned, Club?
 }
 
 Future<List<ItemCategory>> itemcat_list(UserSession session) async {
-  final response = await http.get(
-    server.uri('/regular/itemcat_list'),
+  final response = await client.get(
+    uri('/regular/itemcat_list'),
     headers: {
       'Token': session.token,
     },

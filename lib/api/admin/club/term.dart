@@ -5,12 +5,11 @@ import 'dart:convert';
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Term>> term_list(UserSession session, Club? club) async {
-  final response = await http.get(
-    server.uri('/admin/term_list', {
+  final response = await client.get(
+    uri('/admin/term_list', {
       'club_id': club?.id.toString(),
     }),
     headers: {
@@ -26,8 +25,8 @@ Future<List<Term>> term_list(UserSession session, Club? club) async {
 }
 
 Future<bool> term_create(UserSession session, Term term) async {
-  final response = await http.post(
-    server.uri('/admin/term_create'),
+  final response = await client.post(
+    uri('/admin/term_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -39,8 +38,8 @@ Future<bool> term_create(UserSession session, Term term) async {
 }
 
 Future<bool> term_edit(UserSession session, Term term) async {
-  final response = await http.post(
-    server.uri('/admin/term_edit', {
+  final response = await client.post(
+    uri('/admin/term_edit', {
       'term_id': term.id.toString(),
     }),
     headers: {
@@ -54,8 +53,8 @@ Future<bool> term_edit(UserSession session, Term term) async {
 }
 
 Future<bool> term_delete(UserSession session, Term term) async {
-  final response = await http.head(
-    server.uri('/admin/term_delete', {
+  final response = await client.head(
+    uri('/admin/term_delete', {
       'term_id': term.id.toString(),
     }),
     headers: {

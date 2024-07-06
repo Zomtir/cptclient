@@ -5,12 +5,11 @@ import 'dart:convert';
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Competence>> competence_list(UserSession session) async {
-  final response = await http.get(
-    server.uri('/regular/competence_list'),
+  final response = await client.get(
+    uri('/regular/competence_list'),
     headers: {
       'Token': session.token,
     },
@@ -23,8 +22,8 @@ Future<List<Competence>> competence_list(UserSession session) async {
 }
 
 Future<List<(Skill, int)>> competence_summary(UserSession session) async {
-  final response = await http.get(
-    server.uri('/regular/competence_summary'),
+  final response = await client.get(
+    uri('/regular/competence_summary'),
     headers: {
       'Token': session.token,
     },

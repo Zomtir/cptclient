@@ -1,33 +1,15 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/credential.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
-
-String serverScheme = 'https';
-String serverHost = 'localhost';
-int serverPort = 443;
-
-void configServer(String scheme, String host, int port) {
-  serverScheme = scheme;
-  serverHost = host;
-  serverPort = port;
-}
-
-Uri uri([String? path, Map<String, dynamic>? queryParameters]) {
-  return Uri(
-      scheme: serverScheme,
-      host: serverHost,
-      port: serverPort,
-      path: path,
-      queryParameters: queryParameters);
-}
 
 Future<bool> loadStatus() async {
   final http.Response response;
 
   try {
-    response = await http.head(uri('status')).timeout(const Duration(seconds: 3));
+    response = await client.head(uri('status')).timeout(const Duration(seconds: 3));
   } on Exception {
     return false;
   }
@@ -36,7 +18,7 @@ Future<bool> loadStatus() async {
 }
 
 Future<String?> getUserSalt(String key) async {
-  final response = await http.get(
+  final response = await client.get(
     uri('/user_salt', {
       'user_key': key,
     }),
@@ -58,8 +40,8 @@ Future<String?> loginUser(String key, String pwd) async {
 
   Credential credential = Credential(key, crypto.hashPassword(pwd, salt), salt);
 
-  final response = await http.post(
-    uri('user_login'),
+  final response = await client.post(
+    uri('/user_login'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Accept': 'text/plain; charset=utf-8',
@@ -80,8 +62,8 @@ Future<String?> loginEvent(String key, String pwd) async {
 
   Credential credential = Credential(key, pwd, "");
 
-  final response = await http.post(
-    uri('event_login'),
+  final response = await client.post(
+    uri('/event_login'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Accept': 'text/plain; charset=utf-8',
@@ -100,8 +82,8 @@ Future<String?> loginEvent(String key, String pwd) async {
 Future<String?> loginCourse(String key) async {
   if (key.isEmpty) return null;
 
-  final response = await http.get(
-    uri('course_login', {'course_key': key}),
+  final response = await client.get(
+    uri('/course_login', {'course_key': key}),
     headers: {
       'Accept': 'text/plain; charset=utf-8',
     },
@@ -118,8 +100,8 @@ Future<String?> loginCourse(String key) async {
 Future<String?> loginLocation(String key) async {
   if (key.isEmpty) return null;
 
-  final response = await http.get(
-    uri('location_login', {'location_key': key}),
+  final response = await client.get(
+    uri('/location_login', {'location_key': key}),
     headers: {
       'Accept': 'text/plain; charset=utf-8',
     },

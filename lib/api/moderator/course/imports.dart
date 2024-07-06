@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/message.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
 
 export 'leader.dart';
 export 'moderator.dart';
@@ -14,8 +13,8 @@ export 'participant.dart';
 export 'supporter.dart';
 
 Future<List<Course>> course_responsibility(UserSession session, bool? active, bool? public) async {
-  final response = await http.get(
-    server.uri('/mod/course_responsibility', {
+  final response = await client.get(
+    uri('/mod/course_responsibility', {
       if (active != null) 'active': active.toString(),
       if (public != null) 'public': public.toString(),
     }),
@@ -31,8 +30,8 @@ Future<List<Course>> course_responsibility(UserSession session, bool? active, bo
 }
 
 Future<bool> course_create(UserSession session, Course course) async {
-  final response = await http.post(
-    server.uri('/mod/course_create'),
+  final response = await client.post(
+    uri('/mod/course_create'),
     headers: {
       'Token': session.token,
       'Content-Type': 'application/json; charset=utf-8',
@@ -46,8 +45,8 @@ Future<bool> course_create(UserSession session, Course course) async {
 }
 
 Future<bool> course_edit(UserSession session, Course course) async {
-  final response = await http.post(
-    server.uri('/mod/course_edit', {
+  final response = await client.post(
+    uri('/mod/course_edit', {
       'course_id': course.id.toString(),
     }),
     headers: {
@@ -61,8 +60,8 @@ Future<bool> course_edit(UserSession session, Course course) async {
 }
 
 Future<bool> course_delete(UserSession session, Course course) async {
-  final response = await http.head(
-    server.uri('/mod/course_delete', {'course_id': course.id.toString()}),
+  final response = await client.head(
+    uri('/mod/course_delete', {'course_id': course.id.toString()}),
     headers: {
       'Token': session.token,
     },

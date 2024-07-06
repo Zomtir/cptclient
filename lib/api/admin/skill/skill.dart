@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Skill>> skill_list(UserSession session) async {
-  final response = await http.get(
-    server.uri('/admin/skill_list'),
+  final response = await client.get(
+    uri('/admin/skill_list'),
     headers: {
       'Token': session.token,
     },
@@ -22,8 +21,8 @@ Future<List<Skill>> skill_list(UserSession session) async {
 }
 
 Future<bool> skill_create(UserSession session, Skill skill) async {
-  final response = await http.post(
-    server.uri('/admin/skill_create'),
+  final response = await client.post(
+    uri('/admin/skill_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -35,8 +34,8 @@ Future<bool> skill_create(UserSession session, Skill skill) async {
 }
 
 Future<bool> skill_edit(UserSession session, Skill skill) async {
-  final response = await http.post(
-    server.uri('/admin/skill_edit', {
+  final response = await client.post(
+    uri('/admin/skill_edit', {
       'skill_id': skill.id.toString(),
     }),
     headers: {
@@ -50,8 +49,8 @@ Future<bool> skill_edit(UserSession session, Skill skill) async {
 }
 
 Future<bool> skill_delete(UserSession session, Skill skill) async {
-  final response = await http.head(
-    server.uri('/admin/skill_delete', {
+  final response = await client.head(
+    uri('/admin/skill_delete', {
       'skill_id': skill.id.toString(),
     }),
     headers: {

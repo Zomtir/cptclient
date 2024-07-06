@@ -5,12 +5,11 @@ import 'dart:convert';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<Event?> event_info(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_info'),
+  final response = await client.get(
+    uri('/service/event_info'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -23,8 +22,8 @@ Future<Event?> event_info(EventSession session) async {
 }
 
 Future<bool?> event_note_edit(EventSession session, String note) async {
-  final response = await http.post(
-    server.uri('/service/event_note_edit'),
+  final response = await client.post(
+    uri('/service/event_note_edit'),
     headers: {
       'Token': session.token,
       'Content-Type': 'text/plain; charset=utf-8',
@@ -36,8 +35,8 @@ Future<bool?> event_note_edit(EventSession session, String note) async {
 }
 
 Future<List<User>> event_participant_presence_pool(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_participant_presence_pool'),
+  final response = await client.get(
+    uri('/service/event_participant_presence_pool'),
     headers: {
       'Token': session.token,
     },
@@ -50,8 +49,8 @@ Future<List<User>> event_participant_presence_pool(EventSession session) async {
 }
 
 Future<List<User>> event_participant_presence_list(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_participant_presence_list'),
+  final response = await client.get(
+    uri('/service/event_participant_presence_list'),
     headers: {
       'Token': session.token,
     },
@@ -64,8 +63,8 @@ Future<List<User>> event_participant_presence_list(EventSession session) async {
 }
 
 Future<bool> event_participant_presence_add(EventSession session, User user) async {
-  final response = await http.head(
-    server.uri('/service/event_participant_presence_add', {
+  final response = await client.head(
+    uri('/service/event_participant_presence_add', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -77,8 +76,8 @@ Future<bool> event_participant_presence_add(EventSession session, User user) asy
 }
 
 Future<bool> event_participant_presence_remove(EventSession session, User user) async {
-  final response = await http.head(
-    server.uri('/service/event_participant_presence_remove', {
+  final response = await client.head(
+    uri('/service/event_participant_presence_remove', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -90,8 +89,8 @@ Future<bool> event_participant_presence_remove(EventSession session, User user) 
 }
 
 Future<List<User>> event_supporter_presence_pool(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_supporter_presence_pool'),
+  final response = await client.get(
+    uri('/service/event_supporter_presence_pool'),
     headers: {
       'Token': session.token,
     },
@@ -104,8 +103,8 @@ Future<List<User>> event_supporter_presence_pool(EventSession session) async {
 }
 
 Future<List<User>> event_supporter_presence_list(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_supporter_presence_list'),
+  final response = await client.get(
+    uri('/service/event_supporter_presence_list'),
     headers: {
       'Token': session.token,
     },
@@ -118,8 +117,8 @@ Future<List<User>> event_supporter_presence_list(EventSession session) async {
 }
 
 Future<bool> event_supporter_presence_add(EventSession session, User user) async {
-  final response = await http.head(
-    server.uri('/service/event_supporter_presence_add', {
+  final response = await client.head(
+    uri('/service/event_supporter_presence_add', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -131,8 +130,8 @@ Future<bool> event_supporter_presence_add(EventSession session, User user) async
 }
 
 Future<bool> event_supporter_presence_remove(EventSession session, User user) async {
-  final response = await http.head(
-    server.uri('/service/event_supporter_presence_remove', {
+  final response = await client.head(
+    uri('/service/event_supporter_presence_remove', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -144,8 +143,8 @@ Future<bool> event_supporter_presence_remove(EventSession session, User user) as
 }
 
 Future<List<User>> event_leader_presence_pool(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_leader_presence_pool'),
+  final response = await client.get(
+    uri('/service/event_leader_presence_pool'),
     headers: {
       'Token': session.token,
     },
@@ -158,8 +157,8 @@ Future<List<User>> event_leader_presence_pool(EventSession session) async {
 }
 
 Future<List<User>> event_leader_presence_list(EventSession session) async {
-  final response = await http.get(
-    server.uri('/service/event_leader_presence_list'),
+  final response = await client.get(
+    uri('/service/event_leader_presence_list'),
     headers: {
       'Token': session.token,
     },
@@ -172,8 +171,8 @@ Future<List<User>> event_leader_presence_list(EventSession session) async {
 }
 
 Future<bool> event_leader_presence_add(EventSession session, User user) async {
-  final response = await http.head(
-    server.uri('/service/event_leader_presence_add', {
+  final response = await client.head(
+    uri('/service/event_leader_presence_add', {
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -185,8 +184,8 @@ Future<bool> event_leader_presence_add(EventSession session, User user) async {
 }
 
 Future<bool> event_leader_presence_remove(EventSession session, User user) async {
-  final response = await http.head(
-    server.uri('/service/event_leader_presence_remove', {
+  final response = await client.head(
+    uri('/service/event_leader_presence_remove', {
       'user_id': user.id.toString(),
     }),
     headers: {

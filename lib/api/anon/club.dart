@@ -3,11 +3,10 @@
 import 'dart:convert';
 
 import 'package:cptclient/json/club.dart';
-import 'package:cptclient/static/server.dart';
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Club>> club_list() async {
-  final response = await http.get(
+  final response = await client.get(
     uri('/anon/club_list'),
     headers: {
       'Accept': 'application/json; charset=utf-8',

@@ -8,12 +8,11 @@ import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Stock>> stock_list(UserSession session, Club club) async {
-  final response = await http.get(
-    server.uri('/admin/stock_list', {
+  final response = await client.get(
+    uri('/admin/stock_list', {
       'club_id': club.id.toString(),
     }),
     headers: {
@@ -28,8 +27,8 @@ Future<List<Stock>> stock_list(UserSession session, Club club) async {
 }
 
 Future<bool> stock_edit(UserSession session, Stock stock) async {
-  final response = await http.post(
-    server.uri('/admin/stock_edit', {
+  final response = await client.post(
+    uri('/admin/stock_edit', {
       'club_id': stock.club.id.toString(),
       'item_id': stock.item.id.toString(),
     }),
@@ -44,8 +43,8 @@ Future<bool> stock_edit(UserSession session, Stock stock) async {
 }
 
 Future<List<Possession>> possession_list(UserSession session, User? user, Item? item, bool? owned, Club? club) async {
-  final response = await http.get(
-    server.uri('/admin/possession_list', {
+  final response = await client.get(
+    uri('/admin/possession_list', {
       'user_id': user?.id.toString(),
       'item_id': item?.id.toString(),
       'owned': owned?.toString(),
@@ -63,8 +62,8 @@ Future<List<Possession>> possession_list(UserSession session, User? user, Item? 
 }
 
 Future<bool> possession_create(UserSession session, User user, Item item) async {
-  final response = await http.head(
-    server.uri('/admin/possession_create', {
+  final response = await client.head(
+    uri('/admin/possession_create', {
       'user_id': user.id.toString(),
       'item_id': item.id.toString(),
     }),
@@ -77,8 +76,8 @@ Future<bool> possession_create(UserSession session, User user, Item item) async 
 }
 
 Future<bool> possession_delete(UserSession session, Possession possession) async {
-  final response = await http.head(
-    server.uri('/admin/possession_delete', {
+  final response = await client.head(
+    uri('/admin/possession_delete', {
       'possession_id': possession.id.toString(),
     }),
     headers: {

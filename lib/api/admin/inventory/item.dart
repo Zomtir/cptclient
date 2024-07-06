@@ -7,12 +7,11 @@ import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
+import 'package:cptclient/static/client.dart';
 
 Future<List<Item>> item_list(UserSession session) async {
-  final response = await http.get(
-    server.uri('/admin/item_list'),
+  final response = await client.get(
+    uri('/admin/item_list'),
     headers: {
       'Token': session.token,
     },
@@ -25,8 +24,8 @@ Future<List<Item>> item_list(UserSession session) async {
 }
 
 Future<bool> item_create(UserSession session, Item item) async {
-  final response = await http.post(
-    server.uri('/admin/item_create'),
+  final response = await client.post(
+    uri('/admin/item_create'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -38,8 +37,8 @@ Future<bool> item_create(UserSession session, Item item) async {
 }
 
 Future<bool> item_edit(UserSession session, Item item) async {
-  final response = await http.post(
-    server.uri('/admin/item_edit', {
+  final response = await client.post(
+    uri('/admin/item_edit', {
       'item_id': item.id.toString(),
     }),
     headers: {
@@ -53,8 +52,8 @@ Future<bool> item_edit(UserSession session, Item item) async {
 }
 
 Future<bool> item_delete(UserSession session, Item item) async {
-  final response = await http.head(
-    server.uri('/admin/item_delete', {
+  final response = await client.head(
+    uri('/admin/item_delete', {
       'item_id': item.id.toString(),
     }),
     headers: {
@@ -66,8 +65,8 @@ Future<bool> item_delete(UserSession session, Item item) async {
 }
 
 Future<bool> item_loan(UserSession session, Stock stock, User user) async {
-  final response = await http.head(
-    server.uri('/admin/item_loan', {
+  final response = await client.head(
+    uri('/admin/item_loan', {
       'club_id': stock.club.id.toString(),
       'item_id': stock.item.id.toString(),
       'user_id': user.id.toString(),
@@ -81,8 +80,8 @@ Future<bool> item_loan(UserSession session, Stock stock, User user) async {
 }
 
 Future<bool> item_return(UserSession session, Possession possession) async {
-  final response = await http.head(
-    server.uri('/admin/item_return', {
+  final response = await client.head(
+    uri('/admin/item_return', {
       'possession_id': possession.id.toString(),
     }),
     headers: {
@@ -94,8 +93,8 @@ Future<bool> item_return(UserSession session, Possession possession) async {
 }
 
 Future<bool> item_handout(UserSession session, Possession possession) async {
-  final response = await http.head(
-    server.uri('/admin/item_handout', {
+  final response = await client.head(
+    uri('/admin/item_handout', {
       'possession_id': possession.id.toString(),
     }),
     headers: {
@@ -107,8 +106,8 @@ Future<bool> item_handout(UserSession session, Possession possession) async {
 }
 
 Future<bool> item_handback(UserSession session, Possession possession) async {
-  final response = await http.head(
-    server.uri('/admin/item_handback', {
+  final response = await client.head(
+    uri('/admin/item_handback', {
       'possession_id': possession.id.toString(),
     }),
     headers: {

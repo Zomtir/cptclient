@@ -8,9 +8,8 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/static/client.dart';
 import 'package:cptclient/static/format.dart';
-import 'package:cptclient/static/server.dart' as server;
-import 'package:http/http.dart' as http;
 
 export 'leader.dart';
 export 'owner.dart';
@@ -19,8 +18,8 @@ export 'supporter.dart';
 
 Future<List<Event>> event_list(UserSession session, DateTime begin, DateTime end, Location? location,
     Occurrence? occurence, Acceptance? acceptance) async {
-  final response = await http.get(
-    server.uri('/owner/event_list', {
+  final response = await client.get(
+    uri('/owner/event_list', {
       'begin': formatWebDateTime(begin),
       'end': formatWebDateTime(end),
       'occurence': occurence?.name,
@@ -39,8 +38,8 @@ Future<List<Event>> event_list(UserSession session, DateTime begin, DateTime end
 }
 
 Future<Event?> event_info(UserSession session, int eventID) async {
-  final response = await http.get(
-    server.uri('/owner/event_info', {
+  final response = await client.get(
+    uri('/owner/event_info', {
       'event_id': eventID.toString(),
     }),
     headers: {
@@ -55,8 +54,8 @@ Future<Event?> event_info(UserSession session, int eventID) async {
 }
 
 Future<bool> event_edit(UserSession session, Event event) async {
-  final response = await http.post(
-    server.uri('/owner/event_edit', {
+  final response = await client.post(
+    uri('/owner/event_edit', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -72,8 +71,8 @@ Future<bool> event_edit(UserSession session, Event event) async {
 Future<bool> event_password_edit(UserSession session, Event event, String password) async {
   if (password.isEmpty) return true;
 
-  final response = await http.post(
-    server.uri('/owner/event_password_edit', {
+  final response = await client.post(
+    uri('/owner/event_password_edit', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -87,8 +86,8 @@ Future<bool> event_password_edit(UserSession session, Event event, String passwo
 }
 
 Future<int?> event_course_info(UserSession session, Event event) async {
-  final response = await http.get(
-    server.uri('/owner/event_course_info', {
+  final response = await client.get(
+    uri('/owner/event_course_info', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -103,8 +102,8 @@ Future<int?> event_course_info(UserSession session, Event event) async {
 }
 
 Future<bool> event_course_edit(UserSession session, Event event, Course? course) async {
-  final response = await http.head(
-    server.uri('/owner/event_course_edit', {
+  final response = await client.head(
+    uri('/owner/event_course_edit', {
       'event_id': event.id.toString(),
       'course_id': course?.id.toString(),
     }),
@@ -117,8 +116,8 @@ Future<bool> event_course_edit(UserSession session, Event event, Course? course)
 }
 
 Future<bool> event_delete(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/owner/event_delete', {
+  final response = await client.head(
+    uri('/owner/event_delete', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -130,8 +129,8 @@ Future<bool> event_delete(UserSession session, Event event) async {
 }
 
 Future<bool> event_submit(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/owner/event_submit', {
+  final response = await client.head(
+    uri('/owner/event_submit', {
       'event_id': event.id.toString(),
     }),
     headers: {
@@ -143,8 +142,8 @@ Future<bool> event_submit(UserSession session, Event event) async {
 }
 
 Future<bool> event_withdraw(UserSession session, Event event) async {
-  final response = await http.head(
-    server.uri('/owner/event_withdraw', {
+  final response = await client.head(
+    uri('/owner/event_withdraw', {
       'event_id': event.id.toString(),
     }),
     headers: {
