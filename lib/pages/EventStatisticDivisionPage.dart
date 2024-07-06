@@ -87,7 +87,7 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
                 cells: <DataCell>[
                   DataCell(Text("${_stats[index].toFieldString()}")),
                   DataCell(Text("${_stats[index].federationnumber}")),
-                  DataCell(Text("${_stats[index].gender}")),
+                  DataCell(Text(_stats[index].gender == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].gender!.localizedName(context)}")),
                   DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].birthday!.fmtDate(context)}")),
                   DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${widget.event.begin.year-_stats[index].birthday!.year}")),
                 ],

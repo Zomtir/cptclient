@@ -269,7 +269,7 @@ class UserEditPageState extends State<UserEditPage> {
             info: AppLocalizations.of(context)!.userGender,
             child: AppDropdown<Gender>(
               controller: _ctrlUserGender,
-              builder: (Gender gender) => Text(gender.name),
+              builder: (Gender gender) => Text(gender.localizedName(context)),
               onChanged: (Gender? gender) => setState(() => _ctrlUserGender.value = gender),
             ),
           ),
