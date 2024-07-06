@@ -88,7 +88,7 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
                   DataColumn(
                     label: InkWell(
                       child: Text(AppLocalizations.of(context)!.userFederationPermissionSoloDate),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.birthday, b.birthday))),
+                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.federationpermissionsolo, b.federationpermissionsolo))),
                     ),
                   ),
                   DataColumn(
