@@ -183,7 +183,7 @@
   "userAge": "Alter",
   "userAgeEOY": "Age (Jahresende)",
   "userFederationNumber": "Verbandsnummer",
-  "userFederationPermissionSoloDate": "Mannschaftsstartrecht (Datum)",
+  "userFederationPermissionSoloDate": "Einzelstartrecht (Datum)",
   "userFederationPermissionTeamDate": "Mannschaftsstartrecht (Datum)",
   "userFederationResidencyDate": "Wohnhaft im Verbandsbereich seit (Datum)",
   "userDataDeclaration" : "Version Datenverarbeitung",
