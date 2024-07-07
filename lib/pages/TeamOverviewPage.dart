@@ -29,6 +29,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
 
   Future<void> _update() async {
     List<Team> teams = await api_admin.team_list(widget.session);
+    teams.sort();
     searchPanelKey.currentState?.setItems(teams);
   }
 
