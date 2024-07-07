@@ -51,6 +51,9 @@ dependencies:
   # Save dialog
   file_selector: ^1.0.3
 
+  # Clickable URL
+  url_launcher: ^6.3.0
+
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0

@@ -2,6 +2,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class CreditPage extends StatelessWidget {
   final List<(String, String)> authors = [
@@ -34,7 +35,10 @@ class CreditPage extends StatelessWidget {
           itemBuilder: (author) {
             return ListTile(
               title: Text(author.$1, textAlign: TextAlign.center),
-              subtitle: Text(author.$2, textAlign: TextAlign.center),
+              subtitle: InkWell(
+                child: Text(author.$2, textAlign: TextAlign.center),
+                onTap: () => launchUrlString(author.$2),
+              ),
             );
           },
         ),
@@ -61,9 +65,12 @@ class CreditPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          subtitle: Text(
-            "https://unlicense.org/",
-            textAlign: TextAlign.center,
+          subtitle: InkWell(
+            child: Text(
+              "https://unlicense.org/",
+              textAlign: TextAlign.center,
+            ),
+            onTap: () => launchUrlString("https://unlicense.org/"),
           ),
         ),
       ]),
