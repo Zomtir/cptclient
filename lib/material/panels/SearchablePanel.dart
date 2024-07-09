@@ -35,6 +35,7 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
 
   void setItems(List<T> items) {
     _all = items;
+    _all.sort();
     update();
   }
 
@@ -44,7 +45,10 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
       return;
     }
 
-    setState(() => _visible = _all.where((T item) => item.filter(_ctrlFilter.text)).toList());
+    List<T> visible = _all.where((T item) => item.filter(_ctrlFilter.text)).toList();
+    visible.sort();
+
+    setState(() => _visible = visible);
   }
 
   @override
