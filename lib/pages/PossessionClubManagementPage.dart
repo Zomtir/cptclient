@@ -109,9 +109,14 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
                               icon: Icon(Icons.undo),
                               onPressed: () => _handleReturn(_possessions[index]),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.card_giftcard),
-                              onPressed: () => _handleHandout(_possessions[index]),
+                            PopupMenuButton<VoidCallback>(
+                              onSelected: (fn) => fn(),
+                              itemBuilder: (context) => [
+                                PopupMenuItem<VoidCallback>(
+                                  value: () => _handleHandout(_possessions[index]),
+                                  child: ListTile(title: Text("Handout"), leading: Icon(Icons.card_giftcard)),
+                                ),
+                              ],
                             ),
                           ],
                         ),
