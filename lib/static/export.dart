@@ -2,22 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cptclient/static/html.dart' if (dart.library.html) 'dart:html' as html;
-import 'package:file_selector/file_selector.dart' as file_selector;
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 
-exportQR(String filename, Uint8List image) async {
+exportQR(String fileName, Uint8List image) async {
   if (kIsWeb) {
-    html.AnchorElement()
-      ..href = '${Uri.dataFromBytes(image as List<int>, mimeType: 'image/png')}'
-      ..download = filename
-      ..style.display = 'none'
-      ..click();
+    await _createOutputDownload(fileName, Uri.dataFromBytes(image as List<int>, mimeType: 'image/png'));
   } else {
-    String? outputPath = (await file_selector.getSaveLocation(suggestedName: filename))?.path;
-    if (outputPath != null) {
-      final outputFile = File(outputPath);
-      await outputFile.writeAsBytes(image as List<int>);
-    }
+    final outputFile = await _createOutputFile("$fileName.png");
+    await outputFile?.writeAsBytes(image as List<int>);
   }
 }
 
@@ -25,16 +18,26 @@ exportCSV(String fileName, List<String> table) async {
   String content = table.join('\n');
 
   if (kIsWeb) {
-    html.AnchorElement()
-      ..href = '${Uri.dataFromString(content, mimeType: 'text/csv', encoding: utf8)}'
-      ..download = fileName
-      ..style.display = 'none'
-      ..click();
+    await _createOutputDownload(fileName, Uri.dataFromString(content, mimeType: 'text/csv', encoding: utf8));
   } else {
-    String? outputPath = (await file_selector.getSaveLocation(suggestedName: fileName))?.path;
-    if (outputPath != null) {
-      final outputFile = File(outputPath);
-      await outputFile.writeAsString(content, encoding: const Utf8Codec());
-    }
+    final outputFile = await _createOutputFile("$fileName.csv");
+    await outputFile?.writeAsString(content, encoding: const Utf8Codec());
   }
+}
+
+Future<void> _createOutputDownload(String fileName, Uri fileData) async {
+  html.AnchorElement()
+    ..href = '$fileData'
+    ..download = fileName
+    ..style.display = 'none'
+    ..click();
+}
+
+Future<File?> _createOutputFile(String fileName) async {
+  String? filePath = (await getDirectoryPath(
+  ));
+
+  if (filePath == null) return null;
+
+  return File("$filePath/$fileName");
 }
