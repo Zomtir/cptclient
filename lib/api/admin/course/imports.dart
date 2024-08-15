@@ -2,14 +2,14 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/format.dart';
-import 'package:cptclient/static/message.dart';
+import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/message.dart';
 
 export 'leader.dart';
 export 'moderator.dart';

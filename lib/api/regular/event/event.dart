@@ -2,15 +2,15 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/format.dart';
-import 'package:cptclient/static/message.dart';
+import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/message.dart';
 
 Future<List<Event>> event_list(UserSession session,
     {DateTime? begin,

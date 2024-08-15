@@ -2,11 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/client.dart';
 
 Future<List<Competence>> competence_list(
     UserSession session, User? user, Skill? skill) async {

@@ -8,8 +8,8 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
-import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/utils.dart';
+import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

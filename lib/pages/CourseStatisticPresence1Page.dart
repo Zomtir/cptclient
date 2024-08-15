@@ -3,9 +3,9 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
-import 'package:cptclient/static/datetime.dart';
-import 'package:cptclient/static/export.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/export.dart';
+import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -58,11 +58,14 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
   }
 
   _handleCSV() {
-    String filename = "CPT_course_${widget.course.id}_user_${widget.userID}_presence";
-    List<String> table = stats
-        .map((row) => "${row.$2}, ${formatNaiveDateTime(row.$3)}, ${formatNaiveDateTime(row.$4)}, ${row.$4.difference(row.$3).inMinutes}")
-        .toList();
-    exportCSV(filename, table);
+    String fileName = "CPT_course_${widget.course.id}_user_${widget.userID}_presence";
+    List<List<String?>> table = stats.map((row) => [
+      row.$2.toString(),
+      formatNaiveDateTime(row.$3),
+      formatNaiveDateTime(row.$4),
+      row.$4.difference(row.$3).inMinutes.toString(),
+    ]).toList();
+    exportCSV(fileName, table);
   }
 
   @override

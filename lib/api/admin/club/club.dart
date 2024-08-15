@@ -2,12 +2,12 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/format.dart';
 
 Future<List<Club>> club_list(UserSession session) async {
   final response = await client.get(

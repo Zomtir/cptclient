@@ -1,9 +1,9 @@
 import 'package:cptclient/api/login.dart' as server;
+import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/EnrollPage.dart';
 import 'package:cptclient/pages/LoginLandingPage.dart';
 import 'package:cptclient/pages/MemberLandingPage.dart';
-import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

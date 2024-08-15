@@ -1,3 +1,5 @@
+import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/CreditPage.dart';
@@ -6,8 +8,6 @@ import 'package:cptclient/pages/LoginEventPage.dart';
 import 'package:cptclient/pages/LoginLocationPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
-import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/router.dart' as router;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';

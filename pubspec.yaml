@@ -54,6 +54,9 @@ dependencies:
   # Clickable URL
   url_launcher: ^6.3.0
 
+  # CSV export
+  csv: ^6.0.0
+
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0

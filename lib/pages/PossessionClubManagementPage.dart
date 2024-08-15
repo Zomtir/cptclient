@@ -8,7 +8,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

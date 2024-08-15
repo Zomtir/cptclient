@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/skill.dart';
-import 'package:cptclient/static/client.dart';
 
 Future<List<Skill>> skill_list() async {
   final response = await client.get(

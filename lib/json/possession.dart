@@ -1,7 +1,7 @@
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/format.dart';
 
 class Possession implements Comparable {
   int id;

@@ -6,8 +6,8 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/crypto.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/crypto.dart';
+import 'package:cptclient/utils/format.dart';
 
 class Event implements Comparable {
   final int id;

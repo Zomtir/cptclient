@@ -2,11 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/static/client.dart';
 
 Future<List<Possession>> possession_list(UserSession session, bool? owned, Club? club) async {
   final response = await client.get(

@@ -1,6 +1,6 @@
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppLocationTile.dart';
-import 'package:cptclient/static/crypto.dart';
+import 'package:cptclient/utils/crypto.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 

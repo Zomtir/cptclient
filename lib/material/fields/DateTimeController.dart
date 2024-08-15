@@ -1,4 +1,4 @@
-import 'package:cptclient/static/datetime.dart';
+import 'package:cptclient/utils/datetime.dart';
 import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
 

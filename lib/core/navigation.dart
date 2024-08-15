@@ -2,13 +2,13 @@ library navigation;
 
 import 'package:cptclient/api/login.dart' as api;
 import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/core/client.dart';
+import 'package:cptclient/core/environment.dart';
+import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/main.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/environment.dart';
-import 'package:cptclient/static/router.dart' as router;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';

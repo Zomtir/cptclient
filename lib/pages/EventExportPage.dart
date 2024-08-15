@@ -2,7 +2,7 @@ import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/static/export.dart';
+import 'package:cptclient/utils/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -73,7 +73,7 @@ class EventExportPageState extends State<EventExportPage> {
                 String fileName = "CPT_QR_event_${widget.event.id}";
                 Uint8List? image;
                 await _ctrlSceenshot.capture().then((capturedImage) => image = capturedImage);
-                exportQR(fileName, image!);
+                exportPNG(fileName, image!);
               }, icon: Icon(Icons.screenshot)),
             ],
           ),

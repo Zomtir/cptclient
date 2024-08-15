@@ -1,3 +1,4 @@
+import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
@@ -24,7 +25,6 @@ import 'package:cptclient/pages/SkillOverviewPage.dart';
 import 'package:cptclient/pages/StockManagementPage.dart';
 import 'package:cptclient/pages/TeamOverviewPage.dart';
 import 'package:cptclient/pages/UserOverviewPage.dart';
-import 'package:cptclient/static/navigation.dart' as navi;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

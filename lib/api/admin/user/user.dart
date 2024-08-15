@@ -2,11 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/crypto.dart' as crypto;
+import 'package:cptclient/utils/crypto.dart' as crypto;
 
 Future<List<User>> user_list(UserSession session) async {
   final response = await client.get(

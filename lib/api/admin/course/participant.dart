@@ -2,9 +2,9 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
-import 'package:cptclient/static/client.dart';
 
 Future<List<(Team,bool)>> course_participant_sieve_list(UserSession session, int courseID) async {
   final response = await client.get(

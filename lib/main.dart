@@ -1,5 +1,5 @@
-import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/router.dart' as router;
+import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/core/router.dart' as router;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

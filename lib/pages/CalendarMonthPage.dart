@@ -5,7 +5,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
-import 'package:cptclient/static/datetime.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';

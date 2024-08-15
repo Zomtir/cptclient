@@ -2,14 +2,14 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/format.dart';
 
 export 'leader.dart';
 export 'owner.dart';

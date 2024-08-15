@@ -2,9 +2,9 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/static/client.dart';
 
 Future<List<Location>> location_list(UserSession session) async {
   final response = await client.get(

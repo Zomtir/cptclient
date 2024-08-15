@@ -1,6 +1,6 @@
 library format;
 
-import 'package:cptclient/static/datetime.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 

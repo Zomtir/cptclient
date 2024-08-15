@@ -2,10 +2,10 @@
 
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/static/client.dart';
 
 Future<Event?> event_info(EventSession session) async {
   final response = await client.get(

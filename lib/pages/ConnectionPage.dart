@@ -1,12 +1,12 @@
 import 'package:cptclient/api/login.dart' as api;
+import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/CreditPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
-import 'package:cptclient/static/navigation.dart' as navi;
-import 'package:cptclient/static/router.dart' as router;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';

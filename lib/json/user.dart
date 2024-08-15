@@ -5,7 +5,7 @@ import 'dart:core';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/format.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 

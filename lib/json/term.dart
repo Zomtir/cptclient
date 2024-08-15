@@ -4,7 +4,7 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppTermTile.dart';
-import 'package:cptclient/static/format.dart';
+import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 
 class Term extends FieldInterface implements Comparable {

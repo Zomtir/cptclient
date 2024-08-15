@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
-import 'package:cptclient/static/client.dart';
-import 'package:cptclient/static/crypto.dart' as crypto;
+import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 
 Future<bool> loadStatus() async {
