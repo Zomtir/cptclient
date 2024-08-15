@@ -22,8 +22,8 @@ Future<List<Event>> event_list(UserSession session,
     int? courseID}) async {
   final response = await client.get(
     uri('/regular/event_list', {
-      'begin': formatWebDateTime(begin),
-      'end': formatWebDateTime(end),
+      'begin': formatWebDateTime(begin?.toUtc()),
+      'end': formatWebDateTime(end?.toUtc()),
       'location_id': location?.id.toString(),
       'occurrence': occurrence?.name,
       'acceptance': acceptance?.name,

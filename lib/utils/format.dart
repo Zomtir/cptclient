@@ -17,36 +17,40 @@ String compressDate(BuildContext context, DateTime begin, DateTime end) {
   return "$strBegin - $strEnd";
 }
 
-String? formatNaiveDate(DateTime? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt.toUtc());
+String? formatIsoTime(DateTime? dt) {
+  return dt == null ? null : DateFormat("HH:mm:ss").format(dt);
 }
 
-DateTime? parseNaiveDate(String? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true).toLocal();
+String? formatIsoDate(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt);
 }
 
-String? formatNaiveDateTime(DateTime? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dt.toUtc());
+DateTime? parseIsoDate(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true);
 }
 
-DateTime? parseNaiveDateTime(String? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dt, true).toLocal();
+String? formatIsoDateTime(DateTime? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dt);
+}
+
+DateTime? parseIsoDateTime(String? dt) {
+  return dt == null ? null : DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dt, true);
 }
 
 String? formatWebDate(DateTime? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt.toUtc());
+  return dt == null ? null : DateFormat("yyyy-MM-dd").format(dt);
 }
 
 DateTime? parseWebDate(String? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true).toLocal();
+  return dt == null ? null : DateFormat("yyyy-MM-dd").parse(dt, true);
 }
 
 String? formatWebDateTime(DateTime? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").format(dt.toUtc());
+  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").format(dt);
 }
 
 DateTime? parseWebDateTime(String? dt) {
-  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").parse(dt, true).toLocal();
+  return dt == null ? null : DateFormat("yyyy-MM-dd-HH-mm").parse(dt, true);
 }
 
 String? formatNullInt(int? i) {

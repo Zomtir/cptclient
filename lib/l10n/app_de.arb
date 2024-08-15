@@ -49,6 +49,7 @@
   "dateWeek": "Woche",
   "dateWeekday": "Wochentag",
   "dateDay": "Tag",
+  "dateTime": "Uhrzeit",
   "dateHour": "Stunde",
   "dateMinute": "Minute",
   "dateSecond": "Sekunde",

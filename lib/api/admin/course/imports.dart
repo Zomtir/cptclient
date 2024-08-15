@@ -194,8 +194,8 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
       return (
         model[0],
         model[1],
-        parseNaiveDateTime(model[2])!.toLocal(),
-        parseNaiveDateTime(model[3])!.toLocal(),
+        parseIsoDateTime(model[2])!.toLocal(),
+        parseIsoDateTime(model[3])!.toLocal(),
       );
     }),
   );
@@ -246,8 +246,8 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_supporter1(
       return (
       model[0],
       model[1],
-      parseNaiveDateTime(model[2])!.toLocal(),
-      parseNaiveDateTime(model[3])!.toLocal(),
+      parseIsoDateTime(model[2])!.toLocal(),
+      parseIsoDateTime(model[3])!.toLocal(),
       );
     }),
   );
@@ -298,8 +298,8 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_leader1(
       return (
         model[0],
         model[1],
-        parseNaiveDateTime(model[2])!.toLocal(),
-        parseNaiveDateTime(model[3])!.toLocal(),
+        parseIsoDateTime(model[2])!.toLocal(),
+        parseIsoDateTime(model[3])!.toLocal(),
       );
     }),
   );

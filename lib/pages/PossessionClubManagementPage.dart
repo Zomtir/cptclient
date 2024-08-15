@@ -101,7 +101,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
                     cells: <DataCell>[
                       DataCell(Text("${_possessions[index].user.toFieldString()}")),
                       DataCell(Text("${_possessions[index].item.toFieldString()}")),
-                      DataCell(Text("${formatNaiveDate(_possessions[index].transferDate)}")),
+                      DataCell(Text("${formatIsoDate(_possessions[index].transferDate)}")),
                       DataCell(
                         Row(
                           children: [

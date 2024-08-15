@@ -59,12 +59,23 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
 
   _handleCSV() {
     String fileName = "CPT_course_${widget.course.id}_user_${widget.userID}_presence";
-    List<List<String?>> table = stats.map((row) => [
+    List<String> headers = [
+      AppLocalizations.of(context)!.eventTitle,
+      AppLocalizations.of(context)!.eventBegin,
+      AppLocalizations.of(context)!.dateTime,
+      AppLocalizations.of(context)!.eventEnd,
+      AppLocalizations.of(context)!.dateTime,
+      AppLocalizations.of(context)!.dateMinute,
+    ];
+    List<List<String?>> table = [headers];
+    table.addAll(stats.map((row) => [
       row.$2.toString(),
-      formatNaiveDateTime(row.$3),
-      formatNaiveDateTime(row.$4),
+      formatIsoDate(row.$3),
+      formatIsoTime(row.$3),
+      formatIsoDate(row.$4),
+      formatIsoTime(row.$4),
       row.$4.difference(row.$3).inMinutes.toString(),
-    ]).toList();
+    ]));
     exportCSV(fileName, table);
   }
 

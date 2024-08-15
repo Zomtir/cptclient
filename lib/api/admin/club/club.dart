@@ -68,7 +68,7 @@ Future<List<(User, int)>> club_statistic_members(UserSession session, Club club,
   final response = await client.get(
     uri('/admin/club_statistic_members', {
       'club_id': club.id.toString(),
-      'point_in_time': formatWebDate(point_in_time),
+      'point_in_time': formatWebDate(point_in_time.toUtc()),
     }),
     headers: {
       'Token': session.token,
@@ -85,7 +85,7 @@ Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime 
   final response = await client.get(
     uri('/admin/club_statistic_team', {
       'club_id': club.id.toString(),
-      'point_in_time': formatWebDate(point_in_time),
+      'point_in_time': formatWebDate(point_in_time.toUtc()),
       'team_id': team.id.toString(),
     }),
     headers: {
@@ -103,7 +103,7 @@ Future<List<User>> club_statistic_organisation(UserSession session, Club club, D
   final response = await client.get(
     uri('/admin/club_statistic_organisation', {
       'club_id': club.id.toString(),
-      'point_in_time': formatWebDate(point_in_time),
+      'point_in_time': formatWebDate(point_in_time.toUtc()),
     }),
     headers: {
       'Token': session.token,

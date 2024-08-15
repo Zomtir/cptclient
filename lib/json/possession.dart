@@ -25,7 +25,7 @@ class Possession implements Comparable {
         user = User.fromJson(json['user']),
         owned = json['owned'],
         club = json['club'] == null ? null : Club.fromJson(json['club']),
-        transferDate = parseNaiveDate(json['transfer_date']);
+        transferDate = parseIsoDate(json['transfer_date'])?.toLocal();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -33,7 +33,7 @@ class Possession implements Comparable {
         'user': user.toJson(),
         'owned': owned,
         'club': club?.toJson(),
-        'transfer_date': formatNaiveDate(transferDate),
+        'transfer_date': formatIsoDate(transferDate?.toUtc()),
       };
 
   @override

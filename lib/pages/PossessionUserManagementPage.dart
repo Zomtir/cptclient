@@ -121,7 +121,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                           ? "${_possessions[index].club!.toFieldString()}"
                           : AppLocalizations.of(context)!.undefined)),
                       DataCell(Text(_possessions[index].transferDate != null
-                          ? "${formatNaiveDate(_possessions[index].transferDate)}"
+                          ? "${formatIsoDate(_possessions[index].transferDate)}"
                           : AppLocalizations.of(context)!.undefined)),
                       DataCell(
                         Tooltip(
