@@ -187,8 +187,6 @@
   "userFederationPermissionSoloDate": "Solo Participation Permission Date",
   "userFederationPermissionTeamDate": "Team Participation Permission Date",
   "userFederationResidencyDate": "Residency in Federation Country Since",
-  "userDataDeclaration" : "Data Processing Declaration Version",
-  "userDataDisclaimer" : "Data Processing Disclaimer",
   "userNote": "Notes",
   "genderMale": "Male",
   "genderFemale": "Female",

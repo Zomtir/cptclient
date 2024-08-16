@@ -45,8 +45,6 @@ class UserEditPageState extends State<UserEditPage> {
   final DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
   final DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();
   final DateTimeController    _ctrlUserFederationResidency = DateTimeController();
-  final TextEditingController _ctrlUserDataDeclaration = TextEditingController();
-  final TextEditingController _ctrlUserDataDisclaimer = TextEditingController();
   final TextEditingController _ctrlUserNote = TextEditingController();
 
   UserEditPageState();
@@ -76,8 +74,6 @@ class UserEditPageState extends State<UserEditPage> {
     _ctrlUserFederationPermissionSolo.setDateTime(widget.user.federationpermissionsolo);
     _ctrlUserFederationPermissionTeam.setDateTime(widget.user.federationpermissionteam);
     _ctrlUserFederationResidency.setDateTime(widget.user.federationresidency);
-    _ctrlUserDataDeclaration.text = widget.user.datadeclaration?.toString() ?? '';
-    _ctrlUserDataDisclaimer.text = widget.user.datadisclaimer ?? '';
     _ctrlUserNote.text = widget.user.note ?? '';
   }
 
@@ -100,8 +96,6 @@ class UserEditPageState extends State<UserEditPage> {
     widget.user.federationpermissionsolo = _ctrlUserFederationPermissionSolo.getDateTime();
     widget.user.federationpermissionteam = _ctrlUserFederationPermissionTeam.getDateTime();
     widget.user.federationresidency = _ctrlUserFederationResidency.getDateTime();
-    widget.user.datadeclaration = parseNullInt(_ctrlUserDataDeclaration.text);
-    widget.user.datadisclaimer = _ctrlUserDataDisclaimer.text.isNotEmpty ? _ctrlUserDataDeclaration.text : null;
     widget.user.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
   }
 
@@ -302,20 +296,6 @@ class UserEditPageState extends State<UserEditPage> {
               nullable: true,
               showTime: false,
               controller: _ctrlUserFederationResidency,
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userDataDeclaration,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUserDataDeclaration,
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userDataDisclaimer,
-            child: TextField(
-              maxLines: 8,
-              controller: _ctrlUserDataDisclaimer,
             ),
           ),
           AppInfoRow(

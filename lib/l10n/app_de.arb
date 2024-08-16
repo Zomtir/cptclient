@@ -187,8 +187,6 @@
   "userFederationPermissionSoloDate": "Einzelstartrecht (Datum)",
   "userFederationPermissionTeamDate": "Mannschaftsstartrecht (Datum)",
   "userFederationResidencyDate": "Wohnhaft im Verbandsbereich seit (Datum)",
-  "userDataDeclaration" : "Version Datenverarbeitung",
-  "userDataDisclaimer" : "Ausschluss Datenverarbeitung",
   "userNote": "Notiz",
   "genderMale": "Männlich",
   "genderFemale": "Weiblich",
