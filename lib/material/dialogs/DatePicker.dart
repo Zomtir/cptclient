@@ -213,22 +213,19 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
 
-    final Widget actions = Container(
-      alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: <Widget>[
-          AppButton(
-            onPressed: _handleCancel,
-            text: AppLocalizations.of(context)!.actionCancel,
-          ),
-          Spacer(),
-          AppButton(
-            onPressed: _handleConfirm,
-            text: AppLocalizations.of(context)!.actionConfirm,
-          ),
-        ],
-      ),
+    final Widget actions = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        AppButton(
+          onPressed: _handleCancel,
+          text: AppLocalizations.of(context)!.actionCancel,
+        ),
+        Spacer(),
+        AppButton(
+          onPressed: _handleConfirm,
+          text: AppLocalizations.of(context)!.actionConfirm,
+        ),
+      ],
     );
 
     return Column(

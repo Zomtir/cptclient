@@ -116,22 +116,19 @@ class _StockDialogState extends State<StockDialog> {
             ),
           ],
         ),
-        Container(
-          alignment: AlignmentDirectional.center,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            children: <Widget>[
-              AppButton(
-                onPressed: _handleCancel,
-                text: AppLocalizations.of(context)!.actionCancel,
-              ),
-              Spacer(),
-              AppButton(
-                onPressed: _handleConfirm,
-                text: AppLocalizations.of(context)!.actionConfirm,
-              ),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            AppButton(
+              onPressed: _handleCancel,
+              text: AppLocalizations.of(context)!.actionCancel,
+            ),
+            Spacer(),
+            AppButton(
+              onPressed: _handleConfirm,
+              text: AppLocalizations.of(context)!.actionConfirm,
+            ),
+          ],
         ),
       ],
     );
