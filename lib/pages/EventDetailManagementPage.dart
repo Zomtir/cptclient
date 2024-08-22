@@ -31,6 +31,7 @@ class EventDetailManagementPage extends StatefulWidget {
 }
 
 class EventDetailManagementPageState extends State<EventDetailManagementPage> {
+  final TextEditingController _ctrlNote = TextEditingController();
   Event? event;
 
   EventDetailManagementPageState();
@@ -48,6 +49,7 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
 
     setState(() {
       this.event = event;
+      _ctrlNote.text = event.note ?? "";
     });
   }
 
@@ -85,6 +87,12 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
     if(!await api_admin.event_delete(widget.session, event!)) return;
 
     Navigator.pop(context);
+  }
+
+  Future<void> _handleNote() async {
+    event!.note = _ctrlNote.text;
+    await api_admin.event_edit(widget.session, event!);
+    _update();
   }
 
   Future<void> _handleOwners() async {
@@ -307,6 +315,20 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
                 onPressed: _handleDelete,
               ),
             ],
+          ),
+          ListTile(
+            title: TextField(
+              minLines: 3,
+              maxLines: 10,
+              controller: _ctrlNote,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.eventNote,
+                suffixIcon: IconButton(
+                  onPressed: _handleNote,
+                  icon: Icon(Icons.save),
+                ),
+              ),
+            ),
           ),
           MenuSection(
             children: [
