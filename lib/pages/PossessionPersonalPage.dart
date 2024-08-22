@@ -50,19 +50,15 @@ class PossessionPersonalPageState extends State<PossessionPersonalPage> {
               child: DataTable(
                 columns: [
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionClub)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
                 ],
                 rows: List<DataRow>.generate(_possessions.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
                       DataCell(Text("${_possessions[index].item.toFieldString()}")),
-                      DataCell(Text(_possessions[index].club != null
-                          ? "${_possessions[index].club!.toFieldString()}"
-                          : AppLocalizations.of(context)!.undefined)),
-                      DataCell(Text(_possessions[index].transferDate != null
-                          ? "${formatIsoDate(_possessions[index].transferDate)}"
+                      DataCell(Text(_possessions[index].acquisitionDate != null
+                          ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
                           : AppLocalizations.of(context)!.undefined)),
                       DataCell(
                         Tooltip(

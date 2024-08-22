@@ -93,7 +93,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
                 columns: [
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionUser)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
                 ],
                 rows: List<DataRow>.generate(_possessions.length, (index) {
@@ -101,7 +101,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
                     cells: <DataCell>[
                       DataCell(Text("${_possessions[index].user.toFieldString()}")),
                       DataCell(Text("${_possessions[index].item.toFieldString()}")),
-                      DataCell(Text("${formatIsoDate(_possessions[index].transferDate)}")),
+                      DataCell(Text("${formatIsoDate(_possessions[index].acquisitionDate)}")),
                       DataCell(
                         Row(
                           children: [

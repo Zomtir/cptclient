@@ -4,6 +4,7 @@ import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -60,8 +61,13 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
     _update();
   }
 
-  void _handleHandback(Possession possession) async {
-    await api_admin.item_handback(widget.session, possession);
+  void _handleRestock(Possession possession) async {
+    List<Stock> stocks = await api_admin.stock_list(widget.session, null, possession.item);
+    Stock? stock = await showTilePicker(context: context, items: stocks);
+
+    if (stock == null) return;
+
+    await api_admin.item_restock(widget.session, possession, stock);
     _update();
   }
 
@@ -108,8 +114,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
               child: DataTable(
                 columns: [
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionClub)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionTransfer)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
                 ],
@@ -117,11 +122,8 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                   return DataRow(
                     cells: <DataCell>[
                       DataCell(Text("${_possessions[index].item.toFieldString()}")),
-                      DataCell(Text(_possessions[index].club != null
-                          ? "${_possessions[index].club!.toFieldString()}"
-                          : AppLocalizations.of(context)!.undefined)),
-                      DataCell(Text(_possessions[index].transferDate != null
-                          ? "${formatIsoDate(_possessions[index].transferDate)}"
+                      DataCell(Text(_possessions[index].acquisitionDate != null
+                          ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
                           : AppLocalizations.of(context)!.undefined)),
                       DataCell(
                         Tooltip(
@@ -137,12 +139,12 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                                 icon: Icon(Icons.card_giftcard),
                                 onPressed: () => _handleHandout(_possessions[index]),
                               ),
-                            if (_possessions[index].owned && _possessions[index].club != null)
+                            if (_possessions[index].owned)
                               IconButton(
-                                icon: Icon(Icons.do_not_disturb),
-                                onPressed: () => _handleHandback(_possessions[index]),
+                                icon: Icon(Icons.storefront),
+                                onPressed: () => _handleRestock(_possessions[index]),
                               ),
-                            if (!_possessions[index].owned && _possessions[index].club != null)
+                            if (!_possessions[index].owned)
                               IconButton(
                                 icon: Icon(Icons.redo),
                                 onPressed: () => _handleReturn(_possessions[index]),

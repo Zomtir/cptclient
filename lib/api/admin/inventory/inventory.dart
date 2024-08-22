@@ -10,10 +10,11 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 
-Future<List<Stock>> stock_list(UserSession session, Club club) async {
+Future<List<Stock>> stock_list(UserSession session, Club? club, Item? item) async {
   final response = await client.get(
     uri('/admin/stock_list', {
-      'club_id': club.id.toString(),
+      'club_id': club?.id.toString(),
+      'item_id': item?.id.toString(),
     }),
     headers: {
       'Token': session.token,
@@ -26,17 +27,42 @@ Future<List<Stock>> stock_list(UserSession session, Club club) async {
   return List<Stock>.from(l.map((model) => Stock.fromJson(model)));
 }
 
+Future<bool> stock_create(UserSession session, Stock stock) async {
+  final response = await client.post(
+    uri('/admin/stock_create'),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+    body: json.encode(stock),
+  );
+
+  return (response.statusCode == 200);
+}
+
 Future<bool> stock_edit(UserSession session, Stock stock) async {
   final response = await client.post(
     uri('/admin/stock_edit', {
-      'club_id': stock.club.id.toString(),
-      'item_id': stock.item.id.toString(),
+      'stock_id': stock.id.toString(),
     }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
     },
     body: json.encode(stock),
+  );
+
+  return (response.statusCode == 200);
+}
+
+Future<bool> stock_delete(UserSession session, Stock stock) async {
+  final response = await client.head(
+    uri('/admin/stock_delete', {
+      'stock_id': stock.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
   );
 
   return (response.statusCode == 200);

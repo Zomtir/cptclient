@@ -67,8 +67,7 @@ Future<bool> item_delete(UserSession session, Item item) async {
 Future<bool> item_loan(UserSession session, Stock stock, User user) async {
   final response = await client.head(
     uri('/admin/item_loan', {
-      'club_id': stock.club.id.toString(),
-      'item_id': stock.item.id.toString(),
+      'stock_id': stock.id.toString(),
       'user_id': user.id.toString(),
     }),
     headers: {
@@ -105,10 +104,11 @@ Future<bool> item_handout(UserSession session, Possession possession) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> item_handback(UserSession session, Possession possession) async {
+Future<bool> item_restock(UserSession session, Possession possession, Stock stock) async {
   final response = await client.head(
-    uri('/admin/item_handback', {
+    uri('/admin/item_restock', {
       'possession_id': possession.id.toString(),
+      'stock_id': stock.id.toString(),
     }),
     headers: {
       'Token': session.token,

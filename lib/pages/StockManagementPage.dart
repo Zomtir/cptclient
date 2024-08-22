@@ -7,6 +7,7 @@ import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/dialogs/StockDialog.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
@@ -48,7 +49,7 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   Future<void> _update() async {
-    List<Stock> stocks = await api_admin.stock_list(widget.session, _club!);
+    List<Stock> stocks = await api_admin.stock_list(widget.session, _club, null);
     setState(() {
       _stocks = stocks;
     });
@@ -60,17 +61,33 @@ class StockManagementPageState extends State<StockManagementPage> {
 
     if (item == null) return;
 
-    Stock stock = Stock(club: _club!, item: item, owned: 1, loaned: 0);
-    await api_admin.stock_edit(widget.session, stock);
+    Stock stock = Stock(id: 0, club: _club!, item: item, storage: "", owned: 1, loaned: 0);
+
+    Stock? stockEdited = await showStockDialog(
+      context: context,
+      stock: stock,
+      callCreate: (Stock stock) => api_admin.stock_create(widget.session, stock),
+      callEdit: (Stock stock) => api_admin.stock_edit(widget.session, stock),
+      callDelete: (Stock stock) => api_admin.stock_delete(widget.session, stock),
+      isDraft: true,
+    );
+
+    if (stockEdited == null) return;
+
     _update();
   }
 
-  void _handleChange(Stock stock, int delta) async {
-    int overhead = stock.owned - stock.loaned;
-    if (overhead + delta < 0) return;
-    stock.owned = stock.owned + delta;
+  void _handleEdit(Stock stock) async {
+    Stock? stockEdited = await showStockDialog(
+      context: context,
+      stock: stock,
+      callCreate: (Stock stock) => api_admin.stock_create(widget.session, stock),
+      callEdit: (Stock stock) => api_admin.stock_edit(widget.session, stock),
+      callDelete: (Stock stock) => api_admin.stock_delete(widget.session, stock),
+    );
 
-    await api_admin.stock_edit(widget.session, stock);
+    if (stockEdited == null) return;
+
     _update();
   }
 
@@ -114,29 +131,25 @@ class StockManagementPageState extends State<StockManagementPage> {
           Divider(),
           DataTable(
             columns: [
-              DataColumn(label: Text(AppLocalizations.of(context)!.stockItem)),
+              DataColumn(label: Text("${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}")),
               DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
               DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
             ],
             rows: List<DataRow>.generate(_stocks.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("${_stocks[index].item.name}")),
                   DataCell(
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () => _handleChange(_stocks[index], 1),
-                        ),
-                        Text("${_stocks[index].owned}"),
-                        IconButton(
-                          icon: Icon(Icons.remove),
-                          onPressed: () => _handleChange(_stocks[index], -1),
-                        ),
-                      ],
+                    ListTile(
+                      title: Text(_stocks[index].item.name),
+                      subtitle: Text(_stocks[index].storage),
+                      leading:  IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () => _handleEdit(_stocks[index]),
+                      ),
+                      dense: true,
                     ),
                   ),
+                  DataCell(Text("${_stocks[index].owned}")),
                   DataCell(
                     Row(
                       children: [

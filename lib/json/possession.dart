@@ -1,4 +1,3 @@
-import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/format.dart';
@@ -7,33 +6,30 @@ class Possession implements Comparable {
   int id;
   Item item;
   User user;
+  DateTime? acquisitionDate;
   bool owned;
-  Club? club;
-  DateTime? transferDate;
 
-  Possession(
-      {required this.id,
-      required this.item,
-      required this.user,
-      required this.owned,
-      required this.club,
-      required this.transferDate});
+  Possession({
+    required this.id,
+    required this.item,
+    required this.user,
+    required this.acquisitionDate,
+    required this.owned,
+  });
 
   Possession.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         item = Item.fromJson(json['item']),
         user = User.fromJson(json['user']),
-        owned = json['owned'],
-        club = json['club'] == null ? null : Club.fromJson(json['club']),
-        transferDate = parseIsoDate(json['transfer_date'])?.toLocal();
+        acquisitionDate = parseIsoDate(json['acquisition_date'])?.toLocal(),
+        owned = json['owned'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'item': item.toJson(),
         'user': user.toJson(),
+        'acquisition_date': formatIsoDate(acquisitionDate?.toUtc()),
         'owned': owned,
-        'club': club?.toJson(),
-        'transfer_date': formatIsoDate(transferDate?.toUtc()),
       };
 
   @override
