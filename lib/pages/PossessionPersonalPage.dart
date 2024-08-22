@@ -62,8 +62,8 @@ class PossessionPersonalPageState extends State<PossessionPersonalPage> {
                           : AppLocalizations.of(context)!.undefined)),
                       DataCell(
                         Tooltip(
-                          message: "${_possessions[index].owned}",
-                          child: _possessions[index].owned ? Icon(Icons.catching_pokemon) : Icon(Icons.front_hand),
+                          message: "${_possessions[index].owned}", // TODO locale
+                          child: Icon(Icons.catching_pokemon, color: _possessions[index].owned ? Colors.green : Colors.red),
                         ),
                       ),
                     ],

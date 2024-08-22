@@ -116,7 +116,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
                   DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionPossessed)),
                 ],
                 rows: List<DataRow>.generate(_possessions.length, (index) {
                   return DataRow(
@@ -126,33 +126,49 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                           ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
                           : AppLocalizations.of(context)!.undefined)),
                       DataCell(
-                        Tooltip(
-                          message: "${_possessions[index].owned}",
-                          child: _possessions[index].owned ? Icon(Icons.catching_pokemon) : Icon(Icons.front_hand),
+                        Row(
+                          children: [
+                            Tooltip(
+                              message: "${_possessions[index].owned}", // TODO locale
+                              child: Icon(Icons.catching_pokemon, color: _possessions[index].owned ? Colors.green : Colors.red),
+                            ),
+                            if (!_possessions[index].owned)
+                              Tooltip(
+                                message: "Give ownership of the item to the user", // TODO locale
+                                child: IconButton(
+                                  icon: Icon(Icons.card_giftcard),
+                                  onPressed: () => _handleHandout(_possessions[index]),
+                                ),
+                              ),
+                            if (_possessions[index].owned)
+                              Tooltip(
+                                message: "Assign this item back on a club stock", // TODO locale
+                                child: IconButton(
+                                  icon: Icon(Icons.storefront),
+                                  onPressed: () => _handleRestock(_possessions[index]),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                       DataCell(
                         Row(
                           children: [
                             if (!_possessions[index].owned)
-                              IconButton(
-                                icon: Icon(Icons.card_giftcard),
-                                onPressed: () => _handleHandout(_possessions[index]),
+                              Tooltip(
+                                message: "Physically return the item", // TODO locale
+                                child: IconButton(
+                                  icon: Icon(Icons.redo),
+                                  onPressed: () => _handleReturn(_possessions[index]),
+                                ),
                               ),
                             if (_possessions[index].owned)
-                              IconButton(
-                                icon: Icon(Icons.storefront),
-                                onPressed: () => _handleRestock(_possessions[index]),
-                              ),
-                            if (!_possessions[index].owned)
-                              IconButton(
-                                icon: Icon(Icons.redo),
-                                onPressed: () => _handleReturn(_possessions[index]),
-                              ),
-                            if (_possessions[index].owned)
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () => _handleDelete(_possessions[index]),
+                              Tooltip(
+                                message: "The item is no longer available", // TODO
+                                child: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () => _handleDelete(_possessions[index]),
+                                ),
                               ),
                           ],
                         ),
