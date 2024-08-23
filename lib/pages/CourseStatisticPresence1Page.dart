@@ -107,7 +107,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleEvent(stats[index].$1))),
+                  DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].$1))),
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].$4.fmtDateTime(context)}")),

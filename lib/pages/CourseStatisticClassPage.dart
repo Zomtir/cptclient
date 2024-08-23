@@ -36,13 +36,13 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
     setState(() => this.stats = stats);
   }
 
-  Future<void> _handleClass(int eventID) async {
+  Future<void> _handleEvent(Event event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EventDetailManagementPage(
           session: widget.session,
-          eventID: eventID,
+          eventID: event.id,
         ),
       ),
     );
@@ -61,25 +61,25 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
             course: widget.course,
           ),
           DataTable(
-            columns: const [
-              DataColumn(label: Text('ID')),
-              DataColumn(label: Text('Name')),
-              DataColumn(label: Text('Begin')),
-              DataColumn(label: Text('End')),
-              DataColumn(label: Text('Leaders')),
-              DataColumn(label: Text('Supporters')),
-              DataColumn(label: Text('Participants')),
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.event)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventTitle)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventBegin)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventEnd)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventParticipant)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventLeader)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventSupporter)),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(InkWell(child: Text("${stats[index].$1.id}"), onTap: () => _handleClass(stats[index].$1.id))),
+                  DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].$1))),
                   DataCell(Text("${stats[index].$1.title}")),
                   DataCell(Text("${stats[index].$1.begin.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].$1.end.fmtDateTime(context)}")),
+                  DataCell(Text("${stats[index].$4}")),
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3}")),
-                  DataCell(Text("${stats[index].$4}")),
                 ],
               );
             }),
