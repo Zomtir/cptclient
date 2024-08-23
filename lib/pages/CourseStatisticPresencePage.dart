@@ -1,5 +1,7 @@
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseStatisticPresence1Page.dart';
@@ -10,8 +12,8 @@ class CourseStatisticPresencePage extends StatefulWidget {
   final UserSession session;
   final Course course;
   final String title;
-  final Future<List<(int, String, String, int)>> Function() presence;
-  final Future<List<(int, String, DateTime, DateTime)>> Function(int) presence1;
+  final Future<List<(User, int)>> Function() presence;
+  final Future<List<Event>> Function(int) presence1;
 
   CourseStatisticPresencePage(
       {super.key,
@@ -28,7 +30,7 @@ class CourseStatisticPresencePage extends StatefulWidget {
 class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage> {
   CourseStatisticPresencePageState();
 
-  List<(int, String, String, int)> stats = [];
+  List<(User, int)> stats = [];
 
   @override
   void initState() {
@@ -37,8 +39,8 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
   }
 
   void _update() async {
-    List<(int, String, String, int)> stats = await widget.presence();
-    stats.sort((a, b) => a.$4.compareTo(b.$4));
+    List<(User, int)> stats = await widget.presence();
+    stats.sort((a, b) => a.$2.compareTo(b.$2));
     setState(() => this.stats = stats);
   }
 
@@ -81,13 +83,12 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
                     children: [
                       IconButton(
                         icon: Icon(Icons.list_alt_outlined),
-                        onPressed: () => _handleUser(stats[index].$1),
+                        onPressed: () => _handleUser(stats[index].$1.id),
                       ),
-                      Text("${stats[index].$2} ${stats[index].$3}")
-                      // TODO: _stats[index].buildEntry()
+                      stats[index].$1.buildEntry(),
                     ],
                   )),
-                  DataCell(Text("${stats[index].$4}")),
+                  DataCell(Text("${stats[index].$2}")),
                 ],
               );
             }),

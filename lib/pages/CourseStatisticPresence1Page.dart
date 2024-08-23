@@ -1,4 +1,5 @@
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
@@ -14,7 +15,7 @@ class CourseStatisticPresence1Page extends StatefulWidget {
   final Course course;
   final int userID;
   final String title;
-  final Future<List<(int, String, DateTime, DateTime)>> Function(int) presence1;
+  final Future<List<Event>> Function(int) presence1;
 
   CourseStatisticPresence1Page(
       {super.key,
@@ -31,7 +32,7 @@ class CourseStatisticPresence1Page extends StatefulWidget {
 class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Page> {
   CourseStatisticPresence1PageState();
 
-  List<(int, String, DateTime, DateTime)> stats = [];
+  List<Event> stats = [];
 
   @override
   void initState() {
@@ -40,8 +41,8 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
   }
 
   void _update() async {
-    List<(int, String, DateTime, DateTime)> stats = await widget.presence1(widget.userID);
-    stats.sort((a, b) => a.$3.compareTo(b.$3));
+    List<Event> stats = await widget.presence1(widget.userID);
+    stats.sort((a, b) => a.compareTo(b));
     setState(() => this.stats = stats);
   }
 
@@ -69,12 +70,12 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     ];
     List<List<String?>> table = [headers];
     table.addAll(stats.map((row) => [
-      row.$2.toString(),
-      formatIsoDate(row.$3),
-      formatIsoTime(row.$3),
-      formatIsoDate(row.$4),
-      formatIsoTime(row.$4),
-      row.$4.difference(row.$3).inMinutes.toString(),
+      row.title.toString(),
+      formatIsoDate(row.begin),
+      formatIsoTime(row.begin),
+      formatIsoDate(row.end),
+      formatIsoTime(row.end),
+      row.end.difference(row.begin).inMinutes.toString(),
     ]));
     exportCSV(fileName, table);
   }
@@ -107,10 +108,10 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].$1))),
-                  DataCell(Text("${stats[index].$2}")),
-                  DataCell(Text("${stats[index].$3.fmtDateTime(context)}")),
-                  DataCell(Text("${stats[index].$4.fmtDateTime(context)}")),
+                  DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].id))),
+                  DataCell(Text("${stats[index].title}")),
+                  DataCell(Text("${stats[index].begin.fmtDateTime(context)}")),
+                  DataCell(Text("${stats[index].end.fmtDateTime(context)}")),
                 ],
               );
             }),

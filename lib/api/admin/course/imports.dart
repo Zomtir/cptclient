@@ -8,7 +8,6 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/utils/format.dart';
 import 'package:cptclient/utils/message.dart';
 
 export 'leader.dart';
@@ -149,7 +148,7 @@ Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session,
   );
 }
 
-Future<List<(int, String, String, int)>> course_statistic_participant(UserSession session, int courseID) async {
+Future<List<(User, int)>> course_statistic_participant(UserSession session, int courseID) async {
   final response = await client.get(
     uri('/admin/course_statistic_participant', {'course_id': courseID.toString()}),
     headers: {
@@ -161,19 +160,17 @@ Future<List<(int, String, String, int)>> course_statistic_participant(UserSessio
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, String, int)>.from(
+  return List<(User, int)>.from(
     list.map((model) {
       return (
-        model[0],
+        User.fromJson(model[0]),
         model[1],
-        model[2],
-        model[3],
       );
     }),
   );
 }
 
-Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
+Future<List<Event>> course_statistic_participant1(
     UserSession session, int courseID, int participantID) async {
   final response = await client.get(
     uri('/admin/course_statistic_participant1', {
@@ -189,19 +186,12 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_participant1(
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, DateTime, DateTime)>.from(
-    list.map((model) {
-      return (
-        model[0],
-        model[1],
-        parseIsoDateTime(model[2])!.toLocal(),
-        parseIsoDateTime(model[3])!.toLocal(),
-      );
-    }),
+  return List<Event>.from(
+    list.map((model) => Event.fromJson(model)),
   );
 }
 
-Future<List<(int, String, String, int)>> course_statistic_supporter(UserSession session, int courseID) async {
+Future<List<(User, int)>> course_statistic_supporter(UserSession session, int courseID) async {
   final response = await client.get(
     uri('/admin/course_statistic_supporter', {'course_id': courseID.toString()}),
     headers: {
@@ -213,19 +203,17 @@ Future<List<(int, String, String, int)>> course_statistic_supporter(UserSession 
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, String, int)>.from(
+  return List<(User, int)>.from(
     list.map((model) {
       return (
-      model[0],
+      User.fromJson(model[0]),
       model[1],
-      model[2],
-      model[3],
       );
     }),
   );
 }
 
-Future<List<(int, String, DateTime, DateTime)>> course_statistic_supporter1(
+Future<List<Event>> course_statistic_supporter1(
     UserSession session, int courseID, int supporterID) async {
   final response = await client.get(
     uri('/admin/course_statistic_supporter1', {
@@ -241,19 +229,12 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_supporter1(
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, DateTime, DateTime)>.from(
-    list.map((model) {
-      return (
-      model[0],
-      model[1],
-      parseIsoDateTime(model[2])!.toLocal(),
-      parseIsoDateTime(model[3])!.toLocal(),
-      );
-    }),
+  return List<Event>.from(
+    list.map((model) => Event.fromJson(model)),
   );
 }
 
-Future<List<(int, String, String, int)>> course_statistic_leader(UserSession session, int courseID) async {
+Future<List<(User, int)>> course_statistic_leader(UserSession session, int courseID) async {
   final response = await client.get(
     uri('/admin/course_statistic_leader', {'course_id': courseID.toString()}),
     headers: {
@@ -265,19 +246,17 @@ Future<List<(int, String, String, int)>> course_statistic_leader(UserSession ses
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, String, int)>.from(
+  return List<(User, int)>.from(
     list.map((model) {
       return (
-        model[0],
-        model[1],
-        model[2],
-        model[3],
+      User.fromJson(model[0]),
+      model[1],
       );
     }),
   );
 }
 
-Future<List<(int, String, DateTime, DateTime)>> course_statistic_leader1(
+Future<List<Event>> course_statistic_leader1(
     UserSession session, int courseID, int leaderID) async {
   final response = await client.get(
     uri('/admin/course_statistic_leader1', {
@@ -293,14 +272,7 @@ Future<List<(int, String, DateTime, DateTime)>> course_statistic_leader1(
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(int, String, DateTime, DateTime)>.from(
-    list.map((model) {
-      return (
-        model[0],
-        model[1],
-        parseIsoDateTime(model[2])!.toLocal(),
-        parseIsoDateTime(model[3])!.toLocal(),
-      );
-    }),
+  return List<Event>.from(
+    list.map((model) => Event.fromJson(model)),
   );
 }
