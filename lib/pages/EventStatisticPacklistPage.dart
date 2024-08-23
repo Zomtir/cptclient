@@ -68,21 +68,24 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.user)),
               DataColumn(
-                label: InkWell(
-                  child: Text(_ctrlCategories[0]?.name ?? AppLocalizations.of(context)!.undefined),
-                  onTap: () => _handleCategories(0),
+                label: TextButton.icon(
+                  label: Text(_ctrlCategories[0]?.name ?? AppLocalizations.of(context)!.undefined),
+                  icon: Icon(Icons.edit),
+                  onPressed: () => _handleCategories(0),
                 ),
               ),
               DataColumn(
-                label: InkWell(
-                  child: Text(_ctrlCategories[1]?.name ?? AppLocalizations.of(context)!.undefined),
-                  onTap: () => _handleCategories(1),
+                label: TextButton.icon(
+                  label: Text(_ctrlCategories[1]?.name ?? AppLocalizations.of(context)!.undefined),
+                  icon: Icon(Icons.edit),
+                  onPressed: () => _handleCategories(1),
                 ),
               ),
               DataColumn(
-                label: InkWell(
-                  child: Text(_ctrlCategories[2]?.name ?? AppLocalizations.of(context)!.undefined),
-                  onTap: () => _handleCategories(2),
+                label: TextButton.icon(
+                  label: Text(_ctrlCategories[2]?.name ?? AppLocalizations.of(context)!.undefined),
+                  icon: Icon(Icons.edit),
+                  onPressed: () => _handleCategories(2),
                 ),
               ),
             ],
