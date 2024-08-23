@@ -72,16 +72,21 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.user)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.userFirstname)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.userLastname)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventPresence)),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(InkWell(child: Text("${stats[index].$1}"), onTap: () => _handleUser(stats[index].$1))),
-                  DataCell(Text("${stats[index].$2}")),
-                  DataCell(Text("${stats[index].$3}")),
+                  DataCell(Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.list_alt_outlined),
+                        onPressed: () => _handleUser(stats[index].$1),
+                      ),
+                      Text("${stats[index].$2} ${stats[index].$3}")
+                      // TODO: _stats[index].buildEntry()
+                    ],
+                  )),
                   DataCell(Text("${stats[index].$4}")),
                 ],
               );

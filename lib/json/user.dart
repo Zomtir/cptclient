@@ -103,8 +103,11 @@ class User extends FieldInterface implements Comparable {
   }
 
   @override
-  String toFieldString() {
-    return "[$key] $firstname $lastname";
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id] $key",
+      child: Text("$firstname $lastname"),
+    );
   }
 
   @override

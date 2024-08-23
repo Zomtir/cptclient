@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class FieldInterface implements Comparable {
-  String toFieldString();
-
+  Widget buildEntry();
   Widget buildTile();
 
   get searchable;

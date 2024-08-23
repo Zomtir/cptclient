@@ -50,8 +50,11 @@ class Term extends FieldInterface implements Comparable {
   }
 
   @override
-  String toFieldString() {
-    return "[$id] ${club!.name}: ${user!.firstname} ${user!.lastname}";
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id]",
+      child: Text("${club!.name}: ${user!.firstname} ${user!.lastname}"),
+    );
   }
 
   @override

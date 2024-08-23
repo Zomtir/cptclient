@@ -56,15 +56,18 @@ class Course extends FieldInterface implements Comparable {
   }
 
   @override
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id] $key",
+      child: Text("$title"),
+    );
+  }
+
+  @override
   Widget buildTile() {
     return AppCourseTile(course: this);
   }
 
   @override
   get searchable => [title];
-
-  @override
-  String toFieldString() {
-    return "$title";
-  }
 }

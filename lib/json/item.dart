@@ -39,8 +39,11 @@ class Item extends FieldInterface implements Comparable {
   }
 
   @override
-  String toFieldString() {
-    return "$name";
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id]",
+      child: Text("$name"),
+    );
   }
 
   @override

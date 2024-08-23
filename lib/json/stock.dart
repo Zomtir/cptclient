@@ -51,8 +51,11 @@ class Stock extends FieldInterface implements Comparable {
   }
 
   @override
-  String toFieldString() {
-    return "${club.name} - ${item.name} - $storage";
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id]",
+      child: Text("${club.name} - ${item.name} - $storage"),
+    );
   }
 
   @override

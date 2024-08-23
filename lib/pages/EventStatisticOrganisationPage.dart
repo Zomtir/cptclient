@@ -88,7 +88,7 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
                 rows: List<DataRow>.generate(_stats.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(Text("${_stats[index].toFieldString()}")),
+                      DataCell(_stats[index].buildEntry()),
                       DataCell(Text("${_stats[index].federationnumber}")),
                       DataCell(Text(_stats[index].federationpermissionsolo == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].federationpermissionsolo!.fmtDate(context)}")),
                       DataCell(Text(_stats[index].federationpermissionteam == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].federationpermissionteam!.fmtDate(context)}")),

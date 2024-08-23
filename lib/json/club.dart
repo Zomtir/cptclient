@@ -43,8 +43,11 @@ class Club extends FieldInterface implements Comparable {
   }
 
   @override
-  String toFieldString() {
-    return "$name";
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id] $key",
+      child: Text("$name"),
+    );
   }
 
   @override

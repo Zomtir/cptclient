@@ -85,7 +85,7 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
             rows: List<DataRow>.generate(_stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("${_stats[index].toFieldString()}")),
+                  DataCell(_stats[index].buildEntry()),
                   DataCell(Text("${_stats[index].federationnumber}")),
                   DataCell(Text(_stats[index].gender == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].gender!.localizedName(context)}")),
                   DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].birthday!.fmtDate(context)}")),

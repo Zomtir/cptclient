@@ -32,9 +32,7 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-            child: Text(controller.value?.toFieldString() ??
-                AppLocalizations.of(context)!.undefined)),
+        Expanded(child: controller.value?.buildEntry() ?? Text(AppLocalizations.of(context)!.undefined)),
         IconButton(
           icon: Icon(Icons.search),
           onPressed: () => _handleSearch(context),

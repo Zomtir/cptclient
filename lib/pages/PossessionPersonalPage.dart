@@ -56,7 +56,7 @@ class PossessionPersonalPageState extends State<PossessionPersonalPage> {
                 rows: List<DataRow>.generate(_possessions.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(Text("${_possessions[index].item.toFieldString()}")),
+                      DataCell(_possessions[index].item.buildEntry()),
                       DataCell(Text(_possessions[index].acquisitionDate != null
                           ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
                           : AppLocalizations.of(context)!.undefined)),

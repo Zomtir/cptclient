@@ -57,15 +57,18 @@ class Team extends FieldInterface implements Comparable {
   }
 
   @override
+  Widget buildEntry() {
+    return Tooltip(
+      message: "[$id] $key",
+      child: Text("$name"),
+    );
+  }
+
+  @override
   Widget buildTile() {
     return AppTeamTile(team: this);
   }
 
   @override
   get searchable => [name, description];
-
-  @override
-  String toFieldString() {
-    return "$name";
-  }
 }
