@@ -142,28 +142,6 @@ class MemberLandingPage extends StatelessWidget {
           ),
           Divider(),
           MenuSection(
-            title: AppLocalizations.of(context)!.competence,
-            icon: Image(
-              width: 40,
-              alignment: Alignment.center,
-              image: const AssetImage('assets/icons/icon_competence.png'),
-            ),
-            children: [
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCompetencePersonal),
-                onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
-              ),
-              if (session.right!.competence.read)
-                ListTile(
-                  title: Text(AppLocalizations.of(context)!.pageCompetenceManagement),
-                  onTap: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => CompetenceOverviewPage(session: session))),
-                ),
-            ],
-          ),
-          Divider(),
-          MenuSection(
             title: AppLocalizations.of(context)!.team,
             icon: Image(
               width: 40,
@@ -215,7 +193,7 @@ class MemberLandingPage extends StatelessWidget {
           ),
           Divider(),
           MenuSection(
-            title: AppLocalizations.of(context)!.labelInventory,
+            title: AppLocalizations.of(context)!.inventory,
             icon: Image(
               width: 40,
               alignment: Alignment.center,
@@ -268,6 +246,17 @@ class MemberLandingPage extends StatelessWidget {
               image: const AssetImage('assets/icons/icon_skill.png'),
             ),
             children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCompetencePersonal),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CompetenceSummaryPage(session: session))),
+              ),
+              if (session.right!.competence.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageCompetenceManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => CompetenceOverviewPage(session: session))),
+                ),
               if (session.right!.competence.read)
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.pageSkillManagement),

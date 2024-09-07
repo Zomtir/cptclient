@@ -61,15 +61,15 @@ class TeamRightPageState extends State<TeamRightPage> {
           AppTeamTile(team: widget.team),
           Divider(),
           DataTable(
-            columns: const [
-              DataColumn(label: Text('Permission')),
-              DataColumn(label: Text('Read')),
-              DataColumn(label: Text('Write')),
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.labelPermission)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.actionRead)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.actionWrite)),
             ],
             rows: List<DataRow>.generate(permissions.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("${permissions[index].name}")),
+                  DataCell(Text(Right.localeList(context)[index])),
                   DataCell(
                     Checkbox(
                       value: permissions[index].read,
