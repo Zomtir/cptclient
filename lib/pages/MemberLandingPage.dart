@@ -17,6 +17,7 @@ import 'package:cptclient/pages/ItemOverviewPage.dart';
 import 'package:cptclient/pages/ItemcatOverviewPage.dart';
 import 'package:cptclient/pages/LocationOverviewPage.dart';
 import 'package:cptclient/pages/MemberProfilePage.dart';
+import 'package:cptclient/pages/OrganisationOverviewPage.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
 import 'package:cptclient/pages/PossessionPersonalPage.dart';
 import 'package:cptclient/pages/PossessionUserManagementPage.dart';
@@ -145,7 +146,7 @@ class MemberLandingPage extends StatelessWidget {
             icon: Image(
               width: 40,
               alignment: Alignment.center,
-              image: const AssetImage('assets/icons/icon_rankings.png'),
+              image: const AssetImage('assets/icons/icon_competence.png'),
             ),
             children: [
               ListTile(
@@ -167,7 +168,7 @@ class MemberLandingPage extends StatelessWidget {
             icon: Image(
               width: 40,
               alignment: Alignment.center,
-              image: const AssetImage('assets/icons/icon_teams.png'),
+              image: const AssetImage('assets/icons/icon_team.png'),
             ),
             children: [
               if (session.right!.team.read)
@@ -289,6 +290,23 @@ class MemberLandingPage extends StatelessWidget {
                   title: Text(AppLocalizations.of(context)!.pageLocationManagement),
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (context) => LocationOverviewPage(session: session))),
+                ),
+            ],
+          ),
+          Divider(),
+          MenuSection(
+            title: AppLocalizations.of(context)!.organisation,
+            icon: Image(
+              width: 40,
+              alignment: Alignment.center,
+              image: const AssetImage('assets/icons/icon_organisation.png'),
+            ),
+            children: [
+              if (session.right!.organisation.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageOrganisationManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => OrganisationOverviewPage(session: session))),
                 ),
             ],
           ),

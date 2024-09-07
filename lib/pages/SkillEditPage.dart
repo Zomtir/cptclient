@@ -76,7 +76,7 @@ class SkillEditPageState extends State<SkillEditPage> {
     Navigator.pop(context);
   }
 
-  void _deleteUser() async {
+  void _handleDelete() async {
     if (!await api_admin.skill_delete(widget.session, widget.skill)) return;
 
     Navigator.pop(context);
@@ -98,7 +98,7 @@ class SkillEditPageState extends State<SkillEditPage> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: _deleteUser,
+                  onPressed: _handleDelete,
                 ),
               ],
             ),

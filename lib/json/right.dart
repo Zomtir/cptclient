@@ -1,4 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Permission {
   final String id;
@@ -23,20 +24,18 @@ class Right {
   Permission event;
   Permission inventory;
   Permission location;
+  Permission organisation;
   Permission team;
   Permission user;
 
   Right({
     this.club = const Permission("club", "Club", read: false, write: false),
-    this.competence =
-        const Permission("competence", "Competence", read: false, write: false),
-    this.course =
-        const Permission("course", "Course", read: false, write: false),
+    this.competence = const Permission("competence", "Competence", read: false, write: false),
+    this.course = const Permission("course", "Course", read: false, write: false),
     this.event = const Permission("event", "Event", read: false, write: false),
-    this.inventory =
-        const Permission("inventory", "Inventory", read: false, write: false),
-    this.location =
-        const Permission("location", "Location", read: false, write: false),
+    this.inventory = const Permission("inventory", "Inventory", read: false, write: false),
+    this.location = const Permission("location", "Location", read: false, write: false),
+    this.organisation = const Permission("organisation", "Organisation", read: false, write: false),
     this.team = const Permission("team", "Team", read: false, write: false),
     this.user = const Permission("user", "User", read: false, write: false),
   });
@@ -48,6 +47,7 @@ class Right {
         event = right.event,
         inventory = right.inventory,
         location = right.location,
+        organisation = right.organisation,
         team = right.team,
         user = right.user;
 
@@ -88,6 +88,12 @@ class Right {
           read: json['right_location_read'],
           write: json['right_location_write'],
         ),
+        organisation = Permission(
+          "organisation",
+          "Organisation",
+          read: json['right_organisation_read'],
+          write: json['right_organisation_write'],
+        ),
         team = Permission(
           "team",
           "Team",
@@ -114,6 +120,8 @@ class Right {
         'right_inventory_read': inventory.read,
         'right_location_write': location.write,
         'right_location_read': location.read,
+        'right_organisation_write': organisation.write,
+        'right_organisation_read': organisation.read,
         'right_team_write': team.write,
         'right_team_read': team.read,
         'right_user_write': user.write,
@@ -127,6 +135,7 @@ class Right {
         event,
         inventory,
         location,
+        organisation,
         team,
         user,
       ];
@@ -138,7 +147,8 @@ class Right {
     event = list[3];
     inventory = list[4];
     location = list[5];
-    team = list[6];
-    user = list[7];
+    organisation = list[6];
+    team = list[7];
+    user = list[8];
   }
 }

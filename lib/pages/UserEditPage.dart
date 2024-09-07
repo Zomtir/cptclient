@@ -122,7 +122,7 @@ class UserEditPageState extends State<UserEditPage> {
     Navigator.pop(context);
   }
 
-  void _deleteUser() async {
+  void _handleDelete() async {
     if (!await server.user_delete(widget.session, widget.user)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
       return;
@@ -157,7 +157,7 @@ class UserEditPageState extends State<UserEditPage> {
               ),
               IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: _deleteUser,
+                onPressed: _handleDelete,
               ),
             ],
           ),

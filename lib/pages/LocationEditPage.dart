@@ -69,7 +69,7 @@ class LocationEditPageState extends State<LocationEditPage> {
     Navigator.pop(context);
   }
 
-  void _deleteUser() async {
+  void _handleDelete() async {
     if (!await api_admin.location_delete(widget.session, widget.location)) return;
 
     Navigator.pop(context);
@@ -89,7 +89,7 @@ class LocationEditPageState extends State<LocationEditPage> {
               trailing: [
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: _deleteUser,
+                  onPressed: _handleDelete,
                 ),
               ],
             ),

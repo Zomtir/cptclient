@@ -57,7 +57,7 @@ class ItemcatEditPageState extends State<ItemcatEditPage> {
     Navigator.pop(context);
   }
 
-  void _deleteUser() async {
+  void _handleDelete() async {
     if (!await api_admin.itemcat_delete(widget.session, widget.category)) return;
 
     Navigator.pop(context);
@@ -77,7 +77,7 @@ class ItemcatEditPageState extends State<ItemcatEditPage> {
               trailing: [
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: _deleteUser,
+                  onPressed: _handleDelete,
                 ),
               ],
             ),
