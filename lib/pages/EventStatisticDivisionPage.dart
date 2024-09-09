@@ -65,14 +65,14 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
               ),
               DataColumn(
                 label: InkWell(
-                  child: Text(AppLocalizations.of(context)!.userBirthday),
-                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.birthday, b.birthday))),
+                  child: Text(AppLocalizations.of(context)!.userBirthDate),
+                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.birth_date, b.birth_date))),
                 ),
               ),
               DataColumn(
                 label: InkWell(
                   child: Text(AppLocalizations.of(context)!.userAgeEOY),
-                  onTap: () => setState(() => _stats.sort((a, b) => -nullCompareTo(a.birthday, b.birthday))),
+                  onTap: () => setState(() => _stats.sort((a, b) => -nullCompareTo(a.birth_date, b.birth_date))),
                 ),
               ),
             ],
@@ -81,8 +81,8 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
                 cells: <DataCell>[
                   DataCell(_stats[index].buildEntry()),
                   DataCell(Text(_stats[index].gender == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].gender!.localizedName(context)}")),
-                  DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].birthday!.fmtDate(context)}")),
-                  DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${widget.event.begin.year-_stats[index].birthday!.year}")),
+                  DataCell(Text(_stats[index].birth_date == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].birth_date!.fmtDate(context)}")),
+                  DataCell(Text(_stats[index].birth_date == null ? AppLocalizations.of(context)!.unknown : "${widget.event.begin.year-_stats[index].birth_date!.year}")),
                 ],
               );
             }),

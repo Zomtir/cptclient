@@ -21,10 +21,12 @@ class User extends FieldInterface implements Comparable {
   String? email;
   String? phone;
   String? iban;
-  DateTime? birthday;
-  String? birthlocation;
+  DateTime? birth_date;
+  String? birth_location;
   String? nationality;
   Gender? gender;
+  int? height;
+  int? weight;
   String? note;
 
   User(this.id, this.key, this.active, this.firstname, this.lastname);
@@ -49,10 +51,12 @@ class User extends FieldInterface implements Comparable {
         email = json['email'],
         phone = json['phone'],
         iban = json['iban'],
-        birthday = parseIsoDate(json['birthday'])?.toLocal(),
-        birthlocation = json['birthlocation'],
+        birth_date = parseIsoDate(json['birth_date'])?.toLocal(),
+        birth_location = json['birth_location'],
         nationality = json['nationality'],
         gender = Gender.fromNullString(json['gender']),
+        height = json['height'],
+        weight = json['weight'],
         note = json['note'];
 
   Map<String, dynamic> toJson() => {
@@ -67,10 +71,12 @@ class User extends FieldInterface implements Comparable {
         'email': email,
         'phone': phone,
         'iban': iban,
-        'birthday': formatIsoDate(birthday?.toUtc()),
-        'birthlocation': birthlocation,
+        'birth_date': formatIsoDate(birth_date?.toUtc()),
+        'birth_location': birth_location,
         'nationality': nationality,
         'gender': gender?.name,
+        'height': height,
+        'weight': weight,
         'note': note
       };
 
@@ -87,7 +93,7 @@ class User extends FieldInterface implements Comparable {
     int compFirst = removeDiacritics(firstname).compareTo(removeDiacritics(other.firstname));
     if (compFirst != 0) return compFirst;
 
-    return key.compareTo(other.abbreviation);
+    return key.compareTo(other.key);
   }
 
   @override

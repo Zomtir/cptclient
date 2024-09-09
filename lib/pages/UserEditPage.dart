@@ -36,10 +36,12 @@ class UserEditPageState extends State<UserEditPage> {
   final TextEditingController _ctrlUserEmail = TextEditingController();
   final TextEditingController _ctrlUserPhone = TextEditingController();
   final TextEditingController _ctrlUserIban = TextEditingController();
-  final DateTimeController    _ctrlUserBirthday = DateTimeController();
-  final TextEditingController _ctrlUserBirthlocation = TextEditingController();
+  final DateTimeController    _ctrlUserBirthDate = DateTimeController();
+  final TextEditingController _ctrlUserBirthLocation = TextEditingController();
   final TextEditingController _ctrlUserNationality = TextEditingController();
   final DropdownController<Gender> _ctrlUserGender = DropdownController<Gender>(items: Gender.values);
+  final TextEditingController _ctrlUserHeight = TextEditingController();
+  final TextEditingController _ctrlUserWeight = TextEditingController();
   final TextEditingController _ctrlUserNote = TextEditingController();
 
   UserEditPageState();
@@ -61,10 +63,12 @@ class UserEditPageState extends State<UserEditPage> {
     _ctrlUserEmail.text = widget.user.email ?? '';
     _ctrlUserPhone.text = widget.user.phone ?? '';
     _ctrlUserIban.text = widget.user.iban ?? '';
-    _ctrlUserBirthday.setDateTime(widget.user.birthday);
-    _ctrlUserBirthlocation.text = widget.user.birthlocation ?? '';
+    _ctrlUserBirthDate.setDateTime(widget.user.birth_date);
+    _ctrlUserBirthLocation.text = widget.user.birth_location ?? '';
     _ctrlUserGender.value = widget.user.gender;
     _ctrlUserNationality.text = widget.user.nationality ?? '';
+    _ctrlUserHeight.text = widget.user.height?.toString() ?? '';
+    _ctrlUserWeight.text = widget.user.weight?.toString() ?? '';
     _ctrlUserNote.text = widget.user.note ?? '';
   }
 
@@ -79,10 +83,12 @@ class UserEditPageState extends State<UserEditPage> {
     widget.user.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
     widget.user.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
     widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
-    widget.user.birthday = _ctrlUserBirthday.getDateTime();
-    widget.user.birthlocation = _ctrlUserBirthlocation.text.isNotEmpty ? _ctrlUserBirthlocation.text : null;
+    widget.user.birth_date = _ctrlUserBirthDate.getDateTime();
+    widget.user.birth_location = _ctrlUserBirthLocation.text.isNotEmpty ? _ctrlUserBirthLocation.text : null;
     widget.user.gender = _ctrlUserGender.value;
     widget.user.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
+    widget.user.height = int.tryParse(_ctrlUserHeight.text);
+    widget.user.weight = int.tryParse(_ctrlUserWeight.text);
     widget.user.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
   }
 
@@ -225,18 +231,18 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.userBirthday,
+            info: AppLocalizations.of(context)!.userBirthDate,
             child: DateTimeEdit(
               nullable: true,
               showTime: false,
-              controller: _ctrlUserBirthday,
+              controller: _ctrlUserBirthDate,
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.userBirthlocation,
+            info: AppLocalizations.of(context)!.userBirthLocation,
             child: TextField(
               maxLines: 1,
-              controller: _ctrlUserBirthlocation,
+              controller: _ctrlUserBirthLocation,
             ),
           ),
           AppInfoRow(
@@ -252,6 +258,20 @@ class UserEditPageState extends State<UserEditPage> {
               controller: _ctrlUserGender,
               builder: (Gender gender) => Text(gender.localizedName(context)),
               onChanged: (Gender? gender) => setState(() => _ctrlUserGender.value = gender),
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.userHeight,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserHeight,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.userWeight,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlUserWeight,
             ),
           ),
           AppInfoRow(
