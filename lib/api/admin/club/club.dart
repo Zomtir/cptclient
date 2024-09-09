@@ -3,7 +3,9 @@
 import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
+import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
@@ -99,10 +101,11 @@ Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime 
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<List<User>> club_statistic_organisation(UserSession session, Club club, DateTime point_in_time) async {
+Future<List<Affiliation>?> club_statistic_organisation(UserSession session, Club club, Organisation organisation, DateTime point_in_time) async {
   final response = await client.get(
     uri('/admin/club_statistic_organisation', {
       'club_id': club.id.toString(),
+      'organisation_id': organisation.id.toString(),
       'point_in_time': formatWebDate(point_in_time.toUtc()),
     }),
     headers: {
@@ -110,8 +113,8 @@ Future<List<User>> club_statistic_organisation(UserSession session, Club club, D
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (response.statusCode != 200) return null;
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
+  return List<Affiliation>.from(l.map((model) => Affiliation.fromJson(model)));
 }

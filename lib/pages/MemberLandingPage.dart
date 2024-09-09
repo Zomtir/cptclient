@@ -2,6 +2,7 @@ import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
+import 'package:cptclient/pages/AffiliationOverviewPage.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/pages/CalendarMonthPage.dart';
 import 'package:cptclient/pages/ClubOverviewPage.dart';
@@ -296,6 +297,12 @@ class MemberLandingPage extends StatelessWidget {
                   title: Text(AppLocalizations.of(context)!.pageOrganisationManagement),
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (context) => OrganisationOverviewPage(session: session))),
+                ),
+              if (session.right!.organisation.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageAffiliationManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => AffiliationOverviewPage(session: session))),
                 ),
             ],
           ),

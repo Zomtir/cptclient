@@ -2,7 +2,7 @@
 
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:intl/intl.dart';
+import 'package:cptclient/utils/format.dart';
 
 class Competence {
   final int id;
@@ -27,7 +27,7 @@ class Competence {
       user = User.fromJson(json['user']),
       skill = Skill.fromJson(json['skill']),
       rank = json['rank'],
-      date = DateFormat("yyyy-MM-dd").parse(json['date'], true).toLocal(),
+      date = parseIsoDate(json['date'])!.toLocal(),
       judge = User.fromJson(json['judge']);
 
   Map<String, dynamic> toJson() =>
@@ -36,7 +36,7 @@ class Competence {
       'user': user?.toJson(),
       'skill': skill?.toJson(),
       'rank': rank,
-      'date' : DateFormat("yyyy-MM-dd").format(date.toUtc()),
+      'date' : formatIsoDate(date.toUtc()),
       'judge' : judge?.toJson()
     };
 

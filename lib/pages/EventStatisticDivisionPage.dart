@@ -59,12 +59,6 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
               ),
               DataColumn(
                 label: InkWell(
-                  child: Text(AppLocalizations.of(context)!.userFederationNumber),
-                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.federationnumber, b.federationnumber))),
-                ),
-              ),
-              DataColumn(
-                label: InkWell(
                   child: Text(AppLocalizations.of(context)!.userGender),
                   onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo<Gender>(a.gender, b.gender))),
                 ),
@@ -86,7 +80,6 @@ class EventStatisticDivisionPageState extends State<EventStatisticDivisionPage> 
               return DataRow(
                 cells: <DataCell>[
                   DataCell(_stats[index].buildEntry()),
-                  DataCell(Text("${_stats[index].federationnumber}")),
                   DataCell(Text(_stats[index].gender == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].gender!.localizedName(context)}")),
                   DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].birthday!.fmtDate(context)}")),
                   DataCell(Text(_stats[index].birthday == null ? AppLocalizations.of(context)!.unknown : "${widget.event.begin.year-_stats[index].birthday!.year}")),

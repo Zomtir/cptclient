@@ -1,7 +1,8 @@
 import 'package:cptclient/api/admin/club/club.dart' as api_admin;
+import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -16,8 +17,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ClubStatisticOrganisationPage extends StatefulWidget {
   final UserSession session;
   final Club club;
+  final Organisation organisation;
 
-  ClubStatisticOrganisationPage({super.key, required this.session, required this.club});
+  ClubStatisticOrganisationPage({super.key, required this.session, required this.club, required this.organisation});
 
   @override
   ClubStatisticOrganisationPageState createState() => ClubStatisticOrganisationPageState();
@@ -26,7 +28,7 @@ class ClubStatisticOrganisationPage extends StatefulWidget {
 class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisationPage> {
   final DateTimeController _ctrlDate = DateTimeController(dateTime: DateTime.now());
 
-  List<User> _stats = [];
+  List<Affiliation> _stats = [];
 
   ClubStatisticOrganisationPageState();
 
@@ -37,8 +39,15 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
   }
 
   void _update() async {
-    List<User> stats = await api_admin.club_statistic_organisation(widget.session, widget.club, _ctrlDate.getDate());
-    stats.sort();
+    List<Affiliation>? stats =
+        await api_admin.club_statistic_organisation(widget.session, widget.club, widget.organisation, _ctrlDate.getDate());
+
+    if (stats == null) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    stats.sort((a, b) => nullCompareTo(a.user, b.user));
     setState(() => _stats = stats);
   }
 
@@ -76,42 +85,63 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
                   DataColumn(
                     label: InkWell(
                       child: Text(AppLocalizations.of(context)!.user),
-                      onTap: () => setState(() => _stats.sort()),
+                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.user, b.user))),
                     ),
                   ),
                   DataColumn(
                     label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userFederationNumber),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.federationnumber, b.federationnumber))),
+                      child: Text(AppLocalizations.of(context)!.organisation),
+                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.organisation, b.organisation))),
                     ),
                   ),
                   DataColumn(
                     label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userFederationPermissionSoloDate),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.federationpermissionsolo, b.federationpermissionsolo))),
+                      child: Text(AppLocalizations.of(context)!.affiliationMemberIdentifier),
+                      onTap: () => setState(
+                          () => _stats.sort((a, b) => nullCompareTo(a.member_identifier, b.member_identifier))),
                     ),
                   ),
                   DataColumn(
                     label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userFederationPermissionTeamDate),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.federationpermissionteam, b.federationpermissionteam))),
+                      child: Text(AppLocalizations.of(context)!.affiliationPermissionSoloDate),
+                      onTap: () => setState(
+                          () => _stats.sort((a, b) => nullCompareTo(a.permission_solo_date, b.permission_solo_date))),
                     ),
                   ),
                   DataColumn(
                     label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userFederationResidencyDate),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.federationresidency, b.federationresidency))),
+                      child: Text(AppLocalizations.of(context)!.affiliationPermissionTeamDate),
+                      onTap: () => setState(
+                          () => _stats.sort((a, b) => nullCompareTo(a.permission_team_date, b.permission_team_date))),
+                    ),
+                  ),
+                  DataColumn(
+                    label: InkWell(
+                      child: Text(AppLocalizations.of(context)!.affiliationResidencyMoveDate),
+                      onTap: () => setState(
+                          () => _stats.sort((a, b) => nullCompareTo(a.residency_move_date, b.residency_move_date))),
                     ),
                   ),
                 ],
                 rows: List<DataRow>.generate(_stats.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(_stats[index].buildEntry()),
-                      DataCell(Text("${_stats[index].federationnumber}")),
-                      DataCell(Text(_stats[index].federationpermissionsolo == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].federationpermissionsolo!.fmtDate(context)}")),
-                      DataCell(Text(_stats[index].federationpermissionteam == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].federationpermissionteam!.fmtDate(context)}")),
-                      DataCell(Text(_stats[index].federationresidency == null ? AppLocalizations.of(context)!.unknown : "${_stats[index].federationresidency!.fmtDate(context)}")),
+                      DataCell(_stats[index].user!.buildEntry()),
+                      DataCell(_stats[index].organisation == null
+                          ? Text(AppLocalizations.of(context)!.undefined)
+                          : _stats[index].organisation!.buildEntry()),
+                      DataCell(Text(_stats[index].member_identifier == null
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${_stats[index].member_identifier}")),
+                      DataCell(Text(_stats[index].permission_solo_date == null
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${_stats[index].permission_solo_date!.fmtDate(context)}")),
+                      DataCell(Text(_stats[index].permission_team_date == null
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${_stats[index].permission_team_date!.fmtDate(context)}")),
+                      DataCell(Text(_stats[index].residency_move_date == null
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${_stats[index].residency_move_date!.fmtDate(context)}")),
                     ],
                   );
                 }),

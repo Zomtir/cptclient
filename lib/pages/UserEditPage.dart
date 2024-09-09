@@ -10,7 +10,6 @@ import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
-import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,10 +40,6 @@ class UserEditPageState extends State<UserEditPage> {
   final TextEditingController _ctrlUserBirthlocation = TextEditingController();
   final TextEditingController _ctrlUserNationality = TextEditingController();
   final DropdownController<Gender> _ctrlUserGender = DropdownController<Gender>(items: Gender.values);
-  final TextEditingController _ctrlUserFederationNumber = TextEditingController();
-  final DateTimeController    _ctrlUserFederationPermissionSolo = DateTimeController();
-  final DateTimeController    _ctrlUserFederationPermissionTeam = DateTimeController();
-  final DateTimeController    _ctrlUserFederationResidency = DateTimeController();
   final TextEditingController _ctrlUserNote = TextEditingController();
 
   UserEditPageState();
@@ -70,10 +65,6 @@ class UserEditPageState extends State<UserEditPage> {
     _ctrlUserBirthlocation.text = widget.user.birthlocation ?? '';
     _ctrlUserGender.value = widget.user.gender;
     _ctrlUserNationality.text = widget.user.nationality ?? '';
-    _ctrlUserFederationNumber.text = widget.user.federationnumber?.toString() ?? '';
-    _ctrlUserFederationPermissionSolo.setDateTime(widget.user.federationpermissionsolo);
-    _ctrlUserFederationPermissionTeam.setDateTime(widget.user.federationpermissionteam);
-    _ctrlUserFederationResidency.setDateTime(widget.user.federationresidency);
     _ctrlUserNote.text = widget.user.note ?? '';
   }
 
@@ -92,10 +83,6 @@ class UserEditPageState extends State<UserEditPage> {
     widget.user.birthlocation = _ctrlUserBirthlocation.text.isNotEmpty ? _ctrlUserBirthlocation.text : null;
     widget.user.gender = _ctrlUserGender.value;
     widget.user.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
-    widget.user.federationnumber = parseNullInt(_ctrlUserFederationNumber.text);
-    widget.user.federationpermissionsolo = _ctrlUserFederationPermissionSolo.getDateTime();
-    widget.user.federationpermissionteam = _ctrlUserFederationPermissionTeam.getDateTime();
-    widget.user.federationresidency = _ctrlUserFederationResidency.getDateTime();
     widget.user.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
   }
 
@@ -265,37 +252,6 @@ class UserEditPageState extends State<UserEditPage> {
               controller: _ctrlUserGender,
               builder: (Gender gender) => Text(gender.localizedName(context)),
               onChanged: (Gender? gender) => setState(() => _ctrlUserGender.value = gender),
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userFederationNumber,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUserFederationNumber,
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userFederationPermissionSoloDate,
-            child: DateTimeEdit(
-              nullable: true,
-              showTime: false,
-              controller: _ctrlUserFederationPermissionSolo,
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userFederationPermissionTeamDate,
-            child: DateTimeEdit(
-              nullable: true,
-              showTime: false,
-              controller: _ctrlUserFederationPermissionTeam,
-            ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userFederationResidencyDate,
-            child: DateTimeEdit(
-              nullable: true,
-              showTime: false,
-              controller: _ctrlUserFederationResidency,
             ),
           ),
           AppInfoRow(

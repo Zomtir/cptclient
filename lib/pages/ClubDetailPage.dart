@@ -1,6 +1,9 @@
 import 'package:cptclient/api/admin/club/club.dart' as api_admin;
+import 'package:cptclient/api/anon/organisation.dart' as api_anon;
 import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
@@ -85,6 +88,11 @@ class ClubDetailPageState extends State<ClubDetailPage> {
   }
 
   Future<void> _handleStatisticOrganisation() async {
+    List<Organisation> organisations = await api_anon.organisation_list();
+    Organisation? organisation = await showTilePicker(context: context, items: organisations);
+
+    if (organisation == null) return;
+
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -92,6 +100,7 @@ class ClubDetailPageState extends State<ClubDetailPage> {
             ClubStatisticOrganisationPage(
               session: widget.session,
               club: widget.club,
+              organisation: organisation,
             ),
       ),
     );

@@ -25,10 +25,6 @@ class User extends FieldInterface implements Comparable {
   String? birthlocation;
   String? nationality;
   Gender? gender;
-  int? federationnumber;
-  DateTime? federationpermissionsolo;
-  DateTime? federationpermissionteam;
-  DateTime? federationresidency;
   String? note;
 
   User(this.id, this.key, this.active, this.firstname, this.lastname);
@@ -57,10 +53,6 @@ class User extends FieldInterface implements Comparable {
         birthlocation = json['birthlocation'],
         nationality = json['nationality'],
         gender = Gender.fromNullString(json['gender']),
-        federationnumber = convertNullInt(json['federationnumber']),
-        federationpermissionsolo = parseIsoDate(json['federationpermissionsolo'])?.toLocal(),
-        federationpermissionteam = parseIsoDate(json['federationpermissionteam'])?.toLocal(),
-        federationresidency = parseIsoDate(json['federationresidency'])?.toLocal(),
         note = json['note'];
 
   Map<String, dynamic> toJson() => {
@@ -79,10 +71,6 @@ class User extends FieldInterface implements Comparable {
         'birthlocation': birthlocation,
         'nationality': nationality,
         'gender': gender?.name,
-        'federationnumber': federationnumber,
-        'federationpermissionsolo': formatIsoDate(federationpermissionsolo?.toUtc()),
-        'federationpermissionteam': formatIsoDate(federationpermissionteam?.toUtc()),
-        'federationresidency': formatIsoDate(federationresidency?.toUtc()),
         'note': note
       };
 

@@ -4,12 +4,14 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/acceptance.dart';
+import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
+import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/format.dart';
@@ -271,10 +273,11 @@ Future<List<User>> event_statistic_division(UserSession session, Event event) as
   return List<User>.from(list.map((model) => User.fromJson(model)));
 }
 
-Future<List<User>> event_statistic_organisation(UserSession session, Event event) async {
+Future<List<Affiliation>?> event_statistic_organisation(UserSession session, Event event, Organisation organisation) async {
   final response = await client.get(
     uri('/admin/event_statistic_organisation', {
       'event_id': event.id.toString(),
+      'organisation_id': organisation.id.toString(),
     }),
     headers: {
       'Token': session.token,
@@ -282,8 +285,8 @@ Future<List<User>> event_statistic_organisation(UserSession session, Event event
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (response.statusCode != 200) return null;
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(list.map((model) => User.fromJson(model)));
+  return List<Affiliation>.from(list.map((model) => Affiliation.fromJson(model)));
 }

@@ -1,10 +1,13 @@
 import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
 import 'package:cptclient/api/anon/course.dart' as api_anon;
+import 'package:cptclient/api/anon/organisation.dart' as api_anon;
 import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
+import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/FilterPage.dart';
@@ -23,7 +26,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EventDetailManagementPage extends StatefulWidget {
   final UserSession session;
   final int eventID;
-  
+
   EventDetailManagementPage({super.key, required this.session, required this.eventID});
 
   @override
@@ -84,7 +87,7 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
   }
 
   _handleDelete() async {
-    if(!await api_admin.event_delete(widget.session, event!)) return;
+    if (!await api_admin.event_delete(widget.session, event!)) return;
 
     Navigator.pop(context);
   }
@@ -151,7 +154,8 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           tile: AppEventTile(event: event!),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_admin.event_participant_filter_list(widget.session, event!.id),
-          onCallEdit: (user, access) => api_admin.event_participant_filter_edit(widget.session, event!.id, user.id, access),
+          onCallEdit: (user, access) =>
+              api_admin.event_participant_filter_edit(widget.session, event!.id, user.id, access),
           onCallRemove: (user) => api_admin.event_participant_filter_remove(widget.session, event!.id, user.id),
         ),
       ),
@@ -241,7 +245,8 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           tile: AppEventTile(event: event!),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_admin.event_supporter_filter_list(widget.session, event!.id),
-          onCallEdit: (user, access) => api_admin.event_supporter_filter_edit(widget.session, event!.id, user.id, access),
+          onCallEdit: (user, access) =>
+              api_admin.event_supporter_filter_edit(widget.session, event!.id, user.id, access),
           onCallRemove: (user) => api_admin.event_supporter_filter_remove(widget.session, event!.id, user.id),
         ),
       ),
@@ -280,16 +285,25 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
   }
 
   Future<void> _handleStatisticOrganisation() async {
+    List<Organisation> organisations = await api_anon.organisation_list();
+    Organisation? organisation = await showTilePicker(context: context, items: organisations);
+
+    if (organisation == null) return;
+
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventStatisticOrganisationPage(session: widget.session, event: event!),
+        builder: (context) => EventStatisticOrganisationPage(
+          session: widget.session,
+          event: event!,
+          organisation: organisation,
+        ),
       ),
     );
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     if (event == null) {
       return Icon(Icons.downloading);
     }
@@ -418,5 +432,4 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
       ),
     );
   }
-
 }
