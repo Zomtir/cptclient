@@ -2,7 +2,7 @@ The following details pertain to the software at the current point in
 time and may be subject to change. These details solely serve the
 identification of the software, but do not limit the waiver to them.
 
-* Name: Course Participation Tracker
+* Name: Course Participation Tracker (Client)
 * Repository: <https://github.com/Zomtir/cptclient/>
 
 I dedicate any and all copyright interest in this software to the

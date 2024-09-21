@@ -83,7 +83,7 @@ The code is dedicated to the Public Domain as declared in the [License](LICENSE.
 
 ## Contributing
 
-Contributing to the project implies a copyright release as stated in the [Waiver](WAIVER.md) unless 
+Contributing to the project implies a copyright release according to the [Waiver](WAIVER.md) unless 
 stated otherwise.
 
 You are very welcome to explicitly state your approval with a simple statement such as
