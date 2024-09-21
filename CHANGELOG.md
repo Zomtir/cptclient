@@ -1,4 +1,127 @@
-## Release v0.8 (29th April 2024)
+# CHANGELOG
+
+## Release v1.0.0 (21st Sep 2024)
+
+- feat: Organisations and Affiliations
+  - Added classes
+  - Added API calls
+  - Added pages
+  - Added permissions
+  - Refactored club and event statistics related to organisations
+
+- feat: Improved stock management
+  - Added stockID and stock storage
+  - An owned item can no longer have a connection to a stock
+  - An item can be restocked on any stock that has the item type
+
+- feat: Use GoRouter
+  - Have a loading page with an async online check for a delayed redirect
+  - Worked around a flutter issues with cold start double route calls
+  - Added the functionality to login as event with key/pwd parameters
+  - Improved loading of the cptclient.yaml config file
+
+- feat: Event rework
+  - Made event presence more verbose
+  - Event registration is now required for being in the presence pool
+  - Split owner as seperate status
+  - Add leader and supporter next to participant
+  - Added a FilterPage to support positive/negative user filters
+  - Fixed all event API calls
+
+- feat: Added height and weight to users
+- feat: Translate course event statistic headers (#35)
+- feat: Add tooltips to common entities such as users
+- feat: TextButtons for packlist overview
+- feat: Add notes to event management and ownership detail page
+- feat: Unicode export
+- feat: Hide handout from accidents
+- feat: Clickable URL
+- feat: Organisation statistic for events and clubs
+- feat: Implement RetryClient
+- feat: Event owner filter/registration
+- feat: Change course assignment for events as owners
+- feat: Change course assignment for events as admin
+- feat: Course moderator pages
+- feat: Admin create events
+- feat: Strike-through for canceled events
+- feat: Localize acceptance and occurrence
+- feat: Export CSV for presence statistics
+- feat: Save QR code as image
+- feat: Export event credentials
+- feat: Course team sieves
+- feat: Display event occurrence
+- feat: Improve event ownership page
+- feat: Event Occurrence and Acceptance
+- feat: Compact ConfirmationField
+- feat: Confirmation Field
+- feat: Redesign app buttons
+- feat: Split server connection settings from generic settings
+- feat: SkillRank and SkillRange Fields
+- feat: Shared Preferences
+- feat: Inspect club loans per item
+- feat: Enable returning items from user possessions
+- feat: More localization on the settings page
+- feat: Improve calendar design
+- feat: Improved menu design with Cards
+- feat: Change language in settings
+- feat: Gender Dropdown
+- feat: Improved AppInfoRow design
+- feat: Event statistic for participant age/gender divisions
+- feat: Event item prep page
+- feat: Personal possession list
+- feat: Show user permissions in profile
+- refactor: Call stats with less tuples
+- refactor: Improved ownership/possession layout of user items
+- refactor: Remove container from dialog action buttons
+- refactor: Remove data processing user info
+- refactor: DateTime format and parsing without time zone
+- refactor: Utility functions and export structure
+- refactor: Change leader/supporter order in EnrollPage
+- refactor: Restructured api folders
+- refactor: Restructure app materials
+- refactor: Use WidgetStatePropertyAll
+- refactor: Consistent menu labels for administration
+- refactor: More card usage over buttons
+- refactor: Reworked Gender enum
+- refactor: MenuSection for EnrollPage
+- refactor: Reorder participant->leader->supporter
+- refactor: Consistent gender enum
+- remove: Remove AppIconButton
+- remove: Remove PanelSwiper
+- locale: Use localized name for gender
+- locale: Competence localization
+- locale: Statistic localization
+- fix: Sort items in stock management"
+- fix: Add context labels for dropdows in some filters
+- fix: PNG/CSV export for Android
+- fix: Sort entries in Searchable Panel
+- fix: Sort teams in overview
+- fix: Organisation stats sorting fix
+- fix: Only remove entries from selection if call was successfull
+- fix: Show skill title in requirement tile
+- fix: Redirect /user to /login before resume
+- fix: More responsive and clear session resume
+- fix: Adapt course statistics for new user attendence types
+- fix: Server preference propagation
+- fix: Session resume state missmatch
+- fix: Current language not showing in settings
+- fix: Wrong gender label in user edit
+- fix: Fix event delete API call
+- fix: Push to login route
+- fix: Improved DataTable visibility
+- fix: Sort item categories
+- fix: itemcat_edit missing a parameter
+- fix: item_edit missing a parameter
+- fix: More Flutter web updates
+- fix: Updated deprecated flutter web project settings
+- chore: Flutter upgrade to 3.24
+- chore: Disable tests because of HttpClient
+- chore: Update github action flutter version to 3.24
+- chore: Exclusive github pages for main
+- license: Reformatted license and waiver
+- license: Waiver and author restructure
+
+## Release v0.9 (29th April 2024)
 
 - feat: Inventory management
 - feat: Course skill requirements

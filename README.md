@@ -62,19 +62,19 @@ The versioning scheme is `MAJOR.MINOR.PATCH`, increment the:
 - MINOR version when you make any API changes
 - PATCH version when you make backward compatible changes
 
-As long as the `MAJOR` release is `0.x`, it is considered a pre-release. The API and feature set \
-might be incomplete and unstable.
-
+Collect the changes since the previous release and add them to the [CHANGELOG](CHANGELOG.md).
 ```
-# Tag the commit with a release tag and a 'v' prefix.
-# The `PATCH` version is omitted for the `.0` increment.
-git tag v0.7
-git push --follow-tags
+git log --format=%B v0.9..HEAD
+```
 
-# Adapt the Pubspec file
-# Increment the version code by one integer. Keep the value at 1 for prerelease versions.
-pubspec.yaml
-> version: 0.7.0+1
+Tag the commit with a release tag and a 'v' prefix.
+```
+git tag v1.0.0
+git push --follow-tags
+```
+Adapt the [Pubspec file](pubspec.yaml). Increment the build number (`+1`) behind the version name by one integer.
+```
+version: 1.0.0+1
 ```
 
 ## License
