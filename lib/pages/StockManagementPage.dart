@@ -50,6 +50,8 @@ class StockManagementPageState extends State<StockManagementPage> {
 
   Future<void> _update() async {
     List<Stock> stocks = await api_admin.stock_list(widget.session, _club, null);
+    stocks.sort();
+
     setState(() {
       _stocks = stocks;
     });
