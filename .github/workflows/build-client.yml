@@ -5,11 +5,8 @@ on:
       flutter_version:
         description: 'Flutter Version'
         required: false
-        default: 'any'
+        default: '3.24.3'
         type: choice
-        options:
-          - 'any'
-          - '3.19.x'
       enable_android:
         description: 'Build Android'
         required: false
@@ -49,7 +46,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.19.5'
+        default: '3.24.3'
         type: string
       enable_android:
         required: false
