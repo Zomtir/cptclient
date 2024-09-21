@@ -1,3 +1,6 @@
+@Skip('Test are disabled because no HttpClient is offered atm')
+library;
+
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
