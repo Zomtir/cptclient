@@ -22,6 +22,7 @@ jobs:
       upload_pages_artifact: true
 
   deploy-github-pages:
+    if: github.ref == 'refs/heads/main'
     needs:
       - call-build-client
     permissions:
