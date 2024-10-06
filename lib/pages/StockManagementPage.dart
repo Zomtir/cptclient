@@ -131,45 +131,60 @@ class StockManagementPageState extends State<StockManagementPage> {
             leading: Icon(Icons.refresh),
           ),
           Divider(),
-          DataTable(
-            columns: [
-              DataColumn(label: Text("${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}")),
-              DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
-            ],
-            rows: List<DataRow>.generate(_stocks.length, (index) {
-              return DataRow(
-                cells: <DataCell>[
-                  DataCell(
-                    ListTile(
-                      title: Text(_stocks[index].item.name),
-                      subtitle: Text(_stocks[index].storage),
-                      leading:  IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () => _handleEdit(_stocks[index]),
-                      ),
-                      dense: true,
-                    ),
-                  ),
-                  DataCell(Text("${_stocks[index].owned}")),
-                  DataCell(
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.list_alt_outlined),
-                          onPressed: () => _viewLoans(_stocks[index]),
-                        ),
-                        Text("${_stocks[index].loaned}"),
-                        IconButton(
-                          icon: Icon(Icons.arrow_forward),
-                          onPressed: () => _handleLoan(_stocks[index]),
-                        ),
-                      ],
-                    ),
-                  )
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: 550,
+              child: DataTable(
+              columnSpacing: 0,
+                columns: [
+                  DataColumn(
+                      label: Text(
+                          "${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}")),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
                 ],
-              );
-            }),
+                rows: List<DataRow>.generate(_stocks.length, (index) {
+                  return DataRow(
+                    cells: <DataCell>[
+                      DataCell(
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () => _handleEdit(_stocks[index]),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_stocks[index].item.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text(_stocks[index].storage, style: Theme.of(context).textTheme.labelSmall),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      DataCell(Text("${_stocks[index].owned}")),
+                      DataCell(
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.list_alt_outlined),
+                              onPressed: () => _viewLoans(_stocks[index]),
+                            ),
+                            Text("${_stocks[index].loaned}"),
+                            IconButton(
+                              icon: Icon(Icons.arrow_forward),
+                              onPressed: () => _handleLoan(_stocks[index]),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                }),
+              ),
+            ),
           ),
           Divider(),
           AppButton(
