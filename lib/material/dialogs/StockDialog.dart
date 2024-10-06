@@ -69,7 +69,7 @@ class _StockDialogState extends State<StockDialog> {
   void _handleDelete() async {
     if (widget.stock.loaned > 0) return;
 
-    await widget.callCreate(widget.stock);
+    await widget.callDelete(widget.stock);
 
     Navigator.pop(context, widget.stock);
   }
