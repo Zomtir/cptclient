@@ -5,7 +5,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/pages/CreditPage.dart';
+import 'package:cptclient/pages/AboutPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -176,7 +176,7 @@ class ConnectionPageState extends State<ConnectionPage> {
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCredits),
+                title: Text(AppLocalizations.of(context)!.pageAbout),
                 leading: Icon(Icons.info),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
               ),

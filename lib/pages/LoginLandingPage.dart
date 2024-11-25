@@ -2,7 +2,7 @@ import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
-import 'package:cptclient/pages/CreditPage.dart';
+import 'package:cptclient/pages/AboutPage.dart';
 import 'package:cptclient/pages/LoginCoursePage.dart';
 import 'package:cptclient/pages/LoginEventPage.dart';
 import 'package:cptclient/pages/LoginLocationPage.dart';
@@ -146,7 +146,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
               onTap: () => router.gotoRoute(context, '/connect'),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.pageCredits),
+              title: Text(AppLocalizations.of(context)!.pageAbout),
               leading: Icon(Icons.info),
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
             ),

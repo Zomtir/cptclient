@@ -67,14 +67,21 @@ Collect the changes since the previous release and add them to the [CHANGELOG](C
 git log --format=%B v0.9..HEAD
 ```
 
+Adapt the `pubspec.yaml` file. Increment the build number (`+1`) behind the version name by one integer.
+```
+version: 1.0.0+1
+```
+
+Adapt the `lib/core/client.dart` file.
+
+```
+version = "1.0.0"
+```
+
 Tag the commit with a release tag and a 'v' prefix.
 ```
 git tag v1.0.0
 git push --follow-tags
-```
-Adapt the [Pubspec file](pubspec.yaml). Increment the build number (`+1`) behind the version name by one integer.
-```
-version: 1.0.0+1
 ```
 
 ## License

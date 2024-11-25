@@ -18,7 +18,7 @@ late SharedPreferences prefs;
 UserSession? uSession;
 EventSession? eSession;
 
-Future<void> preferences() async {
+Future<void> initPreferences() async {
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 
