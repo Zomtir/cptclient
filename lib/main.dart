@@ -8,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await navi.preferences();
+  await navi.initPackageInfo();
+  await navi.initPreferences();
   await navi.applyServer();
 
   runApp(CptApp());

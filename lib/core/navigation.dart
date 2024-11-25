@@ -13,12 +13,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yaml/yaml.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 late SharedPreferences prefs;
 UserSession? uSession;
 EventSession? eSession;
 
-Future<void> preferences() async {
+PackageInfo? packageInfo;
+
+Future<void> initPackageInfo() async {
+  packageInfo = await PackageInfo.fromPlatform();
+}
+
+Future<void> initPreferences() async {
   final configString = await rootBundle.loadString('cptclient.yaml');
   final dynamic configMap = loadYaml(configString);
 
