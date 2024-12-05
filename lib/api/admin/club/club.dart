@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
@@ -23,6 +24,22 @@ Future<List<Club>> club_list(UserSession session) async {
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Club>.from(l.map((model) => Club.fromJson(model)));
+}
+
+Future<Club?> club_info(UserSession session, Club club) async {
+  final response = await client.get(
+    uri('/admin/club_info', {
+      'club_id': club.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  var content = json.decode(utf8.decode(response.bodyBytes));
+  return Club.fromJson(content);
 }
 
 Future<bool> club_create(UserSession session, Club club) async {
@@ -101,7 +118,8 @@ Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime 
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<List<Affiliation>?> club_statistic_organisation(UserSession session, Club club, Organisation organisation, DateTime point_in_time) async {
+Future<List<Affiliation>?> club_statistic_organisation(
+    UserSession session, Club club, Organisation organisation, DateTime point_in_time) async {
   final response = await client.get(
     uri('/admin/club_statistic_organisation', {
       'club_id': club.id.toString(),
@@ -117,4 +135,33 @@ Future<List<Affiliation>?> club_statistic_organisation(UserSession session, Club
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Affiliation>.from(l.map((model) => Affiliation.fromJson(model)));
+}
+
+Future<List<Event>> club_statistic_presence(
+  UserSession session,
+  int clubID,
+  int userID,
+  DateTime time_window_begin,
+  DateTime time_window_end,
+  String role,
+) async {
+  final response = await client.get(
+    uri('/admin/club_statistic_user_$role', {
+      'club_id': clubID.toString(),
+      '${role}_id': userID.toString(),
+      'time_window_begin': formatWebDateTime(time_window_begin.toUtc()),
+      'time_window_end': formatWebDateTime(time_window_end.toUtc()),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return [];
+
+  Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  return List<Event>.from(
+    list.map((model) => Event.fromJson(model)),
+  );
 }

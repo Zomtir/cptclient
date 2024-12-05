@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
+import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/requirement.dart';
@@ -120,6 +121,36 @@ Future<bool> course_requirement_remove(UserSession session, Requirement requirem
   bool success = (response.statusCode == 200);
   messageSuccess(success);
   return success;
+}
+
+Future<int?> course_club_info(UserSession session, Course course) async {
+  final response = await client.get(
+    uri('/admin/course_club_info', {
+      'course_id': course.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return json.decode(utf8.decode(response.bodyBytes));
+}
+
+Future<bool> course_club_edit(UserSession session, Course course, Club? club) async {
+  final response = await client.head(
+    uri('/admin/course_club_edit', {
+      'course_id': course.id.toString(),
+      'club_id': club?.id.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  return (response.statusCode == 200);
 }
 
 Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {

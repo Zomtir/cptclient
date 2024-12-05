@@ -8,27 +8,35 @@ class Club extends FieldInterface implements Comparable {
   final int id;
   String key;
   String name;
-  String description;
+  String? description;
+  String? disciplines;
+  String? image_url;
+  String? chairman;
 
   Club(this.id, this.key, this.name, this.description);
 
   Club.fromVoid()
       : id = 0,
         key = assembleKey([5]),
-        name = "",
-        description = "";
+        name = "";
 
   Club.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         key = json['key'],
         name = json['name'],
-        description = json['description'];
+        description = json['description'],
+        disciplines = json['disciplines'],
+        image_url = json['image_url'],
+        chairman = json['chairman'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'key': key,
         'name': name,
         'description': description,
+        'disciplines': disciplines,
+        'image_url': image_url,
+        'chairman': chairman,
       };
 
   @override

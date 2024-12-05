@@ -10,6 +10,7 @@ import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:cptclient/pages/ClubStatisticMemberPage.dart';
 import 'package:cptclient/pages/ClubStatisticOrganisationPage.dart';
+import 'package:cptclient/pages/ClubStatisticPresencePage.dart';
 import 'package:cptclient/pages/ClubStatisticTeamPage.dart';
 import 'package:cptclient/pages/TermOverviewPage.dart';
 import 'package:flutter/material.dart';
@@ -52,11 +53,10 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            TermOverviewPage(
-              session: widget.session,
-              club: widget.club,
-            ),
+        builder: (context) => TermOverviewPage(
+          session: widget.session,
+          club: widget.club,
+        ),
       ),
     );
   }
@@ -65,11 +65,10 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ClubStatisticMemberPage(
-              session: widget.session,
-              club: widget.club,
-            ),
+        builder: (context) => ClubStatisticMemberPage(
+          session: widget.session,
+          club: widget.club,
+        ),
       ),
     );
   }
@@ -78,11 +77,34 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ClubStatisticTeamPage(
-              session: widget.session,
-              club: widget.club,
-            ),
+        builder: (context) => ClubStatisticTeamPage(
+          session: widget.session,
+          club: widget.club,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleStatisticPresence() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClubStatisticPresencePage(
+          session: widget.session,
+          club: widget.club,
+          userID: widget.session.user!.id,
+          title:
+              '${AppLocalizations.of(context)!.pageClubStatisticPresence} - ${AppLocalizations.of(context)!.eventLeader}',
+          role: 'leader',
+          presence: (int userID) => api_admin.club_statistic_presence(
+            widget.session,
+            widget.club.id,
+            widget.session.user!.id,
+            DateUtils.dateOnly(DateTime.now().copyWith(month: 1, day: 1)),
+            DateUtils.dateOnly(DateTime.now().copyWith(month: 12, day: 31).add(Duration(hours: 24))),
+            'leader',
+          ),
+        ),
       ),
     );
   }
@@ -96,12 +118,11 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ClubStatisticOrganisationPage(
-              session: widget.session,
-              club: widget.club,
-              organisation: organisation,
-            ),
+        builder: (context) => ClubStatisticOrganisationPage(
+          session: widget.session,
+          club: widget.club,
+          organisation: organisation,
+        ),
       ),
     );
   }
@@ -130,10 +151,10 @@ class ClubDetailPageState extends State<ClubDetailPage> {
           MenuSection(
             title: AppLocalizations.of(context)!.term,
             children: [
-                ListTile(
-                  title: Text(AppLocalizations.of(context)!.pageTermManagement),
-                  onTap: _handleTerms,
-                ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageTermManagement),
+                onTap: _handleTerms,
+              ),
             ],
           ),
           MenuSection(
@@ -146,6 +167,10 @@ class ClubDetailPageState extends State<ClubDetailPage> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageClubStatisticTeam),
                 onTap: _handleStatisticTeams,
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageClubStatisticPresence),
+                onTap: _handleStatisticPresence,
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageClubStatisticOrganisation),

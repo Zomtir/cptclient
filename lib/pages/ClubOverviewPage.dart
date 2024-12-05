@@ -33,12 +33,16 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
   }
 
   void _handleSelect(Club club) async {
+    Club? club_info = await api_admin.club_info(widget.session, club);
+
+    if (club_info == null) return;
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClubDetailPage(
           session: widget.session,
-          club: club,
+          club: club_info,
         ),
       ),
     );

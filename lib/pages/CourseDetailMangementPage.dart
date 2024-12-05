@@ -1,4 +1,5 @@
 import 'package:cptclient/api/admin/course/imports.dart' as api_admin;
+import 'package:cptclient/api/anon/club.dart' as api_anon;
 import 'package:cptclient/api/regular/team/team.dart' as api_regular;
 import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/course.dart';
@@ -11,6 +12,7 @@ import 'package:cptclient/material/pages/FilterPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
+import 'package:cptclient/pages/CourseClubEditPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/CourseStatisticClassPage.dart';
 import 'package:cptclient/pages/CourseStatisticPresencePage.dart';
@@ -81,6 +83,21 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           session: widget.session,
           course: widget.course,
           isDraft: false,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleClub() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CourseClubEditPage(
+          session: widget.session,
+          course: widget.course,
+          callList: () => api_anon.club_list(),
+          callInfo: () => api_admin.course_club_info(widget.session, widget.course),
+          callEdit: (club) => api_admin.course_club_edit(widget.session, widget.course, club),
         ),
       ),
     );
@@ -271,6 +288,15 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
                 onTap: _handleSupporterSieves,
+              ),
+            ],
+          ),
+          Divider(),
+          MenuSection(
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageCourseClub),
+                onTap: _handleClub,
               ),
             ],
           ),

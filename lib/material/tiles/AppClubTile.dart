@@ -26,7 +26,6 @@ class AppClubTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${club.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${club.description}"),
               ],
             ),
           ),
