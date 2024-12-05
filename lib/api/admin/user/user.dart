@@ -23,10 +23,10 @@ Future<List<User>> user_list(UserSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<User?> user_detailed(UserSession session, User user) async {
+Future<User?> user_detailed(UserSession session, int userID) async {
   final response = await client.get(
     uri('/admin/user_detailed', {
-      'user_id': user.id.toString(),
+      'user_id': userID.toString(),
     }),
     headers: {
       'Token': session.token,

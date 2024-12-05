@@ -32,16 +32,12 @@ class UserOverviewPageState extends State<UserOverviewPage> {
   }
 
   void _handleSelect(User user) async {
-    User? userdetailed = await api_admin.user_detailed(widget.session, user);
-
-    if (userdetailed == null) return;
-
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => UserEditPage(
           session: widget.session,
-          user: userdetailed,
+          userID: user.id,
           isDraft: false,
         ),
       ),
@@ -56,7 +52,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
       MaterialPageRoute(
         builder: (context) => UserEditPage(
           session: widget.session,
-          user: User.fromVoid(),
+          userID: 0,
           isDraft: true,
         ),
       ),

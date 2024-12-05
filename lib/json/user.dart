@@ -3,6 +3,7 @@
 import 'dart:core';
 
 import 'package:cptclient/json/gender.dart';
+import 'package:cptclient/json/license.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/utils/format.dart';
@@ -27,6 +28,8 @@ class User extends FieldInterface implements Comparable {
   Gender? gender;
   int? height;
   int? weight;
+  License? license_main;
+  License? license_extra;
   String? note;
 
   User(this.id, this.key, this.active, this.firstname, this.lastname);
@@ -57,6 +60,8 @@ class User extends FieldInterface implements Comparable {
         gender = Gender.fromNullString(json['gender']),
         height = json['height'],
         weight = json['weight'],
+        license_main = json['license_main'] == null ? null : License.fromJson(json['license_main']),
+        license_extra = json['license_extra'] == null ? null : License.fromJson(json['license_extra']),
         note = json['note'];
 
   Map<String, dynamic> toJson() => {
@@ -77,6 +82,8 @@ class User extends FieldInterface implements Comparable {
         'gender': gender?.name,
         'height': height,
         'weight': weight,
+        'license_main': license_main,
+        'license_extra': license_extra,
         'note': note
       };
 

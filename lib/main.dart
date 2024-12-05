@@ -52,6 +52,7 @@ class CptState extends State<CptApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      key: navi.naviKey,
       title: 'CPT Client',
       localizationsDelegates: [
         AppLocalizations.delegate,
