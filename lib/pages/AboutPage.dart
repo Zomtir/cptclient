@@ -1,9 +1,9 @@
+import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:cptclient/core/navigation.dart' as navi;
 
 class CreditPage extends StatelessWidget {
   final List<(String, String)> authors = [

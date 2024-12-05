@@ -27,6 +27,9 @@ class ClubEditPageState extends State<ClubEditPage> {
   final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlDescription = TextEditingController();
+  final TextEditingController _ctrlDisciplines = TextEditingController();
+  final TextEditingController _ctrlImageURL = TextEditingController();
+  final TextEditingController _ctrlChairman = TextEditingController();
 
   ClubEditPageState();
 
@@ -39,13 +42,19 @@ class ClubEditPageState extends State<ClubEditPage> {
   void _applyInfo() {
     _ctrlKey.text = widget.club.key;
     _ctrlName.text = widget.club.name;
-    _ctrlDescription.text = widget.club.description;
+    _ctrlDescription.text = widget.club.description ?? '';
+    _ctrlDisciplines.text = widget.club.disciplines ?? '';
+    _ctrlImageURL.text = widget.club.image_url ?? '';
+    _ctrlChairman.text = widget.club.chairman ?? '';
   }
 
   void _gatherInfo() {
     widget.club.key = _ctrlKey.text;
     widget.club.name = _ctrlName.text;
-    widget.club.description = _ctrlDescription.text;
+    widget.club.description = _ctrlDescription.text.isNotEmpty ? _ctrlDescription.text : null;
+    widget.club.disciplines = _ctrlDisciplines.text.isNotEmpty ? _ctrlDisciplines.text : null;
+    widget.club.image_url = _ctrlImageURL.text.isNotEmpty ? _ctrlImageURL.text : null;
+    widget.club.chairman = _ctrlChairman.text.isNotEmpty ? _ctrlChairman.text : null;
   }
 
   void _handleSubmit() async {
@@ -103,6 +112,27 @@ class ClubEditPageState extends State<ClubEditPage> {
             child: TextField(
               maxLines: 1,
               controller: _ctrlDescription,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.clubDisciplines,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlDisciplines,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.clubImageURL,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlImageURL,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.clubChairman,
+            child: TextField(
+              maxLines: 1,
+              controller: _ctrlChairman,
             ),
           ),
           AppButton(
