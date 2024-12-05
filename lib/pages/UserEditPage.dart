@@ -1,18 +1,22 @@
+import 'package:cptclient/api/admin/user/bankacc.dart' as api_admin;
 import 'package:cptclient/api/admin/user/license.dart' as api_admin;
 import 'package:cptclient/api/admin/user/user.dart' as api_admin;
+import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/fields/AttributeField.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/fields/LicenseField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
+import 'package:cptclient/pages/UserBankAccountPage.dart';
+import 'package:cptclient/pages/UserLicensePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -40,7 +44,6 @@ class UserEditPageState extends State<UserEditPage> {
   final TextEditingController _ctrlUserAddress = TextEditingController();
   final TextEditingController _ctrlUserEmail = TextEditingController();
   final TextEditingController _ctrlUserPhone = TextEditingController();
-  final TextEditingController _ctrlUserIban = TextEditingController();
   final DateTimeController _ctrlUserBirthDate = DateTimeController();
   final TextEditingController _ctrlUserBirthLocation = TextEditingController();
   final TextEditingController _ctrlUserNationality = TextEditingController();
@@ -79,7 +82,6 @@ class UserEditPageState extends State<UserEditPage> {
     _ctrlUserAddress.text = user_info.address ?? '';
     _ctrlUserEmail.text = user_info.email ?? '';
     _ctrlUserPhone.text = user_info.phone ?? '';
-    _ctrlUserIban.text = user_info.iban ?? '';
     _ctrlUserBirthDate.setDateTime(user_info.birth_date);
     _ctrlUserBirthLocation.text = user_info.birth_location ?? '';
     _ctrlUserGender.value = user_info.gender;
@@ -99,7 +101,6 @@ class UserEditPageState extends State<UserEditPage> {
     user_info.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
     user_info.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
     user_info.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
-    user_info.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
     user_info.birth_date = _ctrlUserBirthDate.getDateTime();
     user_info.birth_location = _ctrlUserBirthLocation.text.isNotEmpty ? _ctrlUserBirthLocation.text : null;
     user_info.gender = _ctrlUserGender.value;
@@ -247,13 +248,6 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.userIban,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUserIban,
-            ),
-          ),
-          AppInfoRow(
             info: AppLocalizations.of(context)!.userBirthDate,
             child: DateTimeEdit(
               nullable: true,
@@ -311,9 +305,29 @@ class UserEditPageState extends State<UserEditPage> {
           if (!widget.isDraft) Divider(),
           if (!widget.isDraft)
             AppInfoRow(
+              info: AppLocalizations.of(context)!.userBankacc,
+              child: AttributeField<BankAccount>(
+                attribute: user_info.bank_account,
+                onCreate: () async {
+                  await api_admin.user_bank_account_create(widget.session, user_info, BankAccount.fromVoid());
+                  _update();
+                },
+                onEdit: (BankAccount ba) async {
+                  await api_admin.user_bank_account_edit(widget.session, user_info, ba);
+                  _update();
+                },
+                onDelete: () async {
+                  await api_admin.user_bank_account_delete(widget.session, user_info);
+                  _update();
+                },
+                builder: (context, onEdit) => UserBankAccountPage(bankacc: user_info.bank_account!, onEdit: onEdit),
+              ),
+            ),
+          if (!widget.isDraft)
+            AppInfoRow(
               info: AppLocalizations.of(context)!.userLicenseMain,
-              child: LicenseField(
-                license: user_info.license_main,
+              child: AttributeField<License>(
+                attribute: user_info.license_main,
                 onCreate: () async {
                   await api_admin.user_license_main_create(widget.session, user_info, License.fromVoid());
                   _update();
@@ -326,13 +340,14 @@ class UserEditPageState extends State<UserEditPage> {
                   await api_admin.user_license_main_delete(widget.session, user_info);
                   _update();
                 },
+                builder: (context, onEdit) => UserLicensePage(license: user_info.license_main!, onEdit: onEdit),
               ),
             ),
           if (!widget.isDraft)
             AppInfoRow(
               info: AppLocalizations.of(context)!.userLicenseExtra,
-              child: LicenseField(
-                license: user_info.license_extra,
+              child: AttributeField<License>(
+                attribute: user_info.license_extra,
                 onCreate: () async {
                   await api_admin.user_license_extra_create(widget.session, user_info, License.fromVoid());
                   _update();
@@ -345,6 +360,7 @@ class UserEditPageState extends State<UserEditPage> {
                   await api_admin.user_license_extra_delete(widget.session, user_info);
                   _update();
                 },
+                builder: (context, onEdit) => UserLicensePage(license: user_info.license_extra!, onEdit: onEdit),
               ),
             ),
           if (!widget.isDraft)

@@ -12,9 +12,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class UserLicensePage extends StatefulWidget {
   final License license;
   final Future<void> Function(License) onEdit;
-  final Future<void> Function() onDelete;
 
-  UserLicensePage({super.key, required this.license, required this.onEdit, required this.onDelete});
+  UserLicensePage({super.key, required this.license, required this.onEdit});
 
   @override
   UserLicensePageState createState() => UserLicensePageState();
@@ -70,11 +69,6 @@ class UserLicensePageState extends State<UserLicensePage> {
     Navigator.pop(context);
   }
 
-  void _handleDelete() async {
-    await widget.onDelete();
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,18 +77,8 @@ class UserLicensePageState extends State<UserLicensePage> {
       ),
       body: AppBody(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: AppLicenseTile(
-                  license: widget.license,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _handleDelete,
-              ),
-            ],
+          AppLicenseTile(
+            license: widget.license,
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.licenseName,
