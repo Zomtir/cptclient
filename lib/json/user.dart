@@ -2,6 +2,7 @@
 
 import 'dart:core';
 
+import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
@@ -21,13 +22,13 @@ class User extends FieldInterface implements Comparable {
   String? address;
   String? email;
   String? phone;
-  String? iban;
   DateTime? birth_date;
   String? birth_location;
   String? nationality;
   Gender? gender;
   int? height;
   int? weight;
+  BankAccount? bank_account;
   License? license_main;
   License? license_extra;
   String? note;
@@ -53,13 +54,13 @@ class User extends FieldInterface implements Comparable {
         address = json['address'],
         email = json['email'],
         phone = json['phone'],
-        iban = json['iban'],
         birth_date = parseIsoDate(json['birth_date'])?.toLocal(),
         birth_location = json['birth_location'],
         nationality = json['nationality'],
         gender = Gender.fromNullString(json['gender']),
         height = json['height'],
         weight = json['weight'],
+        bank_account = json['bank_account'] == null ? null : BankAccount.fromJson(json['bank_account']),
         license_main = json['license_main'] == null ? null : License.fromJson(json['license_main']),
         license_extra = json['license_extra'] == null ? null : License.fromJson(json['license_extra']),
         note = json['note'];
@@ -75,13 +76,13 @@ class User extends FieldInterface implements Comparable {
         'address': address,
         'email': email,
         'phone': phone,
-        'iban': iban,
         'birth_date': formatIsoDate(birth_date?.toUtc()),
         'birth_location': birth_location,
         'nationality': nationality,
         'gender': gender?.name,
         'height': height,
         'weight': weight,
+        'bank_account' : bank_account,
         'license_main': license_main,
         'license_extra': license_extra,
         'note': note

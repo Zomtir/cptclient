@@ -35,6 +35,6 @@ class Confirmation implements Comparable {
 
   @override
   int compareTo(other) {
-    return name.compareTo(other.name);
+    return name.compareTo(other.bic);
   }
 }

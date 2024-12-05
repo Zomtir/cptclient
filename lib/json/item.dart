@@ -35,7 +35,7 @@ class Item extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    return removeDiacritics(name).compareTo(removeDiacritics(other.name));
+    return removeDiacritics(name).compareTo(removeDiacritics(other.bic));
   }
 
   @override
