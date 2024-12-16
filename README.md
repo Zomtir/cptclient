@@ -64,7 +64,7 @@ The versioning scheme is `MAJOR.MINOR.PATCH`, increment the:
 
 Collect the changes since the previous release and add them to the [CHANGELOG](CHANGELOG.md).
 ```
-git log --format=%B v0.9..HEAD
+git log --format=%B v1.0.0..HEAD
 ```
 
 Adapt the `pubspec.yaml` file. Increment the build number (`+1`) behind the version name by one integer.
