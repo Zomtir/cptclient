@@ -64,7 +64,7 @@ The versioning scheme is `MAJOR.MINOR.PATCH`, increment the:
 
 Collect the changes since the previous release and add them to the [CHANGELOG](CHANGELOG.md).
 ```
-git log --format=%B v0.9..HEAD
+git log --format=%B v1.0.0..HEAD
 ```
 
 Tag the commit with a release tag and a 'v' prefix.

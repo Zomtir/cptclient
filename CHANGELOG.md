@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Release v1.1.0 (16th Dec 2024)
+
+- feat: Improved user bank details
+- feat: User licenses
+- feat: Extended club info
+- feat: Improved About page (layout, release information)
+- feat: Improved club stock management layout
+- fix: Deletion of club stock resulted in duplication
+- chore: Kotlin version update (1.9) and flutter build choice
+
 ## Release v1.0.0 (21st Sep 2024)
 
 - feat: Organisations and Affiliations
