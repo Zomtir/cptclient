@@ -62,6 +62,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     String fileName = "CPT_course_${widget.course.id}_user_${widget.userID}_presence";
     List<String> headers = [
       AppLocalizations.of(context)!.eventTitle,
+      AppLocalizations.of(context)!.eventLocation,
       AppLocalizations.of(context)!.eventBegin,
       AppLocalizations.of(context)!.dateTime,
       AppLocalizations.of(context)!.eventEnd,
@@ -71,6 +72,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     List<List<String?>> table = [headers];
     table.addAll(stats.map((row) => [
       row.title.toString(),
+      row.location?.name ?? AppLocalizations.of(context)!.unknown,
       formatIsoDate(row.begin),
       formatIsoTime(row.begin),
       formatIsoDate(row.end),
@@ -102,6 +104,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.event)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventTitle)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventLocation)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventBegin)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventEnd)),
             ],
@@ -110,6 +113,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
                 cells: <DataCell>[
                   DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].id))),
                   DataCell(Text("${stats[index].title}")),
+                  DataCell(Text("${stats[index].location?.name ?? AppLocalizations.of(context)!.unknown}")),
                   DataCell(Text("${stats[index].begin.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].end.fmtDateTime(context)}")),
                 ],

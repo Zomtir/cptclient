@@ -64,6 +64,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     String fileName = "CPT_club_${widget.club.id}_user_${widget.userID}_presence_${widget.role}";
     List<String> headers = [
       AppLocalizations.of(context)!.eventTitle,
+      AppLocalizations.of(context)!.eventLocation,
       AppLocalizations.of(context)!.eventBegin,
       AppLocalizations.of(context)!.dateTime,
       AppLocalizations.of(context)!.eventEnd,
@@ -73,6 +74,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     List<List<String?>> table = [headers];
     table.addAll(stats.map((row) => [
       row.title.toString(),
+      row.location?.name ?? AppLocalizations.of(context)!.unknown,
       formatIsoDate(row.begin),
       formatIsoTime(row.begin),
       formatIsoDate(row.end),
@@ -103,6 +105,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.event)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventLocation)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventTitle)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventBegin)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventEnd)),
@@ -111,6 +114,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
               return DataRow(
                 cells: <DataCell>[
                   DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].id))),
+                  DataCell(Text("${stats[index].location?.name ?? AppLocalizations.of(context)!.unknown}")),
                   DataCell(Text("${stats[index].title}")),
                   DataCell(Text("${stats[index].begin.fmtDateTime(context)}")),
                   DataCell(Text("${stats[index].end.fmtDateTime(context)}")),
