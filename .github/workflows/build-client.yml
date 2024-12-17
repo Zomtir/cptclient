@@ -6,6 +6,10 @@ on:
         description: 'Flutter Version'
         required: false
         default: '3.24.3'
+        options:
+          - 'stable'
+          - 'beta'
+          - '3.24.3'
         type: choice
       enable_android:
         description: 'Build Android'
