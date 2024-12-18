@@ -47,7 +47,7 @@ class Club extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    return removeDiacritics(name).compareTo(removeDiacritics(other.bic));
+    return removeDiacritics(name).compareTo(removeDiacritics(other.name));
   }
 
   @override

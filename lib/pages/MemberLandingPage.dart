@@ -160,7 +160,7 @@ class MemberLandingPage extends StatelessWidget {
           ),
           Divider(),
           MenuSection(
-            title: AppLocalizations.of(context)!.term,
+            title: AppLocalizations.of(context)!.club,
             icon: Image(
               width: 40,
               alignment: Alignment.center,
