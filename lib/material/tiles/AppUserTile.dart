@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 class AppUserTile extends StatelessWidget {
   final User user;
+  final List<Widget> trailing;
 
   const AppUserTile({
     super.key,
     required this.user,
+    this.trailing = const [],
   });
 
   @override
@@ -19,13 +21,16 @@ class AppUserTile extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Tooltip(message: "${user.id}", child: Icon(Icons.info)),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("${user.lastname}, ${user.firstname}", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${user.key}"),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("${user.lastname}, ${user.firstname}", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text("${user.key}"),
+                ],
+              ),
             ),
+            ...trailing,
           ],
         )
     );

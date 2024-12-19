@@ -27,6 +27,15 @@ Future<void> exportCSV(fileName, List<List<dynamic>> table) async {
   );
 }
 
+exportPDF(String fileName, Uint8List doc) async {
+  await saveSelector(
+    content: doc,
+    fileExtension: 'pdf',
+    fileName: fileName,
+    mimeType: 'application/pdf',
+  );
+}
+
 Future<void> saveSelector<T>({
   required T content,
   required String mimeType,

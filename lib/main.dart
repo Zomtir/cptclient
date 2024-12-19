@@ -23,7 +23,6 @@ class CptApp extends StatefulWidget {
 
 class CptState extends State<CptApp> {
   final GoRouter _router = router.createRouter();
-
   Locale _locale = const Locale('en');
 
   @override
@@ -40,7 +39,7 @@ class CptState extends State<CptApp> {
   }
 
   Locale getLocale() {
-    return Localizations.localeOf(context);
+    return _locale;
   }
 
   void setLocale(Locale? locale) {

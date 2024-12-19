@@ -1,12 +1,20 @@
+import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
+import 'package:cptclient/material/fields/DateTimeController.dart';
+import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
+import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/trainer_accounting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,26 +23,33 @@ class ClubStatisticPresencePage extends StatefulWidget {
   final Club club;
   final int userID;
   final String title;
-  final String role;
-  final Future<List<Event>> Function(int) presence;
+  final Future<List<Event>?> Function(int, DateTime, DateTime, String) presence;
 
-  ClubStatisticPresencePage(
-      {super.key,
-      required this.session,
-      required this.club,
-      required this.userID,
-      required this.title,
-      required this.presence,
-      required this.role});
+  ClubStatisticPresencePage({
+    super.key,
+    required this.session,
+    required this.club,
+    required this.userID,
+    required this.title,
+    required this.presence,
+  });
 
   @override
   ClubStatisticPresencePageState createState() => ClubStatisticPresencePageState();
 }
 
 class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
-  ClubStatisticPresencePageState();
+  final DateTimeController _ctrlBegin =
+      DateTimeController(dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 1, day: 1));
+  final DateTimeController _ctrlEnd =
+      DateTimeController(dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 12, day: 31));
+  final TextEditingController _ctrlRole = TextEditingController(text: 'leader');
+  final TextEditingController _ctrlDiscipline = TextEditingController();
 
-  List<Event> stats = [];
+  List<Event> _eventList = [];
+  User? _userInfo;
+
+  ClubStatisticPresencePageState();
 
   @override
   void initState() {
@@ -43,9 +58,18 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   void _update() async {
-    List<Event> stats = await widget.presence(widget.userID);
-    stats.sort((a, b) => a.compareTo(b));
-    setState(() => this.stats = stats);
+    List<Event>? eventList = await widget.presence(
+        widget.userID, _ctrlBegin.getDate().copyWith(hour: 0), _ctrlEnd.getDate().copyWith(hour: 24), _ctrlRole.text);
+    if (eventList == null) return;
+    eventList.sort();
+
+    User? userInfo = await api_regular.user_info(widget.session);
+    if (userInfo == null) return;
+
+    setState(() {
+      _eventList = eventList;
+      _userInfo = userInfo;
+    });
   }
 
   Future<void> _handleEvent(int eventID) async {
@@ -60,8 +84,13 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     );
   }
 
-  _handleCSV() {
-    String fileName = "CPT_club_${widget.club.id}_user_${widget.userID}_presence_${widget.role}";
+  Future<void> _handleTrainerAccounting() async {
+    trainer_accounting_pdf(
+        context, widget.club, _userInfo!, _ctrlDiscipline.text, _ctrlBegin.getDate(), _ctrlEnd.getDate(), _eventList);
+  }
+
+  _handlePresenceTable() {
+    String fileName = "CPT_club_${widget.club.id}_user_${widget.userID}_presence_${_ctrlRole.text}";
     List<String> headers = [
       AppLocalizations.of(context)!.eventTitle,
       AppLocalizations.of(context)!.eventLocation,
@@ -72,15 +101,15 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       AppLocalizations.of(context)!.dateMinute,
     ];
     List<List<String?>> table = [headers];
-    table.addAll(stats.map((row) => [
-      row.title.toString(),
-      row.location?.name ?? AppLocalizations.of(context)!.unknown,
-      formatIsoDate(row.begin),
-      formatIsoTime(row.begin),
-      formatIsoDate(row.end),
-      formatIsoTime(row.end),
-      row.end.difference(row.begin).inMinutes.toString(),
-    ]));
+    table.addAll(_eventList.map((row) => [
+          row.title.toString(),
+          row.location?.name ?? AppLocalizations.of(context)!.unknown,
+          formatIsoDate(row.begin),
+          formatIsoTime(row.begin),
+          formatIsoDate(row.end),
+          formatIsoTime(row.end),
+          row.end.difference(row.begin).inMinutes.toString(),
+        ]));
     exportCSV(fileName, table);
   }
 
@@ -93,12 +122,44 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       body: AppBody(
         maxWidth: 1000,
         children: <Widget>[
-          AppClubTile(
-            club: widget.club,
+          AppClubTile(club: widget.club),
+          AppUserTile(
+            user: widget.session.user!,
             trailing: [
               IconButton(
+                icon: const Icon(Icons.monetization_on_outlined),
+                onPressed: _handleTrainerAccounting,
+              ),
+              IconButton(
                 icon: const Icon(Icons.import_export),
-                onPressed: _handleCSV,
+                onPressed: _handlePresenceTable,
+              ),
+            ],
+          ),
+          FilterToggle(
+            onApply: _update,
+            children: [
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventBegin,
+                child: DateTimeEdit(controller: _ctrlBegin, showTime: false),
+              ),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventEnd,
+                child: DateTimeEdit(controller: _ctrlEnd, showTime: false),
+              ),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventRole,
+                child: TextField(
+                  maxLines: 1,
+                  controller: _ctrlRole,
+                ),
+              ),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.userDiscipline,
+                child: TextField(
+                  maxLines: 1,
+                  controller: _ctrlDiscipline,
+                ),
               ),
             ],
           ),
@@ -110,14 +171,14 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
               DataColumn(label: Text(AppLocalizations.of(context)!.eventBegin)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventEnd)),
             ],
-            rows: List<DataRow>.generate(stats.length, (index) {
+            rows: List<DataRow>.generate(_eventList.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(stats[index].id))),
-                  DataCell(Text("${stats[index].location?.name ?? AppLocalizations.of(context)!.unknown}")),
-                  DataCell(Text("${stats[index].title}")),
-                  DataCell(Text("${stats[index].begin.fmtDateTime(context)}")),
-                  DataCell(Text("${stats[index].end.fmtDateTime(context)}")),
+                  DataCell(IconButton(icon: Icon(Icons.shortcut), onPressed: () => _handleEvent(_eventList[index].id))),
+                  DataCell(Text("${_eventList[index].location?.name ?? AppLocalizations.of(context)!.unknown}")),
+                  DataCell(Text("${_eventList[index].title}")),
+                  DataCell(Text("${_eventList[index].begin.fmtDateTime(context)}")),
+                  DataCell(Text("${_eventList[index].end.fmtDateTime(context)}")),
                 ],
               );
             }),
