@@ -137,7 +137,7 @@ Future<List<Affiliation>?> club_statistic_organisation(
   return List<Affiliation>.from(l.map((model) => Affiliation.fromJson(model)));
 }
 
-Future<List<Event>> club_statistic_presence(
+Future<List<Event>?> club_statistic_presence(
   UserSession session,
   int clubID,
   int userID,
@@ -158,7 +158,7 @@ Future<List<Event>> club_statistic_presence(
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (response.statusCode != 200) return null;
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
   return List<Event>.from(

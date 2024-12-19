@@ -3,6 +3,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
+import 'package:cptclient/pages/ClubTrainerAccounting.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
@@ -16,7 +17,7 @@ class ClubStatisticPresencePage extends StatefulWidget {
   final int userID;
   final String title;
   final String role;
-  final Future<List<Event>> Function(int) presence;
+  final Future<List<Event>?> Function(int) presence;
 
   ClubStatisticPresencePage(
       {super.key,
@@ -43,7 +44,8 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   void _update() async {
-    List<Event> stats = await widget.presence(widget.userID);
+    List<Event>? stats = await widget.presence(widget.userID);
+    if (stats == null) return;
     stats.sort((a, b) => a.compareTo(b));
     setState(() => this.stats = stats);
   }
@@ -84,6 +86,18 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     exportCSV(fileName, table);
   }
 
+  Future<void> _handleTrainerAccounting() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClubTrainerAccounting(
+          session: widget.session,
+          club: widget.club,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +110,10 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
           AppClubTile(
             club: widget.club,
             trailing: [
+              IconButton(
+                icon: const Icon(Icons.monetization_on_outlined),
+                onPressed: _handleTrainerAccounting,
+              ),
               IconButton(
                 icon: const Icon(Icons.import_export),
                 onPressed: _handleCSV,

@@ -57,6 +57,9 @@ dependencies:
   # CSV export
   csv: ^6.0.0
 
+  # PDF export
+  pdf: ^3.11.1
+
   # Version info
   package_info_plus: ^8.1.1
 
@@ -81,6 +84,10 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
+    - assets/fonts/SourceSansPro/source-sans-pro.regular.ttf
+    - assets/fonts/SourceSansPro/source-sans-pro.bold.ttf
+    - assets/fonts/SourceSansPro/source-sans-pro.italic.ttf
+    - assets/fonts/SourceSansPro/source-sans-pro.bold-italic.ttf
 
 flutter_launcher_icons:
   android: "ic_launcher"
