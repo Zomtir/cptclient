@@ -1,9 +1,12 @@
-import 'package:cptclient/api/admin/user/user.dart' as server;
+import 'package:cptclient/api/admin/user/license.dart' as api_admin;
+import 'package:cptclient/api/admin/user/user.dart' as api_admin;
 import 'package:cptclient/json/gender.dart';
+import 'package:cptclient/json/license.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
+import 'package:cptclient/material/fields/LicenseField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
@@ -15,20 +18,22 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserEditPage extends StatefulWidget {
   final UserSession session;
-  final User user;
+  final int userID;
   final bool isDraft;
 
-  UserEditPage({super.key, required this.session, required this.user, required this.isDraft});
+  UserEditPage({super.key, required this.session, required this.userID, required this.isDraft});
 
   @override
   UserEditPageState createState() => UserEditPageState();
 }
 
 class UserEditPageState extends State<UserEditPage> {
+  User user_info = User.fromVoid();
+
   final TextEditingController _ctrlUserKey = TextEditingController();
   final TextEditingController _ctrlUserPassword = TextEditingController();
-  bool                  _ctrlUserEnabled = false;
-  bool                  _ctrlUserActive = true;
+  bool _ctrlUserEnabled = false;
+  bool _ctrlUserActive = true;
   final TextEditingController _ctrlUserFirstname = TextEditingController();
   final TextEditingController _ctrlUserLastname = TextEditingController();
   final TextEditingController _ctrlUserNickname = TextEditingController();
@@ -36,7 +41,7 @@ class UserEditPageState extends State<UserEditPage> {
   final TextEditingController _ctrlUserEmail = TextEditingController();
   final TextEditingController _ctrlUserPhone = TextEditingController();
   final TextEditingController _ctrlUserIban = TextEditingController();
-  final DateTimeController    _ctrlUserBirthDate = DateTimeController();
+  final DateTimeController _ctrlUserBirthDate = DateTimeController();
   final TextEditingController _ctrlUserBirthLocation = TextEditingController();
   final TextEditingController _ctrlUserNationality = TextEditingController();
   final DropdownController<Gender> _ctrlUserGender = DropdownController<Gender>(items: Gender.values);
@@ -49,63 +54,79 @@ class UserEditPageState extends State<UserEditPage> {
   @override
   void initState() {
     super.initState();
+    _update();
+  }
+
+  Future<void> _update() async {
+    if (!widget.isDraft) {
+      User? info = await api_admin.user_detailed(widget.session, widget.userID);
+      if (info == null) {
+        Navigator.pop(context);
+        return;
+      }
+      setState(() => user_info = info);
+    }
     _applyUser();
   }
 
   void _applyUser() {
-    _ctrlUserKey.text = widget.user.key;
-    _ctrlUserEnabled = widget.user.enabled ?? false;
-    _ctrlUserActive = widget.user.active ?? false;
-    _ctrlUserFirstname.text = widget.user.firstname;
-    _ctrlUserLastname.text = widget.user.lastname;
-    _ctrlUserNickname.text = widget.user.nickname ?? '';
-    _ctrlUserAddress.text = widget.user.address ?? '';
-    _ctrlUserEmail.text = widget.user.email ?? '';
-    _ctrlUserPhone.text = widget.user.phone ?? '';
-    _ctrlUserIban.text = widget.user.iban ?? '';
-    _ctrlUserBirthDate.setDateTime(widget.user.birth_date);
-    _ctrlUserBirthLocation.text = widget.user.birth_location ?? '';
-    _ctrlUserGender.value = widget.user.gender;
-    _ctrlUserNationality.text = widget.user.nationality ?? '';
-    _ctrlUserHeight.text = widget.user.height?.toString() ?? '';
-    _ctrlUserWeight.text = widget.user.weight?.toString() ?? '';
-    _ctrlUserNote.text = widget.user.note ?? '';
+    _ctrlUserKey.text = user_info.key;
+    _ctrlUserEnabled = user_info.enabled ?? false;
+    _ctrlUserActive = user_info.active ?? false;
+    _ctrlUserFirstname.text = user_info.firstname;
+    _ctrlUserLastname.text = user_info.lastname;
+    _ctrlUserNickname.text = user_info.nickname ?? '';
+    _ctrlUserAddress.text = user_info.address ?? '';
+    _ctrlUserEmail.text = user_info.email ?? '';
+    _ctrlUserPhone.text = user_info.phone ?? '';
+    _ctrlUserIban.text = user_info.iban ?? '';
+    _ctrlUserBirthDate.setDateTime(user_info.birth_date);
+    _ctrlUserBirthLocation.text = user_info.birth_location ?? '';
+    _ctrlUserGender.value = user_info.gender;
+    _ctrlUserNationality.text = user_info.nationality ?? '';
+    _ctrlUserHeight.text = user_info.height?.toString() ?? '';
+    _ctrlUserWeight.text = user_info.weight?.toString() ?? '';
+    _ctrlUserNote.text = user_info.note ?? '';
   }
 
   void _gatherUser() {
-    widget.user.key = _ctrlUserKey.text;
-    widget.user.enabled = _ctrlUserEnabled;
-    widget.user.active = _ctrlUserActive;
-    widget.user.firstname = _ctrlUserFirstname.text;
-    widget.user.lastname = _ctrlUserLastname.text;
-    widget.user.nickname = _ctrlUserNickname.text.isNotEmpty ? _ctrlUserNickname.text : null;
-    widget.user.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
-    widget.user.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
-    widget.user.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
-    widget.user.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
-    widget.user.birth_date = _ctrlUserBirthDate.getDateTime();
-    widget.user.birth_location = _ctrlUserBirthLocation.text.isNotEmpty ? _ctrlUserBirthLocation.text : null;
-    widget.user.gender = _ctrlUserGender.value;
-    widget.user.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
-    widget.user.height = int.tryParse(_ctrlUserHeight.text);
-    widget.user.weight = int.tryParse(_ctrlUserWeight.text);
-    widget.user.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
+    user_info.key = _ctrlUserKey.text;
+    user_info.enabled = _ctrlUserEnabled;
+    user_info.active = _ctrlUserActive;
+    user_info.firstname = _ctrlUserFirstname.text;
+    user_info.lastname = _ctrlUserLastname.text;
+    user_info.nickname = _ctrlUserNickname.text.isNotEmpty ? _ctrlUserNickname.text : null;
+    user_info.address = _ctrlUserAddress.text.isNotEmpty ? _ctrlUserAddress.text : null;
+    user_info.email = _ctrlUserEmail.text.isNotEmpty ? _ctrlUserEmail.text : null;
+    user_info.phone = _ctrlUserPhone.text.isNotEmpty ? _ctrlUserPhone.text : null;
+    user_info.iban = _ctrlUserIban.text.isNotEmpty ? _ctrlUserIban.text : null;
+    user_info.birth_date = _ctrlUserBirthDate.getDateTime();
+    user_info.birth_location = _ctrlUserBirthLocation.text.isNotEmpty ? _ctrlUserBirthLocation.text : null;
+    user_info.gender = _ctrlUserGender.value;
+    user_info.nationality = _ctrlUserNationality.text.isNotEmpty ? _ctrlUserNationality.text : null;
+    user_info.height = int.tryParse(_ctrlUserHeight.text);
+    user_info.weight = int.tryParse(_ctrlUserWeight.text);
+    user_info.note = _ctrlUserNote.text.isNotEmpty ? _ctrlUserNote.text : null;
   }
 
   void _submitUser() async {
     _gatherUser();
 
-    if (widget.user.firstname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.isInvalid}")));
+    if (user_info.firstname.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
-    if (widget.user.lastname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}")));
+    if (user_info.lastname.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}")));
       return;
     }
 
-    bool success = widget.isDraft ? await server.user_create(widget.session, widget.user) : await server.user_edit(widget.session, widget.user);
+    bool success = widget.isDraft
+        ? await api_admin.user_create(widget.session, user_info)
+        : await api_admin.user_edit(widget.session, user_info);
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
@@ -116,7 +137,7 @@ class UserEditPageState extends State<UserEditPage> {
   }
 
   void _handleDelete() async {
-    if (!await server.user_delete(widget.session, widget.user)) {
+    if (!await api_admin.user_delete(widget.session, user_info)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
       return;
     }
@@ -125,7 +146,7 @@ class UserEditPageState extends State<UserEditPage> {
   }
 
   void _handlePasswordChange() async {
-    bool? success = await server.user_edit_password(widget.session, widget.user, _ctrlUserPassword.text);
+    bool? success = await api_admin.user_edit_password(widget.session, user_info, _ctrlUserPassword.text);
     if (success != null && !success) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
     }
@@ -134,33 +155,35 @@ class UserEditPageState extends State<UserEditPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageUserEdit),
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) Row(
-            children: [
-              Expanded(
-                child: AppUserTile(
-                  user: widget.user,
+          if (!widget.isDraft)
+            Row(
+              children: [
+                Expanded(
+                  child: AppUserTile(
+                    user: user_info,
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _handleDelete,
-              ),
-            ],
-          ),
-          if (!widget.isDraft) AppInfoRow(
-            info: AppLocalizations.of(context)!.userKey,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUserKey,
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: _handleDelete,
+                ),
+              ],
             ),
-          ),
+          if (!widget.isDraft)
+            AppInfoRow(
+              info: AppLocalizations.of(context)!.userKey,
+              child: TextField(
+                maxLines: 1,
+                controller: _ctrlUserKey,
+              ),
+            ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userEnabled,
             child: Align(
@@ -282,25 +305,64 @@ class UserEditPageState extends State<UserEditPage> {
             ),
           ),
           AppButton(
-            text: "Save",
+            text: AppLocalizations.of(context)!.actionSave,
             onPressed: _submitUser,
           ),
           if (!widget.isDraft) Divider(),
-          if (!widget.isDraft) AppInfoRow(
-            info: AppLocalizations.of(context)!.userPassword,
-            child: TextField(
-              obscureText: true,
-              maxLines: 1,
-              controller: _ctrlUserPassword,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.userPasswordChange,
-                suffixIcon: IconButton(
-                  onPressed: _handlePasswordChange,
-                  icon: Icon(Icons.save),
+          if (!widget.isDraft)
+            AppInfoRow(
+              info: AppLocalizations.of(context)!.userLicenseMain,
+              child: LicenseField(
+                license: user_info.license_main,
+                onCreate: () async {
+                  await api_admin.user_license_main_create(widget.session, user_info, License.fromVoid());
+                  _update();
+                },
+                onEdit: (License lic) async {
+                  await api_admin.user_license_main_edit(widget.session, user_info, lic);
+                  _update();
+                },
+                onDelete: () async {
+                  await api_admin.user_license_main_delete(widget.session, user_info);
+                  _update();
+                },
+              ),
+            ),
+          if (!widget.isDraft)
+            AppInfoRow(
+              info: AppLocalizations.of(context)!.userLicenseExtra,
+              child: LicenseField(
+                license: user_info.license_extra,
+                onCreate: () async {
+                  await api_admin.user_license_extra_create(widget.session, user_info, License.fromVoid());
+                  _update();
+                },
+                onEdit: (License lic) async {
+                  await api_admin.user_license_extra_edit(widget.session, user_info, lic);
+                  _update();
+                },
+                onDelete: () async {
+                  await api_admin.user_license_extra_delete(widget.session, user_info);
+                  _update();
+                },
+              ),
+            ),
+          if (!widget.isDraft)
+            AppInfoRow(
+              info: AppLocalizations.of(context)!.userPassword,
+              child: TextField(
+                obscureText: true,
+                maxLines: 1,
+                controller: _ctrlUserPassword,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.userPasswordChange,
+                  suffixIcon: IconButton(
+                    onPressed: _handlePasswordChange,
+                    icon: Icon(Icons.save),
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

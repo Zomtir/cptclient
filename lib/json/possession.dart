@@ -40,7 +40,7 @@ class Possession implements Comparable {
 
   @override
   int compareTo(other) {
-    int criteria1 = user.compareTo(other.user);
+    int criteria1 = user.compareTo(other.license);
     if (criteria1 != 0) return criteria1;
     return item.compareTo(other.item);
   }
