@@ -51,6 +51,6 @@ class Occurrence implements Comparable {
 
   @override
   int compareTo(other) {
-    return name.compareTo(other.bic);
+    return name.compareTo(other.name);
   }
 }
