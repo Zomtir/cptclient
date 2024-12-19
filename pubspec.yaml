@@ -57,6 +57,9 @@ dependencies:
   # CSV export
   csv: ^6.0.0
 
+  # PDF export
+  pdf: ^3.11.1
+
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0
@@ -78,6 +81,10 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
+    - assets/fonts/SourceSansPro/source-sans-pro.regular.ttf
+    - assets/fonts/SourceSansPro/source-sans-pro.bold.ttf
+    - assets/fonts/SourceSansPro/source-sans-pro.italic.ttf
+    - assets/fonts/SourceSansPro/source-sans-pro.bold-italic.ttf
 
 flutter_launcher_icons:
   android: "ic_launcher"
