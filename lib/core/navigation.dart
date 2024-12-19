@@ -11,9 +11,10 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yaml/yaml.dart';
+
+final GlobalKey<NavigatorState> naviKey = GlobalKey<NavigatorState>();
 
 late SharedPreferences prefs;
 UserSession? uSession;
