@@ -95,14 +95,13 @@ class ClubDetailPageState extends State<ClubDetailPage> {
           userID: widget.session.user!.id,
           title:
               '${AppLocalizations.of(context)!.pageClubStatisticPresence} - ${AppLocalizations.of(context)!.eventLeader}',
-          role: 'leader',
-          presence: (int userID) => api_admin.club_statistic_presence(
+          presence: (int userID, DateTime begin, DateTime end, String role) => api_admin.club_statistic_presence(
             widget.session,
             widget.club.id,
             widget.session.user!.id,
-            DateUtils.dateOnly(DateTime.now().copyWith(month: 1, day: 1)),
-            DateUtils.dateOnly(DateTime.now().copyWith(month: 12, day: 31).add(Duration(hours: 24))),
-            'leader',
+            begin,
+            end,
+            role,
           ),
         ),
       ),
