@@ -59,7 +59,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
 
   void _update() async {
     List<Event>? eventList = await widget.presence(
-        widget.userID, _ctrlBegin.getDate().copyWith(hour: 0), _ctrlBegin.getDate().copyWith(hour: 24), _ctrlRole.text);
+        widget.userID, _ctrlBegin.getDate().copyWith(hour: 0), _ctrlEnd.getDate().copyWith(hour: 24), _ctrlRole.text);
     if (eventList == null) return;
     eventList.sort();
 

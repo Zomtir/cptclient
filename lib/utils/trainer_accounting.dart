@@ -275,74 +275,85 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
         pw.Text(event.title),
         pw.Text(event.location!.name),
         pw.Text("${event.begin.fmtTime(context)}-${event.end.fmtTime(context)}"),
-        pw.Text("${event.end.difference(event.begin).inMinutes}"),
+        pw.Text("${event.end.difference(event.begin).inMinutes} min"),
       ],
     );
   }
 
-  int eventsPerPage = 25;
-  int pages = (event_list.length/eventsPerPage).ceil();
+  int eventsPerPage = 30;
+  int pages = (event_list.length / eventsPerPage).ceil();
 
   for (int page = 0; page < pages; page++) {
     int startIndex = page * eventsPerPage;
     int endIndex = min(startIndex + eventsPerPage, event_list.length);
     List<Event> partial_events = event_list.sublist(startIndex, endIndex);
+    int partial_minutes = partial_events.fold(0, (total, event) => total + event.end.difference(event.begin).inMinutes);
 
     doc.addPage(
       pw.Page(
-        build: (pw.Context context) =>
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+        build: (pw.Context context) => pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(),
+            pw.Text(
+              "Stundenaufstellung - Seite ${page + 1}",
+              textAlign: pw.TextAlign.center,
+              style: styleHeading,
+            ),
+            pw.SizedBox(height: 10),
+            pw.Table(
+              border: pw.TableBorder.all(color: PdfColors.black),
               children: [
-                buildHeader(),
-                pw.Text(
-                  "Stundenaufstellung - Seite ${page + 1}",
-                  textAlign: pw.TextAlign.center,
-                  style: styleHeading,
-                ),
-                pw.SizedBox(height: 10),
-                pw.Table(
-                  border: pw.TableBorder.all(color: PdfColors.black),
+                pw.TableRow(
                   children: [
-                    pw.TableRow(
-                      children: [
-                        pw.Text("Datum", style: styleBold),
-                        pw.Text("Tätigkeit", style: styleBold),
-                        pw.Text("Trainingsort", style: styleBold),
-                        pw.Text("Trainingszeit", style: styleBold),
-                        pw.Text("Dauer", style: styleBold),
-                      ],
-                    ),
-                    ...partial_events.map((event) => buildUnitRow(event)),
+                    pw.Text("Datum", style: styleBold),
+                    pw.Text("Tätigkeit", style: styleBold),
+                    pw.Text("Trainingsort", style: styleBold),
+                    pw.Text("Trainingszeit", style: styleBold),
+                    pw.Text("Dauer", style: styleBold),
                   ],
                 ),
-                pw.Spacer(),
-                pw.Container(
-                  height: 40,
-                  padding: const pw.EdgeInsets.all(5),
-                  decoration: boxInputDecoration,
-                  child: pw.Text("Kommentar zur Stundenaufstellung", style: styleTinyBold),
+                ...partial_events.map((event) => buildUnitRow(event)),
+              ],
+            ),
+            pw.Spacer(),
+            pw.Text(
+              "Zwischensumme",
+              textAlign: pw.TextAlign.right,
+              style: styleBold,
+            ),
+            pw.Text("${partial_minutes} min \n${partial_minutes / 60} h",
+                textAlign: pw.TextAlign.right,
+            ),
+            pw.SizedBox(height: 10),
+            pw.Container(
+              height: 40,
+              padding: const pw.EdgeInsets.all(5),
+              decoration: boxInputDecoration,
+              child: pw.Text("Kommentar", style: styleTinyBold),
+            ),
+            pw.Row(
+              children: [
+                pw.Expanded(
+                  child: pw.Container(
+                    height: 40,
+                    padding: const pw.EdgeInsets.all(5),
+                    decoration: boxInputDecoration,
+                    child: pw.Text("Datum/Unterschrift des Übungsleiters", style: styleTinyBold),
+                  ),
                 ),
-                pw.Row(
-                  children: [
-                    pw.Expanded(
-                        child: pw.Container(
-                          height: 40,
-                          padding: const pw.EdgeInsets.all(5),
-                          decoration: boxInputDecoration,
-                          child: pw.Text("Datum/Unterschrift des Übungsleiters", style: styleTinyBold),
-                        )),
-                    pw.Expanded(
-                        child: pw.Container(
-                          height: 40,
-                          padding: const pw.EdgeInsets.all(5),
-                          decoration: boxInputDecoration,
-                          child: pw.Text("Datum/Unterschrift des Abteilungsleiters", style: styleTinyBold),
-                        )),
-                  ],
+                pw.Expanded(
+                  child: pw.Container(
+                    height: 40,
+                    padding: const pw.EdgeInsets.all(5),
+                    decoration: boxInputDecoration,
+                    child: pw.Text("Datum/Unterschrift des Abteilungsleiters", style: styleTinyBold),
+                  ),
                 ),
               ],
             ),
+          ],
+        ),
       ),
     );
   }
