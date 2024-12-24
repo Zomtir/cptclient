@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void trainer_accounting_pdf(BuildContext context, Club club, User user, String discipline, DateTime date_from,
     DateTime date_until, List<Event> event_list) async {
@@ -59,10 +60,13 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.stretch,
       children: [
-        pw.Text(
-          club.disciplines!,
-          style: styleTiny,
-          textAlign: pw.TextAlign.center,
+        pw.Container(
+          height: 15,
+          child: pw.Text(
+            club.disciplines ?? '',
+            style: styleTiny,
+            textAlign: pw.TextAlign.center,
+          ),
         ),
         pw.Divider(color: PdfColors.grey, thickness: 1),
         pw.Row(
@@ -91,7 +95,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
         children: [
           buildHeader(),
           pw.Text(
-            "Übungsleiterabrechnung",
+            AppLocalizations.of(context)!.trainerAccounting,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
@@ -104,13 +108,13 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text("Abteilung"),
+                  pw.Text(AppLocalizations.of(context)!.clubDivision),
                   pw.Text("$discipline"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Zeitraum"),
+                  pw.Text(AppLocalizations.of(context)!.dateFrame),
                   pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
                 ],
               ),
@@ -119,53 +123,51 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Vorname, Name"),
+                  pw.Text("${AppLocalizations.of(context)!.userFirstname}, ${AppLocalizations.of(context)!.userLastname}"),
                   pw.Text("${user.firstname} ${user.lastname}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Anschrift"),
+                  pw.Text(AppLocalizations.of(context)!.userAddress),
                   pw.Text("${user.address}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Telefon"),
+                  pw.Text(AppLocalizations.of(context)!.userPhone),
                   pw.Text("${user.phone}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("E-Mail"),
+                  pw.Text(AppLocalizations.of(context)!.userEmail),
                   pw.Text("${user.email}"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("IBAN"),
-                  pw.Text("${user.bank_account!.iban}"),
+                  pw.Text(AppLocalizations.of(context)!.bankaccIban),
+                  pw.Text("${user.bank_account?.iban ?? ''}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("BIC"),
-                  pw.Text("${user.bank_account!.bic}"),
+                  pw.Text(AppLocalizations.of(context)!.bankaccBic),
+                  pw.Text("${user.bank_account?.bic ?? ''}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Name der Bank"),
-                  pw.Text("${user.bank_account!.institute}"),
+                  pw.Text(AppLocalizations.of(context)!.bankaccInstitute),
+                  pw.Text("${user.bank_account?.institute ?? ''}"),
                 ],
               ),
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Text(
-              "Ich versichere, dass ich die Übungsstunden entsprechend der Stundenaufstellung für den Verein {club_name} abgehalten habe."
-                  .replaceFirst("{club_name}", club.name)),
+          pw.Text(AppLocalizations.of(context)!.trainerTimeStatment.replaceFirst("{club_name}", club.name)),
           pw.SizedBox(height: 10),
           pw.Table(
             columnWidths: {
@@ -175,31 +177,31 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text("Übungsstunden"),
+                  pw.Text(AppLocalizations.of(context)!.trainerTimeTotal),
                   pw.Text("${NumberFormat.decimalPattern(locale).format(compensation_hours)} h"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Dauer pro Einheit"),
+                  pw.Text(AppLocalizations.of(context)!.trainerTimePerUnit),
                   pw.Text("${NumberFormat.decimalPattern(locale).format(compensation_unit_duration)} h"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Einheiten"),
+                  pw.Text(AppLocalizations.of(context)!.trainerUnitTotal),
                   pw.Text("${NumberFormat.decimalPattern(locale).format(compensation_units)}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Vergütung pro Einheit"),
+                  pw.Text(AppLocalizations.of(context)!.trainerCompensationPerUnit),
                   pw.Text("${NumberFormat.decimalPattern(locale).format(compensation_rate)} Euro"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text("Vergütungsbetrag"),
+                  pw.Text(AppLocalizations.of(context)!.trainerCompensationTotal),
                   pw.Text("${NumberFormat.decimalPattern(locale).format(compensation_sum)} Euro"),
                 ],
               ),
@@ -207,19 +209,14 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            "Verzichtserklärung",
+            AppLocalizations.of(context)!.trainerWaiverStatement,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
           pw.SizedBox(height: 10),
-          pw.Text(
-              "Die mir zustehende Vergütung aus gemeinnütziger Tätigkeit soll nur in dem angegebenen Anteil ausgezahlt werden. "
-                      "Den nicht ausgezahlten Betrag wende ich dem Verein {club_name} als Spende zu und bitte um "
-                      "Erteilung einer entsprechenden Zuwendungsbestätigung."
-                  .replaceFirst("{club_name}", club.name)),
+          pw.Text(AppLocalizations.of(context)!.trainerWaiverDonationClause.replaceFirst("{club_name}", club.name)),
           pw.SizedBox(height: 5),
-          pw.Text("Gleichzeitig versichere ich hiermit, dass die Steuerbefreiung nach § 3 Nr. 26a EStG "
-              "nicht bereits für eine andere ehrenamtliche Tätigkeit berücksichtigt wurde."),
+          pw.Text(AppLocalizations.of(context)!.trainerWaiverTaxExemptionClause),
           pw.SizedBox(height: 10),
           pw.Table(
             tableWidth: pw.TableWidth.min,
@@ -230,14 +227,14 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text("Vergütungsbetrag"),
+                  pw.Text(AppLocalizations.of(context)!.trainerCompensationTotal),
                   pw.Text("${NumberFormat.decimalPattern(locale).format(compensation_sum)} Euro"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("davon Auszahlungsbetrag"),
+                  pw.Text(AppLocalizations.of(context)!.trainerCompensationDisbursement),
                   pw.Container(
                     height: 20,
                     decoration: boxInputDecoration,
@@ -247,7 +244,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("davon Zuwendungsspende"),
+                  pw.Text(AppLocalizations.of(context)!.trainerCompensationDontation),
                   pw.Container(
                     height: 20,
                     decoration: boxInputDecoration,
@@ -261,7 +258,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             height: 50,
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
-            child: pw.Text("Ort/Datum/Unterschrift des Übungsleiters", style: styleTinyBold),
+            child: pw.Text("${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}", style: styleTinyBold),
           ),
         ],
       ),
@@ -273,7 +270,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
       children: [
         pw.Text(event.begin.fmtDate(context)),
         pw.Text(event.title),
-        pw.Text(event.location!.name),
+        pw.Text(event.location?.name ?? ''),
         pw.Text("${event.begin.fmtTime(context)}-${event.end.fmtTime(context)}"),
         pw.Text("${event.end.difference(event.begin).inMinutes} min"),
       ],
@@ -296,21 +293,21 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
           children: [
             buildHeader(),
             pw.Text(
-              "Stundenaufstellung - Seite ${page + 1}",
+              "${AppLocalizations.of(context)!.trainerTimeTable} - ${AppLocalizations.of(context)!.labelPage} ${page + 1}",
               textAlign: pw.TextAlign.center,
               style: styleHeading,
             ),
             pw.SizedBox(height: 10),
             pw.Table(
-              border: pw.TableBorder.all(color: PdfColors.black),
+              border: pw.TableBorder.all(color: PdfColors.grey700),
               children: [
                 pw.TableRow(
                   children: [
-                    pw.Text("Datum", style: styleBold),
-                    pw.Text("Tätigkeit", style: styleBold),
-                    pw.Text("Trainingsort", style: styleBold),
-                    pw.Text("Trainingszeit", style: styleBold),
-                    pw.Text("Dauer", style: styleBold),
+                    pw.Text(AppLocalizations.of(context)!.dateDate, style: styleBold),
+                    pw.Text(AppLocalizations.of(context)!.trainerEventActivity, style: styleBold),
+                    pw.Text(AppLocalizations.of(context)!.trainerEventLocation, style: styleBold),
+                    pw.Text(AppLocalizations.of(context)!.dateTime, style: styleBold),
+                    pw.Text(AppLocalizations.of(context)!.dateDuration, style: styleBold),
                   ],
                 ),
                 ...partial_events.map((event) => buildUnitRow(event)),
@@ -318,19 +315,19 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             ),
             pw.Spacer(),
             pw.Text(
-              "Zwischensumme",
+              AppLocalizations.of(context)!.labelSubtotal,
               textAlign: pw.TextAlign.right,
               style: styleBold,
             ),
             pw.Text("${partial_minutes} min \n${partial_minutes / 60} h",
                 textAlign: pw.TextAlign.right,
             ),
-            pw.SizedBox(height: 10),
+            pw.SizedBox(height: 5),
             pw.Container(
               height: 40,
               padding: const pw.EdgeInsets.all(5),
               decoration: boxInputDecoration,
-              child: pw.Text("Kommentar", style: styleTinyBold),
+              child: pw.Text(AppLocalizations.of(context)!.labelComment, style: styleTinyBold),
             ),
             pw.Row(
               children: [
@@ -375,7 +372,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
                     "nach § 3 Nr. 26 EstG zwischen dem Verein {club_name}, vertreten "
                     "durch den 1. Vorsitzenden {club_chairman}, und dem/der Übungsleiter/in."
                 .replaceFirst("{club_name}", club.name)
-                .replaceFirst("{club_chairman}", club.chairman!),
+                .replaceFirst("{club_chairman}", club.chairman ?? '\t\t\t'),
           ),
           pw.SizedBox(height: 10),
           pw.Text(
