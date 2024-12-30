@@ -151,6 +151,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   List<Widget> buildGrid(BuildContext context) {
+    int today = DateTime.now().day;
     List<Widget> lc = List.generate(_monthDays, (index) {
       return Container(
         decoration: BoxDecoration(
@@ -160,13 +161,18 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             InkWell(
-                child: Text(
-                  '${index + 1}',
-                  style: Theme.of(context).textTheme.labelLarge,
-                  textAlign: TextAlign.center,
+                child:
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: today == index +1 ? Colors.blue : null,
+                  child: Text(
+                    '${index + 1}',
+                    style: Theme.of(context).textTheme.labelLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 onTap: () => _handleDay(index + 1)),
-            ...buildDay(context, index + 1),
+            ...buildDayEvents(context, index + 1),
           ],
         ),
       );
@@ -179,7 +185,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
     return spacer + lc;
   }
 
-  List<Widget> buildDay(BuildContext context, int day) {
+  List<Widget> buildDayEvents(BuildContext context, int day) {
     return List.generate(_eventsFiltered[day]?.length ?? 0, (index) {
       return InkWell(
         onTap: () => _handleSelectEvent(_eventsFiltered[day]![index]),
