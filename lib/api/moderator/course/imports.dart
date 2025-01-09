@@ -40,7 +40,7 @@ Future<bool> course_create(UserSession session, Course course) async {
   );
 
   bool success = (response.statusCode == 200);
-  messageSuccess(success);
+  messageStatus(success);
   return success;
 }
 

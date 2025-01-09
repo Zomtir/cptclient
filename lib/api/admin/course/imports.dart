@@ -45,7 +45,7 @@ Future<bool> course_create(UserSession session, Course course) async {
   );
 
   bool success = (response.statusCode == 200);
-  messageSuccess(success);
+  messageStatus(success);
   return success;
 }
 
@@ -104,7 +104,7 @@ Future<bool> course_requirement_add(UserSession session, Requirement requirement
   );
 
   bool success = (response.statusCode == 200);
-  messageSuccess(success);
+  messageStatus(success);
   return success;
 }
 
@@ -119,7 +119,7 @@ Future<bool> course_requirement_remove(UserSession session, Requirement requirem
   );
 
   bool success = (response.statusCode == 200);
-  messageSuccess(success);
+  messageStatus(success);
   return success;
 }
 

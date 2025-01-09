@@ -55,7 +55,7 @@ Future<bool> event_create(UserSession session, Event event) async {
   );
 
   bool success = (response.statusCode == 200);
-  messageSuccess(success);
+  messageStatus(success);
   return success;
 }
 

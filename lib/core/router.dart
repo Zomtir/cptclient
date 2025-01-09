@@ -16,6 +16,7 @@ bool firstStart = true;
 GoRouter createRouter() {
   return GoRouter(
     initialLocation: '/welcome',
+    navigatorKey: navi.naviKey,
     routes: <RouteBase>[
       GoRoute(
         path: '/welcome',
