@@ -5,7 +5,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppLicenseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -34,37 +34,35 @@ class UserLicensePageState extends State<UserLicensePage> {
 
   void _apply() {
     _ctrlName.text = widget.license.name;
-    _ctrlNumber.text = widget.license.number.toString();
+    _ctrlNumber.text = widget.license.number;
     _ctrlExpiration.setDateTime(widget.license.expiration);
   }
 
-  void _gather() {
-    if (_ctrlName.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.licenseName} ${AppLocalizations.of(context)!.isInvalid}")));
-      return;
+  bool _gather() {
+    if (_ctrlName.text.isEmpty || _ctrlNumber.text.length > 50) {
+      messageText("${AppLocalizations.of(context)!.licenseName} ${AppLocalizations.of(context)!.isInvalid}");
+      return false;
     }
 
-    if (parseNullInt(_ctrlNumber.text) == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.licenseNumber} ${AppLocalizations.of(context)!.isInvalid}")));
-      return;
+    if (_ctrlNumber.text.isEmpty || _ctrlNumber.text.length > 20 ) {
+      messageText("${AppLocalizations.of(context)!.licenseNumber} ${AppLocalizations.of(context)!.isInvalid}");
+      return false;
     }
 
     if (_ctrlExpiration.getDateTime() == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content:
-              Text("${AppLocalizations.of(context)!.licenseExpiration} ${AppLocalizations.of(context)!.isInvalid}")));
-      return;
+      messageText("${AppLocalizations.of(context)!.licenseExpiration} ${AppLocalizations.of(context)!.isInvalid}");
+      return false;
     }
 
     widget.license.name = _ctrlName.text;
-    widget.license.number = parseNullInt(_ctrlNumber.text)!;
+    widget.license.number = _ctrlNumber.text;
     widget.license.expiration = _ctrlExpiration.getDateTime()!;
+
+    return true;
   }
 
   void _submit() async {
-    _gather();
+    if (!_gather()) return;
     await widget.onEdit(widget.license);
     Navigator.pop(context);
   }

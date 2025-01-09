@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class License extends FieldInterface implements Comparable {
   final int id;
-  int number;
+  String number;
   String name;
   DateTime expiration;
 
@@ -14,7 +14,7 @@ class License extends FieldInterface implements Comparable {
 
   License.fromVoid()
       : id = 0,
-        number = 0,
+        number = "",
         name = "",
         expiration = DateTime.now();
 
