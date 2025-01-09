@@ -17,6 +17,7 @@ import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/pages/UserBankAccountPage.dart';
 import 'package:cptclient/pages/UserLicensePage.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -113,15 +114,18 @@ class UserEditPageState extends State<UserEditPage> {
   void _submitUser() async {
     _gatherUser();
 
-    if (user_info.firstname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.isInvalid}")));
+    if (user_info.firstname.isEmpty || user_info.firstname.length > 20) {
+      messageText("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
-    if (user_info.lastname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}")));
+    if (user_info.lastname.isEmpty || user_info.lastname.length > 20) {
+      messageText("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}");
+      return;
+    }
+
+    if (user_info.nickname != null && user_info.nickname!.length > 20) {
+      messageText("${AppLocalizations.of(context)!.userNickname} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
@@ -129,10 +133,8 @@ class UserEditPageState extends State<UserEditPage> {
         ? await api_admin.user_create(widget.session, user_info)
         : await api_admin.user_edit(widget.session, user_info);
 
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
-      return;
-    }
+    messageFailureOnly(success);
+    if (!success) return;
 
     Navigator.pop(context);
   }
