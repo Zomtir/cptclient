@@ -5,6 +5,8 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/TextWrapList.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,11 +15,7 @@ class ClubEditPage extends StatefulWidget {
   final Club club;
   final bool isDraft;
 
-  ClubEditPage(
-      {super.key,
-      required this.session,
-      required this.club,
-      required this.isDraft});
+  ClubEditPage({super.key, required this.session, required this.club, required this.isDraft});
 
   @override
   ClubEditPageState createState() => ClubEditPageState();
@@ -27,7 +25,7 @@ class ClubEditPageState extends State<ClubEditPage> {
   final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlDescription = TextEditingController();
-  final TextEditingController _ctrlDisciplines = TextEditingController();
+  String? _ctrlDisciplines;
   final TextEditingController _ctrlImageURL = TextEditingController();
   final TextEditingController _ctrlChairman = TextEditingController();
 
@@ -43,7 +41,7 @@ class ClubEditPageState extends State<ClubEditPage> {
     _ctrlKey.text = widget.club.key;
     _ctrlName.text = widget.club.name;
     _ctrlDescription.text = widget.club.description ?? '';
-    _ctrlDisciplines.text = widget.club.disciplines ?? '';
+    _ctrlDisciplines = widget.club.disciplines ?? '';
     _ctrlImageURL.text = widget.club.image_url ?? '';
     _ctrlChairman.text = widget.club.chairman ?? '';
   }
@@ -52,7 +50,7 @@ class ClubEditPageState extends State<ClubEditPage> {
     widget.club.key = _ctrlKey.text;
     widget.club.name = _ctrlName.text;
     widget.club.description = _ctrlDescription.text.isNotEmpty ? _ctrlDescription.text : null;
-    widget.club.disciplines = _ctrlDisciplines.text.isNotEmpty ? _ctrlDisciplines.text : null;
+    widget.club.disciplines = _ctrlDisciplines!.isNotEmpty ? _ctrlDisciplines! : null;
     widget.club.image_url = _ctrlImageURL.text.isNotEmpty ? _ctrlImageURL.text : null;
     widget.club.chairman = _ctrlChairman.text.isNotEmpty ? _ctrlChairman.text : null;
   }
@@ -61,16 +59,12 @@ class ClubEditPageState extends State<ClubEditPage> {
     _gatherInfo();
 
     if (widget.club.key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context)!.clubKey} ${AppLocalizations.of(context)!.isInvalid}")));
+      messageText("${AppLocalizations.of(context)!.clubKey} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
     if (widget.club.name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context)!.clubName} ${AppLocalizations.of(context)!.isInvalid}")));
+      messageText("${AppLocalizations.of(context)!.clubName} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
@@ -91,8 +85,7 @@ class ClubEditPageState extends State<ClubEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppClubTile(club: widget.club),
+          if (!widget.isDraft) AppClubTile(club: widget.club),
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubKey,
             child: TextField(
@@ -116,9 +109,9 @@ class ClubEditPageState extends State<ClubEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubDisciplines,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlDisciplines,
+            child: TextWrapList(
+              text: _ctrlDisciplines!,
+              onChanged: (text) => _ctrlDisciplines = text,
             ),
           ),
           AppInfoRow(

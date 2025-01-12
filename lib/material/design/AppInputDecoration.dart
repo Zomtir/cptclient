@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppInputDecoration extends InputDecoration {
-  const AppInputDecoration()
+  const AppInputDecoration({super.suffixIcon})
       : super(
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
