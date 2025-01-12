@@ -1,5 +1,6 @@
 import 'package:cptclient/api/login.dart' as server;
 import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/EnrollPage.dart';
 import 'package:cptclient/pages/LoginLandingPage.dart';
@@ -44,10 +45,10 @@ GoRouter createRouter() {
       GoRoute(
         path: '/user',
         builder: (BuildContext context, GoRouterState state) {
-          return MemberLandingPage(session: navi.uSession!);
+          return MemberLandingPage(session: navi.userSession!);
         },
         redirect: (BuildContext context, GoRouterState state) {
-          if (navi.uSession == null || navi.uSession?.user == null) {
+          if (navi.userSession == null || navi.userSession?.user == null) {
             return '/login';
           }
           return null;
@@ -56,10 +57,10 @@ GoRouter createRouter() {
       GoRoute(
         path: '/event',
         builder: (BuildContext context, GoRouterState state) {
-          if (navi.eSession == null) {
+          if (navi.eventSession == null) {
             return LoginLandingPage();
           } else {
-            return EnrollPage(session: navi.eSession!);
+            return EnrollPage(session: navi.eventSession!);
           }
         },
       ),
@@ -76,14 +77,14 @@ GoRouter createRouter() {
               return;
             }
 
-            String? token = await server.loginEvent(key, pwd);
+            EventSession? session = await server.loginEvent(key, pwd);
 
-            if (token == null) {
+            if (session == null) {
               gotoRoute(context, '/login');
               return;
             }
-
-            navi.loginEvent(context, token);
+            navi.addEventSession(session);
+            navi.loginEvent(context, session);
           });
         },
       ),

@@ -1,5 +1,6 @@
 import 'package:cptclient/api/login.dart' as server;
 import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,14 @@ class LoginEventPageState extends State<LoginEventPage> {
   }
 
   void _loginEvent() async {
-    String? token = await server.loginEvent(_ctrlLogin.text, _ctrlPasswd.text);
+    EventSession? session = await server.loginEvent(_ctrlLogin.text, _ctrlPasswd.text);
 
     _ctrlLogin.text = _eventDefault;
     _ctrlPasswd.text = "";
 
-    if (token != null) navi.loginEvent(context, token);
+    if (session == null) return;
+    navi.addEventSession(session);
+    navi.loginEvent(context, session);
   }
 
   @override

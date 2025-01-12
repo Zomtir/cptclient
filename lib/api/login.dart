@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 
@@ -32,7 +33,7 @@ Future<String?> getUserSalt(String key) async {
   return utf8.decode(response.bodyBytes);
 }
 
-Future<String?> loginUser(String key, String pwd) async {
+Future<UserSession?> loginUser(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return null;
 
   String? salt = await getUserSalt(key);
@@ -54,10 +55,10 @@ Future<String?> loginUser(String key, String pwd) async {
     return null;
   }
 
-  return response.body;
+  return UserSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
 }
 
-Future<String?> loginEvent(String key, String pwd) async {
+Future<EventSession?> loginEvent(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return null;
 
   Credential credential = Credential(key, pwd, "");
@@ -76,10 +77,10 @@ Future<String?> loginEvent(String key, String pwd) async {
     return null;
   }
 
-  return response.body;
+  return EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
 }
 
-Future<String?> loginCourse(String key) async {
+Future<EventSession?> loginCourse(String key) async {
   if (key.isEmpty) return null;
 
   final response = await client.get(
@@ -94,10 +95,10 @@ Future<String?> loginCourse(String key) async {
     return null;
   }
 
-  return response.body;
+  return EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
 }
 
-Future<String?> loginLocation(String key) async {
+Future<EventSession?> loginLocation(String key) async {
   if (key.isEmpty) return null;
 
   final response = await client.get(
@@ -112,5 +113,5 @@ Future<String?> loginLocation(String key) async {
     return null;
   }
 
-  return response.body;
+  return EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
 }

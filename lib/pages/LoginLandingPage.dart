@@ -1,5 +1,6 @@
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/core/router.dart' as router;
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/AboutPage.dart';
@@ -8,9 +9,9 @@ import 'package:cptclient/pages/LoginEventPage.dart';
 import 'package:cptclient/pages/LoginLocationPage.dart';
 import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginLandingPage extends StatefulWidget {
   LoginLandingPage({super.key});
@@ -20,21 +21,19 @@ class LoginLandingPage extends StatefulWidget {
 }
 
 class LoginLandingPageState extends State<LoginLandingPage> {
-  String userToken = '';
-  String eventToken = '';
+  List<UserSession> userSessions = [];
+  List<EventSession> eventSessions = [];
 
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
+    _loadSessions();
   }
 
-  Future<void> _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  Future<void> _loadSessions() async {
     setState(() {
-      userToken = prefs.getString('UserToken')!;
-      eventToken = prefs.getString('EventToken')!;
+      userSessions = navi.userSessions;
+      eventSessions = navi.eventSessions;
     });
   }
 
@@ -57,45 +56,15 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         ),
       ),
       body: AppBody(children: [
-        if (userToken.isNotEmpty)
+        if (userSessions.isNotEmpty)
           MenuSection(
             title: AppLocalizations.of(context)!.sessionActiveUser,
-            children: [
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.sessionResume),
-                onTap: () {
-                  navi.loginUser(context, userToken);
-                  _loadPreferences();
-                },
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.sessionLogout),
-                onTap: () {
-                  navi.logoutUser(context);
-                  _loadPreferences();
-                },
-              ),
-            ],
+            children: userSessions.map((entry) => buildUserSession(entry)).toList(),
           ),
-        if (eventToken.isNotEmpty)
+        if (eventSessions.isNotEmpty)
           MenuSection(
             title: AppLocalizations.of(context)!.sessionActiveEvent,
-            children: [
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.sessionResume),
-                onTap: () {
-                  navi.loginEvent(context, eventToken);
-                  _loadPreferences();
-                },
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.sessionLogout),
-                onTap: () {
-                  navi.logoutEvent(context);
-                  _loadPreferences();
-                },
-              ),
-            ],
+            children: eventSessions.map((entry) => buildEventSession(entry)).toList(),
           ),
         MenuSection(
           title: AppLocalizations.of(context)!.sessionLogin,
@@ -153,6 +122,66 @@ class LoginLandingPageState extends State<LoginLandingPage> {
           ],
         ),
       ]),
+    );
+  }
+
+  Widget buildUserSession(UserSession session) {
+    return ListTile(
+      title: Text(session.key),
+      subtitle: Text(session.expiration.fmtDateTime(context)),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () async {
+              bool active = await navi.loginUser(context, session);
+              if (!active) navi.removeUserSession(session);
+              _loadSessions();
+            },
+            icon: Tooltip(
+              child: Icon(Icons.login),
+              message: AppLocalizations.of(context)!.sessionLogin,
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              navi.removeUserSession(session);
+              _loadSessions();
+            },
+            icon: Tooltip(
+              child: Icon(Icons.logout),
+              message: AppLocalizations.of(context)!.sessionLogout,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildEventSession(EventSession session) {
+    return ListTile(
+      title: Text(session.key),
+      subtitle: Text(session.expiration.fmtDateTime(context)),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () async {
+              bool active = await navi.loginEvent(context, session);
+              if (!active) navi.removeEventSession(session);
+              _loadSessions();
+            },
+            icon: Icon(Icons.login),
+          ),
+          IconButton(
+            onPressed: () async {
+              navi.removeEventSession(session);
+              _loadSessions();
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
     );
   }
 }

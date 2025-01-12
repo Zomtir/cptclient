@@ -2,6 +2,7 @@ import 'package:cptclient/api/anon/location.dart' as api_anon;
 import 'package:cptclient/api/login.dart' as server;
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
@@ -34,8 +35,10 @@ class LoginLocationPageState extends State<LoginLocationPage> {
   }
 
   void _loginLocation() async {
-    String? token = await server.loginLocation(_ctrlLogin.text);
-    if (token != null) navi.loginEvent(context, token);
+    EventSession? session = await server.loginLocation(_ctrlLogin.text);
+    if (session == null) return;
+    navi.addEventSession(session);
+    navi.loginEvent(context, session);
   }
 
   @override

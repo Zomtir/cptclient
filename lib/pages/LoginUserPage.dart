@@ -1,5 +1,6 @@
 import 'package:cptclient/api/login.dart' as server;
 import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,8 @@ class LoginUserPage extends StatefulWidget {
 
 class LoginUserPageState extends State<LoginUserPage> {
   String _userDefault = '';
-  final TextEditingController _ctrlUserLogin = TextEditingController();
-  final TextEditingController _ctrlUserPasswd = TextEditingController();
+  final TextEditingController _ctrlLogin = TextEditingController();
+  final TextEditingController _ctrlPasswd = TextEditingController();
 
   @override
   void initState() {
@@ -27,16 +28,18 @@ class LoginUserPageState extends State<LoginUserPage> {
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userDefault = prefs.getString('UserDefault')!;
-    _ctrlUserLogin.text = _userDefault;
+    _ctrlLogin.text = _userDefault;
   }
 
   void _loginUser() async {
-    String? token = await server.loginUser(_ctrlUserLogin.text, _ctrlUserPasswd.text);
+    UserSession? session = await server.loginUser(_ctrlLogin.text, _ctrlPasswd.text);
 
-    _ctrlUserLogin.text = _userDefault;
-    _ctrlUserPasswd.text = "";
+    _ctrlLogin.text = _userDefault;
+    _ctrlPasswd.text = "";
 
-    if (token != null) navi.loginUser(context, token);
+    if (session == null) return;
+    navi.addUserSession(session);
+    navi.loginUser(context, session);
   }
 
   @override
@@ -50,7 +53,7 @@ class LoginUserPageState extends State<LoginUserPage> {
         ListTile(
           title: TextField(
             maxLines: 1,
-            controller: _ctrlUserLogin,
+            controller: _ctrlLogin,
             autofillHints: const <String>[AutofillHints.username],
             textInputAction: TextInputAction.next,
             onEditingComplete: () => node.nextFocus(),
@@ -59,7 +62,7 @@ class LoginUserPageState extends State<LoginUserPage> {
               hintText: "Only alphanumeric characters",
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlUserLogin.clear(),
+                onPressed: () => _ctrlLogin.clear(),
                 icon: Icon(Icons.clear),
               ),
             ),
@@ -70,7 +73,7 @@ class LoginUserPageState extends State<LoginUserPage> {
             autofocus: true,
             obscureText: true,
             maxLines: 1,
-            controller: _ctrlUserPasswd,
+            controller: _ctrlPasswd,
             autofillHints: const <String>[AutofillHints.password],
             textInputAction: TextInputAction.next,
             onEditingComplete: () => node.nextFocus(),
@@ -78,7 +81,7 @@ class LoginUserPageState extends State<LoginUserPage> {
               labelText: "Password",
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlUserPasswd.clear(),
+                onPressed: () => _ctrlPasswd.clear(),
                 icon: Icon(Icons.clear),
               ),
             ),
