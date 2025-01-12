@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## Release v1.2.0 (12 Jan 2024)
+
+- feat: Session recovery overhaul
+  - UI shows login key and expiration date
+  - Multiple sessions are possible
+- feat: PDF accounting
+  - Coach accounting
+  - Waiver/donation statement
+  - List of hours
+  - Tax exemption statement
+  - License usage statment
+- feat: Text wrap list for club disciplines
+- feat: Allow alphanumeric license number
+- feat: Added location to presence statistics
+- feat: Highlight for current day in calendar
+- refactor: Merge event class division and event organisation page
+- locale: Translate tooltips of the user possession page
+- fix: Admin unable to change event passwords
+- fix: Insufficient feedback for invalid user names
+- fix: Moved navi key to GoRouter to obtain build context
+
 ## Release v1.1.0 (21st Dec 2024)
 
 - feat: Improved user bank details
