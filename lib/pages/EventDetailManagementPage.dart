@@ -17,7 +17,6 @@ import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventCourseEditPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
-import 'package:cptclient/pages/EventStatisticDivisionPage.dart';
 import 'package:cptclient/pages/EventStatisticOrganisationPage.dart';
 import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
 import 'package:flutter/material.dart';
@@ -276,15 +275,6 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
     );
   }
 
-  Future<void> _handleStatisticDivision() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventStatisticDivisionPage(session: widget.session, event: event!),
-      ),
-    );
-  }
-
   Future<void> _handleStatisticOrganisation() async {
     List<Organisation> organisations = await api_anon.organisation_list();
     Organisation? organisation = await showTilePicker(context: context, items: organisations);
@@ -418,10 +408,6 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventStatisticPacklist),
                 onTap: _handleStatisticPacklist,
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventStatisticDivision),
-                onTap: _handleStatisticDivision,
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventStatisticOrganisation),
