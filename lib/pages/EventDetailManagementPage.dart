@@ -65,6 +65,7 @@ class EventDetailManagementPageState extends State<EventDetailManagementPage> {
           event: event!,
           isDraft: false,
           onSubmit: api_admin.event_edit,
+          onPasswordChange: api_admin.event_password_edit,
         ),
       ),
     );
