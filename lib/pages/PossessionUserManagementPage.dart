@@ -129,12 +129,12 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                         Row(
                           children: [
                             Tooltip(
-                              message: "${_possessions[index].owned}", // TODO locale
+                              message: _possessions[index].owned ? AppLocalizations.of(context)!.labelTrue : AppLocalizations.of(context)!.labelFalse,
                               child: Icon(Icons.catching_pokemon, color: _possessions[index].owned ? Colors.green : Colors.red),
                             ),
                             if (!_possessions[index].owned)
                               Tooltip(
-                                message: "Give ownership of the item to the user", // TODO locale
+                                message: AppLocalizations.of(context)!.inventoryOwnershipFromClubToUser,
                                 child: IconButton(
                                   icon: Icon(Icons.card_giftcard),
                                   onPressed: () => _handleHandout(_possessions[index]),
@@ -142,7 +142,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                               ),
                             if (_possessions[index].owned)
                               Tooltip(
-                                message: "Assign this item back on a club stock", // TODO locale
+                                message: AppLocalizations.of(context)!.inventoryOwnershipFromUserToClub,
                                 child: IconButton(
                                   icon: Icon(Icons.storefront),
                                   onPressed: () => _handleRestock(_possessions[index]),
@@ -156,7 +156,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                           children: [
                             if (!_possessions[index].owned)
                               Tooltip(
-                                message: "Physically return the item", // TODO locale
+                                message: AppLocalizations.of(context)!.inventoryPossessionFromUserToClub,
                                 child: IconButton(
                                   icon: Icon(Icons.redo),
                                   onPressed: () => _handleReturn(_possessions[index]),
@@ -164,7 +164,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                               ),
                             if (_possessions[index].owned)
                               Tooltip(
-                                message: "The item is no longer available", // TODO
+                                message: AppLocalizations.of(context)!.inventoryOwnershipFromUserDelete,
                                 child: IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () => _handleDelete(_possessions[index]),

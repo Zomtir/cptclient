@@ -63,7 +63,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
         pw.Container(
           height: 15,
           child: pw.Text(
-            club.disciplines ?? '',
+            (club.disciplines ?? '').split(',').join(' ∙ '),
             style: styleTiny,
             textAlign: pw.TextAlign.center,
           ),
