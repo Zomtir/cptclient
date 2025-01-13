@@ -26,7 +26,7 @@ class Team extends FieldInterface implements Comparable {
   Team.fromTeam(Team team)
       : id = 0,
         key = assembleKey([2,2,2]),
-        name = "${team.name} (Copy)",
+        name = "${team.name.substring(0, team.name.length - 1)} *",
         description = team.description,
         right = (team.right == null) ? null : Right.fromRight(team.right!);
 
