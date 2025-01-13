@@ -151,7 +151,8 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
   }
 
   List<Widget> buildGrid(BuildContext context) {
-    int today = DateTime.now().day;
+    DateTime now = DateTime.now();
+    bool correctMonth = now.isAfter(_monthFirst) && now.isBefore(_monthLast.copyWith(hour: 24));
     List<Widget> lc = List.generate(_monthDays, (index) {
       return Container(
         decoration: BoxDecoration(
@@ -164,7 +165,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
                 child:
                 CircleAvatar(
                   radius: 10,
-                  backgroundColor: today == index +1 ? Colors.blue : null,
+                  backgroundColor: (correctMonth && now.day == index +1) ? Colors.blue : null,
                   child: Text(
                     '${index + 1}',
                     style: Theme.of(context).textTheme.labelLarge,
