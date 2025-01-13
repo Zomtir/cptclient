@@ -147,7 +147,6 @@ class Right {
         AppLocalizations.of(context)!.competence,
         AppLocalizations.of(context)!.course,
         AppLocalizations.of(context)!.event,
-        AppLocalizations.of(context)!.event,
         AppLocalizations.of(context)!.inventory,
         AppLocalizations.of(context)!.location,
         AppLocalizations.of(context)!.organisation,
