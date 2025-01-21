@@ -60,8 +60,7 @@ class TeamDetailManagementPage extends StatelessWidget {
   }
 
   Future<void> _handleDuplicate(BuildContext context) async {
-    Team newTeam = Team.fromTeam(team);
-    int? newTeamID = await api_admin.team_create(session, newTeam);
+    int? newTeamID = await api_admin.team_create(session, Team.fromTeam(team));
 
     if (newTeamID == null) return;
     List<User> members = await api_admin.team_member_list(session, team.id);
@@ -70,6 +69,9 @@ class TeamDetailManagementPage extends StatelessWidget {
       api_admin.team_member_add(session, newTeamID, member.id);
     }
     Navigator.pop(context);
+
+    Team? newTeam = await api_admin.team_info(session, newTeamID);
+    if (newTeam == null) return;
 
     await Navigator.push(
       context,

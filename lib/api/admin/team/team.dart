@@ -7,7 +7,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
 
-Future<List<Team>> team_list(UserSession session) async {
+Future<List<Team>?> team_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/team_list'),
     headers: {
@@ -16,10 +16,26 @@ Future<List<Team>> team_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (response.statusCode != 200) return null;
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
   return List<Team>.from(l.map((model) => Team.fromJson(model)));
+}
+
+Future<Team?> team_info(UserSession session, int teamID) async {
+  final response = await client.get(
+    uri('/admin/team_info', {
+      'team_id': teamID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return null;
+
+  return Team.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
 Future<int?> team_create(UserSession session, Team team) async {

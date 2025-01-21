@@ -28,7 +28,8 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Team> teams = await api_admin.team_list(widget.session);
+    List<Team>? teams = await api_admin.team_list(widget.session);
+    if (teams == null) return;
     teams.sort();
     searchPanelKey.currentState?.setItems(teams);
   }
@@ -49,12 +50,15 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
   }
 
   Future<void> _handleSelect(Team team) async {
+    Team? teamInfo = await api_admin.team_info(widget.session, team.id);
+    if (teamInfo == null) return;
+
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TeamDetailManagementPage(
           session: widget.session,
-          team: team,
+          team: teamInfo,
         ),
       ),
     );

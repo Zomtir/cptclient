@@ -30,7 +30,7 @@ class Team extends FieldInterface implements Comparable {
         key = assembleKey([2,2,2]),
         name = "${team.name.substring(0, min(team.name.length, 29))}*",
         description = team.description,
-        right = (team.right == null) ? null : Right.fromRight(team.right!);
+        right = null;
 
   Team.fromJson(Map<String, dynamic> json)
       : id = json['id'],
