@@ -6,6 +6,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
 class CourseEditPage extends StatefulWidget {
@@ -60,6 +61,16 @@ class CourseEditPageState extends State<CourseEditPage> {
   }
 
   void _submitCourse() async {
+    if (_ctrlCourseKey.text.isEmpty || _ctrlCourseKey.text.length > 10) {
+      messageText("${AppLocalizations.of(context)!.courseKey} ${AppLocalizations.of(context)!.isInvalid}");
+      return;
+    }
+
+    if (_ctrlCourseTitle.text.isEmpty || _ctrlCourseTitle.text.length > 100) {
+      messageText("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}");
+      return;
+    }
+
     _gatherCourse();
 
     bool success;
@@ -69,12 +80,9 @@ class CourseEditPageState extends State<CourseEditPage> {
       success = await api_admin.course_edit(widget.session, widget.course);
     }
 
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to edit course')));
-      return;
-    }
+    messageFailureOnly(success);
+    if (!success) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully edited course')));
     Navigator.pop(context);
   }
 
