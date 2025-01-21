@@ -1,6 +1,7 @@
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/AboutPage.dart';
@@ -11,7 +12,6 @@ import 'package:cptclient/pages/LoginUserPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginLandingPage extends StatefulWidget {
   LoginLandingPage({super.key});

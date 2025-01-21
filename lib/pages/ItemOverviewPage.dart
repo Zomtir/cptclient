@@ -1,12 +1,12 @@
 import 'package:cptclient/api/admin/inventory/item.dart' as api_admin;
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/ItemEditPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemOverviewPage extends StatefulWidget {
   final UserSession session;

@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Permission {
   final String id;

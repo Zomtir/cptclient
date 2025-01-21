@@ -2,6 +2,7 @@ import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
@@ -11,7 +12,6 @@ import 'package:cptclient/pages/EventCreateBatchPage.dart';
 import 'package:cptclient/pages/EventDetailManagementPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClassOverviewManagementPage extends StatefulWidget {
   final UserSession session;

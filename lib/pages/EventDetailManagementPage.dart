@@ -7,6 +7,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
@@ -20,7 +21,6 @@ import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticOrganisationPage.dart';
 import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventDetailManagementPage extends StatefulWidget {
   final UserSession session;

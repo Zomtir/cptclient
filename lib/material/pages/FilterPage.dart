@@ -1,3 +1,4 @@
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TileSelector.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -5,7 +6,6 @@ import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterPage<T extends FieldInterface> extends StatefulWidget {
   final String title;

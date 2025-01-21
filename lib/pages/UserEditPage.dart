@@ -6,6 +6,7 @@ import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/AttributeField.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
@@ -19,7 +20,6 @@ import 'package:cptclient/pages/UserBankAccountPage.dart';
 import 'package:cptclient/pages/UserLicensePage.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserEditPage extends StatefulWidget {
   final UserSession session;

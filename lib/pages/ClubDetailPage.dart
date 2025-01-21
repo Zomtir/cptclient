@@ -3,6 +3,7 @@ import 'package:cptclient/api/anon/organisation.dart' as api_anon;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
@@ -14,7 +15,6 @@ import 'package:cptclient/pages/ClubStatisticPresencePage.dart';
 import 'package:cptclient/pages/ClubStatisticTeamPage.dart';
 import 'package:cptclient/pages/TermOverviewPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClubDetailPage extends StatefulWidget {
   final UserSession session;

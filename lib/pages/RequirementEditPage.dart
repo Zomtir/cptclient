@@ -4,6 +4,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/requirement.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -11,7 +12,6 @@ import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppRequirementTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RequirementEditPage extends StatefulWidget {
   final UserSession session;

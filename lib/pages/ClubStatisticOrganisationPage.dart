@@ -3,6 +3,7 @@ import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -12,7 +13,6 @@ import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClubStatisticOrganisationPage extends StatefulWidget {
   final UserSession session;

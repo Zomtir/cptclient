@@ -5,6 +5,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -18,7 +19,6 @@ import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/pages/EventDetailRegularPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventOverviewAvailablePage extends StatefulWidget {
   final UserSession session;

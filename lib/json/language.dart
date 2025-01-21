@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Language implements Comparable {
   Locale locale;

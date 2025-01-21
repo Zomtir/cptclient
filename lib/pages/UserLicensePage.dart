@@ -1,4 +1,5 @@
 import 'package:cptclient/json/license.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -7,7 +8,6 @@ import 'package:cptclient/material/tiles/AppLicenseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserLicensePage extends StatefulWidget {
   final License license;

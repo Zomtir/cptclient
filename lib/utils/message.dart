@@ -1,6 +1,6 @@
 import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void messageText(String message) {
   BuildContext? context = navi.naviKey.currentState?.overlay?.context;

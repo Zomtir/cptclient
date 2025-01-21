@@ -5,6 +5,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRangeField.dart';
@@ -18,7 +19,6 @@ import 'package:cptclient/material/widgets/Tribox.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CourseOverviewManagementPage extends StatefulWidget {
   final UserSession session;

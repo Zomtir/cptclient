@@ -1,5 +1,6 @@
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/AffiliationOverviewPage.dart';
@@ -28,7 +29,6 @@ import 'package:cptclient/pages/StockManagementPage.dart';
 import 'package:cptclient/pages/TeamOverviewPage.dart';
 import 'package:cptclient/pages/UserOverviewPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberLandingPage extends StatelessWidget {
   final UserSession session;

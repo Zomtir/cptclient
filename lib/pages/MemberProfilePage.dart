@@ -1,10 +1,10 @@
 import 'package:cptclient/api/regular/user/user.dart' as server;
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberProfilePage extends StatefulWidget {
   final UserSession session;

@@ -5,12 +5,12 @@ import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventStatisticOrganisationPage extends StatefulWidget {
   final UserSession session;

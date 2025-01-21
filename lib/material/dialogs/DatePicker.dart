@@ -1,11 +1,11 @@
 import 'dart:math';
 
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<DateTime?> showAppDatePicker({
   required BuildContext context,

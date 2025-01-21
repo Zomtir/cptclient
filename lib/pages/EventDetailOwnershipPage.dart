@@ -4,6 +4,7 @@ import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/FilterPage.dart';
@@ -13,7 +14,6 @@ import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventCourseEditPage.dart';
 import 'package:cptclient/pages/EventEditPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventDetailOwnershipPage extends StatefulWidget {
   final UserSession session;

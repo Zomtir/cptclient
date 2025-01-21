@@ -1,6 +1,7 @@
 import 'package:cptclient/api/admin/organisation/affiliation.dart' as api_admin;
 import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -8,7 +9,6 @@ import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppAffiliationTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AffiliationEditPage extends StatefulWidget {
   final UserSession session;
