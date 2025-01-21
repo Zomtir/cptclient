@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:math';
+
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
@@ -26,7 +28,7 @@ class Team extends FieldInterface implements Comparable {
   Team.fromTeam(Team team)
       : id = 0,
         key = assembleKey([2,2,2]),
-        name = "${team.name.substring(0, team.name.length - 1)} *",
+        name = "${team.name.substring(0, min(team.name.length, 29))}*",
         description = team.description,
         right = (team.right == null) ? null : Right.fromRight(team.right!);
 

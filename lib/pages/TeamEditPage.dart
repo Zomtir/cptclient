@@ -6,6 +6,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
 class TeamEditPage extends StatefulWidget {
@@ -53,6 +54,21 @@ class TeamEditPageState extends State<TeamEditPage> {
   }
 
   void _submitTeam() async {
+    if (_ctrlKey.text.isEmpty || _ctrlKey.text.length > 10) {
+      messageText("${AppLocalizations.of(context)!.teamKey} ${AppLocalizations.of(context)!.isInvalid}");
+      return;
+    }
+
+    if (_ctrlName.text.isEmpty || _ctrlName.text.length > 30) {
+      messageText("${AppLocalizations.of(context)!.teamName} ${AppLocalizations.of(context)!.isInvalid}");
+      return;
+    }
+
+    if (_ctrlDescription.text.isEmpty || _ctrlDescription.text.length > 100) {
+      messageText("${AppLocalizations.of(context)!.teamDescription} ${AppLocalizations.of(context)!.isInvalid}");
+      return;
+    }
+
     _gatherTeam();
 
     bool success;
@@ -62,14 +78,8 @@ class TeamEditPageState extends State<TeamEditPage> {
       success = await server.team_edit(widget.session, widget.team);
     }
 
-    if (!success) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to edit team')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Successfully edited team')));
+    messageFailureOnly(success);
+    if (!success) return;
     Navigator.pop(context);
   }
 
