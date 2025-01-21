@@ -135,6 +135,8 @@ class _TimePickerState extends State<TimePicker> {
       ),
     );
 
+    Color transparentBlue = Colors.blue.withValues(alpha: 0.5);
+
     final Widget clock = Container(
       width: 300,
       height: 300,
@@ -147,21 +149,21 @@ class _TimePickerState extends State<TimePicker> {
             buildWatchNumbers(
               Offset(138 * sin(i / 60 * 2 * pi), 138 * -cos(i / 60 * 2 * pi)),
               i.toString(),
-              Colors.blue.withOpacity(0.5),
+              transparentBlue,
               () => _handleMinutePick(i),
             ),
           for (var i = 0; i < 12; i++)
             buildWatchNumbers(
               Offset(100 * sin(i / 12 * 2 * pi), 100 * -cos(i / 12 * 2 * pi)),
               i.toString(),
-              Colors.red.withOpacity(0.5),
+              transparentBlue,
               () => _handleHourPick(i),
             ),
           for (var i = 12; i < 24; i++)
             buildWatchNumbers(
               Offset(65 * sin(i / 12 * 2 * pi), 65 * -cos(i / 12 * 2 * pi)),
               i.toString(),
-              Colors.red.withOpacity(0.5),
+              transparentBlue,
               () => _handleHourPick(i),
             ),
         ],
@@ -231,8 +233,8 @@ class ClockPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(center, 120, paint);
 
-    drawPointer(canvas, center, Offset(hx, hy), Colors.red.withOpacity(0.5), 10);
-    drawPointer(canvas, center, Offset(mx, my), Colors.blue.withOpacity(0.5), 6);
+    drawPointer(canvas, center, Offset(hx, hy), Colors.red.withValues(alpha: 0.5), 10);
+    drawPointer(canvas, center, Offset(mx, my), Colors.blue.withValues(alpha: 0.5), 6);
   }
 
   void drawPointer(Canvas canvas, Offset center, Offset offset, Color color, double width) {
