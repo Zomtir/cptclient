@@ -1,5 +1,6 @@
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
+import 'package:cptclient/utils/crypto.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +15,14 @@ class Course extends FieldInterface implements Comparable {
 
   Course.fromVoid() :
     id = 0,
-    key = "",
+    key = assembleKey([4,2]),
     title = "Course Title",
     active = true,
     public = true;
 
   Course.fromCourse(Course course) :
     id = 0,
-    key = "",
+    key = assembleKey([4,2]),
     title = course.title,
     active = course.active,
     public = course.public;

@@ -37,7 +37,7 @@ class Event implements Comparable {
 
   Event.fromEvent(Event event)
       : id = 0,
-        key = assembleKey([5]),
+        key = assembleKey([3,3,3]),
         title = event.title,
         begin = event.begin,
         end = event.end,
