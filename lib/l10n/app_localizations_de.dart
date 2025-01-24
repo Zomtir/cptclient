@@ -469,9 +469,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageEventStatisticPacklist => 'Packlisten-Übersicht';
 
   @override
-  String get pageEventStatisticDivision => 'Startklassen-Übersicht';
-
-  @override
   String get pageEventStatisticOrganisation => 'Dachorganisations-Übersicht';
 
   @override

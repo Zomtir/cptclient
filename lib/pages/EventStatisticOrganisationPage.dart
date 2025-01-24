@@ -4,7 +4,6 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
@@ -35,20 +34,12 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
   }
 
   void _update() async {
-    List<User> users = await api_admin.event_statistic_division(widget.session, widget.event);
-
     List<Affiliation>? stats =
         await api_admin.event_statistic_organisation(widget.session, widget.event, widget.organisation);
 
     if (stats == null) {
       Navigator.of(context).pop();
       return;
-    }
-
-    // Replace each affiliation's user with the detailed user
-    Map<int, User> userMap = {for (var user in users) user.id: user};
-    for (var affiliation in stats) {
-      affiliation.user = userMap[affiliation.user!.id]!;
     }
 
     stats.sort((a, b) => nullCompareTo(a.user, b.user));
@@ -110,7 +101,7 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
                     label: InkWell(
                       child: Text(AppLocalizations.of(context)!.userAgeEOY),
                       onTap: () =>
-                          setState(() => _stats.sort((a, b) => -nullCompareTo(a.user!.birth_date, b.user!.birth_date))),
+                          setState(() => _stats.sort((a, b) => nullCompareTo(a.user!.birth_date, b.user!.birth_date, revert: true))),
                     ),
                   ),
                 ],

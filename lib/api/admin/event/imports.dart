@@ -256,23 +256,6 @@ Future<List<(User, int, int, int)>> event_statistic_packlist(
   );
 }
 
-Future<List<User>> event_statistic_division(UserSession session, Event event) async {
-  final response = await client.get(
-    uri('/admin/event_statistic_division', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(list.map((model) => User.fromJson(model)));
-}
-
 Future<List<Affiliation>?> event_statistic_organisation(UserSession session, Event event, Organisation organisation) async {
   final response = await client.get(
     uri('/admin/event_statistic_organisation', {

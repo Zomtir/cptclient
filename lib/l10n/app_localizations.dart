@@ -1019,12 +1019,6 @@ abstract class AppLocalizations {
   /// **'Packlist Information'**
   String get pageEventStatisticPacklist;
 
-  /// No description provided for @pageEventStatisticDivision.
-  ///
-  /// In en, this message translates to:
-  /// **'Division Information'**
-  String get pageEventStatisticDivision;
-
   /// No description provided for @pageEventStatisticOrganisation.
   ///
   /// In en, this message translates to:

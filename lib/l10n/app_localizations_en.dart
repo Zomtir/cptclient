@@ -469,9 +469,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageEventStatisticPacklist => 'Packlist Information';
 
   @override
-  String get pageEventStatisticDivision => 'Division Information';
-
-  @override
   String get pageEventStatisticOrganisation => 'Organisation Information';
 
   @override
