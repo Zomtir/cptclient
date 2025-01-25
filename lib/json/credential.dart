@@ -5,6 +5,7 @@ class Credential {
 
   Credential(this.login, this.password, this.salt);
 
+  @override
   Credential.fromJson(Map<String, dynamic> json)
       : login = json['login'],
         password = json['password'],

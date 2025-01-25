@@ -17,8 +17,6 @@ class SettingsPageState extends State<SettingsPage> {
   late SharedPreferences _prefs;
 
   Language? _ctrlLanguage;
-  final TextEditingController _ctrlUser = TextEditingController();
-  final TextEditingController _ctrlEvent = TextEditingController();
 
   @override
   void initState() {
@@ -31,8 +29,6 @@ class SettingsPageState extends State<SettingsPage> {
 
     setState(() {
       _ctrlLanguage = Language(Locale(_prefs.getString('Language')!));
-      _ctrlUser.text = _prefs.getString('UserDefault')!;
-      _ctrlEvent.text = _prefs.getString('EventDefault')!;
     });
   }
 
@@ -70,22 +66,6 @@ class SettingsPageState extends State<SettingsPage> {
                 );
               }).toList(),
               //selectedItemBuilder,
-            ),
-          ),
-          AppInfoRow(
-            info: "Default User Key",
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlUser,
-              onChanged: (String text) => _prefs.setString('UserDefault', text),
-            ),
-          ),
-          AppInfoRow(
-            info: "Default Event Key",
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlEvent,
-              onChanged: (String text) => _prefs.setString('EventDefault', text),
             ),
           ),
         ],

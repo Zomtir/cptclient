@@ -7,6 +7,7 @@ import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/core/environment.dart';
 import 'package:cptclient/core/router.dart' as router;
+import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -19,6 +20,9 @@ import 'package:yaml/yaml.dart';
 final GlobalKey<NavigatorState> naviKey = GlobalKey<NavigatorState>();
 
 late SharedPreferences prefs;
+
+List<Credential> userCredentials = [];
+List<Credential> eventCredentials = [];
 
 List<UserSession> userSessions = [];
 List<EventSession> eventSessions = [];
@@ -49,18 +53,49 @@ Future<void> initPreferences() async {
   await putMissingInt('ClientPort', Env.clientPort.fromInt() ?? int.tryParse(configMap['ClientPort'])!);
   await putMissingString('UserSessions', '');
   await putMissingString('EventSessions', '');
-  await putMissingString('UserDefault', '');
-  await putMissingString('EventDefault', '');
+  await putMissingString('UserCredentials', '');
+  await putMissingString('EventCredentials', '');
+}
+
+List<T> _decodeList<T> (String prefString, T Function(Map<String, dynamic>) fromJson) {
+  String encoded = utf8.decode(base64Decode(prefs.getString(prefString)!));
+  Iterable usList = encoded.isNotEmpty ? json.decode(encoded) : [];
+  return List<T>.from(usList.map((entry) => fromJson(entry)));
+}
+
+void _encodeList<T> (String prefString, Function() toJson) {
+  var json = jsonEncode(toJson().toList());
+  prefs.setString(prefString, base64Encode(utf8.encode(json)));
+}
+
+applyCredentials() {
+  userCredentials = _decodeList('UserCredentials', (entry) => Credential.fromJson(entry));
+  eventCredentials = _decodeList('EventCredentials', (entry) => Credential.fromJson(entry));
+}
+
+addUserCredential(Credential credential) {
+  userCredentials.add(credential);
+  _encodeList('UserCredentials', () => userCredentials.map((e) => e.toJson()).toList());
+}
+
+removeUserCredential(Credential credential) {
+  userCredentials.remove(credential);
+  _encodeList('UserCredentials', () => userCredentials.map((e) => e.toJson()).toList());
+}
+
+addEventCredential(Credential credential) {
+  eventCredentials.add(credential);
+  _encodeList('EventCredentials', () => eventCredentials.map((e) => e.toJson()).toList());
+}
+
+removeEventCredential(Credential credential) {
+  eventCredentials.remove(credential);
+  _encodeList('EventCredentials', () => eventCredentials.map((e) => e.toJson()).toList());
 }
 
 applySessions() {
-  String usEncoded = utf8.decode(base64Decode(prefs.getString('UserSessions')!));
-  Iterable usList = usEncoded.isNotEmpty ? json.decode(usEncoded) : [];
-  userSessions = List<UserSession>.from(usList.map((entry) => UserSession.fromJson(entry)));
-
-  String esEncoded = utf8.decode(base64Decode(prefs.getString('EventSessions')!));
-  Iterable esList = esEncoded.isNotEmpty ? json.decode(esEncoded) : [];
-  eventSessions = List<EventSession>.from(esList.map((entry) => EventSession.fromJson(entry)));
+  userSessions = _decodeList('UserSessions', (entry) => UserSession.fromJson(entry));
+  eventSessions = _decodeList('EventSessions', (entry) => EventSession.fromJson(entry));
 }
 
 addUserSession(UserSession session) {

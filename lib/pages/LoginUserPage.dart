@@ -1,11 +1,12 @@
 import 'package:cptclient/api/login.dart' as server;
 import 'package:cptclient/core/navigation.dart' as navi;
+import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginUserPage extends StatefulWidget {
   LoginUserPage({super.key});
@@ -15,29 +16,36 @@ class LoginUserPage extends StatefulWidget {
 }
 
 class LoginUserPageState extends State<LoginUserPage> {
-  String _userDefault = '';
   final TextEditingController _ctrlLogin = TextEditingController();
   final TextEditingController _ctrlPasswd = TextEditingController();
+  bool _ctrlRemember = false;
+  List<Credential> _credentials = [];
 
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
+    _loadCredentials();
   }
 
-  _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _userDefault = prefs.getString('UserDefault')!;
-    _ctrlLogin.text = _userDefault;
+  Future<void> _loadCredentials() async {
+    setState(() {
+      _credentials = navi.userCredentials;
+    });
   }
 
-  void _loginUser() async {
-    UserSession? session = await server.loginUser(_ctrlLogin.text, _ctrlPasswd.text);
+  void _loginUser(String login, String passwd, bool remember) async {
+    UserSession? session = await server.loginUser(login, passwd);
 
-    _ctrlLogin.text = _userDefault;
+    if (remember) {
+      navi.addUserCredential(Credential(login, passwd, ''));
+    }
+
+    _ctrlLogin.text = "";
     _ctrlPasswd.text = "";
+    _ctrlRemember = false;
 
     if (session == null) return;
+    
     navi.addUserSession(session);
     navi.loginUser(context, session);
   }
@@ -87,11 +95,48 @@ class LoginUserPageState extends State<LoginUserPage> {
             ),
           ),
         ),
+        ListTile(
+          leading: Checkbox(
+            value: _ctrlRemember,
+            onChanged: (bool? remember) => setState(() => _ctrlRemember = remember!),
+          ),
+          title: Text("Save next login"),
+        ),
         AppButton(
           text: "Login",
-          onPressed: _loginUser,
+          onPressed: () => _loginUser(_ctrlLogin.text, _ctrlPasswd.text, _ctrlRemember),
         ),
+        Divider(),
+        if (_credentials.isNotEmpty)
+          MenuSection(
+            title: "Saved logins",
+            children: _credentials.map((entry) => buildCredential(entry)).toList(),
+          ),
       ]),
+    );
+  }
+
+  Widget buildCredential(Credential credit) {
+    return ListTile(
+      title: Text(credit.login),
+      subtitle: Text("Password Length: ${credit.password.length}"),
+      onTap: () async {
+        setState(() {
+          _ctrlLogin.text = credit.login;
+          _ctrlPasswd.text = credit.password;
+        });
+        _loadCredentials();
+      },
+      trailing: IconButton(
+        onPressed: () async {
+          navi.removeUserCredential(credit);
+          _loadCredentials();
+        },
+        icon: Tooltip(
+          child: Icon(Icons.dangerous_outlined),
+          message: AppLocalizations.of(context)!.actionDelete,
+        ),
+      ),
     );
   }
 }

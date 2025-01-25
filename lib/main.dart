@@ -10,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await navi.initPreferences();
   await navi.applyServer();
+  await navi.applyCredentials();
   await navi.applySessions();
 
   runApp(CptApp());
