@@ -26,7 +26,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.24.3'
+        default: '3.27.3'
         type: string
       flutter_channel:
         required: false

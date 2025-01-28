@@ -9,7 +9,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.2.0+3
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: 3.27.3
 
 dependencies:
 
@@ -21,32 +22,32 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  diacritic: ^0.1.5
+  diacritic: 0.1.6
 
   # Fetch data from the internet
-  http: ^1.2.0
+  http: 1.3.0
 
   # Hash the password
-  crypto: 3.0.5
+  crypto: 3.0.6
 
   # Date & Time
   intl: any
 
   # Local storage
-  shared_preferences: any
+  shared_preferences: 2.4.0
 
   # Global storage (yaml)
-  yaml: any
+  yaml: 3.1.3
 
   # More icons
   cupertino_icons: ^1.0.8
 
   # Dynamic routes
-  go_router: 14.2.6
+  go_router: 14.7.2
 
   # QR codes
-  qr_flutter: ^4.1.0
-  screenshot: ^3.0.0
+  qr_flutter: 4.1.0
+  screenshot: 3.0.0
 
   # Save dialog
   file_selector: ^1.0.3
@@ -58,11 +59,11 @@ dependencies:
   csv: ^6.0.0
 
   # PDF export
-  pdf: ^3.11.1
+  pdf: 3.11.2
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^4.0.0
+  flutter_launcher_icons: 0.14.3
+  flutter_lints: 5.0.0
   flutter_test:
     sdk: flutter
   integration_test:
