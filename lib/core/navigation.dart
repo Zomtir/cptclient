@@ -1,5 +1,3 @@
-library navigation;
-
 import 'dart:convert';
 
 import 'package:cptclient/api/login.dart' as api;

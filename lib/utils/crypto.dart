@@ -1,5 +1,3 @@
-library crypto;
-
 import 'dart:convert';
 import 'dart:math';
 
