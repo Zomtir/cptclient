@@ -1,6 +1,25 @@
 # CHANGELOG
 
-## Release v1.2.0 (12 Jan 2024)
+## Release v1.3.0 (29th Jan 2024)
+
+- feat: Save multiple login details
+- feat: Load team rights separately
+- feat: Improved feedback for faulty course values
+- refactor: Merge organisation statistic API calls
+- fix: Check team property lengths and don't increase them during copy
+- fix: Missing keys for new courses
+- fix: Color transparency got deprecated
+- fix: Only highlight current day in correct month at calender view
+- fix: Ensure copies don't increase title length
+- fix: Wrong label for team rights
+- chore: Remove library names
+- chore: SDK and package updates
+- chore: Migrate flutter l10n package
+- chore: Add .CXX build artifacts to gitignore
+- chore: Update web skeleton revisions
+- chore: Increase minimum version of Android plugin to 8.1.4
+
+## Release v1.2.0 (12th Jan 2024)
 
 - feat: Session recovery overhaul
   - UI shows login key and expiration date

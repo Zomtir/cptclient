@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 
-String version = "1.2.0";
+String version = "1.3.0";
 
 String _serverScheme = 'https';
 String _serverHost = 'localhost';
