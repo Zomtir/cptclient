@@ -78,7 +78,6 @@ class LoginUserPageState extends State<LoginUserPage> {
         ),
         ListTile(
           title: TextField(
-            autofocus: true,
             obscureText: true,
             maxLines: 1,
             controller: _ctrlPasswd,
