@@ -16,10 +16,10 @@ import 'package:pdf/widgets.dart' as pw;
 void trainer_accounting_pdf(BuildContext context, Club club, User user, String discipline, DateTime date_from,
     DateTime date_until, List<Event> event_list) async {
   var docTheme = pw.ThemeData.withFont(
-    base: pw.Font.ttf(await rootBundle.load("fonts/SourceSansPro/source-sans-pro.regular.ttf")),
-    bold: pw.Font.ttf(await rootBundle.load("fonts/SourceSansPro/source-sans-pro.bold.ttf")),
-    italic: pw.Font.ttf(await rootBundle.load("fonts/SourceSansPro/source-sans-pro.italic.ttf")),
-    boldItalic: pw.Font.ttf(await rootBundle.load("fonts/SourceSansPro/source-sans-pro.bold-italic.ttf")),
+    base: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.regular.ttf")),
+    bold: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.bold.ttf")),
+    italic: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.italic.ttf")),
+    boldItalic: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.bold-italic.ttf")),
   );
 
   final doc = pw.Document(theme: docTheme);
