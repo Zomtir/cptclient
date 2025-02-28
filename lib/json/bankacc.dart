@@ -1,5 +1,6 @@
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppBankaccTile.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:flutter/material.dart';
 
 class BankAccount extends FieldInterface implements Comparable {
@@ -42,16 +43,26 @@ class BankAccount extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry() {
+  Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
-      child: Text("$iban"),
+      child: Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}"),
     );
   }
 
   @override
-  Widget buildTile() {
-    return AppBankAccountTile(this);
+  Widget buildTile(BuildContext context) {
+    return AppTile(
+      icon: Tooltip(
+        message: "[$id]",
+        child: Icon(Icons.account_balance),
+      ),
+      children: [
+        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute} (${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})"),
+      ],
+
+    );
   }
 
   @override

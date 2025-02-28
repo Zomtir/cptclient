@@ -82,7 +82,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
             key: searchPanelKey,
             builder: (Club club, Function(Club)? onSelect) => InkWell(
               onTap: () => onSelect?.call(club),
-              child: club.buildTile(),
+              child: club.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

@@ -50,7 +50,7 @@ class Term extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry() {
+  Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
       child: Text("${club!.name}: ${user!.firstname} ${user!.lastname}"),
@@ -58,7 +58,7 @@ class Term extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile() {
+  Widget buildTile(BuildContext context) {
     return AppTermTile(term: this);
   }
 

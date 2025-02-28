@@ -38,7 +38,7 @@ class AttributeField<T extends FieldInterface> extends StatelessWidget {
           ),
         if (attribute != null)
           ListTile(
-            title: attribute!.buildEntry(),
+            title: attribute!.buildEntry(context),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

@@ -35,7 +35,7 @@ class ItemCategory extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry() {
+  Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
       child: Text("$name"),
@@ -43,7 +43,7 @@ class ItemCategory extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile() {
+  Widget buildTile(BuildContext context) {
     return AppItemcatTile(category: this);
   }
 

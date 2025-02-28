@@ -85,7 +85,7 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
                         icon: Icon(Icons.list_alt_outlined),
                         onPressed: () => _handleUser(stats[index].$1.id),
                       ),
-                      stats[index].$1.buildEntry(),
+                      stats[index].$1.buildEntry(context),
                     ],
                   )),
                   DataCell(Text("${stats[index].$2}")),

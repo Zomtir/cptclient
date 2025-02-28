@@ -99,8 +99,8 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
                 rows: List<DataRow>.generate(_possessions.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(_possessions[index].user.buildEntry()),
-                      DataCell(_possessions[index].item.buildEntry()),
+                      DataCell(_possessions[index].user.buildEntry(context)),
+                      DataCell(_possessions[index].item.buildEntry(context)),
                       DataCell(Text("${formatIsoDate(_possessions[index].acquisitionDate)}")),
                       DataCell(
                         Row(

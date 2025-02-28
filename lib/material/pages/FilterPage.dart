@@ -82,7 +82,7 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
                 return Row(
                   children: [
                     Expanded(
-                      child: item.buildTile(),
+                      child: item.buildTile(context),
                     ),
                     IconButton(
                       icon: const Icon(Icons.block),
@@ -103,7 +103,7 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
               return Row(
                 children: [
                   Expanded(
-                    child: item.$1.buildTile(),
+                    child: item.$1.buildTile(context),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),

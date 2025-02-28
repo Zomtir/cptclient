@@ -39,7 +39,7 @@ class Organisation extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry() {
+  Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $abbreviation",
       child: Text("$name"),
@@ -47,7 +47,7 @@ class Organisation extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile() {
+  Widget buildTile(BuildContext context) {
     return AppOrganisationTile(organisation: this);
   }
 

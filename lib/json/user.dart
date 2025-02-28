@@ -105,7 +105,7 @@ class User extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry() {
+  Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
       child: Text("$firstname $lastname"),
@@ -113,7 +113,7 @@ class User extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile() {
+  Widget buildTile(BuildContext context) {
     return AppUserTile(user: this);
   }
 

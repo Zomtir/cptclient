@@ -55,7 +55,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.user,
-            child: widget.session.user!.buildEntry(),
+            child: widget.session.user!.buildEntry(context),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userPassword,

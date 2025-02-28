@@ -78,7 +78,7 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
             key: searchPanelKey,
             builder: (Location location, Function(Location)? onSelect) => InkWell(
               onTap: () => onSelect?.call(location),
-              child: location.buildTile(),
+              child: location.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

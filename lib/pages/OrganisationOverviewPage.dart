@@ -78,7 +78,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
             key: searchPanelKey,
             builder: (Organisation organisation, Function(Organisation)? onSelect) => InkWell(
               onTap: () => onSelect?.call(organisation),
-              child: organisation.buildTile(),
+              child: organisation.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

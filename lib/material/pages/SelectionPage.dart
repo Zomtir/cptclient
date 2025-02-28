@@ -72,7 +72,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
                 return Row(
                   children: [
                     Expanded(
-                      child: item.buildTile(),
+                      child: item.buildTile(context),
                     ),
                     IconButton(
                       icon: const Icon(Icons.add),
@@ -93,7 +93,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
               return Row(
                 children: [
                   Expanded(
-                    child: item.buildTile(),
+                    child: item.buildTile(context),
                   ),
                   IconButton(
                     icon: const Icon(Icons.remove),

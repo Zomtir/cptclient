@@ -78,7 +78,7 @@ class ItemOverviewPageState extends State<ItemOverviewPage> {
             key: searchPanelKey,
             builder: (Item item, Function(Item)? onSelect) => InkWell(
               onTap: () => onSelect?.call(item),
-              child: item.buildTile(),
+              child: item.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

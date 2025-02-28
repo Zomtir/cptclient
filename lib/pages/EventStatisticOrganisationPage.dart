@@ -122,10 +122,10 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
 
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(_stats[index].user!.buildEntry()),
+                      DataCell(_stats[index].user!.buildEntry(context)),
                       DataCell(_stats[index].organisation == null
                           ? Text(AppLocalizations.of(context)!.undefined)
-                          : _stats[index].organisation!.buildEntry()),
+                          : _stats[index].organisation!.buildEntry(context)),
                       DataCell(
                         _stats[index].member_identifier == null
                             ? Text(AppLocalizations.of(context)!.unknown)

@@ -93,7 +93,7 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
               ...List<DataRow>.generate(_stats.length, (index) {
                 return DataRow(
                   cells: <DataCell>[
-                    DataCell(_stats[index].$1.buildEntry()),
+                    DataCell(_stats[index].$1.buildEntry(context)),
                     DataCell(Text("${_stats[index].$2}")),
                     DataCell(Text("${_stats[index].$3}")),
                     DataCell(Text("${_stats[index].$4}")),

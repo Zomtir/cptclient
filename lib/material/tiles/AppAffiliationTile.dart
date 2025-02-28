@@ -26,8 +26,8 @@ class AppAffiliationTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                affiliation.organisation!.buildEntry(),
-                affiliation.user!.buildEntry(),
+                affiliation.organisation!.buildEntry(context),
+                affiliation.user!.buildEntry(context),
                 Text(
                     "${AppLocalizations.of(context)!.affiliationMemberIdentifier}: ${affiliation.member_identifier ?? AppLocalizations.of(context)!.undefined}"),
               ],

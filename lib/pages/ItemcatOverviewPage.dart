@@ -79,7 +79,7 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
             key: searchPanelKey,
             builder: (ItemCategory category, Function(ItemCategory)? onSelect) => InkWell(
               onTap: () => onSelect?.call(category),
-              child: category.buildTile(),
+              child: category.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

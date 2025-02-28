@@ -25,7 +25,7 @@ Future<T?> showTilePicker<T extends FieldInterface>({
               onSelect: (item) => Navigator.pop(context, item),
               builder: (item, Function(T)? onSelect) => InkWell(
                 onTap: () => onSelect?.call(item),
-                child: item.buildTile(),
+                child: item.buildTile(context),
               ),
             ),
           ],

@@ -78,7 +78,7 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
             key: searchPanelKey,
             builder: (Skill skill, Function(Skill)? onSelect) => InkWell(
               onTap: () => onSelect?.call(skill),
-              child: skill.buildTile(),
+              child: skill.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

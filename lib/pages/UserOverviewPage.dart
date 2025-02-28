@@ -78,7 +78,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
             key: searchPanelKey,
             builder: (User user, Function(User)? onSelect) => InkWell(
               onTap: () => onSelect?.call(user),
-              child: user.buildTile(),
+              child: user.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

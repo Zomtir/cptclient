@@ -126,10 +126,10 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
                 rows: List<DataRow>.generate(_stats.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(_stats[index].user!.buildEntry()),
+                      DataCell(_stats[index].user!.buildEntry(context)),
                       DataCell(_stats[index].organisation == null
                           ? Text(AppLocalizations.of(context)!.undefined)
-                          : _stats[index].organisation!.buildEntry()),
+                          : _stats[index].organisation!.buildEntry(context)),
                       DataCell(Text(_stats[index].member_identifier == null
                           ? AppLocalizations.of(context)!.unknown
                           : "${_stats[index].member_identifier}")),

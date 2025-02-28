@@ -83,7 +83,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
             key: searchPanelKey,
             builder: (Team team, Function(Team)? onSelect) => InkWell(
               onTap: () => onSelect?.call(team),
-              child: team.buildTile(),
+              child: team.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

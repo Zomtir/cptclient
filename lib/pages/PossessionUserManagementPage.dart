@@ -121,7 +121,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                 rows: List<DataRow>.generate(_possessions.length, (index) {
                   return DataRow(
                     cells: <DataCell>[
-                      DataCell(_possessions[index].item.buildEntry()),
+                      DataCell(_possessions[index].item.buildEntry(context)),
                       DataCell(Text(_possessions[index].acquisitionDate != null
                           ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
                           : AppLocalizations.of(context)!.undefined)),
