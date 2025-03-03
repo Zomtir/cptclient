@@ -34,9 +34,11 @@ Future<bool?> event_note_edit(EventSession session, String note) async {
   return (response.statusCode == 200);
 }
 
-Future<List<User>> event_participant_presence_pool(EventSession session) async {
+Future<List<User>> event_attendance_presence_pool(EventSession session, String role) async {
   final response = await client.get(
-    uri('/service/event_participant_presence_pool'),
+    uri('/service/event_attendance_presence_pool', {
+      'role': role,
+    }),
     headers: {
       'Token': session.token,
     },
@@ -48,9 +50,11 @@ Future<List<User>> event_participant_presence_pool(EventSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<List<User>> event_participant_presence_list(EventSession session) async {
+Future<List<User>> event_attendance_presence_list(EventSession session, String role) async {
   final response = await client.get(
-    uri('/service/event_participant_presence_list'),
+    uri('/service/event_attendance_presence_list', {
+      'role': role,
+    }),
     headers: {
       'Token': session.token,
     },
@@ -62,10 +66,11 @@ Future<List<User>> event_participant_presence_list(EventSession session) async {
   return List<User>.from(l.map((model) => User.fromJson(model)));
 }
 
-Future<bool> event_participant_presence_add(EventSession session, User user) async {
+Future<bool> event_attendance_presence_add(EventSession session, User user, String role) async {
   final response = await client.head(
-    uri('/service/event_participant_presence_add', {
+    uri('/service/event_attendance_presence_add', {
       'user_id': user.id.toString(),
+      'role': role,
     }),
     headers: {
       'Token': session.token,
@@ -75,118 +80,11 @@ Future<bool> event_participant_presence_add(EventSession session, User user) asy
   return (response.statusCode == 200);
 }
 
-Future<bool> event_participant_presence_remove(EventSession session, User user) async {
+Future<bool> event_attendance_presence_remove(EventSession session, User user, String role) async {
   final response = await client.head(
-    uri('/service/event_participant_presence_remove', {
+    uri('/service/event_attendance_presence_remove', {
       'user_id': user.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<List<User>> event_supporter_presence_pool(EventSession session) async {
-  final response = await client.get(
-    uri('/service/event_supporter_presence_pool'),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
-}
-
-Future<List<User>> event_supporter_presence_list(EventSession session) async {
-  final response = await client.get(
-    uri('/service/event_supporter_presence_list'),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
-}
-
-Future<bool> event_supporter_presence_add(EventSession session, User user) async {
-  final response = await client.head(
-    uri('/service/event_supporter_presence_add', {
-      'user_id': user.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> event_supporter_presence_remove(EventSession session, User user) async {
-  final response = await client.head(
-    uri('/service/event_supporter_presence_remove', {
-      'user_id': user.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<List<User>> event_leader_presence_pool(EventSession session) async {
-  final response = await client.get(
-    uri('/service/event_leader_presence_pool'),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
-}
-
-Future<List<User>> event_leader_presence_list(EventSession session) async {
-  final response = await client.get(
-    uri('/service/event_leader_presence_list'),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
-}
-
-Future<bool> event_leader_presence_add(EventSession session, User user) async {
-  final response = await client.head(
-    uri('/service/event_leader_presence_add', {
-      'user_id': user.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> event_leader_presence_remove(EventSession session, User user) async {
-  final response = await client.head(
-    uri('/service/event_leader_presence_remove', {
-      'user_id': user.id.toString(),
+      'role': role,
     }),
     headers: {
       'Token': session.token,

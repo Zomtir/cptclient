@@ -109,7 +109,7 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
     );
   }
 
-  Future<void> _handleParticipantSieves() async {
+  Future<void> _handleAttendanceSieves(String role) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -117,41 +117,9 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
           title: AppLocalizations.of(context)!.pageCourseParticipantSieves,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_moderator.course_participant_sieve_list(widget.session, widget.course.id),
-          onCallEdit: (team, access) => api_moderator.course_participant_sieve_edit(widget.session, widget.course.id, team.id, access),
-          onCallRemove: (team) => api_moderator.course_participant_sieve_remove(widget.session, widget.course.id, team.id),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleLeaderSieves() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FilterPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseLeaderSieves,
-          tile: AppCourseTile(course: widget.course),
-          onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_moderator.course_leader_sieve_list(widget.session, widget.course.id),
-          onCallEdit: (team, access) => api_moderator.course_leader_sieve_edit(widget.session, widget.course.id, team.id, access),
-          onCallRemove: (team) => api_moderator.course_leader_sieve_remove(widget.session, widget.course.id, team.id),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleSupporterSieves() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FilterPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseSupporterSieves,
-          tile: AppCourseTile(course: widget.course),
-          onCallAvailable: () => api_regular.team_list(widget.session),
-          onCallSelected: () => api_moderator.course_supporter_sieve_list(widget.session, widget.course.id),
-          onCallEdit: (team, access) => api_moderator.course_supporter_sieve_edit(widget.session, widget.course.id, team.id, access),
-          onCallRemove: (team) => api_moderator.course_supporter_sieve_remove(widget.session, widget.course.id, team.id),
+          onCallSelected: () => api_moderator.course_attendance_sieve_list(widget.session, widget.course.id, role),
+          onCallEdit: (team, access) => api_moderator.course_attendance_sieve_edit(widget.session, widget.course.id, team.id, role, access),
+          onCallRemove: (team) => api_moderator.course_attendance_sieve_remove(widget.session, widget.course.id, team.id, role),
         ),
       ),
     );
@@ -203,15 +171,15 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseParticipantSieves),
-                onTap: _handleParticipantSieves,
+                onTap: () => _handleAttendanceSieves('PARTICIPANTS'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseLeaderSieves),
-                onTap: _handleLeaderSieves,
+                onTap: () => _handleAttendanceSieves('LEADER'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
-                onTap: _handleSupporterSieves,
+                onTap: () => _handleAttendanceSieves('SUPPORTER'),
               ),
             ],
           ),

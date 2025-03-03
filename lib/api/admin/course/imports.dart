@@ -11,10 +11,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/message.dart';
 
-export 'leader.dart';
+export 'attendance.dart';
 export 'moderator.dart';
-export 'participant.dart';
-export 'supporter.dart';
 
 Future<List<Course>> course_list(UserSession session, User? user, bool? active, bool? public) async {
   final response = await client.get(
@@ -179,9 +177,12 @@ Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session,
   );
 }
 
-Future<List<(User, int)>> course_statistic_participant(UserSession session, int courseID) async {
+Future<List<(User, int)>> course_statistic_attendance(UserSession session, int courseID, String role) async {
   final response = await client.get(
-    uri('/admin/course_statistic_participant', {'course_id': courseID.toString()}),
+    uri('/admin/course_statistic_attendance', {
+      'course_id': courseID.toString(),
+      'role': role,
+    }),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -201,98 +202,13 @@ Future<List<(User, int)>> course_statistic_participant(UserSession session, int 
   );
 }
 
-Future<List<Event>> course_statistic_participant1(
-    UserSession session, int courseID, int participantID) async {
+Future<List<Event>> course_statistic_attendance1(
+    UserSession session, int courseID, int userID, String role) async {
   final response = await client.get(
-    uri('/admin/course_statistic_participant1', {
+    uri('/admin/course_statistic_attendance1', {
       'course_id': courseID.toString(),
-      'participant_id': participantID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Event>.from(
-    list.map((model) => Event.fromJson(model)),
-  );
-}
-
-Future<List<(User, int)>> course_statistic_supporter(UserSession session, int courseID) async {
-  final response = await client.get(
-    uri('/admin/course_statistic_supporter', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(User, int)>.from(
-    list.map((model) {
-      return (
-      User.fromJson(model[0]),
-      model[1],
-      );
-    }),
-  );
-}
-
-Future<List<Event>> course_statistic_supporter1(
-    UserSession session, int courseID, int supporterID) async {
-  final response = await client.get(
-    uri('/admin/course_statistic_supporter1', {
-      'course_id': courseID.toString(),
-      'supporter_id': supporterID.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Event>.from(
-    list.map((model) => Event.fromJson(model)),
-  );
-}
-
-Future<List<(User, int)>> course_statistic_leader(UserSession session, int courseID) async {
-  final response = await client.get(
-    uri('/admin/course_statistic_leader', {'course_id': courseID.toString()}),
-    headers: {
-      'Token': session.token,
-      'Accept': 'application/json; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return [];
-
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(User, int)>.from(
-    list.map((model) {
-      return (
-      User.fromJson(model[0]),
-      model[1],
-      );
-    }),
-  );
-}
-
-Future<List<Event>> course_statistic_leader1(
-    UserSession session, int courseID, int leaderID) async {
-  final response = await client.get(
-    uri('/admin/course_statistic_leader1', {
-      'course_id': courseID.toString(),
-      'leader_id': leaderID.toString(),
+      'user_id': userID.toString(),
+      'role': role,
     }),
     headers: {
       'Token': session.token,

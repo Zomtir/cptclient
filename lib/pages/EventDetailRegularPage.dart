@@ -30,12 +30,17 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
   bool _bookmarked = false;
   bool _ownership = false;
 
-  Confirmation _leaderRegistration = Confirmation.empty;
-  Confirmation _participantRegistration = Confirmation.empty;
-  bool _participantPresence = false;
-  bool _leaderPresence = false;
-  Confirmation _supporterRegistration = Confirmation.empty;
-  bool _supporterPresence = false;
+  final Map<String, Confirmation> _attendanceRegistration = {
+    'PARTICIPANT': Confirmation.empty,
+    'LEADER': Confirmation.empty,
+    'SUPPORTER': Confirmation.empty,
+  };
+
+  final Map<String, bool> _attendancePresence = {
+    'PARTICIPANT': false,
+    'LEADER': false,
+    'SUPPORTER': false,
+  };
 
   EventDetailRegularPageState();
 
@@ -44,12 +49,12 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
     super.initState();
     _updateBookmark();
     _updateOwnership();
-    _updateParticipantRegistration();
-    _updateParticipantPresence();
-    _updateLeaderRegistration();
-    _updateLeaderPresence();
-    _updateSupporterRegistration();
-    _updateSupporterPresence();
+    _updateAttendanceRegistration('PARTICIPANT');
+    _updateAttendancePresence('PARTICIPANT');
+    _updateAttendanceRegistration('LEADER');
+    _updateAttendancePresence('LEADER');
+    _updateAttendanceRegistration('SUPPORTER');
+    _updateAttendancePresence('SUPPORTER');
   }
 
   Future<void> _handleSwitchOwner() async {
@@ -97,88 +102,33 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
     setState(() => _ownership = ownership);
   }
 
-  Future<void> _updateParticipantRegistration() async {
-    Confirmation? registration = await api_regular.event_participant_registration_info(widget.session, widget.event);
+  Future<void> _updateAttendanceRegistration(String role) async {
+    Confirmation? registration =
+        await api_regular.event_attendance_registration_info(widget.session, widget.event, role);
     if (registration == null) return;
 
-    setState(() => _participantRegistration = registration);
+    setState(() => _attendanceRegistration[role] = registration);
   }
 
-  Future<void> _updateParticipantPresence() async {
-    bool? presence = await api_regular.event_participant_presence_true(widget.session, widget.event);
+  Future<void> _updateAttendancePresence(String role) async {
+    bool? presence = await api_regular.event_attendance_presence_true(widget.session, widget.event, role);
     if (presence == null) return;
 
-    setState(() => _participantPresence = presence);
+    setState(() => _attendancePresence[role] = presence);
   }
 
-  Future<void> _updateLeaderRegistration() async {
-    Confirmation? registration = await api_regular.event_leader_registration_info(widget.session, widget.event);
-    if (registration == null) return;
-
-    setState(() => _leaderRegistration = registration);
+  void _handleAttendanceRegistration(String role, Confirmation? confirmation) async {
+    await api_regular.event_attendance_registration_edit(widget.session, widget.event, role, confirmation);
+    _updateAttendanceRegistration(role);
   }
 
-  Future<void> _updateLeaderPresence() async {
-    bool? presence = await api_regular.event_leader_presence_true(widget.session, widget.event);
-    if (presence == null) return;
-
-    setState(() => _leaderPresence = presence);
-  }
-
-  Future<void> _updateSupporterRegistration() async {
-    Confirmation? registration = await api_regular.event_supporter_registration_info(widget.session, widget.event);
-    if (registration == null) return;
-
-    setState(() => _supporterRegistration = registration);
-  }
-
-  Future<void> _updateSupporterPresence() async {
-    bool? presence = await api_regular.event_supporter_presence_true(widget.session, widget.event);
-    if (presence == null) return;
-
-    setState(() => _supporterPresence = presence);
-  }
-
-  void _handleParticipantRegistration(Confirmation? confirmation) async {
-    await api_regular.event_participant_registration_edit(widget.session, widget.event, confirmation);
-    _updateParticipantRegistration();
-  }
-
-  void _handleParticipantPresence(bool presence) async {
+  void _handleAttendancePresence(String role, bool presence) async {
     if (presence) {
-      await api_regular.event_participant_presence_add(widget.session, widget.event);
+      await api_regular.event_attendance_presence_add(widget.session, widget.event, role);
     } else {
-      await api_regular.event_participant_presence_remove(widget.session, widget.event);
+      await api_regular.event_attendance_presence_remove(widget.session, widget.event, role);
     }
-    _updateParticipantPresence();
-  }
-
-  void _handleLeaderRegistration(Confirmation? confirmation) async {
-    await api_regular.event_leader_registration_edit(widget.session, widget.event, confirmation);
-    _updateLeaderRegistration();
-  }
-
-  void _handleLeaderPresence(bool presence) async {
-    if (presence) {
-      await api_regular.event_leader_presence_add(widget.session, widget.event);
-    } else {
-      await api_regular.event_leader_presence_remove(widget.session, widget.event);
-    }
-    _updateLeaderPresence();
-  }
-
-  void _handleSupporterRegistration(Confirmation? confirmation) async {
-    await api_regular.event_supporter_registration_edit(widget.session, widget.event, confirmation);
-    _updateSupporterRegistration();
-  }
-
-  void _handleSupporterPresence(bool presence) async {
-    if (presence) {
-      await api_regular.event_supporter_presence_add(widget.session, widget.event);
-    } else {
-      await api_regular.event_supporter_presence_remove(widget.session, widget.event);
-    }
-    _updateSupporterPresence();
+    _updateAttendancePresence(role);
   }
 
   @override
@@ -242,45 +192,46 @@ class EventDetailRegularPageState extends State<EventDetailRegularPage> {
             child: _ownership ? Icon(Icons.castle) : Icon(Icons.castle_outlined),
           ),
           AppInfoRow(
-            info: "${AppLocalizations.of(context)!.eventParticipant}: ${AppLocalizations.of(context)!.eventRegistration}",
+            info:
+                "${AppLocalizations.of(context)!.eventParticipant}: ${AppLocalizations.of(context)!.eventRegistration}",
             child: ConfirmationField(
-              confirmation: _participantRegistration,
-              onChanged: _handleParticipantRegistration,
+              confirmation: _attendanceRegistration['PARTICIPANT']!,
+              onChanged: (confirmation) => _handleAttendanceRegistration('PARTICIPANT', confirmation),
             ),
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.eventParticipant}: ${AppLocalizations.of(context)!.eventPresence}",
             child: IconButton(
-              icon: _participantPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleParticipantPresence(!_participantPresence),
+              icon: _attendancePresence['PARTICIPANT']! ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
+              onPressed: () => _handleAttendancePresence('PARTICIPANT', !_attendancePresence['PARTICIPANT']!),
             ),
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.eventLeader}: ${AppLocalizations.of(context)!.eventRegistration}",
             child: ConfirmationField(
-              confirmation: _leaderRegistration,
-              onChanged: _handleLeaderRegistration,
+              confirmation: _attendanceRegistration['LEADER']!,
+              onChanged: (confirmation) => _handleAttendanceRegistration('LEADER', confirmation),
             ),
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.eventLeader}: ${AppLocalizations.of(context)!.eventPresence}",
             child: IconButton(
-              icon: _leaderPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleLeaderPresence(!_leaderPresence),
+              icon: _attendancePresence['LEADER']! ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
+              onPressed: () => _handleAttendancePresence('LEADER', !_attendancePresence['LEADER']!),
             ),
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.eventSupporter}: ${AppLocalizations.of(context)!.eventRegistration}",
             child: ConfirmationField(
-              confirmation: _supporterRegistration,
-              onChanged: _handleSupporterRegistration,
+              confirmation: _attendanceRegistration['SUPPORTER']!,
+              onChanged: (confirmation) => _handleAttendanceRegistration('SUPPORTER', confirmation),
             ),
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.eventSupporter}: ${AppLocalizations.of(context)!.eventPresence}",
             child: IconButton(
-              icon: _supporterPresence ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
-              onPressed: () => _handleSupporterPresence(!_supporterPresence),
+              icon: _attendancePresence['SUPPORTER']! ? Icon(Icons.chair) : Icon(Icons.chair_outlined),
+              onPressed: () => _handleAttendancePresence('SUPPORTER', !_attendancePresence['SUPPORTER']!),
             ),
           ),
         ],

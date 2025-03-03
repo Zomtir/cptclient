@@ -11,10 +11,8 @@ import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/format.dart';
 
-export 'leader.dart';
+export 'attendance.dart';
 export 'owner.dart';
-export 'participant.dart';
-export 'supporter.dart';
 
 Future<List<Event>> event_list(UserSession session, DateTime begin, DateTime end, Location? location,
     Occurrence? occurence, Acceptance? acceptance) async {

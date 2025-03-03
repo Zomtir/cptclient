@@ -6,9 +6,12 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 
-Future<List<(Team,bool)>> course_participant_sieve_list(UserSession session, int courseID) async {
+Future<List<(Team, bool)>> course_attendance_sieve_list(UserSession session, int courseID, String role) async {
   final response = await client.get(
-    uri('/admin/course_participant_sieve_list', {'course_id': courseID.toString()}),
+    uri('/admin/course_attendance_sieve_list', {
+      'course_id': courseID.toString(),
+      'role': role,
+    }),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -25,11 +28,12 @@ Future<List<(Team,bool)>> course_participant_sieve_list(UserSession session, int
   );
 }
 
-Future<bool> course_participant_sieve_edit(UserSession session, int courseID, int teamID, bool access) async {
+Future<bool> course_attendance_sieve_edit(UserSession session, int courseID, int teamID, String role, bool access) async {
   final response = await client.head(
-    uri('/admin/course_participant_sieve_edit', {
+    uri('/admin/course_attendance_sieve_edit', {
       'course_id': courseID.toString(),
       'team_id': teamID.toString(),
+      'role': role,
       'access': access.toString(),
     }),
     headers: {
@@ -40,11 +44,12 @@ Future<bool> course_participant_sieve_edit(UserSession session, int courseID, in
   return (response.statusCode == 200);
 }
 
-Future<bool> course_participant_sieve_remove(UserSession session, int courseID, int teamID) async {
+Future<bool> course_attendance_sieve_remove(UserSession session, int courseID, int teamID, String role) async {
   final response = await client.head(
-    uri('/admin/course_participant_sieve_remove', {
+    uri('/admin/course_attendance_sieve_remove', {
       'course_id': courseID.toString(),
       'team_id': teamID.toString(),
+      'role': role,
     }),
     headers: {
       'Token': session.token,

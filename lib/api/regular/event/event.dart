@@ -106,10 +106,11 @@ Future<bool> event_bookmark_edit(UserSession session, Event event, bool bookmark
   return (response.statusCode != 200);
 }
 
-Future<Confirmation?> event_leader_registration_info(UserSession session, Event event) async {
+Future<Confirmation?> event_attendance_registration_info(UserSession session, Event event, String role) async {
   final response = await client.get(
-    uri('/regular/event_leader_registration_info', {
+    uri('/regular/event_attendance_registration_info', {
       'event_id': event.id.toString(),
+      'role': role,
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',
@@ -122,10 +123,11 @@ Future<Confirmation?> event_leader_registration_info(UserSession session, Event 
   return Confirmation.fromNullString(utf8.decode(response.bodyBytes));
 }
 
-Future<bool> event_leader_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
+Future<bool> event_attendance_registration_edit(UserSession session, Event event, String role, Confirmation? confirmation) async {
   final response = await client.head(
-    uri('/regular/event_leader_registration_edit', {
+    uri('/regular/event_attendance_registration_edit', {
       'event_id': event.id.toString(),
+      'role': role,
       'status': confirmation?.name ?? 'NULL',
     }),
     headers: {
@@ -137,10 +139,11 @@ Future<bool> event_leader_registration_edit(UserSession session, Event event, Co
   return (response.statusCode != 200);
 }
 
-Future<bool?> event_leader_presence_true(UserSession session, Event event) async {
+Future<bool?> event_attendance_presence_true(UserSession session, Event event, String role) async {
   final response = await client.get(
-    uri('/regular/event_leader_presence_true', {
+    uri('/regular/event_attendance_presence_true', {
       'event_id': event.id.toString(),
+      'role': role,
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',
@@ -153,10 +156,11 @@ Future<bool?> event_leader_presence_true(UserSession session, Event event) async
   return json.decode(utf8.decode(response.bodyBytes)) as bool;
 }
 
-Future<bool> event_leader_presence_add(UserSession session, Event event) async {
+Future<bool> event_attendance_presence_add(UserSession session, Event event, String role) async {
   final response = await client.head(
-    uri('/regular/event_leader_presence_add', {
+    uri('/regular/event_attendance_presence_add', {
       'event_id': event.id.toString(),
+      'role': role,
     }),
     headers: {
       'Token': session.token,
@@ -166,156 +170,11 @@ Future<bool> event_leader_presence_add(UserSession session, Event event) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> event_leader_presence_remove(UserSession session, Event event) async {
+Future<bool> event_attendance_presence_remove(UserSession session, Event event, String role) async {
   final response = await client.head(
-    uri('/regular/event_leader_presence_remove', {
+    uri('/regular/event_attendance_presence_remove', {
       'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<Confirmation?> event_supporter_registration_info(UserSession session, Event event) async {
-  final response = await client.get(
-    uri('/regular/event_supporter_registration_info', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return null;
-
-  return Confirmation.fromNullString(utf8.decode(response.bodyBytes));
-}
-
-Future<bool> event_supporter_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
-  final response = await client.head(
-    uri('/regular/event_supporter_registration_edit', {
-      'event_id': event.id.toString(),
-      'status': confirmation?.name ?? 'NULL',
-    }),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode != 200);
-}
-
-Future<bool?> event_supporter_presence_true(UserSession session, Event event) async {
-  final response = await client.get(
-    uri('/regular/event_supporter_presence_true', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return null;
-
-  return json.decode(utf8.decode(response.bodyBytes)) as bool;
-}
-
-Future<bool> event_supporter_presence_add(UserSession session, Event event) async {
-  final response = await client.head(
-    uri('/regular/event_supporter_presence_add', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> event_supporter_presence_remove(UserSession session, Event event) async {
-  final response = await client.head(
-    uri('/regular/event_supporter_presence_remove', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<Confirmation?> event_participant_registration_info(UserSession session, Event event) async {
-  final response = await client.get(
-    uri('/regular/event_participant_registration_info', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return null;
-
-  return Confirmation.fromNullString(utf8.decode(response.bodyBytes));
-}
-
-Future<bool> event_participant_registration_edit(UserSession session, Event event, Confirmation? confirmation) async {
-  final response = await client.head(
-    uri('/regular/event_participant_registration_edit', {
-      'event_id': event.id.toString(),
-      'status': confirmation?.name ?? 'NULL',
-    }),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode != 200);
-}
-
-Future<bool?> event_participant_presence_true(UserSession session, Event event) async {
-  final response = await client.get(
-    uri('/regular/event_participant_presence_true', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Accept': 'application/json; charset=utf-8',
-      'Token': session.token,
-    },
-  );
-
-  if (response.statusCode != 200) return null;
-
-  return json.decode(utf8.decode(response.bodyBytes)) as bool;
-}
-
-Future<bool> event_participant_presence_add(UserSession session, Event event) async {
-  final response = await client.head(
-    uri('/regular/event_participant_presence_add', {
-      'event_id': event.id.toString(),
-    }),
-    headers: {
-      'Token': session.token,
-    },
-  );
-
-  return (response.statusCode == 200);
-}
-
-Future<bool> event_participant_presence_remove(UserSession session, Event event) async {
-  final response = await client.head(
-    uri('/regular/event_participant_presence_remove', {
-      'event_id': event.id.toString(),
+      'role': role,
     }),
     headers: {
       'Token': session.token,

@@ -75,23 +75,23 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
     _update();
   }
 
-  Future<void> _handleParticipantPresences() async {
+  Future<void> _handleAttendancePresences(String role) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventParticipantPresences,
           tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_owner.event_participant_presence_pool(widget.session, event!),
-          onCallSelected: () => api_owner.event_participant_presence_list(widget.session, event!),
-          onCallAdd: (user) => api_owner.event_participant_presence_add(widget.session, event!, user),
-          onCallRemove: (user) => api_owner.event_participant_presence_remove(widget.session, event!, user),
+          onCallAvailable: () => api_owner.event_attendance_presence_pool(widget.session, event!, role),
+          onCallSelected: () => api_owner.event_attendance_presence_list(widget.session, event!, role),
+          onCallAdd: (user) => api_owner.event_attendance_presence_add(widget.session, event!, user, role),
+          onCallRemove: (user) => api_owner.event_attendance_presence_remove(widget.session, event!, user, role),
         ),
       ),
     );
   }
 
-  Future<void> _handleParticipantFilters() async {
+  Future<void> _handleAttendanceFilters(String role) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -99,112 +99,22 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
           title: AppLocalizations.of(context)!.pageEventParticipantFilters,
           tile: AppEventTile(event: event!),
           onCallAvailable: () => api_regular.user_list(widget.session),
-          onCallSelected: () => api_owner.event_participant_filter_list(widget.session, event!.id),
-          onCallEdit: (user, access) => api_owner.event_participant_filter_edit(widget.session, event!.id, user.id, access),
-          onCallRemove: (user) => api_owner.event_participant_filter_remove(widget.session, event!.id, user.id),
+          onCallSelected: () => api_owner.event_attendance_filter_list(widget.session, event!.id, role),
+          onCallEdit: (user, access) => api_owner.event_attendance_filter_edit(widget.session, event!.id, user.id, role, access),
+          onCallRemove: (user) => api_owner.event_attendance_filter_remove(widget.session, event!.id, user.id, role),
         ),
       ),
     );
   }
 
-  Future<void> _handleParticipantRegistrations() async {
+  Future<void> _handleAttendanceRegistrations(String role) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ListPage<User>(
           title: AppLocalizations.of(context)!.pageEventParticipantRegistrations,
           tile: AppEventTile(event: event!),
-          onCallList: () => api_owner.event_participant_registration_list(widget.session, event!),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleLeaderPresences() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventLeaderPresences,
-          tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_owner.event_leader_presence_pool(widget.session, event!),
-          onCallSelected: () => api_owner.event_leader_presence_list(widget.session, event!),
-          onCallAdd: (user) => api_owner.event_leader_presence_add(widget.session, event!, user),
-          onCallRemove: (user) => api_owner.event_leader_presence_remove(widget.session, event!, user),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleLeaderFilters() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FilterPage<User>(
-          title: AppLocalizations.of(context)!.pageEventLeaderFilters,
-          tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_regular.user_list(widget.session),
-          onCallSelected: () => api_owner.event_leader_filter_list(widget.session, event!.id),
-          onCallEdit: (user, access) => api_owner.event_leader_filter_edit(widget.session, event!.id, user.id, access),
-          onCallRemove: (user) => api_owner.event_leader_filter_remove(widget.session, event!.id, user.id),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleLeaderRegistrations() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ListPage<User>(
-          title: AppLocalizations.of(context)!.pageEventLeaderRegistrations,
-          tile: AppEventTile(event: event!),
-          onCallList: () => api_owner.event_leader_registration_list(widget.session, event!),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleSupporterPresences() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
-          tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_owner.event_supporter_presence_pool(widget.session, event!),
-          onCallSelected: () => api_owner.event_supporter_presence_list(widget.session, event!),
-          onCallAdd: (user) => api_owner.event_supporter_presence_add(widget.session, event!, user),
-          onCallRemove: (user) => api_owner.event_supporter_presence_remove(widget.session, event!, user),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleSupporterFilters() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FilterPage<User>(
-          title: AppLocalizations.of(context)!.pageEventSupporterFilters,
-          tile: AppEventTile(event: event!),
-          onCallAvailable: () => api_regular.user_list(widget.session),
-          onCallSelected: () => api_owner.event_supporter_filter_list(widget.session, event!.id),
-          onCallEdit: (user, access) => api_owner.event_supporter_filter_edit(widget.session, event!.id, user.id, access),
-          onCallRemove: (user) => api_owner.event_supporter_filter_remove(widget.session, event!.id, user.id),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleSupporterRegistrations() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ListPage<User>(
-          title: AppLocalizations.of(context)!.pageEventSupporterRegistrations,
-          tile: AppEventTile(event: event!),
-          onCallList: () => api_owner.event_supporter_registration_list(widget.session, event!),
+          onCallList: () => api_owner.event_attendance_registration_list(widget.session, event!, role),
         ),
       ),
     );
@@ -283,15 +193,15 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventParticipantPresences),
-                onTap: _handleParticipantPresences,
+                onTap: () => _handleAttendancePresences('PARTICIPANT'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventParticipantFilters),
-                onTap: _handleParticipantFilters,
+                onTap: () => _handleAttendanceFilters('PARTICIPANT'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventParticipantRegistrations),
-                onTap: _handleParticipantRegistrations,
+                onTap: () => _handleAttendanceRegistrations('PARTICIPANT'),
               ),
             ],
           ),
@@ -300,15 +210,15 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderPresences),
-                onTap: _handleLeaderPresences,
+                onTap: () => _handleAttendancePresences('LEADER'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderFilters),
-                onTap: _handleLeaderFilters,
+                onTap: () => _handleAttendanceFilters('LEADER'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderRegistrations),
-                onTap: _handleLeaderRegistrations,
+                onTap: () => _handleAttendanceRegistrations('LEADER'),
               ),
             ],
           ),
@@ -317,15 +227,15 @@ class EventDetailOwnershipPageState extends State<EventDetailOwnershipPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
-                onTap: _handleSupporterPresences,
+                onTap: () => _handleAttendancePresences('SUPPORTER'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventSupporterFilters),
-                onTap: _handleSupporterFilters,
+                onTap: () => _handleAttendanceFilters('SUPPORTER'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventSupporterRegistrations),
-                onTap: _handleSupporterRegistrations,
+                onTap: () => _handleAttendanceRegistrations('SUPPORTER'),
               ),
             ],
           ),

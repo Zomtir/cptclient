@@ -155,7 +155,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
   }
 
   // ignore: unused_element
-  void _handleParticipants(Event event) async {
+  void _handleAttendance(Event event, String role) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -163,9 +163,9 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           title: AppLocalizations.of(context)!.pageEventParticipantPresences,
           tile: AppEventTile(event: event),
           onCallAvailable: () => api_regular.user_list(widget.session),
-          onCallSelected: () => api_owner.event_participant_presence_list(widget.session, event),
-          onCallAdd: (user) => api_owner.event_participant_presence_add(widget.session, event, user),
-          onCallRemove: (user) => api_owner.event_participant_presence_remove(widget.session, event, user),
+          onCallSelected: () => api_owner.event_attendance_presence_list(widget.session, event, role),
+          onCallAdd: (user) => api_owner.event_attendance_presence_add(widget.session, event, user, role),
+          onCallRemove: (user) => api_owner.event_attendance_presence_remove(widget.session, event, user, role),
         ),
       ),
     );

@@ -42,49 +42,17 @@ class EnrollPageState extends State<EnrollPage> {
     });
   }
 
-  Future<void> _handleParticipants() async {
+  Future<void> _handleAttendance(String role) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventParticipantPresences,
           tile: AppEventTile(event: _event!),
-          onCallAvailable: () => api_service.event_participant_presence_pool(widget.session),
-          onCallSelected: () => api_service.event_participant_presence_list(widget.session),
-          onCallAdd: (user) => api_service.event_participant_presence_add(widget.session, user),
-          onCallRemove: (user) => api_service.event_participant_presence_remove(widget.session, user),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleLeaders() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventLeaderPresences,
-          tile: AppEventTile(event: _event!),
-          onCallAvailable: () => api_service.event_leader_presence_pool(widget.session),
-          onCallSelected: () => api_service.event_leader_presence_list(widget.session),
-          onCallAdd: (user) => api_service.event_leader_presence_add(widget.session, user),
-          onCallRemove: (user) => api_service.event_leader_presence_remove(widget.session, user),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleSupporter() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventSupporterPresences,
-          tile: AppEventTile(event: _event!),
-          onCallAvailable: () => api_service.event_supporter_presence_pool(widget.session),
-          onCallSelected: () => api_service.event_supporter_presence_list(widget.session),
-          onCallAdd: (user) => api_service.event_supporter_presence_add(widget.session, user),
-          onCallRemove: (user) => api_service.event_supporter_presence_remove(widget.session, user),
+          onCallAvailable: () => api_service.event_attendance_presence_pool(widget.session, role),
+          onCallSelected: () => api_service.event_attendance_presence_list(widget.session, role),
+          onCallAdd: (user) => api_service.event_attendance_presence_add(widget.session, user, role),
+          onCallRemove: (user) => api_service.event_attendance_presence_remove(widget.session, user, role),
         ),
       ),
     );
@@ -114,15 +82,15 @@ class EnrollPageState extends State<EnrollPage> {
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventParticipantPresences),
-                onTap: _handleParticipants,
+                onTap: () => _handleAttendance('PARTICIPANT'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventLeaderPresences),
-                onTap: _handleLeaders,
+                onTap: () => _handleAttendance('LEADER'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
-                onTap: _handleSupporter,
+                onTap: () => _handleAttendance('SUPPORTER'),
               ),
             ],
           ),
