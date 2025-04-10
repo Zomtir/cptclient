@@ -2,29 +2,27 @@ import 'package:cptclient/json/license.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppLicenseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class UserLicensePage extends StatefulWidget {
+class LicenseEdit extends StatefulWidget {
   final License license;
-  final Future<void> Function(License) onEdit;
 
-  UserLicensePage({super.key, required this.license, required this.onEdit});
+  LicenseEdit({super.key, required this.license});
 
   @override
-  UserLicensePageState createState() => UserLicensePageState();
+  LicenseEditState createState() => LicenseEditState();
 }
 
-class UserLicensePageState extends State<UserLicensePage> {
+class LicenseEditState extends State<LicenseEdit> {
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlNumber = TextEditingController();
   final DateTimeController _ctrlExpiration = DateTimeController();
 
-  UserLicensePageState();
+  LicenseEditState();
 
   @override
   void initState() {
@@ -61,23 +59,34 @@ class UserLicensePageState extends State<UserLicensePage> {
     return true;
   }
 
-  void _submit() async {
-    if (!_gather()) return;
-    await widget.onEdit(widget.license);
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageUserEdit),
-      ),
-      body: AppBody(
+    final Widget actions = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        AppButton(
+          onPressed: () => Navigator.pop(context),
+          text: AppLocalizations.of(context)!.actionCancel,
+        ),
+        Spacer(),
+        AppButton(
+          onPressed: () => Navigator.pop(context, Success(null)),
+          text: AppLocalizations.of(context)!.actionRemove,
+        ),
+        Spacer(),
+        AppButton(
+          onPressed: () async {
+            if (!_gather()) return;
+            Navigator.pop(context, Success(widget.license));
+          },
+          text: AppLocalizations.of(context)!.actionConfirm,
+        ),
+      ],
+    );
+
+    return Column(
         children: [
-          AppLicenseTile(
-            license: widget.license,
-          ),
+          widget.license.buildTile(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.licenseName,
             child: TextField(
@@ -100,12 +109,8 @@ class UserLicensePageState extends State<UserLicensePage> {
               controller: _ctrlExpiration,
             ),
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.actionSave,
-            onPressed: _submit,
-          ),
+          actions,
         ],
-      ),
-    );
+      );
   }
 }

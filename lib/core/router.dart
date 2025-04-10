@@ -1,6 +1,7 @@
 import 'package:cptclient/api/login.dart' as server;
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/EnrollPage.dart';
 import 'package:cptclient/pages/LoginLandingPage.dart';
@@ -96,6 +97,17 @@ void gotoRoute(BuildContext context, String path) {
   GoRouter.of(context).go(path);
 }
 
+void gotoPage(BuildContext context,  {required Widget Function(BuildContext) builder, VoidCallback? postCall}) async {
+  await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: builder,
+    ),
+  );
+
+  postCall?.call();
+}
+
 class LoadingPage extends StatelessWidget {
   final Future<void> Function() onWait;
 
@@ -111,14 +123,6 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(
-          value: null,
-          strokeWidth: 5,
-        ),
-      ),
-    );
+    return LoadingWidget();
   }
 }
-

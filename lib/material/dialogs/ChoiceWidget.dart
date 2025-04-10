@@ -1,6 +1,6 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class ChoiceDisplayWidget extends StatelessWidget {
@@ -8,16 +8,12 @@ class ChoiceDisplayWidget extends StatelessWidget {
     super.key,
     required this.enabled,
     required this.value,
-    this.nullable = false,
-    this.neutral = false,
-    this.onChanged,
+    this.trailing,
   });
 
   final bool enabled;
   final bool? value;
-  final bool nullable;
-  final bool neutral;
-  final void Function(bool, bool?)? onChanged;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -34,33 +30,7 @@ class ChoiceDisplayWidget extends StatelessWidget {
         (true, true) => Text(AppLocalizations.of(context)!.labelTrue, style: TextStyle(color: Colors.green)),
         (true, false) => Text(AppLocalizations.of(context)!.labelFalse, style: TextStyle(color: Colors.red)),
       },
-      trailing: onChanged == null
-          ? null
-          : IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () async {
-                (bool, bool?)? response = await dialog(context);
-                if (response == null) return;
-                onChanged?.call(response.$1, response.$2);
-              },
-            ),
-    );
-  }
-
-  Future<(bool, bool?)?> dialog(BuildContext context) {
-    return showDialog<(bool, bool?)>(
-      context: context,
-      useSafeArea: false,
-      builder: (BuildContext context) {
-        return AppDialog(
-          child: ChoiceEditWidget(
-            enabled: enabled,
-            value: value,
-            nullable: nullable,
-            neutral: neutral,
-          ),
-        );
-      },
+      trailing: trailing,
     );
   }
 }
@@ -72,14 +42,12 @@ class ChoiceEditWidget extends StatefulWidget {
     required this.value,
     this.nullable = false,
     this.neutral = false,
-    this.onChanged,
   });
 
   final bool enabled;
   final bool? value;
   final bool nullable;
   final bool neutral;
-  final void Function(bool, bool?)? onChanged;
 
   @override
   State<ChoiceEditWidget> createState() => ChoiceEditWidgetState();
@@ -107,7 +75,7 @@ class ChoiceEditWidgetState extends State<ChoiceEditWidget> {
         ),
         Spacer(),
         AppButton(
-          onPressed: () => Navigator.pop(context, (enabled, value)),
+          onPressed: () => Navigator.pop(context, Success((enabled, value))),
           text: AppLocalizations.of(context)!.actionConfirm,
         ),
       ],

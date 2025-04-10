@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 class AppInfoRow extends StatelessWidget {
   final String info;
   final Widget child;
-  final List<Widget> leading;
-  final List<Widget> trailing;
 
   const AppInfoRow({
     super.key,
     required this.info,
     required this.child,
-    this.leading = const [],
-    this.trailing = const [],
   });
 
   @override
@@ -26,16 +22,7 @@ class AppInfoRow extends StatelessWidget {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(4.0),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  ...leading,
-                  Expanded(child: child),
-                  ...trailing,
-                ],
-              ),
-            ),
+            child: child,
           ),
         ),
         Positioned(

@@ -13,21 +13,20 @@ class DatePicker extends StatefulWidget {
     DateTime? initialDate,
     DateTime? firstDate,
     DateTime? lastDate,
-  })
-      : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
+  })  : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
         firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1900)),
         lastDate = DateUtils.dateOnly(lastDate ?? DateTime(2100)) {
     assert(
-    (this.lastDate).isAfter(this.firstDate),
-    'lastDate $this.lastDate must be on or after firstDate $this.firstDate.',
+      (this.lastDate).isAfter(this.firstDate),
+      'lastDate $this.lastDate must be on or after firstDate $this.firstDate.',
     );
     assert(
-    this.initialDate.isAfter(this.firstDate),
-    'initialDate $this.initialDate must be on or after firstDate $this.firstDate.',
+      this.initialDate.isAfter(this.firstDate),
+      'initialDate $this.initialDate must be on or after firstDate $this.firstDate.',
     );
     assert(
-    this.initialDate.isBefore(this.lastDate),
-    'initialDate $this.initialDate must be on or before lastDate $this.lastDate.',
+      this.initialDate.isBefore(this.lastDate),
+      'initialDate $this.initialDate must be on or before lastDate $this.lastDate.',
     );
   }
 
@@ -56,14 +55,10 @@ class _DatePickerState extends State<DatePicker> {
 
   void _handleConfirm() {
     if (_selectedDate == widget.initialDate) {
-      _handleCancel();
+      Navigator.pop(context);
     } else {
       Navigator.pop(context, Success(_selectedDate));
     }
-  }
-
-  void _handleCancel() {
-    Navigator.pop(context);
   }
 
   void _parseDateFields() {
@@ -122,9 +117,7 @@ class _DatePickerState extends State<DatePicker> {
     final Widget form = Container(
       alignment: AlignmentDirectional.center,
       child: Flex(
-        direction: MediaQuery
-            .sizeOf(context)
-            .width > 400 ? Axis.horizontal : Axis.vertical,
+        direction: MediaQuery.sizeOf(context).width > 400 ? Axis.horizontal : Axis.vertical,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Column(
@@ -164,15 +157,16 @@ class _DatePickerState extends State<DatePicker> {
     List<String> weekdays = getWeekdaysShort(context);
 
     final Widget calendar = Container(
-      width: 350,
-      height: 360,
       child: GridView.count(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         crossAxisCount: 7,
+        childAspectRatio: 1.5,
         children: List.generate(7, (index) {
-          return Center(
-            child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
-          );
-        }) +
+              return Center(
+                child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
+              );
+            }) +
             List.generate(_firstDayOffset, (index) {
               return Center();
             }) +
@@ -196,8 +190,13 @@ class _DatePickerState extends State<DatePicker> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         AppButton(
-          onPressed: _handleCancel,
+          onPressed: () => Navigator.pop(context),
           text: AppLocalizations.of(context)!.actionCancel,
+        ),
+        Spacer(),
+        AppButton(
+          onPressed: () => Navigator.pop(context, Success(null)),
+          text: AppLocalizations.of(context)!.actionRemove,
         ),
         Spacer(),
         AppButton(

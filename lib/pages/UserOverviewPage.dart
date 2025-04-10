@@ -5,7 +5,8 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/pages/UserEditPage.dart';
+import 'package:cptclient/pages/UserCreatePage.dart';
+import 'package:cptclient/pages/UserInfoPage.dart';
 import 'package:flutter/material.dart';
 
 class UserOverviewPage extends StatefulWidget {
@@ -35,10 +36,9 @@ class UserOverviewPageState extends State<UserOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserEditPage(
+        builder: (context) => UserInfoPage(
           session: widget.session,
           userID: user.id,
-          isDraft: false,
         ),
       ),
     );
@@ -50,10 +50,8 @@ class UserOverviewPageState extends State<UserOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserEditPage(
+        builder: (context) => UserCreatePage(
           session: widget.session,
-          userID: 0,
-          isDraft: true,
         ),
       ),
     );

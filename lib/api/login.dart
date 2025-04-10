@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cptclient/api/anon/user.dart' as api_anon;
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
@@ -18,28 +19,13 @@ Future<bool> loadStatus() async {
   return (response.statusCode == 200);
 }
 
-Future<String?> getUserSalt(String key) async {
-  final response = await client.get(
-    uri('/user_salt', {
-      'user_key': key,
-    }),
-    headers: {
-      'Accept': 'text/plain; charset=utf-8',
-    },
-  );
-
-  if (response.statusCode != 200) return null;
-
-  return utf8.decode(response.bodyBytes);
-}
-
 Future<UserSession?> loginUser(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return null;
 
-  String? salt = await getUserSalt(key);
+  String? salt = await api_anon.user_salt(key);
   if (salt == null || salt.isEmpty) return null;
 
-  Credential credential = Credential(key, crypto.hashPassword(pwd, salt), salt);
+  Credential credential = Credential(login: key, password: crypto.hashPassword(pwd, salt), salt: salt);
 
   final response = await client.post(
     uri('/user_login'),
@@ -61,7 +47,7 @@ Future<UserSession?> loginUser(String key, String pwd) async {
 Future<EventSession?> loginEvent(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return null;
 
-  Credential credential = Credential(key, pwd, "");
+  Credential credential = Credential(login: key, password: pwd);
 
   final response = await client.post(
     uri('/event_login'),

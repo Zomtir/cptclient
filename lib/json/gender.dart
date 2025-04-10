@@ -1,7 +1,8 @@
 import 'package:cptclient/l10n/app_localizations.dart';
+import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:flutter/material.dart';
 
-class Gender implements Comparable {
+class Gender extends FieldInterface implements Comparable {
   final String _value;
 
   const Gender._init(this._value);
@@ -52,5 +53,20 @@ class Gender implements Comparable {
   @override
   int compareTo(other) {
     return name.compareTo(other.name);
+  }
+
+  @override
+  Widget buildEntry(BuildContext context) {
+    return Text(localizedName(context));
+  }
+
+  @override
+  Widget buildTile(BuildContext context) {
+    return ListTile(title: Text(localizedName(context)));
+  }
+
+  @override
+  get searchable {
+    return [name];
   }
 }

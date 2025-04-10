@@ -1,5 +1,7 @@
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/tiles/AppLicenseTile.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -59,5 +61,29 @@ class License extends FieldInterface implements Comparable {
   @override
   get searchable {
     return [number, name];
+  }
+
+  // TODO
+  static Widget buildEntryStatic(BuildContext context, License? lic) {
+    if (lic == null) {
+      return Text(AppLocalizations.of(context)!.labelMissing);
+    }
+    return Column(
+      children: [
+        Text("${lic.name.isEmpty ? AppLocalizations.of(context)!.undefined : lic.name} (${lic.number.isEmpty ? AppLocalizations.of(context)!.undefined : lic.number})"),
+        Text("${lic.expiration.fmtDate(context)}"),
+      ],
+    );
+  }
+
+  // TODO
+  static String copyEntryStatic(BuildContext context, License? lic) {
+    if (lic == null) {
+      return "";
+    }
+    return "${lic.name.isEmpty ? AppLocalizations.of(context)!.undefined : lic.name},"
+        "(${lic.number.isEmpty ? AppLocalizations.of(context)!.undefined : lic.number})"
+        "${formatIsoDate(lic.expiration)}"
+        ;
   }
 }

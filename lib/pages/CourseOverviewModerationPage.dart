@@ -97,23 +97,23 @@ class CourseOverviewModerationPageState extends State<CourseOverviewModerationPa
                   ),
                   AppInfoRow(
                     info: AppLocalizations.of(context)!.skill,
-                    child: AppDropdown<Skill>(
-                      controller: _ctrlDropdownSkill,
-                      builder: (Skill skill) {
-                        return Text(skill.title);
-                      },
-                      onChanged: (Skill? skill) {
-                        _ctrlDropdownSkill.value = skill;
-                      },
-                    ),
-                    trailing: [
-                      IconButton(
+                    child: ListTile(
+                      title: AppDropdown<Skill>(
+                        controller: _ctrlDropdownSkill,
+                        builder: (Skill skill) {
+                          return Text(skill.title);
+                        },
+                        onChanged: (Skill? skill) {
+                          _ctrlDropdownSkill.value = skill;
+                        },
+                      ),
+                      trailing: IconButton(
                         icon: Icon(Icons.clear),
                         onPressed: () {
                           _ctrlDropdownSkill.value = null;
                         },
                       ),
-                    ],
+                    ),
                   ),
                   AppInfoRow(
                     info: AppLocalizations.of(context)!.skillRange,

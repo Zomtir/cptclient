@@ -43,8 +43,8 @@ class EventExportPageState extends State<EventExportPage> {
     String scheme = prefs.getString('ClientScheme')!;
     String host = prefs.getString('ClientHost')!;
     int port = prefs.getInt('ClientPort')!;
-    String key = widget.credits.login;
-    String pwd = widget.credits.password;
+    String key = widget.credits.login!;
+    String pwd = widget.credits.password!;
 
     setState(() => url = "$scheme://$host:$port/#/login_event?key=$key&pwd=$pwd");
   }

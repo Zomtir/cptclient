@@ -52,15 +52,13 @@ Future<Right?> right_info(UserSession session) async {
   return Right.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<bool> put_password(UserSession session, String password) async {
-  if (password.isEmpty) return false;
-  if (password.length < 6) return false;
+Future<bool> user_password_edit(UserSession session, String password, String salt) async {
+  if (password.length < 6 || password.length > 50) return false;
 
-  String salt = crypto.generateHex(16);
-  Credential credential = Credential(session.user!.key.toString(), crypto.hashPassword(password, salt), salt);
+  Credential credential = Credential(login: session.user!.key.toString(), password: crypto.hashPassword(password, salt), salt: salt);
 
   final response = await client.post(
-    uri('/regular/user_password'),
+    uri('/regular/user_password_edit'),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,

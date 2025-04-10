@@ -37,7 +37,7 @@ class LoginUserPageState extends State<LoginUserPage> {
     UserSession? session = await server.loginUser(login, passwd);
 
     if (remember) {
-      navi.addUserCredential(Credential(login, passwd, ''));
+      navi.addUserCredential(Credential(login: login, password: passwd));
     }
 
     _ctrlLogin.text = "";
@@ -117,12 +117,12 @@ class LoginUserPageState extends State<LoginUserPage> {
 
   Widget buildCredential(Credential credit) {
     return ListTile(
-      title: Text(credit.login),
-      subtitle: Text("Password Length: ${credit.password.length}"),
+      title: Text(credit.login!),
+      subtitle: Text("Password Length: ${credit.password!.length}"),
       onTap: () async {
         setState(() {
-          _ctrlLogin.text = credit.login;
-          _ctrlPasswd.text = credit.password;
+          _ctrlLogin.text = credit.login!;
+          _ctrlPasswd.text = credit.password!;
         });
         _loadCredentials();
       },

@@ -100,6 +100,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelFalse => 'False';
 
   @override
+  String get labelAccount => 'Account';
+
+  @override
+  String get labelName => 'Name';
+
+  @override
+  String get labelContact => 'Contact';
+
+  @override
+  String get labelPersonalBackground => 'Personal Background';
+
+  @override
+  String get labelPhysicalCharacteristics => 'Physical Characteristics';
+
+  @override
   String get actionSelect => 'Select';
 
   @override
@@ -631,16 +646,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get user => 'User';
 
   @override
-  String get userKey => 'Schlüssel';
+  String get userKey => 'Key';
+
+  @override
+  String get userSalt => 'Password Entropy';
 
   @override
   String get userPassword => 'Password';
 
   @override
-  String get userPasswordChange => 'Change Password';
+  String get userPasswordChange => 'Change Password (6-50 Characters)';
 
   @override
-  String get userEnabled => 'Account Enabled';
+  String get userPasswordSince => 'Password Set Since (Date)';
+
+  @override
+  String get userEnabled => 'Login Enabled';
 
   @override
   String get userActive => 'User Active';

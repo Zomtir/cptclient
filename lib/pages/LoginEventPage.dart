@@ -37,7 +37,7 @@ class LoginEventPageState extends State<LoginEventPage> {
     EventSession? session = await server.loginEvent(login, passwd);
 
     if (remember) {
-      navi.addEventCredential(Credential(login, passwd, ''));
+      navi.addEventCredential(Credential(login: login, password: passwd));
     }
 
     _ctrlLogin.text = "";
@@ -115,12 +115,12 @@ class LoginEventPageState extends State<LoginEventPage> {
 
   Widget buildCredential(Credential credit) {
     return ListTile(
-      title: Text(credit.login),
-      subtitle: Text("Password Length: ${credit.password.length}"),
+      title: Text(credit.login!),
+      subtitle: Text("Password Length: ${credit.password!.length}"),
       onTap: () async {
         setState(() {
-          _ctrlLogin.text = credit.login;
-          _ctrlPasswd.text = credit.password;
+          _ctrlLogin.text = credit.login!;
+          _ctrlPasswd.text = credit.password!;
         });
         _loadCredentials();
       },

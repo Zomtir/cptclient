@@ -4,6 +4,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:flutter/material.dart';
 
 class MemberProfilePage extends StatefulWidget {
@@ -29,7 +30,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   }
 
   Future<void> _savePassword() async {
-    if (!await api_regular.put_password(widget.session, _ctrlUserPassword.text)) {
+    if (!await api_regular.user_password_edit(widget.session, _ctrlUserPassword.text, crypto.generateHex(16))) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password was not changed.')));
       return;
     }

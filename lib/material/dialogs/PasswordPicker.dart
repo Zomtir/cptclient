@@ -31,7 +31,7 @@ class PasswordPickerState extends State<PasswordPicker> {
 
   void _submit() async {
     if (_ctrlSalt.text.isEmpty || _ctrlSalt.text.length != 32) {
-      messageText("Salt ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.userSalt} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
@@ -40,7 +40,7 @@ class PasswordPickerState extends State<PasswordPicker> {
       return;
     }
 
-    Navigator.pop(context, Success(Credential(_ctrlPassword.text, _ctrlSalt.text, "")));
+    Navigator.pop(context, Success(Credential(password: _ctrlPassword.text, salt: _ctrlSalt.text)));
   }
 
   @override
@@ -68,7 +68,7 @@ class PasswordPickerState extends State<PasswordPicker> {
     return Column(
       children: [
         AppInfoRow(
-          info: "Salt",
+          info: AppLocalizations.of(context)!.userSalt,
           child: TextField(
             maxLines: 1,
             controller: _ctrlSalt,

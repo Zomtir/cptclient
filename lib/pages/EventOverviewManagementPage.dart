@@ -239,11 +239,11 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventOccurrence,
-                  child: AppDropdown<Occurrence>(
-                    controller: _ctrlOccurrence,
-                    builder: (Occurrence occurrence) => Text(occurrence.localizedName(context)),
-                    onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
-                  ),
+                child: AppDropdown<Occurrence>(
+                  controller: _ctrlOccurrence,
+                  builder: (Occurrence occurrence) => Text(occurrence.localizedName(context)),
+                  onChanged: (Occurrence? occurrence) => setState(() => _ctrlOccurrence.value = occurrence),
+                ),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventAcceptance,
@@ -255,19 +255,19 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventOwner,
-                child: AppDropdown<User>(
-                  controller: _ctrlOwner,
-                  builder: (User user) {
-                    return Text("${user.firstname} ${user.lastname}");
-                  },
-                  onChanged: (User? user) => setState(() => _ctrlOwner.value = user),
-                ),
-                trailing: [
-                  IconButton(
+                child: ListTile(
+                  title: AppDropdown<User>(
+                    controller: _ctrlOwner,
+                    builder: (User user) {
+                      return Text("${user.firstname} ${user.lastname}");
+                    },
+                    onChanged: (User? user) => setState(() => _ctrlOwner.value = user),
+                  ),
+                  trailing: IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () => setState(() => _ctrlOwner.value = null),
                   ),
-                ],
+                ),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.course,
@@ -299,12 +299,16 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
           icon: const Icon(Icons.drafts_outlined),
           onPressed: () => _withdrawEvent(event),
         ),
-      if (event.acceptance == Acceptance.draft || event.acceptance == Acceptance.accepted || event.acceptance == Acceptance.rejected)
+      if (event.acceptance == Acceptance.draft ||
+          event.acceptance == Acceptance.accepted ||
+          event.acceptance == Acceptance.rejected)
         IconButton(
           icon: const Icon(Icons.hourglass_bottom),
           onPressed: () => _suspendEvent(event),
         ),
-      if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.pending || event.acceptance == Acceptance.accepted)
+      if (event.acceptance == Acceptance.pending ||
+          event.acceptance == Acceptance.pending ||
+          event.acceptance == Acceptance.accepted)
         IconButton(
           icon: const Icon(Icons.highlight_remove),
           onPressed: () => _rejectEvent(event),

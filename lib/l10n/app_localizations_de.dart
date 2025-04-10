@@ -37,7 +37,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelWelcome => 'Willkommen';
 
   @override
-  String get labelMiscellaneous => 'Verschiedenes';
+  String get labelMiscellaneous => 'Sonstiges';
 
   @override
   String get labelLanguage => 'Sprache';
@@ -98,6 +98,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelFalse => 'Falsch';
+
+  @override
+  String get labelAccount => 'Konto';
+
+  @override
+  String get labelName => 'Name';
+
+  @override
+  String get labelContact => 'Kontakt';
+
+  @override
+  String get labelPersonalBackground => 'Persönlicher Hintergrund';
+
+  @override
+  String get labelPhysicalCharacteristics => 'Körperliche Merkmale';
 
   @override
   String get actionSelect => 'Auswählen';
@@ -634,13 +649,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get userKey => 'Schlüssel';
 
   @override
+  String get userSalt => 'Passwort-Entropie';
+
+  @override
   String get userPassword => 'Passwort';
 
   @override
-  String get userPasswordChange => 'Passwort ändern';
+  String get userPasswordChange => 'Passwort ändern (6-50 Zeichen)';
 
   @override
-  String get userEnabled => 'Account freigegeben';
+  String get userPasswordSince => 'Passwort gesetzt seit (Datum)';
+
+  @override
+  String get userEnabled => 'Login freigegeben';
 
   @override
   String get userActive => 'Benutzer aktiv';
@@ -709,7 +730,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get genderFemale => 'Weiblich';
 
   @override
-  String get genderOther => 'Sonstiges';
+  String get genderOther => 'Divers';
 
   @override
   String get licenseName => 'Lizenzbezeichnung';

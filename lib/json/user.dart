@@ -3,6 +3,7 @@
 import 'dart:core';
 
 import 'package:cptclient/json/bankacc.dart';
+import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
@@ -15,6 +16,7 @@ class User extends FieldInterface implements Comparable {
   final int id;
   String key;
   bool? enabled;
+  Credential? credential;
   bool? active;
   String firstname;
   String lastname;
@@ -47,6 +49,7 @@ class User extends FieldInterface implements Comparable {
       : id = json['id'],
         key = json['key'],
         enabled = json['enabled'],
+        credential = json['credential'] == null ? null : Credential.fromJson(json['credential']),
         active = json['active'],
         firstname = json['firstname'],
         lastname = json['lastname'],
@@ -69,6 +72,7 @@ class User extends FieldInterface implements Comparable {
         'id': id,
         'key': key,
         'enabled': enabled,
+        'credential': credential,
         'active': active,
         'firstname': firstname,
         'lastname': lastname,
@@ -82,7 +86,7 @@ class User extends FieldInterface implements Comparable {
         'gender': gender?.name,
         'height': height,
         'weight': weight,
-        'bank_account' : bank_account,
+        'bank_account': bank_account,
         'license_main': license_main,
         'license_extra': license_extra,
         'note': note

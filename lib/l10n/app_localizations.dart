@@ -281,6 +281,36 @@ abstract class AppLocalizations {
   /// **'False'**
   String get labelFalse;
 
+  /// No description provided for @labelAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get labelAccount;
+
+  /// No description provided for @labelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get labelName;
+
+  /// No description provided for @labelContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get labelContact;
+
+  /// No description provided for @labelPersonalBackground.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Background'**
+  String get labelPersonalBackground;
+
+  /// No description provided for @labelPhysicalCharacteristics.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Characteristics'**
+  String get labelPhysicalCharacteristics;
+
   /// No description provided for @actionSelect.
   ///
   /// In en, this message translates to:
@@ -1346,8 +1376,14 @@ abstract class AppLocalizations {
   /// No description provided for @userKey.
   ///
   /// In en, this message translates to:
-  /// **'Schlüssel'**
+  /// **'Key'**
   String get userKey;
+
+  /// No description provided for @userSalt.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Entropy'**
+  String get userSalt;
 
   /// No description provided for @userPassword.
   ///
@@ -1358,13 +1394,19 @@ abstract class AppLocalizations {
   /// No description provided for @userPasswordChange.
   ///
   /// In en, this message translates to:
-  /// **'Change Password'**
+  /// **'Change Password (6-50 Characters)'**
   String get userPasswordChange;
+
+  /// No description provided for @userPasswordSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Set Since (Date)'**
+  String get userPasswordSince;
 
   /// No description provided for @userEnabled.
   ///
   /// In en, this message translates to:
-  /// **'Account Enabled'**
+  /// **'Login Enabled'**
   String get userEnabled;
 
   /// No description provided for @userActive.

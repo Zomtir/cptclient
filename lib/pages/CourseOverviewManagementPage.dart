@@ -6,6 +6,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/ChoiceWidget.dart';
 import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRangeField.dart';
@@ -15,7 +17,6 @@ import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/material/widgets/ChoiceWidget.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:flutter/material.dart';
@@ -106,22 +107,36 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.courseActive,
-                child: ChoiceDisplayWidget(
-                  enabled: true,
-                  value: _ctrlActive,
-                  onChanged: (bool e, bool? v) {
-                    setState(() => _ctrlActive = v!);
-                  },
+                child: ListTile(
+                  title: ChoiceDisplayWidget(
+                    enabled: true,
+                    value: _ctrlActive,
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => useAppDialog<(bool, bool?)>(
+                      context: context,
+                      widget: ChoiceEditWidget(enabled: true, value: _ctrlActive!),
+                      onChanged: ((bool, bool?) t) => setState(() => _ctrlActive = t.$2!),
+                    ),
+                  ),
                 ),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.coursePublic,
-                child: ChoiceDisplayWidget(
-                  enabled: true,
-                  value: _ctrlPublic,
-                  onChanged: (bool e, bool? v) {
-                    setState(() => _ctrlPublic = v!);
-                  },
+                child: ListTile(
+                  title: ChoiceDisplayWidget(
+                    enabled: true,
+                    value: _ctrlPublic,
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => useAppDialog<(bool, bool?)>(
+                      context: context,
+                      widget: ChoiceEditWidget(enabled: true, value: _ctrlPublic!),
+                      onChanged: ((bool, bool?) t) => setState(() => _ctrlPublic = t.$2!),
+                    ),
+                  ),
                 ),
               ),
               AppInfoRow(
