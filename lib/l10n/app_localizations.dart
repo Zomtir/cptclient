@@ -269,6 +269,12 @@ abstract class AppLocalizations {
   /// **'True'**
   String get labelTrue;
 
+  /// No description provided for @labelNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get labelNeutral;
+
   /// No description provided for @labelFalse.
   ///
   /// In en, this message translates to:
@@ -658,6 +664,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Undefined'**
   String get undefined;
+
+  /// No description provided for @defined.
+  ///
+  /// In en, this message translates to:
+  /// **'Defined'**
+  String get defined;
 
   /// No description provided for @pageCalendarMonth.
   ///

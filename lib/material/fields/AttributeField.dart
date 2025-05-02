@@ -42,8 +42,8 @@ class AttributeField<T extends FieldInterface> extends StatelessWidget {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(onPressed: () => _handleEdit(context), icon: Icon(Icons.edit)),
                 IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
+                IconButton(onPressed: () => _handleEdit(context), icon: Icon(Icons.edit)),
               ],
             ),
             onTap: () => _handleEdit(context),

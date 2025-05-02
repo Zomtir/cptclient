@@ -94,6 +94,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelTrue => 'Wahr';
 
   @override
+  String get labelNeutral => 'Neutral';
+
+  @override
   String get labelFalse => 'Falsch';
 
   @override
@@ -287,6 +290,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get undefined => 'Undefiniert';
+
+  @override
+  String get defined => 'Definiert';
 
   @override
   String get pageCalendarMonth => 'Monatsübersicht';
