@@ -15,7 +15,7 @@ import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/material/widgets/Tribox.dart';
+import 'package:cptclient/material/widgets/ChoiceWidget.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:flutter/material.dart';
@@ -106,16 +106,22 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.courseActive,
-                child: Tribox(
+                child: ChoiceDisplayWidget(
+                  enabled: true,
                   value: _ctrlActive,
-                  onChanged: (bool? active) => setState(() => _ctrlActive = active),
+                  onChanged: (bool e, bool? v) {
+                    setState(() => _ctrlActive = v!);
+                  },
                 ),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.coursePublic,
-                child: Tribox(
+                child: ChoiceDisplayWidget(
+                  enabled: true,
                   value: _ctrlPublic,
-                  onChanged: (bool? public) => setState(() => _ctrlPublic = public),
+                  onChanged: (bool e, bool? v) {
+                    setState(() => _ctrlPublic = v!);
+                  },
                 ),
               ),
               AppInfoRow(
