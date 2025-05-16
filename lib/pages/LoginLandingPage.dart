@@ -31,6 +31,12 @@ class LoginLandingPageState extends State<LoginLandingPage> {
   }
 
   Future<void> _loadSessions() async {
+    var inactiveUserSessions = navi.userSessions.where((s) => s.expiration.isBefore(DateTime.now()));
+    inactiveUserSessions.forEach(navi.removeUserSession);
+
+    var inactiveEventSessions = navi.eventSessions.where((s) => s.expiration.isBefore(DateTime.now()));
+    inactiveEventSessions.forEach(navi.removeEventSession);
+
     setState(() {
       userSessions = navi.userSessions;
       eventSessions = navi.eventSessions;
