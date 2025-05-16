@@ -67,7 +67,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
             children: eventSessions.map((entry) => buildEventSession(entry)).toList(),
           ),
         MenuSection(
-          title: AppLocalizations.of(context)!.sessionLogin,
+          title: AppLocalizations.of(context)!.sessionNew,
           children: [
             ListTile(
               title: Text(AppLocalizations.of(context)!.loginUser),
@@ -134,23 +134,23 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         children: [
           IconButton(
             onPressed: () async {
+              navi.removeUserSession(session);
+              _loadSessions();
+            },
+            icon: Tooltip(
+              child: Icon(Icons.cancel_outlined),
+              message: AppLocalizations.of(context)!.actionDelete,
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
               bool active = await navi.loginUser(context, session);
               if (!active) navi.removeUserSession(session);
               _loadSessions();
             },
             icon: Tooltip(
               child: Icon(Icons.login),
-              message: AppLocalizations.of(context)!.sessionLogin,
-            ),
-          ),
-          IconButton(
-            onPressed: () async {
-              navi.removeUserSession(session);
-              _loadSessions();
-            },
-            icon: Tooltip(
-              child: Icon(Icons.logout),
-              message: AppLocalizations.of(context)!.sessionLogout,
+              message: AppLocalizations.of(context)!.actionResume,
             ),
           ),
         ],

@@ -127,6 +127,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionClose => 'Close';
 
   @override
+  String get actionLogin => 'Login';
+
+  @override
+  String get actionLogout => 'Logout';
+
+  @override
+  String get actionResume => 'Resume';
+
+  @override
   String get actionOn => 'On';
 
   @override
@@ -505,16 +514,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageAbout => 'Program Information';
 
   @override
+  String get sessionNew => 'New Session';
+
+  @override
   String get sessionActiveUser => 'User Session';
 
   @override
   String get sessionActiveEvent => 'Event Session';
-
-  @override
-  String get sessionLogin => 'Start Session';
-
-  @override
-  String get sessionLogout => 'Terminate Session';
 
   @override
   String get loginUser => 'User Login';

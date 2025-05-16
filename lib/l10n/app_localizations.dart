@@ -335,6 +335,24 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get actionClose;
 
+  /// No description provided for @actionLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get actionLogin;
+
+  /// No description provided for @actionLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get actionLogout;
+
+  /// No description provided for @actionResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get actionResume;
+
   /// No description provided for @actionOn.
   ///
   /// In en, this message translates to:
@@ -1091,6 +1109,12 @@ abstract class AppLocalizations {
   /// **'Program Information'**
   String get pageAbout;
 
+  /// No description provided for @sessionNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New Session'**
+  String get sessionNew;
+
   /// No description provided for @sessionActiveUser.
   ///
   /// In en, this message translates to:
@@ -1102,18 +1126,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Event Session'**
   String get sessionActiveEvent;
-
-  /// No description provided for @sessionLogin.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Session'**
-  String get sessionLogin;
-
-  /// No description provided for @sessionLogout.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminate Session'**
-  String get sessionLogout;
 
   /// No description provided for @loginUser.
   ///
