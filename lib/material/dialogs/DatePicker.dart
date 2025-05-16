@@ -146,7 +146,8 @@ class _DatePickerState extends State<DatePicker> {
   Widget build(BuildContext context) {
     final Widget form = Container(
       alignment: AlignmentDirectional.center,
-      child: Row(
+      child: Flex(
+        direction: MediaQuery.sizeOf(context).width > 400 ? Axis.horizontal : Axis.vertical,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Column(
@@ -204,9 +205,10 @@ class _DatePickerState extends State<DatePicker> {
                   onPressed: () => _handleDayPick(index + 1),
                   child: Text(
                     '${index + 1}',
-                    textScaler: TextScaler.linear(1.3),
+                    textScaler: TextScaler.linear(1.2),
                     style: TextStyle(color: (index + 1 == _selectedDate.day) ? Colors.amber : Colors.black),
                   ),
+                  style: ButtonStyle(padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.all(0))),
                 ),
               );
             }),
@@ -236,6 +238,4 @@ class _DatePickerState extends State<DatePicker> {
       ],
     );
   }
-
 }
-
