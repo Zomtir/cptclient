@@ -106,7 +106,7 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.affiliationPermissionSoloDate,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlPermissionSolo,
               showTime: false,
               nullable: true,
@@ -114,7 +114,7 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.affiliationPermissionTeamDate,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlPermissionTeam,
               showTime: false,
               nullable: true,
@@ -122,7 +122,7 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.affiliationResidencyMoveDate,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlResidencyMove,
               showTime: false,
               nullable: true,

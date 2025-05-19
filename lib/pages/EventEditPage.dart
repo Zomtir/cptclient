@@ -155,13 +155,13 @@ class EventEditPageState extends State<EventEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventBegin,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlBegin,
             ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventEnd,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlEnd,
             ),
           ),

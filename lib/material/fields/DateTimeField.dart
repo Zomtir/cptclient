@@ -5,20 +5,20 @@ import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DateTimeEdit extends StatefulWidget {
+class DateTimeField extends StatefulWidget {
   final DateTimeController controller;
   final void Function(DateTime)? onUpdate;
   final bool nullable;
   final bool showDate;
   final bool showTime;
 
-  DateTimeEdit({super.key, required this.controller, this.onUpdate, this.nullable = false, this.showDate = true, this.showTime = true});
+  DateTimeField({super.key, required this.controller, this.onUpdate, this.nullable = false, this.showDate = true, this.showTime = true});
 
   @override
-  State<DateTimeEdit> createState() => _DateTimeEditState();
+  State<DateTimeField> createState() => _DateTimeFieldState();
 }
 
-class _DateTimeEditState extends State<DateTimeEdit> {
+class _DateTimeFieldState extends State<DateTimeField> {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
 

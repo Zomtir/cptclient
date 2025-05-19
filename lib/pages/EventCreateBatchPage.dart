@@ -164,14 +164,14 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventBegin,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlBegin,
               showDate: false,
             ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventEnd,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlEnd,
               showDate: false,
             ),
@@ -215,14 +215,14 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.dateFrameBegin,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlBatchBegin,
               showTime: false,
             ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.dateFrameEnd,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlBatchEnd,
               showTime: false,
             ),

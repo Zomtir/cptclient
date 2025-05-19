@@ -251,7 +251,7 @@ class UserEditPageState extends State<UserEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userBirthDate,
-            child: DateTimeEdit(
+            child: DateTimeField(
               nullable: true,
               showTime: false,
               controller: _ctrlUserBirthDate,

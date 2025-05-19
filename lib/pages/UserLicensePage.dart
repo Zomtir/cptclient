@@ -94,7 +94,7 @@ class UserLicensePageState extends State<UserLicensePage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.licenseExpiration,
-            child: DateTimeEdit(
+            child: DateTimeField(
               nullable: false,
               showTime: false,
               controller: _ctrlExpiration,

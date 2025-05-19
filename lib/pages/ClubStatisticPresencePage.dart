@@ -141,11 +141,11 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
             children: [
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventBegin,
-                child: DateTimeEdit(controller: _ctrlBegin, showTime: false),
+                child: DateTimeField(controller: _ctrlBegin, showTime: false),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventEnd,
-                child: DateTimeEdit(controller: _ctrlEnd, showTime: false),
+                child: DateTimeField(controller: _ctrlEnd, showTime: false),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventRole,

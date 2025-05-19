@@ -114,11 +114,11 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
             children: [
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventBegin,
-                child: DateTimeEdit(controller: _ctrlDateBegin, showTime: false),
+                child: DateTimeField(controller: _ctrlDateBegin, showTime: false),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventEnd,
-                child: DateTimeEdit(controller: _ctrlDateEnd, showTime: false),
+                child: DateTimeField(controller: _ctrlDateEnd, showTime: false),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventLocation,

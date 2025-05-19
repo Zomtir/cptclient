@@ -179,7 +179,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceDate,
-            child: DateTimeEdit(
+            child: DateTimeField(
               controller: _ctrlDate,
               showTime: false,
             ),

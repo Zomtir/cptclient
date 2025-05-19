@@ -69,7 +69,7 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
             children: [
               AppInfoRow(
                 info: AppLocalizations.of(context)!.termDate,
-                child: DateTimeEdit(
+                child: DateTimeField(
                   controller: _ctrlDate,
                   showTime: false,
                 ),
