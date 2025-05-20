@@ -1,4 +1,5 @@
 import 'package:cptclient/material/design/AppInputDecoration.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/dialogs/TimePicker.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
@@ -12,7 +13,14 @@ class DateTimeField extends StatefulWidget {
   final bool showDate;
   final bool showTime;
 
-  DateTimeField({super.key, required this.controller, this.onUpdate, this.nullable = false, this.showDate = true, this.showTime = true});
+  DateTimeField({
+    super.key,
+    required this.controller,
+    this.onUpdate,
+    this.nullable = false,
+    this.showDate = true,
+    this.showTime = true,
+  });
 
   @override
   State<DateTimeField> createState() => _DateTimeFieldState();
@@ -30,33 +38,31 @@ class _DateTimeFieldState extends State<DateTimeField> {
   }
 
   void _handleDateChange(BuildContext context) async {
-    DateTime? date = await showAppDatePicker(context: context, initialDate: widget.controller.getDate());
-
-    if (date == null) {
-      return;
-    }
-
-    setState(() {
-      widget.controller.setDate(date);
-      dateController.text = DateFormat("yyyy-MM-dd").format(widget.controller.getDate());
-    });
-
-    widget.onUpdate?.call(widget.controller.getDateTime()!);
+    useAppDialog<DateTime>(
+      context: context,
+      widget: DatePicker(initialDate: widget.controller.getDate()),
+      onChanged: (DateTime dt) {
+        setState(() {
+          widget.controller.setDate(dt);
+          dateController.text = DateFormat("yyyy-MM-dd").format(widget.controller.getDate());
+        });
+        widget.onUpdate?.call(widget.controller.getDateTime()!);
+      },
+    );
   }
 
   void _handleTimeChange(BuildContext context) async {
-    TimeOfDay? time = await showAppTimePicker(context: context, initialTime: widget.controller.getTime());
-
-    if (time == null) {
-      return;
-    }
-
-    setState(() {
-      widget.controller.setTime(time);
-      timeController.text = DateFormat("HH:mm").format(widget.controller.getDate());
-    });
-
-    widget.onUpdate?.call(widget.controller.getDateTime()!);
+    useAppDialog<TimeOfDay>(
+      context: context,
+      widget: TimePicker(initialTime: widget.controller.getTime()),
+      onChanged: (TimeOfDay tod) {
+        setState(() {
+          widget.controller.setTime(tod);
+          timeController.text = DateFormat("HH:mm").format(widget.controller.getDate());
+        });
+        widget.onUpdate?.call(widget.controller.getDateTime()!);
+      },
+    );
   }
 
   @override

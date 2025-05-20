@@ -1,60 +1,35 @@
 import 'dart:math';
 
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
-
-Future<DateTime?> showAppDatePicker({
-  required BuildContext context,
-  DateTime? initialDate,
-  DateTime? firstDate,
-  DateTime? lastDate,
-}) async {
-  initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now());
-
-  Widget picker = DatePicker(
-    initialDate: initialDate,
-    firstDate: firstDate ?? DateTime(1900),
-    lastDate: lastDate ?? DateTime(2100),
-  );
-
-  assert(
-    (lastDate ?? DateTime(2100)).isAfter(firstDate ?? DateTime(1900)),
-    'lastDate $lastDate must be on or after firstDate $firstDate.',
-  );
-  assert(
-    initialDate.isAfter(firstDate ?? DateTime(1900)),
-    'initialDate $initialDate must be on or after firstDate $firstDate.',
-  );
-  assert(
-    initialDate.isBefore(lastDate ?? DateTime(2100)),
-    'initialDate $initialDate must be on or before lastDate $lastDate.',
-  );
-
-  return showDialog<DateTime>(
-    context: context,
-    useSafeArea: false,
-    builder: (BuildContext context) {
-      return AppDialog(
-        child: picker,
-        maxWidth: 470,
-      );
-    },
-  );
-}
 
 class DatePicker extends StatefulWidget {
   DatePicker({
     super.key,
-    required DateTime initialDate,
-    required DateTime firstDate,
-    required DateTime lastDate,
-  })  : initialDate = DateUtils.dateOnly(initialDate),
-        firstDate = DateUtils.dateOnly(firstDate),
-        lastDate = DateUtils.dateOnly(lastDate);
+    DateTime? initialDate,
+    DateTime? firstDate,
+    DateTime? lastDate,
+  })
+      : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
+        firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1900)),
+        lastDate = DateUtils.dateOnly(lastDate ?? DateTime(2100)) {
+    assert(
+    (this.lastDate).isAfter(this.firstDate),
+    'lastDate $this.lastDate must be on or after firstDate $this.firstDate.',
+    );
+    assert(
+    this.initialDate.isAfter(this.firstDate),
+    'initialDate $this.initialDate must be on or after firstDate $this.firstDate.',
+    );
+    assert(
+    this.initialDate.isBefore(this.lastDate),
+    'initialDate $this.initialDate must be on or before lastDate $this.lastDate.',
+    );
+  }
 
   final DateTime initialDate;
   final DateTime firstDate;
@@ -83,7 +58,7 @@ class _DatePickerState extends State<DatePicker> {
     if (_selectedDate == widget.initialDate) {
       _handleCancel();
     } else {
-      Navigator.pop(context, _selectedDate);
+      Navigator.pop(context, Success(_selectedDate));
     }
   }
 
@@ -147,7 +122,9 @@ class _DatePickerState extends State<DatePicker> {
     final Widget form = Container(
       alignment: AlignmentDirectional.center,
       child: Flex(
-        direction: MediaQuery.sizeOf(context).width > 400 ? Axis.horizontal : Axis.vertical,
+        direction: MediaQuery
+            .sizeOf(context)
+            .width > 400 ? Axis.horizontal : Axis.vertical,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Column(
@@ -192,10 +169,10 @@ class _DatePickerState extends State<DatePicker> {
       child: GridView.count(
         crossAxisCount: 7,
         children: List.generate(7, (index) {
-              return Center(
-                child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
-              );
-            }) +
+          return Center(
+            child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
+          );
+        }) +
             List.generate(_firstDayOffset, (index) {
               return Center();
             }) +

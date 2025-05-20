@@ -2,36 +2,15 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:flutter/material.dart';
 
-Future<TimeOfDay?> showAppTimePicker({
-  required BuildContext context,
-  required TimeOfDay initialTime,
-}) async {
-  Widget picker = TimePicker(
-    initialTime: initialTime,
-  );
-
-  return showDialog<TimeOfDay>(
-    context: context,
-    useSafeArea: false,
-    builder: (BuildContext context) {
-      return AppDialog(
-        child: picker,
-        maxWidth: 470,
-      );
-    },
-  );
-}
-
 class TimePicker extends StatefulWidget {
   TimePicker({
     super.key,
-    required this.initialTime,
-  });
+    TimeOfDay? initialTime,
+  }) : initialTime = initialTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
   final TimeOfDay initialTime;
 
@@ -88,7 +67,8 @@ class _TimePickerState extends State<TimePicker> {
   void _handleMinuteJump(int jump) {
     _parseTimeFields();
     if (jump == 0) return;
-    TimeOfDay newTime = TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute + jump % TimeOfDay.minutesPerHour);
+    TimeOfDay newTime =
+        TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute + jump % TimeOfDay.minutesPerHour);
     _selectTime(newTime);
   }
 
@@ -195,7 +175,8 @@ class _TimePickerState extends State<TimePicker> {
     );
   }
 
-  Positioned buildWatchNumbers(Offset position, String label, Color color, VoidCallback onPressed, {Offset center = const Offset(150, 150), double radius = 24}) {
+  Positioned buildWatchNumbers(Offset position, String label, Color color, VoidCallback onPressed,
+      {Offset center = const Offset(150, 150), double radius = 24}) {
     return Positioned(
       left: center.dx - radius / 2 + position.dx,
       top: center.dy - radius / 2 + position.dy,
