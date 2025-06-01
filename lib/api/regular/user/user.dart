@@ -56,7 +56,7 @@ Future<bool> put_password(UserSession session, String password) async {
   if (password.isEmpty) return false;
   if (password.length < 6) return false;
 
-  String salt = crypto.generateSaltHex();
+  String salt = crypto.generateHex(16);
   Credential credential = Credential(session.user!.key.toString(), crypto.hashPassword(password, salt), salt);
 
   final response = await client.post(

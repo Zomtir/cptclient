@@ -25,7 +25,7 @@ class PasswordPickerState extends State<PasswordPicker> {
   @override
   void initState() {
     super.initState();
-    _ctrlSalt.text = widget.credits?.salt ?? crypto.generateSaltHex();
+    _ctrlSalt.text = widget.credits?.salt ?? crypto.generateHex(16);
     _ctrlPassword.text = widget.credits?.password ?? '';
   }
 
@@ -75,7 +75,7 @@ class PasswordPickerState extends State<PasswordPicker> {
             decoration: InputDecoration(
               suffixIcon: IconButton(
                 onPressed: () => setState(() {
-                  _ctrlSalt.text = crypto.generateSaltHex();
+                  _ctrlSalt.text = crypto.generateHex(16);
                 }),
                 icon: Icon(Icons.refresh),
               ),

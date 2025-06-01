@@ -29,7 +29,7 @@ String generateString(int length) {
   ));
 }
 
-String generateSaltHex() {
+String generateHex(int length) {
   // 128 bits, 16 * 8 bytes (u8), 32 characters, 2 hex chars per byte
-  return List<String>.generate(16, (i) => _random.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
+  return List<String>.generate(length, (i) => _random.nextInt(256).toRadixString(length).padLeft(2, '0')).join();
 }

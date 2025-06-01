@@ -1,4 +1,4 @@
-import 'package:cptclient/api/regular/user/user.dart' as server;
+import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
@@ -29,7 +29,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   }
 
   Future<void> _savePassword() async {
-    if (!await server.put_password(widget.session, _ctrlUserPassword.text)) {
+    if (!await api_regular.put_password(widget.session, _ctrlUserPassword.text)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password was not changed.')));
       return;
     }

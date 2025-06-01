@@ -71,7 +71,7 @@ Future<bool?> user_edit_password(UserSession session, User user, String password
   if (password.isEmpty) return null;
   if (password.length < 6) return false;
 
-  String salt = crypto.generateSaltHex();
+  String salt = crypto.generateHex(16);
   Credential credential = Credential(user.key.toString(), crypto.hashPassword(password, salt), salt);
 
   final response = await client.post(
