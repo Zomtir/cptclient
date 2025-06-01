@@ -93,7 +93,7 @@ class _TimePickerState extends State<TimePicker> {
           Column(
             children: [
               Text(
-                "Hour",
+                AppLocalizations.of(context)!.dateHour,
                 style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
               ),
@@ -104,7 +104,7 @@ class _TimePickerState extends State<TimePicker> {
           Column(
             children: [
               Text(
-                "Minute",
+                AppLocalizations.of(context)!.dateMinute,
                 style: TextStyle(color: Colors.amber),
                 textAlign: TextAlign.center,
               ),
