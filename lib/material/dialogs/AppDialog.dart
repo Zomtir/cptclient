@@ -1,5 +1,38 @@
 import 'package:cptclient/material/design/AppBoxDecoration.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
+
+Future<Result<T>?> showAppDialog<T>({
+  required BuildContext context,
+  required Widget widget,
+  double maxWidth = 600,
+}) async {
+  return showDialog<Result<T>>(
+    context: context,
+    useSafeArea: false,
+    builder: (BuildContext context) {
+      return AppDialog(
+        child: widget,
+        maxWidth: maxWidth,
+      );
+    },
+  );
+}
+
+void useAppDialog<T>({
+  required BuildContext context,
+  required Widget widget,
+  required Function(T) onChanged,
+}) async {
+  final response = await showAppDialog<T>(
+    context: context,
+    widget: widget,
+  );
+
+  if (response case Success(:T value)) {
+    onChanged(value);
+  }
+}
 
 class AppDialog extends StatelessWidget {
   final Widget child;
