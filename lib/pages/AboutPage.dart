@@ -32,6 +32,12 @@ class CreditPage extends StatelessWidget {
             image: AssetImage('assets/images/logo_cpt_256.png'),
           ),
           title: Text("${AppLocalizations.of(context)!.labelVersion} ${client.version}"),
+          subtitle: InkWell(
+            child: Text(
+              "https://github.com/Zomtir/cptclient/",
+            ),
+            onTap: () => launchUrlString("https://github.com/Zomtir/cptclient/"),
+          ),
         ),
         Text(
           AppLocalizations.of(context)!.labelLicense,
