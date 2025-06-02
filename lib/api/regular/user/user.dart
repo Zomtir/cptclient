@@ -8,6 +8,7 @@ import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/crypto.dart' as crypto;
+import 'package:cptclient/utils/result.dart';
 
 Future<List<User>> user_list(UserSession session) async {
   final response = await client.get(
@@ -52,6 +53,20 @@ Future<Right?> right_info(UserSession session) async {
   return Right.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
+Future<Result<Credential>> user_password_info(UserSession session) async {
+  final response = await client.get(
+    uri('/regular/user_password_info'),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (response.statusCode != 200) return Failure();
+
+  return Success(Credential.fromJson(json.decode(utf8.decode(response.bodyBytes))));
+}
+
 Future<bool> user_password_edit(UserSession session, String password, String salt) async {
   if (password.length < 6 || password.length > 50) return false;
 
@@ -60,8 +75,8 @@ Future<bool> user_password_edit(UserSession session, String password, String sal
   final response = await client.post(
     uri('/regular/user_password_edit'),
     headers: {
-      'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
+      'Content-Type': 'application/json; charset=utf-8',
     },
     body: json.encode(credential),
   );

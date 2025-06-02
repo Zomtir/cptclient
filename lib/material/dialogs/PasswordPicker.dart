@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 
 class PasswordPicker extends StatefulWidget {
   final Credential? credits;
+  final bool nullable;
 
-  PasswordPicker({super.key, required this.credits});
+  PasswordPicker({super.key, required this.credits, this.nullable = true});
 
   @override
   PasswordPickerState createState() => PasswordPickerState();
@@ -52,11 +53,12 @@ class PasswordPickerState extends State<PasswordPicker> {
           onPressed: () => Navigator.pop(context),
           text: AppLocalizations.of(context)!.actionCancel,
         ),
-        Spacer(),
-        AppButton(
-          onPressed: () => Navigator.pop(context, Success(null)),
-          text: AppLocalizations.of(context)!.actionRemove,
-        ),
+        if (widget.nullable) Spacer(),
+        if (widget.nullable)
+          AppButton(
+            onPressed: () => Navigator.pop(context, Success(null)),
+            text: AppLocalizations.of(context)!.actionRemove,
+          ),
         Spacer(),
         AppButton(
           onPressed: _submit,

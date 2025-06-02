@@ -1,10 +1,14 @@
 import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PasswordPicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/utils/crypto.dart' as crypto;
+import 'package:cptclient/material/layouts/InfoSection.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class MemberProfilePage extends StatefulWidget {
@@ -17,7 +21,7 @@ class MemberProfilePage extends StatefulWidget {
 }
 
 class MemberProfilePageState extends State<MemberProfilePage> {
-  final TextEditingController _ctrlUserPassword = TextEditingController();
+  Credential? credential;
   List<Permission> _permissions = [];
 
   MemberProfilePageState();
@@ -25,18 +29,19 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   @override
   void initState() {
     super.initState();
-    _ctrlUserPassword.text = "";
     _permissions = widget.session.right!.toList();
+
+    _update();
   }
 
-  Future<void> _savePassword() async {
-    if (!await api_regular.user_password_edit(widget.session, _ctrlUserPassword.text, crypto.generateHex(16))) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password was not changed.')));
-      return;
-    }
+  void _update() async {
+    Result<Credential> credential = await api_regular.user_password_info(widget.session);
 
-    _ctrlUserPassword.text = '';
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully changed password')));
+    if (credential is Failure) return;
+
+    setState(() {
+      this.credential = credential.unwrap();
+    });
   }
 
   @override
@@ -47,33 +52,42 @@ class MemberProfilePageState extends State<MemberProfilePage> {
       ),
       body: AppBody(
         children: <Widget>[
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.perm_identity),
-                Tooltip(message: "ID ${widget.session.user!.id}", child: Text("${widget.session.user!.key}", style: TextStyle(fontWeight: FontWeight.bold))),
-              ]
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.labelName,
+            child: ListTile(title: Text("${widget.session.user!.firstname} ${widget.session.user!.lastname}")),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.user,
-            child: widget.session.user!.buildEntry(context),
+            info: AppLocalizations.of(context)!.userKey,
+            child: ListTile(title: Text(widget.session.user!.key)),
           ),
+
           AppInfoRow(
             info: AppLocalizations.of(context)!.userPassword,
-            child: TextField(
-              obscureText: true,
-              maxLines: 1,
-              controller: _ctrlUserPassword,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.userPasswordChange,
-                suffixIcon: IconButton(
-                  onPressed: _savePassword,
-                  icon: Icon(Icons.save),
-                ),
+            child: ListTile(
+              title: Credential.buildEntryStatic(context, credential),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => useAppDialog<Credential?>(
+                      context: context,
+                      widget: PasswordPicker(credits: credential, nullable: false),
+                      onChanged: (Credential? cr) async {
+                        if (credential == null || cr == null) return;
+                        api_regular.user_password_edit(widget.session, cr.password!, cr.salt!);
+                        _update();
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           Divider(),
+          InfoSection(
+            title: AppLocalizations.of(context)!.labelPermission,
+          ),
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.labelPermission)),
