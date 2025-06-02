@@ -7,7 +7,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/pages/EventDetailRegularPage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:flutter/material.dart';
 
 class ClassOverviewAvailablePage extends StatefulWidget {
@@ -55,9 +55,9 @@ class ClassOverviewAvailablePageState
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailRegularPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
-          event: event,
+          eventID: event.id,
         ),
       ),
     );

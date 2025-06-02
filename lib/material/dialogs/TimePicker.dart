@@ -4,15 +4,18 @@ import 'dart:ui';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TimePicker extends StatefulWidget {
   TimePicker({
     super.key,
     TimeOfDay? initialTime,
+    this.nullable = true,
   }) : initialTime = initialTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
   final TimeOfDay initialTime;
+  final bool nullable;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -32,14 +35,10 @@ class _TimePickerState extends State<TimePicker> {
 
   void _handleConfirm() {
     if (_selectedTime == widget.initialTime) {
-      _handleCancel();
+      Navigator.pop(context);
     } else {
-      Navigator.pop(context, _selectedTime);
+      Navigator.pop(context, Success(_selectedTime));
     }
-  }
-
-  void _handleCancel() {
-    Navigator.pop(context);
   }
 
   void _parseTimeFields() {
@@ -154,9 +153,15 @@ class _TimePickerState extends State<TimePicker> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         AppButton(
-          onPressed: _handleCancel,
+          onPressed: () => Navigator.pop(context),
           text: AppLocalizations.of(context)!.actionCancel,
         ),
+        if (widget.nullable) Spacer(),
+        if (widget.nullable)
+          AppButton(
+            onPressed: () => Navigator.pop(context, Success(null)),
+            text: AppLocalizations.of(context)!.actionRemove,
+          ),
         Spacer(),
         AppButton(
           onPressed: _handleConfirm,

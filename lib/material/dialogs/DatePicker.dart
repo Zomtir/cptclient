@@ -13,6 +13,7 @@ class DatePicker extends StatefulWidget {
     DateTime? initialDate,
     DateTime? firstDate,
     DateTime? lastDate,
+    this.nullable = true,
   })  : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
         firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1900)),
         lastDate = DateUtils.dateOnly(lastDate ?? DateTime(2100)) {
@@ -33,6 +34,7 @@ class DatePicker extends StatefulWidget {
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
+  final bool nullable;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -193,11 +195,12 @@ class _DatePickerState extends State<DatePicker> {
           onPressed: () => Navigator.pop(context),
           text: AppLocalizations.of(context)!.actionCancel,
         ),
-        Spacer(),
-        AppButton(
-          onPressed: () => Navigator.pop(context, Success(null)),
-          text: AppLocalizations.of(context)!.actionRemove,
-        ),
+        if (widget.nullable) Spacer(),
+        if (widget.nullable)
+          AppButton(
+            onPressed: () => Navigator.pop(context, Success(null)),
+            text: AppLocalizations.of(context)!.actionRemove,
+          ),
         Spacer(),
         AppButton(
           onPressed: _handleConfirm,

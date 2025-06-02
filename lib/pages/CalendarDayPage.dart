@@ -4,7 +4,7 @@ import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/pages/EventDetailRegularPage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -56,9 +56,9 @@ class CalendarDayPageState extends State<CalendarDayPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailRegularPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
-          event: event,
+          eventID: event.id,
         ),
       ),
     );

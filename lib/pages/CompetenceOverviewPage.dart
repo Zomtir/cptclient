@@ -11,9 +11,9 @@ import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CompetenceEditPage.dart';
 import 'package:flutter/material.dart';
 

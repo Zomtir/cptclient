@@ -40,6 +40,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelMiscellaneous => 'Miscellaneous';
 
   @override
+  String get labelMoreDetails => 'More Details';
+
+  @override
+  String get labelGeneralAttendence => 'General Attendence';
+
+  @override
+  String get labelPersonalAttendence => 'Personal Attendence';
+
+  @override
   String get labelLanguage => 'Language';
 
   @override
@@ -424,25 +433,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageCourseRequirements => 'Course Requirements';
 
   @override
-  String get pageCourseLeaderSieves => 'Team Suggestions as Leaders';
-
-  @override
-  String get pageCourseSupporterSieves => 'Team Suggestions as Supporters';
-
-  @override
-  String get pageCourseParticipantSieves => 'Team Suggestions as Participants';
-
-  @override
-  String get pageCourseStatisticParticipants => 'Participant Statistic';
-
-  @override
-  String get pageCourseStatisticSupporters => 'Supporter Statistic';
-
-  @override
-  String get pageCourseStatisticLeaders => 'Leader Statistic';
+  String get pageCourseAttendanceSieves => 'Team Suggestions';
 
   @override
   String get pageCourseStatisticClasses => 'Class Statistic';
+
+  @override
+  String get pageCourseStatisticAttendance => 'Attendance Statistics';
 
   @override
   String get pageEventAvailable => 'Available Events';
@@ -457,7 +454,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageEventManagement => 'Manage Events';
 
   @override
-  String get pageEventEdit => 'Edit Event';
+  String get pageEventCreate => 'Create Event';
 
   @override
   String get pageEventOwners => 'Event Owners';
@@ -466,31 +463,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageEventCourse => 'Course Assignment';
 
   @override
-  String get pageEventLeaderRegistrations => 'Leader Registrations';
+  String get pageEventAttendanceRegistrations => 'Attendance Registrations';
 
   @override
-  String get pageEventLeaderFilters => 'Leader Suggestions';
+  String get pageEventAttendanceFilters => 'Attendance Suggestions';
 
   @override
-  String get pageEventLeaderPresences => 'Leader Confirmations';
-
-  @override
-  String get pageEventSupporterRegistrations => 'Supporter Registrations';
-
-  @override
-  String get pageEventSupporterFilters => 'Supporter Suggestions';
-
-  @override
-  String get pageEventSupporterPresences => 'Supporter Confirmations';
-
-  @override
-  String get pageEventParticipantRegistrations => 'Participant Registrations';
-
-  @override
-  String get pageEventParticipantFilters => 'Participant Suggestions';
-
-  @override
-  String get pageEventParticipantPresences => 'Participant Confirmations';
+  String get pageEventAttendancePresences => 'Attendance Confirmations';
 
   @override
   String get pageEventInfo => 'Event Information';
@@ -520,7 +499,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageUserManagement => 'Manage Users';
 
   @override
-  String get pageUserEdit => 'Edit User';
+  String get pageUserCreate => 'Create User';
+
+  @override
+  String get pageUserDetails => 'User Details';
 
   @override
   String get pageUserProfile => 'User Profile';
@@ -929,6 +911,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventSupporter => 'Supporter';
+
+  @override
+  String get eventSpectator => 'Spectator';
 
   @override
   String get eventRegistration => 'Registration';

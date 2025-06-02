@@ -1,4 +1,4 @@
-import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/api/admin/event/event.dart' as api_admin;
 import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/gender.dart';
@@ -9,6 +9,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/extensions.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EventStatisticOrganisationPage extends StatefulWidget {
@@ -34,14 +35,14 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
   }
 
   void _update() async {
-    List<Affiliation>? stats =
-        await api_admin.event_statistic_organisation(widget.session, widget.event, widget.organisation);
+    var result = await api_admin.event_statistic_organisation(widget.session, widget.event, widget.organisation);
 
-    if (stats == null) {
+    if (result is! Success) {
       Navigator.of(context).pop();
       return;
     }
 
+    var stats = result.unwrap();
     stats.sort((a, b) => nullCompareTo(a.user, b.user));
     setState(() => _stats = stats);
   }

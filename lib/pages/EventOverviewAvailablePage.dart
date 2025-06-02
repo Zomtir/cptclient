@@ -11,13 +11,13 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
-import 'package:cptclient/pages/EventDetailRegularPage.dart';
-import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
+import 'package:cptclient/pages/EventCreatePage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:flutter/material.dart';
 
 class EventOverviewAvailablePage extends StatefulWidget {
@@ -70,10 +70,9 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => EventCreatePage(
           session: widget.session,
           event: event,
-          isDraft: true,
           onSubmit: api_regular.event_create,
         ),
       ),
@@ -82,13 +81,13 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
     _update();
   }
 
-  void _handleSelectevent(Event event) async {
+  void _selectEvent(Event event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailRegularPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
-          event: event,
+          eventID: event.id,
         ),
       ),
     );
@@ -150,7 +149,7 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
             items: _events,
             itemBuilder: (Event event) {
               return InkWell(
-                onTap: () => _handleSelectevent(event),
+                onTap: () => _selectEvent(event),
                 child: AppEventTile(
                   event: event,
                 ),

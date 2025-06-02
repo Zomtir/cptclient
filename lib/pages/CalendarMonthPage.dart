@@ -5,7 +5,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
-import 'package:cptclient/pages/EventDetailRegularPage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -79,9 +79,9 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailRegularPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
-          event: event,
+          eventID: event.id,
         ),
       ),
     );

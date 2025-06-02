@@ -47,7 +47,7 @@ class EnrollPageState extends State<EnrollPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventParticipantPresences,
+          title: AppLocalizations.of(context)!.pageEventAttendancePresences,
           tile: AppEventTile(event: _event!),
           onCallAvailable: () => api_service.event_attendance_presence_pool(widget.session, role),
           onCallSelected: () => api_service.event_attendance_presence_list(widget.session, role),
@@ -79,17 +79,18 @@ class EnrollPageState extends State<EnrollPage> {
         children: [
           AppEventTile(event: _event!),
           MenuSection(
+            title: AppLocalizations.of(context)!.pageEventAttendancePresences,
             children: [
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventParticipantPresences),
+                title: Text(AppLocalizations.of(context)!.eventParticipant),
                 onTap: () => _handleAttendance('PARTICIPANT'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventLeaderPresences),
+                title: Text(AppLocalizations.of(context)!.eventLeader),
                 onTap: () => _handleAttendance('LEADER'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageEventSupporterPresences),
+                title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleAttendance('SUPPORTER'),
               ),
             ],

@@ -161,6 +161,24 @@ abstract class AppLocalizations {
   /// **'Miscellaneous'**
   String get labelMiscellaneous;
 
+  /// No description provided for @labelMoreDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'More Details'**
+  String get labelMoreDetails;
+
+  /// No description provided for @labelGeneralAttendence.
+  ///
+  /// In en, this message translates to:
+  /// **'General Attendence'**
+  String get labelGeneralAttendence;
+
+  /// No description provided for @labelPersonalAttendence.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Attendence'**
+  String get labelPersonalAttendence;
+
   /// No description provided for @labelLanguage.
   ///
   /// In en, this message translates to:
@@ -929,47 +947,23 @@ abstract class AppLocalizations {
   /// **'Course Requirements'**
   String get pageCourseRequirements;
 
-  /// No description provided for @pageCourseLeaderSieves.
+  /// No description provided for @pageCourseAttendanceSieves.
   ///
   /// In en, this message translates to:
-  /// **'Team Suggestions as Leaders'**
-  String get pageCourseLeaderSieves;
-
-  /// No description provided for @pageCourseSupporterSieves.
-  ///
-  /// In en, this message translates to:
-  /// **'Team Suggestions as Supporters'**
-  String get pageCourseSupporterSieves;
-
-  /// No description provided for @pageCourseParticipantSieves.
-  ///
-  /// In en, this message translates to:
-  /// **'Team Suggestions as Participants'**
-  String get pageCourseParticipantSieves;
-
-  /// No description provided for @pageCourseStatisticParticipants.
-  ///
-  /// In en, this message translates to:
-  /// **'Participant Statistic'**
-  String get pageCourseStatisticParticipants;
-
-  /// No description provided for @pageCourseStatisticSupporters.
-  ///
-  /// In en, this message translates to:
-  /// **'Supporter Statistic'**
-  String get pageCourseStatisticSupporters;
-
-  /// No description provided for @pageCourseStatisticLeaders.
-  ///
-  /// In en, this message translates to:
-  /// **'Leader Statistic'**
-  String get pageCourseStatisticLeaders;
+  /// **'Team Suggestions'**
+  String get pageCourseAttendanceSieves;
 
   /// No description provided for @pageCourseStatisticClasses.
   ///
   /// In en, this message translates to:
   /// **'Class Statistic'**
   String get pageCourseStatisticClasses;
+
+  /// No description provided for @pageCourseStatisticAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance Statistics'**
+  String get pageCourseStatisticAttendance;
 
   /// No description provided for @pageEventAvailable.
   ///
@@ -995,11 +989,11 @@ abstract class AppLocalizations {
   /// **'Manage Events'**
   String get pageEventManagement;
 
-  /// No description provided for @pageEventEdit.
+  /// No description provided for @pageEventCreate.
   ///
   /// In en, this message translates to:
-  /// **'Edit Event'**
-  String get pageEventEdit;
+  /// **'Create Event'**
+  String get pageEventCreate;
 
   /// No description provided for @pageEventOwners.
   ///
@@ -1013,59 +1007,23 @@ abstract class AppLocalizations {
   /// **'Course Assignment'**
   String get pageEventCourse;
 
-  /// No description provided for @pageEventLeaderRegistrations.
+  /// No description provided for @pageEventAttendanceRegistrations.
   ///
   /// In en, this message translates to:
-  /// **'Leader Registrations'**
-  String get pageEventLeaderRegistrations;
+  /// **'Attendance Registrations'**
+  String get pageEventAttendanceRegistrations;
 
-  /// No description provided for @pageEventLeaderFilters.
+  /// No description provided for @pageEventAttendanceFilters.
   ///
   /// In en, this message translates to:
-  /// **'Leader Suggestions'**
-  String get pageEventLeaderFilters;
+  /// **'Attendance Suggestions'**
+  String get pageEventAttendanceFilters;
 
-  /// No description provided for @pageEventLeaderPresences.
+  /// No description provided for @pageEventAttendancePresences.
   ///
   /// In en, this message translates to:
-  /// **'Leader Confirmations'**
-  String get pageEventLeaderPresences;
-
-  /// No description provided for @pageEventSupporterRegistrations.
-  ///
-  /// In en, this message translates to:
-  /// **'Supporter Registrations'**
-  String get pageEventSupporterRegistrations;
-
-  /// No description provided for @pageEventSupporterFilters.
-  ///
-  /// In en, this message translates to:
-  /// **'Supporter Suggestions'**
-  String get pageEventSupporterFilters;
-
-  /// No description provided for @pageEventSupporterPresences.
-  ///
-  /// In en, this message translates to:
-  /// **'Supporter Confirmations'**
-  String get pageEventSupporterPresences;
-
-  /// No description provided for @pageEventParticipantRegistrations.
-  ///
-  /// In en, this message translates to:
-  /// **'Participant Registrations'**
-  String get pageEventParticipantRegistrations;
-
-  /// No description provided for @pageEventParticipantFilters.
-  ///
-  /// In en, this message translates to:
-  /// **'Participant Suggestions'**
-  String get pageEventParticipantFilters;
-
-  /// No description provided for @pageEventParticipantPresences.
-  ///
-  /// In en, this message translates to:
-  /// **'Participant Confirmations'**
-  String get pageEventParticipantPresences;
+  /// **'Attendance Confirmations'**
+  String get pageEventAttendancePresences;
 
   /// No description provided for @pageEventInfo.
   ///
@@ -1121,11 +1079,17 @@ abstract class AppLocalizations {
   /// **'Manage Users'**
   String get pageUserManagement;
 
-  /// No description provided for @pageUserEdit.
+  /// No description provided for @pageUserCreate.
   ///
   /// In en, this message translates to:
-  /// **'Edit User'**
-  String get pageUserEdit;
+  /// **'Create User'**
+  String get pageUserCreate;
+
+  /// No description provided for @pageUserDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'User Details'**
+  String get pageUserDetails;
 
   /// No description provided for @pageUserProfile.
   ///
@@ -1942,6 +1906,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Supporter'**
   String get eventSupporter;
+
+  /// No description provided for @eventSpectator.
+  ///
+  /// In en, this message translates to:
+  /// **'Spectator'**
+  String get eventSpectator;
 
   /// No description provided for @eventRegistration.
   ///

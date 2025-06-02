@@ -7,10 +7,10 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CourseDetailModerationPage.dart';
 import 'package:flutter/material.dart';
 

@@ -5,20 +5,23 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
-import 'package:cptclient/material/dialogs/ChoiceWidget.dart';
+import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
+import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
 import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRangeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseOverviewManagementPage extends StatefulWidget {
@@ -33,8 +36,8 @@ class CourseOverviewManagementPage extends StatefulWidget {
 class CourseOverviewManagementPageState extends State<CourseOverviewManagementPage> {
   List<Course> _courses = [];
   final FieldController<User> _ctrlModerator = FieldController<User>();
-  bool? _ctrlPublic;
-  bool? _ctrlActive;
+  Valence? _ctrlPublic;
+  Valence? _ctrlActive;
   final FieldController<Skill> _ctrlSkill = FieldController<Skill>();
   RangeValues _ctrlSkillRange = RangeValues(0, 10);
 
@@ -50,7 +53,10 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
     _ctrlSkill.callItems = () => api_anon.skill_list();
     _ctrlModerator.callItems = () => api_regular.user_list(widget.session);
 
-    _courses = await api_admin.course_list(widget.session, _ctrlModerator.value, _ctrlActive, _ctrlPublic);
+    Result<List<Course>> result = await api_admin.course_list(widget.session, user: _ctrlModerator.value, active: _ctrlActive?.toBool(), public: _ctrlPublic?.toBool());
+    if (result is! Success) return;
+
+    _courses = result.unwrap();
     setState(() => _courses.sort());
   }
 
@@ -108,16 +114,15 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
               AppInfoRow(
                 info: AppLocalizations.of(context)!.courseActive,
                 child: ListTile(
-                  title: ChoiceDisplayWidget(
-                    enabled: true,
+                  title: ChoiceDisplay(
                     value: _ctrlActive,
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<(bool, bool?)>(
+                    onPressed: () => useAppDialog<Valence?>(
                       context: context,
-                      widget: ChoiceEditWidget(enabled: true, value: _ctrlActive!),
-                      onChanged: ((bool, bool?) t) => setState(() => _ctrlActive = t.$2!),
+                      widget: ChoiceEdit(value: _ctrlActive),
+                      onChanged: (Valence? v) => setState(() => _ctrlActive = v),
                     ),
                   ),
                 ),
@@ -125,16 +130,15 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
               AppInfoRow(
                 info: AppLocalizations.of(context)!.coursePublic,
                 child: ListTile(
-                  title: ChoiceDisplayWidget(
-                    enabled: true,
+                  title: ChoiceDisplay(
                     value: _ctrlPublic,
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<(bool, bool?)>(
+                    onPressed: () => useAppDialog<Valence?>(
                       context: context,
-                      widget: ChoiceEditWidget(enabled: true, value: _ctrlPublic!),
-                      onChanged: ((bool, bool?) t) => setState(() => _ctrlPublic = t.$2!),
+                      widget: ChoiceEdit(value: _ctrlPublic),
+                      onChanged: (Valence? v) => setState(() => _ctrlPublic = v),
                     ),
                   ),
                 ),

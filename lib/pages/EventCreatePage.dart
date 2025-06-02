@@ -8,37 +8,31 @@ import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class EventEditPage extends StatefulWidget {
+class EventCreatePage extends StatefulWidget {
   final UserSession session;
   final Event event;
-  final bool isDraft;
-  final Future<bool> Function(UserSession, Event) onSubmit;
-  final Future<bool> Function(UserSession, Event, String)? onPasswordChange;
-  final Future<bool> Function(UserSession, Event)? onDelete;
+  final Future<Result<()>> Function(UserSession, Event) onSubmit;
+  final Future<Result<()>> Function(UserSession, Event, String)? onPasswordChange;
 
-  EventEditPage({
+  EventCreatePage({
     super.key,
     required this.session,
     required this.event,
-    required this.isDraft,
     required this.onSubmit,
     this.onPasswordChange,
-    this.onDelete,
   });
 
   @override
-  EventEditPageState createState() => EventEditPageState();
+  EventCreatePageState createState() => EventCreatePageState();
 }
 
-class EventEditPageState extends State<EventEditPage> {
-  final TextEditingController _ctrlKey = TextEditingController();
-  final TextEditingController _ctrlPassword = TextEditingController();
+class EventCreatePageState extends State<EventCreatePage> {
   final TextEditingController _ctrlTitle = TextEditingController();
   final DateTimeController _ctrlBegin = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlEnd = DateTimeController(dateTime: DateTime.now().add(Duration(hours: 1)));
@@ -48,7 +42,7 @@ class EventEditPageState extends State<EventEditPage> {
   bool _ctrlScrutable = true;
   final TextEditingController _ctrlNote = TextEditingController();
 
-  EventEditPageState();
+  EventCreatePageState();
 
   @override
   void initState() {
@@ -64,7 +58,6 @@ class EventEditPageState extends State<EventEditPage> {
   }
 
   void _applyEvent() {
-    _ctrlKey.text = widget.event.key;
     _ctrlTitle.text = widget.event.title;
     _ctrlBegin.setDateTime(widget.event.begin);
     _ctrlEnd.setDateTime(widget.event.end);
@@ -76,7 +69,6 @@ class EventEditPageState extends State<EventEditPage> {
   }
 
   void _gatherEvent() {
-    widget.event.key = _ctrlKey.text;
     widget.event.title = _ctrlTitle.text;
     widget.event.begin = _ctrlBegin.getDateTime()!;
     widget.event.end = _ctrlEnd.getDateTime()!;
@@ -102,20 +94,8 @@ class EventEditPageState extends State<EventEditPage> {
       return;
     }
 
-    if (!await widget.onSubmit(widget.session, widget.event)) return;
-
-    Navigator.pop(context);
-  }
-
-  void _handlePasswordChange() async {
-    bool success = await widget.onPasswordChange!(widget.session, widget.event, _ctrlPassword.text);
-    if (!success) return;
-
-    _ctrlPassword.text = '';
-  }
-
-  void _handleDelete() async {
-    if (!await widget.onDelete!(widget.session, widget.event)) return;
+    var result = await widget.onSubmit(widget.session, widget.event);
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }
@@ -124,28 +104,10 @@ class EventEditPageState extends State<EventEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageEventEdit),
+        title: Text(AppLocalizations.of(context)!.pageEventCreate),
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppEventTile(
-              event: widget.event,
-              trailing: [
-                if (widget.onDelete != null)
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: _handleDelete,
-                  ),
-              ],
-            ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.eventKey,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlKey,
-            ),
-          ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventTitle,
             child: TextField(
@@ -206,23 +168,6 @@ class EventEditPageState extends State<EventEditPage> {
             text: AppLocalizations.of(context)!.actionSave,
             onPressed: _handleSubmit,
           ),
-          if (widget.onPasswordChange != null) Divider(),
-          if (widget.onPasswordChange != null)
-            AppInfoRow(
-              info: AppLocalizations.of(context)!.eventPassword,
-              child: TextField(
-                obscureText: true,
-                maxLines: 1,
-                controller: _ctrlPassword,
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.eventPasswordChange,
-                  suffixIcon: IconButton(
-                    onPressed: _handlePasswordChange,
-                    icon: Icon(Icons.save),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );

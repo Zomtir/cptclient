@@ -10,7 +10,7 @@ import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/format.dart';
-import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
 Future<List<Event>> event_list(UserSession session,
     {DateTime? begin,
@@ -42,8 +42,8 @@ Future<List<Event>> event_list(UserSession session,
   return List<Event>.from(l.map((model) => Event.fromJson(model)));
 }
 
-Future<bool> event_create(UserSession session, Event event) async {
-  if (event.key.isEmpty) return false;
+Future<Result<()>> event_create(UserSession session, Event event) async {
+  if (event.key.isEmpty) return Failure();
 
   final response = await client.post(
     uri('/regular/event_create'),
@@ -54,15 +54,14 @@ Future<bool> event_create(UserSession session, Event event) async {
     body: json.encode(event),
   );
 
-  bool success = (response.statusCode == 200);
-  messageStatus(success);
-  return success;
+  if (response.statusCode != 200) return Failure();
+  return Success(());
 }
 
-Future<bool?> event_owner_true(UserSession session, Event event) async {
+Future<Result<bool>> event_owner_true(UserSession session, int eventID) async {
   final response = await client.get(
     uri('/regular/event_owner_true', {
-      'event_id': event.id.toString(),
+      'event_id': eventID.toString(),
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',
@@ -70,15 +69,31 @@ Future<bool?> event_owner_true(UserSession session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (response.statusCode != 200) return Failure();
 
-  return json.decode(utf8.decode(response.bodyBytes)) as bool;
+  return Success(json.decode(utf8.decode(response.bodyBytes)) as bool);
 }
 
-Future<bool?> event_bookmark_true(UserSession session, Event event) async {
+Future<Result<bool>> event_moderator_true(UserSession session, int eventID) async {
+  final response = await client.get(
+    uri('/regular/event_moderator_true', {
+      'event_id': eventID.toString(),
+    }),
+    headers: {
+      'Accept': 'application/json; charset=utf-8',
+      'Token': session.token,
+    },
+  );
+
+  if (response.statusCode != 200) return Failure();
+
+  return Success(json.decode(utf8.decode(response.bodyBytes)) as bool);
+}
+
+Future<bool?> event_bookmark_true(UserSession session, int eventID) async {
   final response = await client.get(
     uri('/regular/event_bookmark_true', {
-      'event_id': event.id.toString(),
+      'event_id': eventID.toString(),
     }),
     headers: {
       'Accept': 'application/json; charset=utf-8',
@@ -106,10 +121,10 @@ Future<bool> event_bookmark_edit(UserSession session, Event event, bool bookmark
   return (response.statusCode != 200);
 }
 
-Future<Confirmation?> event_attendance_registration_info(UserSession session, Event event, String role) async {
+Future<Confirmation?> event_attendance_registration_info(UserSession session, int eventID, String role) async {
   final response = await client.get(
     uri('/regular/event_attendance_registration_info', {
-      'event_id': event.id.toString(),
+      'event_id': eventID.toString(),
       'role': role,
     }),
     headers: {
@@ -123,10 +138,10 @@ Future<Confirmation?> event_attendance_registration_info(UserSession session, Ev
   return Confirmation.fromNullString(utf8.decode(response.bodyBytes));
 }
 
-Future<bool> event_attendance_registration_edit(UserSession session, Event event, String role, Confirmation? confirmation) async {
+Future<bool> event_attendance_registration_edit(UserSession session, int eventID, String role, Confirmation? confirmation) async {
   final response = await client.head(
     uri('/regular/event_attendance_registration_edit', {
-      'event_id': event.id.toString(),
+      'event_id': eventID.toString(),
       'role': role,
       'status': confirmation?.name ?? 'NULL',
     }),
@@ -139,10 +154,10 @@ Future<bool> event_attendance_registration_edit(UserSession session, Event event
   return (response.statusCode != 200);
 }
 
-Future<bool?> event_attendance_presence_true(UserSession session, Event event, String role) async {
+Future<bool?> event_attendance_presence_true(UserSession session, int eventID, String role) async {
   final response = await client.get(
     uri('/regular/event_attendance_presence_true', {
-      'event_id': event.id.toString(),
+      'event_id': eventID.toString(),
       'role': role,
     }),
     headers: {

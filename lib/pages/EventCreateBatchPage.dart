@@ -117,8 +117,8 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
 
     for (DateTime date in dates) {
       Event event = Event.fromEvent(widget.event);
-      event.begin = event.begin.applyDate(date);
-      event.end = event.end.applyDate(date);
+      event.begin = event.begin.withDate(date);
+      event.end = event.end.withDate(date);
 
       widget.onSubmit(widget.session, event);
     }
@@ -151,7 +151,7 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageEventEdit),
+        title: Text(AppLocalizations.of(context)!.pageEventCreate),
       ),
       body: AppBody(
         children: [

@@ -8,10 +8,10 @@ import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/material/tiles/AppUserTile.dart';
-import 'package:cptclient/pages/EventDetailManagementPage.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
@@ -76,7 +76,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailManagementPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
           eventID: eventID,
         ),

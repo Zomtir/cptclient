@@ -114,7 +114,7 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
       context,
       MaterialPageRoute(
         builder: (context) => FilterPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseParticipantSieves,
+          title: AppLocalizations.of(context)!.pageCourseAttendanceSieves,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: () => api_regular.team_list(widget.session),
           onCallSelected: () => api_moderator.course_attendance_sieve_list(widget.session, widget.course.id, role),
@@ -168,17 +168,18 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
           ),
           Divider(),
           MenuSection(
+            title: AppLocalizations.of(context)!.pageCourseAttendanceSieves,
             children: [
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseParticipantSieves),
+                title: Text(AppLocalizations.of(context)!.eventParticipant),
                 onTap: () => _handleAttendanceSieves('PARTICIPANTS'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseLeaderSieves),
+                title: Text(AppLocalizations.of(context)!.eventLeader),
                 onTap: () => _handleAttendanceSieves('LEADER'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
+                title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleAttendanceSieves('SUPPORTER'),
               ),
             ],

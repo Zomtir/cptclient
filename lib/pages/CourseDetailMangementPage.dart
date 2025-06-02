@@ -133,7 +133,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
       context,
       MaterialPageRoute(
         builder: (context) => FilterPage<Team>(
-          title: AppLocalizations.of(context)!.pageCourseParticipantSieves,
+          title: AppLocalizations.of(context)!.pageCourseAttendanceSieves,
           tile: AppCourseTile(course: widget.course),
           onCallAvailable: () => api_regular.team_list(widget.session),
           onCallSelected: () => api_admin.course_attendance_sieve_list(widget.session, widget.course.id, role),
@@ -163,7 +163,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
         builder: (context) => CourseStatisticPresencePage(
           session: widget.session,
           course: widget.course,
-          title: AppLocalizations.of(context)!.pageCourseStatisticParticipants,
+          title: AppLocalizations.of(context)!.pageCourseStatisticAttendance,
           presence: () => api_admin.course_statistic_attendance(widget.session, widget.course.id, role),
           presence1: (int ownerID) => api_admin.course_statistic_attendance1(widget.session, widget.course.id, ownerID, role),
         ),
@@ -214,17 +214,18 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           ),
           Divider(),
           MenuSection(
+            title: AppLocalizations.of(context)!.pageCourseAttendanceSieves,
             children: [
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseParticipantSieves),
+                title: Text(AppLocalizations.of(context)!.eventParticipant),
                 onTap: () => _handleAttendanceSieves('PARTICIPANTS'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseLeaderSieves),
+                title: Text(AppLocalizations.of(context)!.eventLeader),
                 onTap: () => _handleAttendanceSieves('LEADER'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseSupporterSieves),
+                title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleAttendanceSieves('SUPPORTER'),
               ),
             ],
@@ -240,21 +241,22 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
           ),
           Divider(),
           MenuSection(
+            title: AppLocalizations.of(context)!.pageCourseStatisticAttendance,
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
                 onTap: _handleStatisticClass,
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseStatisticParticipants),
+                title: Text(AppLocalizations.of(context)!.eventParticipant),
                 onTap: () => _handleStatisticAttendance('PARTICIPANT'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseStatisticLeaders),
+                title: Text(AppLocalizations.of(context)!.eventLeader),
                 onTap: () => _handleStatisticAttendance('LEADER'),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.pageCourseStatisticSupporters),
+                title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleStatisticAttendance('SUPPORTER'),
               ),
             ],

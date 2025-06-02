@@ -86,7 +86,7 @@ class UserCreatePageState extends State<UserCreatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageUserEdit),
+        title: Text(AppLocalizations.of(context)!.pageUserCreate),
       ),
       body: AppBody(
         children: [

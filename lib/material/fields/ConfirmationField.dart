@@ -2,6 +2,7 @@ import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
+// TODO maybe remove if not needed
 class ConfirmationField extends StatelessWidget {
   final Confirmation confirmation;
   final void Function(Confirmation?) onChanged;

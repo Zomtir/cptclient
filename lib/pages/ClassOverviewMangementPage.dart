@@ -1,4 +1,4 @@
-import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/api/admin/event/event.dart' as api_admin;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
@@ -9,8 +9,9 @@ import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/EventCreateBatchPage.dart';
-import 'package:cptclient/pages/EventDetailManagementPage.dart';
-import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/pages/EventCreatePage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class ClassOverviewManagementPage extends StatefulWidget {
@@ -48,14 +49,14 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => EventCreatePage(
           session: widget.session,
           event: Event.fromCourse(widget.course),
-          isDraft: true,
           onSubmit: (UserSession session, Event event) async {
-            if (!await api_admin.event_create(session, event, widget.course.id)) return false;
+            var result = await api_admin.event_create(session, event, widget.course.id);
+            if (result is Failure) return Failure();
             _update();
-            return true;
+            return Success(());
           },
         ),
       ),
@@ -71,7 +72,8 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           event: Event.fromCourse(widget.course),
           isDraft: true,
           onSubmit: (UserSession session, Event event) async {
-            if (!await api_admin.event_create(session, event, widget.course.id)) return false;
+            var result = await api_admin.event_create(session, event, widget.course.id);
+            if (result is! Success) return false;
             _update();
             return true;
           },
@@ -84,7 +86,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailManagementPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
           eventID: event.id,
         ),

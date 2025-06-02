@@ -11,8 +11,8 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:flutter/material.dart';
 
 class ClubStatisticTeamPage extends StatefulWidget {

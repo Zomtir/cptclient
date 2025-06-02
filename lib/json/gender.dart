@@ -8,20 +8,17 @@ class Gender extends FieldInterface implements Comparable {
   const Gender._init(this._value);
 
   static const List<Gender> values = [
-    Gender._init('MALE'),
-    Gender._init('FEMALE'),
-    Gender._init('OTHER'),
+    Gender.male,
+    Gender.female,
+    Gender.other,
   ];
 
   String get name => _value;
 
-  static Gender get empty => const Gender._init('NULL');
-
-  static Gender get male => const Gender._init('MALE');
-
-  static Gender get female => const Gender._init('FEMALE');
-
-  static Gender get other => const Gender._init('OTHER');
+  static const Gender empty = Gender._init('NULL');
+  static const Gender male = Gender._init('MALE');
+  static const Gender female = Gender._init('FEMALE');
+  static const Gender other = Gender._init('OTHER');
 
   static Gender? fromNullString(String? value) {
     if (value == null) return null;
@@ -31,17 +28,12 @@ class Gender extends FieldInterface implements Comparable {
   }
 
   String localizedName(BuildContext context) {
-    if (this == Gender.empty) {
-      return AppLocalizations.of(context)!.undefined;
-    } else if (this == Gender.male) {
-      return AppLocalizations.of(context)!.genderMale;
-    } else if (this == Gender.female) {
-      return AppLocalizations.of(context)!.genderFemale;
-    } else if (this == Gender.other) {
-      return AppLocalizations.of(context)!.genderOther;
-    } else {
-      return '';
-    }
+    return switch (this) {
+      Gender.male => AppLocalizations.of(context)!.genderMale,
+      Gender.female => AppLocalizations.of(context)!.genderFemale,
+      Gender.other => AppLocalizations.of(context)!.genderOther,
+      _ => AppLocalizations.of(context)!.undefined,
+    };
   }
 
   @override

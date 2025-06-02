@@ -4,7 +4,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/pages/EventDetailManagementPage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
@@ -50,7 +50,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailManagementPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
           eventID: eventID,
         ),

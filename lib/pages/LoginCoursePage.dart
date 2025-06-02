@@ -7,6 +7,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class LoginCoursePage extends StatefulWidget {
@@ -27,8 +28,9 @@ class LoginCoursePageState extends State<LoginCoursePage> {
   }
 
   void _load() async {
-    List<Course> courses = await api_anon.course_list();
-    setState(() => _cache = courses);
+    var result = await api_anon.course_list();
+    if (result is! Success) return;
+    setState(() => _cache = result.unwrap());
   }
 
   void _loginCourse() async {

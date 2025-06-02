@@ -14,14 +14,15 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
-import 'package:cptclient/pages/EventDetailOwnershipPage.dart';
-import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
+import 'package:cptclient/pages/EventCreatePage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EventOverviewOwnershipPage extends StatefulWidget {
@@ -60,11 +61,18 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
   }
 
   Future<void> _update() async {
-    List<Event> events = await api_owner.event_list(widget.session, _ctrlDateBegin.getDate(), _ctrlDateEnd.getDate(),
-        _ctrlLocation.value, _ctrlOccurrence.value, _ctrlAcceptance.value);
+    var result = await api_owner.event_list(
+        widget.session,
+        _ctrlDateBegin.getDate(),
+        _ctrlDateEnd.getDate(),
+        _ctrlLocation.value,
+        _ctrlOccurrence.value,
+        _ctrlAcceptance.value
+    );
+    if (result is! Success) return;
 
     setState(() {
-      _events = events;
+      _events = result.unwrap();
     });
   }
 
@@ -73,10 +81,9 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => EventCreatePage(
           session: widget.session,
           event: event,
-          isDraft: true,
           onSubmit: api_regular.event_create,
         ),
       ),
@@ -91,10 +98,9 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => EventCreatePage(
           session: widget.session,
           event: newEvent,
-          isDraft: true,
           onSubmit: api_regular.event_create,
         ),
       ),
@@ -107,27 +113,9 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailOwnershipPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
           eventID: event.id,
-        ),
-      ),
-    );
-
-    _update();
-  }
-
-  void _handleEdit(Event event) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventEditPage(
-          session: widget.session,
-          event: event,
-          isDraft: false,
-          onSubmit: api_owner.event_edit,
-          onPasswordChange: api_owner.event_password_edit,
-          onDelete: api_owner.event_delete,
         ),
       ),
     );
@@ -160,7 +148,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       context,
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
-          title: AppLocalizations.of(context)!.pageEventParticipantPresences,
+          title: AppLocalizations.of(context)!.pageEventAttendancePresences,
           tile: AppEventTile(event: event),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_owner.event_attendance_presence_list(widget.session, event, role),
@@ -174,12 +162,12 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
   }
 
   Future<void> _submitEvent(Event event) async {
-    if (!await api_owner.event_submit(widget.session, event)) return;
+    if (await api_owner.event_submit(widget.session, event) is! Success) return;
     _update();
   }
 
   Future<void> _withdrawEvent(Event event) async {
-    if (!await api_owner.event_withdraw(widget.session, event)) return;
+    if (await api_owner.event_withdraw(widget.session, event) is! Success) return;
     _update();
   }
 
@@ -271,11 +259,6 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),
         itemBuilder: (context) => [
-          if (event.acceptance == Acceptance.draft)
-            PopupMenuItem<VoidCallback>(
-              value: () => _handleEdit(event),
-              child: Text(AppLocalizations.of(context)!.actionEdit),
-            ),
           PopupMenuItem<VoidCallback>(
             value: () => _handleDuplicate(event),
             child: Text(AppLocalizations.of(context)!.actionDuplicate),

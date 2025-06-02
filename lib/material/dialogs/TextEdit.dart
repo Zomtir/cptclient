@@ -10,6 +10,8 @@ class TextEdit extends StatefulWidget {
     required this.text,
     required this.minLength,
     required this.maxLength,
+    required this.nullable,
+    this.maxLines = 1,
   }) {
     assert(
       (minLength < maxLength),
@@ -20,6 +22,8 @@ class TextEdit extends StatefulWidget {
   final String text;
   final int minLength;
   final int maxLength;
+  final bool nullable;
+  final int maxLines;
 
   @override
   State<TextEdit> createState() => _TextEditState();
@@ -47,34 +51,38 @@ class _TextEditState extends State<TextEdit> {
     Navigator.pop(context, Success(_ctrlText.text));
   }
 
-  void _handleCancel() {
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final Widget actions = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        AppButton(
+          onPressed: () => Navigator.pop(context),
+          text: AppLocalizations.of(context)!.actionCancel,
+        ),
+        if (widget.nullable) Spacer(),
+        if (widget.nullable)
+          AppButton(
+            onPressed: () => Navigator.pop(context, Success(null)),
+            text: AppLocalizations.of(context)!.actionRemove,
+          ),
+        Spacer(),
+        AppButton(
+          onPressed: _handleConfirm,
+          text: AppLocalizations.of(context)!.actionConfirm,
+        ),
+      ],
+    );
+
     return Column(
       children: [
         ListTile(
           title: TextField(
-            maxLines: 1,
+            maxLines: widget.maxLines,
             controller: _ctrlText,
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            AppButton(
-              onPressed: _handleCancel,
-              text: AppLocalizations.of(context)!.actionCancel,
-            ),
-            Spacer(),
-            AppButton(
-              onPressed: _handleConfirm,
-              text: AppLocalizations.of(context)!.actionConfirm,
-            ),
-          ],
-        ),
+        actions,
       ],
     );
   }

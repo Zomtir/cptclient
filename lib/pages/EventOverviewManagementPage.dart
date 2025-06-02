@@ -1,4 +1,4 @@
-import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/api/admin/event/event.dart' as api_admin;
 import 'package:cptclient/api/anon/location.dart' as api_anon;
 import 'package:cptclient/api/regular/event/event.dart' as api_regular;
 import 'package:cptclient/api/regular/user/user.dart' as api_regular;
@@ -14,14 +14,14 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/layouts/FilterToggle.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
-import 'package:cptclient/pages/EventDetailManagementPage.dart';
-import 'package:cptclient/pages/EventDetailRegularPage.dart';
-import 'package:cptclient/pages/EventEditPage.dart';
+import 'package:cptclient/material/widgets/FilterToggle.dart';
+import 'package:cptclient/pages/EventCreatePage.dart';
+import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EventOverviewManagementPage extends StatefulWidget {
@@ -94,9 +94,9 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailRegularPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
-          event: event,
+          eventID: event.id,
         ),
       ),
     );
@@ -105,22 +105,22 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   }
 
   void _acceptEvent(Event event) async {
-    if (!await api_admin.event_accept(widget.session, event)) return;
+    if (await api_admin.event_accept(widget.session, event) is! Success) return;
     _update();
   }
 
   void _rejectEvent(Event event) async {
-    if (!await api_admin.event_reject(widget.session, event)) return;
+    if (await api_admin.event_reject(widget.session, event) is! Success) return;
     _update();
   }
 
   void _suspendEvent(Event event) async {
-    if (!await api_admin.event_suspend(widget.session, event)) return;
+    if (await api_admin.event_suspend(widget.session, event) is! Success) return;
     _update();
   }
 
   Future<void> _withdrawEvent(Event event) async {
-    if (!await api_admin.event_withdraw(widget.session, event)) return;
+    if (await api_admin.event_withdraw(widget.session, event) is! Success) return;
     _update();
   }
 
@@ -128,7 +128,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventDetailManagementPage(
+        builder: (context) => EventDetailPage(
           session: widget.session,
           eventID: event.id,
         ),
@@ -143,10 +143,9 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => EventCreatePage(
           session: widget.session,
           event: event,
-          isDraft: true,
           onSubmit: (session, event) => api_admin.event_create(session, event, null),
         ),
       ),
@@ -161,10 +160,9 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventEditPage(
+        builder: (context) => EventCreatePage(
           session: widget.session,
           event: newEvent,
-          isDraft: true,
           onSubmit: api_regular.event_create,
         ),
       ),

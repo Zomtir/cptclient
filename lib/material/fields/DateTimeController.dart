@@ -26,11 +26,11 @@ class DateTimeController {
     } on FormatException {
       return;
     }
-    _dateTime = _dateTime?.applyDate(date);
+    _dateTime = _dateTime?.withDate(date);
   }
 
   void setDate(DateTime date) {
-    _dateTime = _dateTime?.applyDate(date);
+    _dateTime = _dateTime?.withDate(date);
   }
 
   DateTime getDate() {
@@ -44,11 +44,11 @@ class DateTimeController {
     } on FormatException {
       return;
     }
-    _dateTime = _dateTime?.applyTime(TimeOfDay.fromDateTime(date));
+    _dateTime = _dateTime?.withTime(TimeOfDay.fromDateTime(date));
   }
 
   void setTime(TimeOfDay time) {
-    _dateTime = _dateTime?.applyTime(time);
+    _dateTime = _dateTime?.withTime(time);
   }
 
   TimeOfDay getTime() {

@@ -7,10 +7,12 @@ import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/BankAccountEdit.dart';
-import 'package:cptclient/material/dialogs/ChoiceWidget.dart';
+import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
+import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/dialogs/LicenseEdit.dart';
 import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
@@ -81,7 +83,7 @@ class UserInfoPageState extends State<UserInfoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageUserEdit),
+        title: Text(AppLocalizations.of(context)!.pageUserDetails),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
@@ -113,6 +115,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                         text: user_info!.key,
                         minLength: 1,
                         maxLength: 20,
+                        nullable: false,
                       ),
                       onChanged: (String t) {
                         setState(() => user_info!.key = t);
@@ -126,16 +129,15 @@ class UserInfoPageState extends State<UserInfoPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userEnabled,
-            child: ChoiceDisplayWidget(
-              enabled: true,
-              value: user_info!.enabled!,
+            child: ChoiceDisplay(
+              value: Valence.fromBool(user_info!.enabled),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () => useAppDialog<(bool, bool?)>(
+                onPressed: () => useAppDialog<Valence?>(
                   context: context,
-                  widget: ChoiceEditWidget(enabled: true, value: user_info!.enabled!),
-                  onChanged: ((bool, bool?) t) {
-                    setState(() => user_info!.enabled = t.$2!);
+                  widget: ChoiceEdit(value: Valence.fromBool(user_info!.enabled!)),
+                  onChanged: (Valence? v) {
+                    setState(() => user_info!.enabled = v?.toBool());
                     _submitUser();
                   },
                 ),
@@ -144,16 +146,15 @@ class UserInfoPageState extends State<UserInfoPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userActive,
-            child: ChoiceDisplayWidget(
-              enabled: true,
-              value: user_info!.active!,
+            child: ChoiceDisplay(
+              value: Valence.fromBool(user_info!.active!),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () => useAppDialog<(bool, bool?)>(
+                onPressed: () => useAppDialog<Valence?>(
                   context: context,
-                  widget: ChoiceEditWidget(enabled: true, value: user_info!.active!),
-                  onChanged: ((bool, bool?) t) {
-                    setState(() => user_info!.active = t.$2!);
+                  widget: ChoiceEdit(value: Valence.fromBool(user_info!.active!)),
+                  onChanged: (Valence? v) {
+                    setState(() => user_info!.active = v?.toBool());
                     _submitUser();
                   },
                 ),
@@ -212,6 +213,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                         text: user_info!.firstname,
                         minLength: 1,
                         maxLength: 20,
+                        nullable: false,
                       ),
                       onChanged: (String t) {
                         setState(() => user_info!.firstname = t);
@@ -242,6 +244,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                         text: user_info!.lastname,
                         minLength: 1,
                         maxLength: 20,
+                        nullable: false,
                       ),
                       onChanged: (String t) {
                         setState(() => user_info!.lastname = t);
@@ -266,15 +269,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.nickname ?? '',
-                        minLength: 0,
+                        minLength: 1,
                         maxLength: 20,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.nickname = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.nickname = (t?.isEmpty ?? true ? null : t));
                         _submitUser();
                       },
                     ),
@@ -299,15 +303,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.address ?? '',
-                        minLength: 0,
+                        minLength: 2,
                         maxLength: 60,
+                        nullable: false,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.address = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.address = (t?.isEmpty ?? true ? null : t));
                         _submitUser();
                       },
                     ),
@@ -329,15 +334,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.email ?? '',
-                        minLength: 0,
+                        minLength: 3,
                         maxLength: 40,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.email = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.email = (t?.isEmpty ?? true ? null : t));
                         _submitUser();
                       },
                     ),
@@ -359,15 +365,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.phone ?? '',
-                        minLength: 0,
+                        minLength: 4,
                         maxLength: 20,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.phone = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.phone = (t?.isEmpty ?? true ? null : t));
                         _submitUser();
                       },
                     ),
@@ -418,15 +425,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.birth_location ?? '',
-                        minLength: 0,
+                        minLength: 2,
                         maxLength: 60,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.birth_location = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.birth_location = (t?.isEmpty ?? true ? null : t));
                         _submitUser();
                       },
                     ),
@@ -448,15 +456,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.nationality ?? '',
-                        minLength: 0,
+                        minLength: 2,
                         maxLength: 40,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.nationality = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.nationality = (t?.isEmpty ?? true ? null : t));
                         _submitUser();
                       },
                     ),
@@ -512,15 +521,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.height?.toString() ?? '',
-                        minLength: 0,
+                        minLength: 1,
                         maxLength: 3,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.height = int.tryParse(t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.height = t == null ? null : int.tryParse(t));
                         _submitUser();
                       },
                     ),
@@ -542,15 +552,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.weight?.toString() ?? '',
-                        minLength: 0,
+                        minLength: 1,
                         maxLength: 3,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.weight = int.tryParse(t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.weight = t == null ? null : int.tryParse(t));
                         _submitUser();
                       },
                     ),
@@ -575,15 +586,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog<String?>(
                       context: context,
                       widget: TextEdit(
                         text: user_info!.note ?? '',
                         minLength: 1,
                         maxLength: 20,
+                        nullable: true,
                       ),
-                      onChanged: (String t) {
-                        setState(() => user_info!.note = (t.isEmpty ? null : t));
+                      onChanged: (String? t) {
+                        setState(() => user_info!.note = t == null ? null : (t.isEmpty ? null : t));
                         _submitUser();
                       },
                     ),

@@ -1,4 +1,4 @@
-import 'package:cptclient/api/admin/event/imports.dart' as api_admin;
+import 'package:cptclient/api/admin/event/event.dart' as api_admin;
 import 'package:cptclient/api/regular/inventory/inventory.dart' as api_regular;
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/itemcat.dart';
@@ -8,6 +8,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EventStatisticPacklistPage extends StatefulWidget {
@@ -35,8 +36,10 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
   }
 
   void _update() async {
-    List<(User, int, int, int)> stats =
-        await api_admin.event_statistic_packlist(widget.session, widget.event, _ctrlCategories);
+    var result = await api_admin.event_statistic_packlist(widget.session, widget.event, _ctrlCategories);
+    if (result is! Success) return;
+
+    List<(User, int, int, int)> stats = result.unwrap();
     stats.sort((a, b) => a.$1.compareTo(b.$1));
     setState(() => _stats = stats);
     _missing[0] = _stats.length - _stats.where((stat) => stat.$2 > 0).length;

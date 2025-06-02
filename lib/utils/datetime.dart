@@ -3,11 +3,11 @@ import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
-  DateTime applyTime(TimeOfDay time) {
+  DateTime withTime(TimeOfDay time) {
     return DateTime(year, month, day, time.hour, time.minute);
   }
 
-  DateTime applyDate(DateTime date) {
+  DateTime withDate(DateTime date) {
     return DateTime(date.year, date.month, date.day, hour, minute);
   }
 
