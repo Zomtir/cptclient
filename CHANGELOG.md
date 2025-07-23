@@ -1,5 +1,48 @@
 # CHANGELOG
 
+## Release v1.4.0 (25th Jul 2025)
+
+- feat: Unified user info page
+  - Improved layout with sections and spacings
+  - Added copy and edit buttons
+  - Use edit dialogs instead of edit pages
+  - Save individual user properties
+- feat: Unified event info page
+  - Merge info, admin, owner and moderator page into a single page
+  - Split the page into three collapsible sections
+  - Added spectator role to events
+  - Split calls into read and write calls
+  - Establish more Result in API
+- feat: Password info for user profile
+- feat: Generate hex of custom lengths
+- feat: BankAccount dialog
+- feat: TextEdit dialog
+- feat: Password Picker dialog
+- feat: ChoiceWidget widget
+- feat: MultiChoiceEdit dialog
+- feat: InfoSection widget
+- feat: LoadingWidget widget
+- feat: Project URL under app information #62
+- feat: Unwrapping for Result
+- feat: AppDialog helper functions
+- feat: Result as sealed return type
+- feat: Improve session resume labels
+- feat: Fallback for missing bankacc values
+- feat: Automatically remove expired sessions
+- refactor: Merge attendance roles
+- refactor: Less boilerplate for DateTime fields
+- cleanup: Rename DateTimeEdit to DateTimeField
+- cleanup: Removed Bibox and Tribox
+- cleanup: Removed generic EditWidget
+- fix: Trainer accounting used incomplete user info
+- fix: Event writable only as owner
+- fix: Show spectators in class statistics
+- fix: API and locale fixes for trainer accounting
+- fix: Added translations for TimePicker #59
+- fix: NumberSelector was overflowing on DatePicker
+- fix: User login was focussing the password
+- fix: Incorrect font asset paths
+
 ## Release v1.3.0 (29th Jan 2024)
 
 - feat: Save multiple login details
