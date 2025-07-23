@@ -150,7 +150,7 @@ Future<bool> course_club_edit(UserSession session, Course course, Club? club) as
   return (response.statusCode == 200);
 }
 
-Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {
+Future<List<(Event, int, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {
   final response = await client.get(
     uri('/admin/course_statistic_class', {
       'course_id': courseID.toString(),
@@ -164,13 +164,14 @@ Future<List<(Event, int, int, int)>> course_statistic_class(UserSession session,
   if (response.statusCode != 200) return [];
 
   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(Event, int, int, int)>.from(
+  return List<(Event, int, int, int, int)>.from(
     list.map((model) {
       return (
         Event.fromJson(model[0]),
         model[1],
         model[2],
         model[3],
+        model[4],
       );
     }),
   );

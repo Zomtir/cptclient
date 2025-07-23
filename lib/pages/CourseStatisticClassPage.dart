@@ -22,7 +22,7 @@ class CourseStatisticClassPage extends StatefulWidget {
 class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   CourseStatisticClassPageState();
 
-  List<(Event, int, int, int)> stats = [];
+  List<(Event, int, int, int, int)> stats = [];
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   }
 
   void _update() async {
-    List<(Event, int, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
+    List<(Event, int, int, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
     stats.sort((a, b) => a.$1.compareTo(b.$1));
     setState(() => this.stats = stats);
   }
@@ -69,6 +69,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
               DataColumn(label: Text(AppLocalizations.of(context)!.eventParticipant)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventLeader)),
               DataColumn(label: Text(AppLocalizations.of(context)!.eventSupporter)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.eventSpectator)),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
@@ -80,6 +81,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
                   DataCell(Text("${stats[index].$4}")),
                   DataCell(Text("${stats[index].$2}")),
                   DataCell(Text("${stats[index].$3}")),
+                  DataCell(Text("${stats[index].$5}")),
                 ],
               );
             }),
