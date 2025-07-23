@@ -1,4 +1,4 @@
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/admin/user/user.dart' as api_admin;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
@@ -63,7 +63,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     if (eventList == null) return;
     eventList.sort();
 
-    User? userInfo = await api_regular.user_info(widget.session);
+    User? userInfo = await api_admin.user_detailed(widget.session, widget.session.user!.id);
     if (userInfo == null) return;
 
     setState(() {
