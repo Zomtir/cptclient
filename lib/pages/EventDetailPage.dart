@@ -167,7 +167,14 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   void _handleEvent() async {
-    Result<()> result = await api_owner.event_edit(widget.session, _event!);
+    Result<()>? result;
+    if (_adminship_write) {
+      result = await api_admin.event_edit(widget.session, _event!);
+    } else if (_ownership) {
+      result = await api_owner.event_edit(widget.session, _event!);
+    } else if (_moderatorship) {
+      result = await api_mod.event_edit(widget.session, _event!);
+    }
 
     if (result is! Success) return;
     _updateEvent();
