@@ -5,6 +5,7 @@
   "labelCalendar": "Calendar",
   "labelStatistics": "Statistics",
   "labelAvailable": "Available",
+  "labelUnavailable": "Unavailable",
   "labelMissing": "Missing",
   "labelRequired": "Required",
   "labelPermission": "Permission",

@@ -25,6 +25,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelAvailable => 'Vorhanden';
 
   @override
+  String get labelUnavailable => 'Nicht vorhanden';
+
+  @override
   String get labelMissing => 'Fehlend';
 
   @override

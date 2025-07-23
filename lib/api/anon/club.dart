@@ -21,7 +21,7 @@ Future<List<Club>> club_list() async {
 
 Future<List<int>?> club_banner(int clubID) async {
   final response = await client.get(
-    uri('/anon/club_image', {
+    uri('/anon/club_banner', {
       'club_id': clubID.toString(),
     }),
     headers: {

@@ -5,6 +5,7 @@
   "labelCalendar": "Kalender",
   "labelStatistics": "Übersichten",
   "labelAvailable": "Vorhanden",
+  "labelUnavailable": "Nicht vorhanden",
   "labelMissing": "Fehlend",
   "labelRequired": "Benötigt",
   "labelPermission": "Berechtigung",

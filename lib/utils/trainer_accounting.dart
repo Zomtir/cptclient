@@ -376,8 +376,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            AppLocalizations.of(context)!
-                .trainerTaxExemptionClause(club.name, club.chairman ?? '\t\t\t'),
+            AppLocalizations.of(context)!.trainerTaxExemptionClause(club.name, club.chairman ?? '\t\t\t'),
           ),
           pw.SizedBox(height: 10),
           pw.Text(
@@ -399,8 +398,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!
-              .trainerTaxAssignmentDeclaration(fiscal_year.toString())),
+          pw.Text(AppLocalizations.of(context)!.trainerTaxAssignmentDeclaration(fiscal_year.toString())),
           pw.SizedBox(height: 5),
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -477,22 +475,22 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.userLicenseMain),
-                  pw.Text(user.license_main == null ? "" : "${user.license_main!.name} (${user.license_main!.number})"),
+                  pw.Text("${AppLocalizations.of(context)!.userLicenseMain}:"),
+                  pw.Text(user.license_main == null ? AppLocalizations.of(context)!.labelUnavailable : "${user.license_main!.name} (${user.license_main!.number})"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.userLicenseExtra),
-                  pw.Text(
-                      user.license_extra == null ? "" : "${user.license_extra!.name} (${user.license_extra!.number})"),
+                  pw.Text("${AppLocalizations.of(context)!.userLicenseExtra}:"),
+                  pw.Text(user.license_extra == null
+                      ? AppLocalizations.of(context)!.labelUnavailable
+                      : "${user.license_extra!.name} (${user.license_extra!.number})"),
                 ],
               ),
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!
-              .trainerLicenseUsageStatement(fiscal_year.toString(), club.name)),
+          pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageStatement(club.name, fiscal_year.toString())),
           pw.SizedBox(height: 5),
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,

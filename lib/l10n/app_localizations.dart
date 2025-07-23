@@ -131,6 +131,12 @@ abstract class AppLocalizations {
   /// **'Available'**
   String get labelAvailable;
 
+  /// No description provided for @labelUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get labelUnavailable;
+
   /// No description provided for @labelMissing.
   ///
   /// In en, this message translates to:

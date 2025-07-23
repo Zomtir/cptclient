@@ -25,6 +25,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelAvailable => 'Available';
 
   @override
+  String get labelUnavailable => 'Unavailable';
+
+  @override
   String get labelMissing => 'Missing';
 
   @override

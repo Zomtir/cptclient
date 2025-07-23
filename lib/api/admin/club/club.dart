@@ -146,9 +146,10 @@ Future<List<Event>?> club_statistic_presence(
   String role,
 ) async {
   final response = await client.get(
-    uri('/admin/club_statistic_user_$role', {
+    uri('/admin/club_statistic_attendance', {
       'club_id': clubID.toString(),
-      '${role}_id': userID.toString(),
+      'user_id': userID.toString(),
+      'role': role,
       'time_window_begin': formatWebDateTime(time_window_begin.toUtc()),
       'time_window_end': formatWebDateTime(time_window_end.toUtc()),
     }),
