@@ -4,7 +4,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/UserCreatePage.dart';
 import 'package:cptclient/pages/UserInfoPage.dart';
 import 'package:flutter/material.dart';
@@ -64,14 +63,15 @@ class UserOverviewPageState extends State<UserOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageUserManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           SearchablePanel(
             key: searchPanelKey,
             builder: (User user, Function(User)? onSelect) => InkWell(

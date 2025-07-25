@@ -6,8 +6,8 @@ import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +109,11 @@ class User extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [key, firstname, lastname, nickname ?? ""];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
@@ -118,11 +123,21 @@ class User extends FieldInterface implements Comparable {
 
   @override
   Widget buildTile(BuildContext context) {
-    return AppUserTile(user: this);
+    return buildListTile(context, this);
   }
 
-  @override
-  get searchable {
-    return [key, firstname, lastname, nickname ?? ""];
+  // TODO
+  static Widget buildListTile(BuildContext context, User? user, {List<Widget>? trailing, VoidCallback? onTap}) {
+    if (user == null) {
+      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
+    }
+    return Card(
+      child: ListTile(
+        leading: Tooltip(child: Icon(Icons.person), message: "${user.key}"),
+        trailing: trailing == null ? null : Column(children: trailing),
+        title: Text("${user.firstname} ${user.lastname}"),
+        subtitle: Text(user.nickname ?? ''),
+      ),
+    );
   }
 }

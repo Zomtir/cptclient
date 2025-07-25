@@ -9,7 +9,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +104,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
             onPressed: _prepare,
             leading: Icon(Icons.refresh),
           ),
-          if (_user != null) AppUserTile(user: _user!),
+          User.buildListTile(context, _user!),
           Divider(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,

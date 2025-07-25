@@ -9,7 +9,6 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/tiles/AppClubTile.dart';
-import 'package:cptclient/material/tiles/AppUserTile.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
@@ -123,8 +122,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
         maxWidth: 1000,
         children: <Widget>[
           AppClubTile(club: widget.club),
-          AppUserTile(
-            user: widget.session.user!,
+          User.buildListTile(
+            context,
+            widget.session.user!,
             trailing: [
               IconButton(
                 icon: const Icon(Icons.monetization_on_outlined),
