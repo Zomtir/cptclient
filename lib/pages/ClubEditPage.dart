@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/TextWrapList.dart';
 import 'package:cptclient/utils/message.dart';
@@ -85,7 +84,7 @@ class ClubEditPageState extends State<ClubEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) AppClubTile(club: widget.club),
+          if (!widget.isDraft) Club.buildListTile(context, widget.club),
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubKey,
             child: TextField(

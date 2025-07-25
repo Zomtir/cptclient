@@ -74,9 +74,10 @@ class UserOverviewPageState extends State<UserOverviewPage> {
         children: <Widget>[
           SearchablePanel(
             key: searchPanelKey,
-            builder: (User user, Function(User)? onSelect) => InkWell(
+            builder: (User user, Function(User)? onSelect) => User.buildListTile(
+              context,
+              user,
               onTap: () => onSelect?.call(user),
-              child: user.buildTile(context),
             ),
             onSelect: _handleSelect,
           )

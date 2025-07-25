@@ -8,7 +8,6 @@ import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/extensions.dart';
@@ -60,9 +59,7 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
       body: AppBody(
         maxWidth: 1500,
         children: <Widget>[
-          AppClubTile(
-            club: widget.club,
-          ),
+          Club.buildListTile(context, widget.club),
           FilterToggle(
             hidden: false,
             onApply: _update,

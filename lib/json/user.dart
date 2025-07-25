@@ -134,9 +134,10 @@ class User extends FieldInterface implements Comparable {
     return Card(
       child: ListTile(
         leading: Tooltip(child: Icon(Icons.person), message: "${user.key}"),
-        trailing: trailing == null ? null : Column(children: trailing),
+        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
         title: Text("${user.firstname} ${user.lastname}"),
         subtitle: Text(user.nickname ?? ''),
+        onTap: onTap,
       ),
     );
   }

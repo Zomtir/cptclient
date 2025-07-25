@@ -1,5 +1,5 @@
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/utils/crypto.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +51,14 @@ class Club extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable => [key, name, description];
+  
+  @override
+  Widget buildTile(BuildContext context) {
+    return Club.buildListTile(context, this);
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
@@ -58,11 +66,19 @@ class Club extends FieldInterface implements Comparable {
     );
   }
 
-  @override
-  Widget buildTile(BuildContext context) {
-    return AppClubTile(club: this);
+  // TODO
+  static Widget buildListTile(BuildContext context, Club? club, {List<Widget>? trailing, VoidCallback? onTap}) {
+    if (club == null) {
+      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
+    }
+    return Card(
+      child: ListTile(
+        leading: Tooltip(child: Icon(Icons.group_work), message: "${club.key}"),
+        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
+        title: Text("${club.name}"),
+        subtitle: Text(club.chairman ?? ''),
+        onTap: onTap,
+      ),
+    );
   }
-
-  @override
-  get searchable => [key, name, description];
 }

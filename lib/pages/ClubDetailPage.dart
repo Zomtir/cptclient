@@ -7,7 +7,6 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
-import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:cptclient/pages/ClubStatisticMemberPage.dart';
 import 'package:cptclient/pages/ClubStatisticOrganisationPage.dart';
@@ -131,22 +130,20 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageClubDetails),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: _handleEdit,
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _handleDelete,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppClubTile(
-            club: widget.club,
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: _handleEdit,
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _handleDelete,
-              ),
-            ],
-          ),
+          Club.buildListTile(context, widget.club),
           MenuSection(
             title: AppLocalizations.of(context)!.term,
             children: [

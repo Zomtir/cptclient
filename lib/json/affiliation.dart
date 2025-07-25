@@ -66,10 +66,11 @@ class Affiliation extends FieldInterface {
     return Card(
       child: ListTile(
         leading: Icon(Icons.card_membership),
-        trailing: trailing == null ? null : Column(children: trailing),
+        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
         title: Text("${a.organisation!.name} - ${a.user!.firstname} ${a.user!.lastname}"),
         subtitle: Text(
             "${AppLocalizations.of(context)!.affiliationMemberIdentifier} ${a.member_identifier ?? AppLocalizations.of(context)!.undefined}"),
+        onTap: onTap,
       ),
     );
   }

@@ -11,7 +11,6 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppClubTile.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:flutter/material.dart';
 
@@ -57,9 +56,7 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          AppClubTile(
-            club: widget.club,
-          ),
+          Club.buildListTile(context, widget.club),
           FilterToggle(
             hidden: false,
             onApply: _update,

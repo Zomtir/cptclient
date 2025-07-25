@@ -20,8 +20,7 @@ class Organisation extends FieldInterface implements Comparable {
         abbreviation = json['abbreviation'],
         name = json['name'];
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'abbreviation': abbreviation,
         'name': name,
@@ -51,9 +50,10 @@ class Organisation extends FieldInterface implements Comparable {
     return Card(
       child: ListTile(
         leading: Icon(Icons.domain),
-        trailing: trailing == null ? null : Column(children: trailing),
+        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
         title: Text("${org.abbreviation}"),
         subtitle: Text("${org.name}"),
+        onTap: onTap,
       ),
     );
   }
@@ -71,5 +71,4 @@ class Organisation extends FieldInterface implements Comparable {
     // TODO: implement buildTile
     throw UnimplementedError();
   }
-  
 }

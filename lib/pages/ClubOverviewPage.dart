@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/ClubDetailPage.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:flutter/material.dart';
@@ -70,21 +69,19 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageClubManagement),
+        actions: [
+          IconButton(icon: Icon(Icons.add), onPressed: _handleCreate),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           SearchablePanel(
             key: searchPanelKey,
-            builder: (Club club, Function(Club)? onSelect) => InkWell(
-              onTap: () => onSelect?.call(club),
-              child: club.buildTile(context),
+            builder: (Club club, Function(Club)? onSelect) => Club.buildListTile(
+              context,
+              club,
+              onTap: () => _handleSelect(club),
             ),
-            onSelect: _handleSelect,
           )
         ],
       ),
