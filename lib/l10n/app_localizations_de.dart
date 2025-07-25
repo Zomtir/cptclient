@@ -127,6 +127,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelPhysicalCharacteristics => 'Körperliche Merkmale';
 
   @override
+  String get labelLoginsRemembered => 'Gemerkte Logins';
+
+  @override
   String get actionSelect => 'Auswählen';
 
   @override
@@ -164,6 +167,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get actionResume => 'Fortfahren';
+
+  @override
+  String get actionRemember => 'Merken';
 
   @override
   String get actionOn => 'An';

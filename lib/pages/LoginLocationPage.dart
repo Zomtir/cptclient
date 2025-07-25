@@ -56,8 +56,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
           textInputAction: TextInputAction.next,
           onEditingComplete: () => node.nextFocus(),
           decoration: InputDecoration(
-            labelText: "Location Key",
-            hintText: "Only alphanumeric characters",
+            labelText: AppLocalizations.of(context)!.locationKey,
             suffixIcon: IconButton(
               focusNode: FocusNode(skipTraversal: true),
               onPressed: () => _ctrlLogin.clear(),
@@ -73,7 +72,7 @@ class LoginLocationPageState extends State<LoginLocationPage> {
           ),
         ),
         AppButton(
-          text: "Login",
+          text: AppLocalizations.of(context)!.actionLogin,
           onPressed: _loginLocation,
         ),
       ]),

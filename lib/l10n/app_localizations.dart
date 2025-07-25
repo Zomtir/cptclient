@@ -335,6 +335,12 @@ abstract class AppLocalizations {
   /// **'Physical Characteristics'**
   String get labelPhysicalCharacteristics;
 
+  /// No description provided for @labelLoginsRemembered.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembered Logins'**
+  String get labelLoginsRemembered;
+
   /// No description provided for @actionSelect.
   ///
   /// In en, this message translates to:
@@ -412,6 +418,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resume'**
   String get actionResume;
+
+  /// No description provided for @actionRemember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember'**
+  String get actionRemember;
 
   /// No description provided for @actionOn.
   ///

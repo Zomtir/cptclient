@@ -56,7 +56,6 @@ class LoginCoursePageState extends State<LoginCoursePage> {
           onEditingComplete: () => node.nextFocus(),
           decoration: InputDecoration(
             labelText: AppLocalizations.of(context)!.courseKey,
-            hintText: "Only alphanumeric characters",
             suffixIcon: IconButton(
               focusNode: FocusNode(skipTraversal: true),
               onPressed: () => _ctrlLogin.clear(),
@@ -72,7 +71,7 @@ class LoginCoursePageState extends State<LoginCoursePage> {
           ),
         ),
         AppButton(
-          text: "Login",
+          text: AppLocalizations.of(context)!.actionLogin,
           onPressed: _loginCourse,
         ),
       ]),

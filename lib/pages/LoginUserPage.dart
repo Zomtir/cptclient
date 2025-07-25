@@ -6,6 +6,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
 
 class LoginUserPage extends StatefulWidget {
@@ -37,7 +38,7 @@ class LoginUserPageState extends State<LoginUserPage> {
     UserSession? session = await server.loginUser(login, passwd);
 
     if (remember) {
-      navi.addUserCredential(Credential(login: login, password: passwd));
+      navi.addUserCredential(Credential(login: login, password: passwd, since: DateTime.now()));
     }
 
     _ctrlLogin.text = "";
@@ -66,8 +67,7 @@ class LoginUserPageState extends State<LoginUserPage> {
             textInputAction: TextInputAction.next,
             onEditingComplete: () => node.nextFocus(),
             decoration: InputDecoration(
-              labelText: "User Key",
-              hintText: "Only alphanumeric characters",
+              labelText: AppLocalizations.of(context)!.userKey,
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
                 onPressed: () => _ctrlLogin.clear(),
@@ -85,7 +85,7 @@ class LoginUserPageState extends State<LoginUserPage> {
             textInputAction: TextInputAction.next,
             onEditingComplete: () => node.nextFocus(),
             decoration: InputDecoration(
-              labelText: "Password",
+              labelText: AppLocalizations.of(context)!.userPassword,
               suffixIcon: IconButton(
                 focusNode: FocusNode(skipTraversal: true),
                 onPressed: () => _ctrlPasswd.clear(),
@@ -99,16 +99,16 @@ class LoginUserPageState extends State<LoginUserPage> {
             value: _ctrlRemember,
             onChanged: (bool? remember) => setState(() => _ctrlRemember = remember!),
           ),
-          title: Text("Save next login"),
+          title: Text(AppLocalizations.of(context)!.actionRemember),
         ),
         AppButton(
-          text: "Login",
+          text: AppLocalizations.of(context)!.actionLogin,
           onPressed: () => _loginUser(_ctrlLogin.text, _ctrlPasswd.text, _ctrlRemember),
         ),
         Divider(),
         if (_credentials.isNotEmpty)
           MenuSection(
-            title: "Saved logins",
+            title: AppLocalizations.of(context)!.labelLoginsRemembered,
             children: _credentials.map((entry) => buildCredential(entry)).toList(),
           ),
       ]),
@@ -118,14 +118,8 @@ class LoginUserPageState extends State<LoginUserPage> {
   Widget buildCredential(Credential credit) {
     return ListTile(
       title: Text(credit.login!),
-      subtitle: Text("Password Length: ${credit.password!.length}"),
-      onTap: () async {
-        setState(() {
-          _ctrlLogin.text = credit.login!;
-          _ctrlPasswd.text = credit.password!;
-        });
-        _loadCredentials();
-      },
+      subtitle: Text("${credit.since?.fmtDateTime(context)}"),
+      onTap: () => _loginUser(credit.login!, credit.password!, false),
       trailing: IconButton(
         onPressed: () async {
           navi.removeUserCredential(credit);
