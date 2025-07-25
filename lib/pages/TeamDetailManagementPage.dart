@@ -7,7 +7,6 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
 import 'package:cptclient/pages/TeamRightPage.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class TeamDetailManagementPage extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageTeamMember,
-          tile: AppTeamTile(team: team),
+          tile: Team.buildListTile(context, team),
           onCallAvailable: () => api_admin.user_list(session),
           onCallSelected: () => api_admin.team_member_list(session, team.id),
           onCallAdd: (user) => api_admin.team_member_add(session, team.id, user.id),
@@ -99,8 +98,9 @@ class TeamDetailManagementPage extends StatelessWidget {
       ),
       body: AppBody(
         children: <Widget>[
-          AppTeamTile(
-            team: team,
+          Team.buildListTile(
+            context,
+            team,
             trailing: [
               IconButton(
                 icon: const Icon(Icons.edit),

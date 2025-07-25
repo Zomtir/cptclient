@@ -4,7 +4,6 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/TeamDetailManagementPage.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
 import 'package:flutter/material.dart';
@@ -71,14 +70,15 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTeamManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           SearchablePanel(
             key: searchPanelKey,
             builder: (Team team, Function(Team)? onSelect) => InkWell(

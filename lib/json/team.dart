@@ -3,8 +3,8 @@
 import 'dart:math';
 
 import 'package:cptclient/json/right.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/utils/crypto.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +59,9 @@ class Team extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable => [name, description];
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
@@ -68,9 +71,22 @@ class Team extends FieldInterface implements Comparable {
 
   @override
   Widget buildTile(BuildContext context) {
-    return AppTeamTile(team: this);
+    return Team.buildListTile(context, this);
   }
 
-  @override
-  get searchable => [name, description];
+  // TODO
+  static Widget buildListTile(BuildContext context, Team? team, {List<Widget>? trailing, VoidCallback? onTap}) {
+    if (team == null) {
+      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
+    }
+    return Card(
+      child: ListTile(
+        leading: Tooltip(child: Icon(Icons.group), message: "${team.key}"),
+        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
+        title: Text("${team.name}"),
+        subtitle: Text(team.description),
+        onTap: onTap,
+      ),
+    );
+  }
 }

@@ -4,7 +4,6 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppTeamTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +90,7 @@ class TeamEditPageState extends State<TeamEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) AppTeamTile(team: widget.team),
+          if (!widget.isDraft) Team.buildListTile(context, widget.team),
           if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: AppLocalizations.of(context)!.teamKey,
