@@ -173,18 +173,24 @@ class LoginLandingPageState extends State<LoginLandingPage> {
         children: [
           IconButton(
             onPressed: () async {
+              navi.removeEventSession(session);
+              _loadSessions();
+            },
+            icon: Tooltip(
+              child: Icon(Icons.cancel_outlined),
+              message: AppLocalizations.of(context)!.actionDelete,
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
               bool active = await navi.loginEvent(context, session);
               if (!active) navi.removeEventSession(session);
               _loadSessions();
             },
-            icon: Icon(Icons.login),
-          ),
-          IconButton(
-            onPressed: () async {
-              navi.removeEventSession(session);
-              _loadSessions();
-            },
-            icon: Icon(Icons.logout),
+            icon: Tooltip(
+              child: Icon(Icons.login),
+              message: AppLocalizations.of(context)!.actionResume,
+            ),
           ),
         ],
       ),
