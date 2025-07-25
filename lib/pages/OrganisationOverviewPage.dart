@@ -4,8 +4,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/pages/OrganisationEditPage.dart';
+import 'package:cptclient/pages/OrganisationCreatePage.dart';
+import 'package:cptclient/pages/OrganisationDetailPage.dart';
 import 'package:flutter/material.dart';
 
 class OrganisationOverviewPage extends StatefulWidget {
@@ -35,10 +35,9 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OrganisationEditPage(
+        builder: (context) => OrganisationDetailPage(
           session: widget.session,
           organisation: organisation,
-          isDraft: false,
         ),
       ),
     );
@@ -50,10 +49,9 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OrganisationEditPage(
+        builder: (context) => OrganisationCreatePage(
           session: widget.session,
           organisation: Organisation.fromVoid(),
-          isDraft: true,
         ),
       ),
     );
@@ -66,19 +64,20 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageOrganisationManagement),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           SearchablePanel(
             key: searchPanelKey,
             builder: (Organisation organisation, Function(Organisation)? onSelect) => InkWell(
               onTap: () => onSelect?.call(organisation),
-              child: organisation.buildTile(context),
+              child: Organisation.buildListTile(context, organisation),
             ),
             onSelect: _handleSelect,
           )

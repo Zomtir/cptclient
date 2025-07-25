@@ -37,11 +37,11 @@ import 'package:cptclient/material/widgets/SectionToggle.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticOrganisationPage.dart';
 import 'package:cptclient/pages/EventStatisticPacklistPage.dart';
+import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EventDetailPage extends StatefulWidget {
   final UserSession session;
@@ -466,7 +466,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: _event!.title)),
+                    onPressed: () => clipText(_event!.title),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -498,7 +498,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.copy),
-                    onPressed: () => Clipboard.setData(ClipboardData(text: _event!.note ?? '')),
+                    onPressed: () => clipText(_event!.note ?? ''),
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
@@ -531,7 +531,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () => Clipboard.setData(ClipboardData(text: _event!.key)),
+                        onPressed: () => clipText(_event!.key),
                         icon: Icon(Icons.copy),
                       ),
                       IconButton(
@@ -568,7 +568,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                           onPressed: () => setState(() => _credentialCleartext = !_credentialCleartext),
                         ),
                         IconButton(
-                          onPressed: () => Clipboard.setData(ClipboardData(text: _credential!.password!)),
+                          onPressed: () => clipText(_credential!.password!),
                           icon: Icon(Icons.copy),
                         ),
                         IconButton(
@@ -599,7 +599,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () => Clipboard.setData(ClipboardData(text: formatIsoDateTime(_event!.begin) ?? '')),
+                        onPressed: () => clipText(formatIsoDateTime(_event!.begin) ?? ''),
                         icon: Icon(Icons.copy),
                       ),
                       IconButton(
@@ -636,7 +636,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () => Clipboard.setData(ClipboardData(text: formatIsoDateTime(_event!.end) ?? '')),
+                        onPressed: () => clipText(formatIsoDateTime(_event!.end) ?? ''),
                         icon: Icon(Icons.copy),
                       ),
                       IconButton(
@@ -673,7 +673,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () => Clipboard.setData(ClipboardData(text: _event!.location!.name)),
+                        onPressed: () => clipText(_event!.location!.name),
                         icon: Icon(Icons.copy),
                       ),
                       IconButton(

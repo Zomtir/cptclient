@@ -22,11 +22,11 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/InfoSection.dart';
 import 'package:cptclient/material/widgets/LoadingWidget.dart';
+import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class UserInfoPage extends StatefulWidget {
   final UserSession session;
@@ -104,7 +104,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.key)),
+                    onPressed: () => clipText(user_info!.key),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -202,7 +202,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.firstname)),
+                    onPressed: () => clipText(user_info!.firstname),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -233,7 +233,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.lastname)),
+                    onPressed: () => clipText(user_info!.lastname),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -264,7 +264,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.nickname ?? '')),
+                    onPressed: () => clipText(user_info!.nickname ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -298,7 +298,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.address ?? '')),
+                    onPressed: () => clipText(user_info!.address ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -329,7 +329,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.email ?? '')),
+                    onPressed: () => clipText(user_info!.email ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -360,7 +360,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.phone ?? '')),
+                    onPressed: () => clipText(user_info!.phone ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -394,7 +394,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: formatIsoDate(user_info!.birth_date) ?? '')),
+                    onPressed: () => clipText(formatIsoDate(user_info!.birth_date) ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -420,7 +420,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.birth_location ?? '')),
+                    onPressed: () => clipText(user_info!.birth_location ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -451,7 +451,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.nationality ?? '')),
+                    onPressed: () => clipText(user_info!.nationality ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -486,7 +486,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   IconButton(
                     onPressed: () =>
-                        Clipboard.setData(ClipboardData(text: user_info!.gender?.localizedName(context) ?? '')),
+                        clipText(user_info!.gender?.localizedName(context) ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -516,7 +516,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.height?.toString() ?? '')),
+                    onPressed: () => clipText(user_info!.height?.toString() ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -547,7 +547,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.weight?.toString() ?? '')),
+                    onPressed: () => clipText(user_info!.weight?.toString() ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -582,7 +582,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.copy),
-                    onPressed: () => Clipboard.setData(ClipboardData(text: user_info!.note ?? '')),
+                    onPressed: () => clipText(user_info!.note ?? ''),
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
@@ -613,8 +613,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.copy),
-                    onPressed: () => Clipboard.setData(
-                        ClipboardData(text: BankAccount.copyEntryStatic(context, user_info!.bank_account))),
+                    onPressed: () => clipText(BankAccount.copyEntryStatic(context, user_info!.bank_account)),
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
@@ -648,8 +647,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.copy),
-                    onPressed: () => Clipboard.setData(
-                        ClipboardData(text: License.copyEntryStatic(context, user_info!.license_main))),
+                    onPressed: () => clipText(License.copyEntryStatic(context, user_info!.license_main)),
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
@@ -683,8 +681,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.copy),
-                    onPressed: () => Clipboard.setData(
-                        ClipboardData(text: License.copyEntryStatic(context, user_info!.license_extra))),
+                    onPressed: () => clipText(License.copyEntryStatic(context, user_info!.license_extra)),
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),

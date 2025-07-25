@@ -4,27 +4,25 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppOrganisationTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
-class OrganisationEditPage extends StatefulWidget {
+class OrganisationCreatePage extends StatefulWidget {
   final UserSession session;
   final Organisation organisation;
-  final bool isDraft;
 
-  OrganisationEditPage(
-      {super.key, required this.session, required this.organisation, required this.isDraft});
+  OrganisationCreatePage({super.key, required this.session, required this.organisation});
 
   @override
-  OrganisationEditPageState createState() => OrganisationEditPageState();
+  OrganisationCreatePageState createState() => OrganisationCreatePageState();
 }
 
-class OrganisationEditPageState extends State<OrganisationEditPage> {
+class OrganisationCreatePageState extends State<OrganisationCreatePage> {
   final TextEditingController _ctrlAbbreviation = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
 
-  OrganisationEditPageState();
+  OrganisationCreatePageState();
 
   @override
   void initState() {
@@ -46,28 +44,18 @@ class OrganisationEditPageState extends State<OrganisationEditPage> {
     _gatherInfo();
 
     if (widget.organisation.abbreviation.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.isInvalid}")));
+      messageText("${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
     if (widget.organisation.name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.isInvalid}")));
+      messageText("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
-    bool success = widget.isDraft
-        ? await api_admin.organisation_create(widget.session, widget.organisation)
-        : await api_admin.organisation_edit(widget.session, widget.organisation);
+    bool success = await api_admin.organisation_create(widget.session, widget.organisation);
 
     if (!success) return;
-
-    Navigator.pop(context);
-  }
-
-  void _handleDelete() async {
-    if (!await api_admin.organisation_delete(widget.session, widget.organisation)) return;
 
     Navigator.pop(context);
   }
@@ -80,16 +68,6 @@ class OrganisationEditPageState extends State<OrganisationEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppOrganisationTile(
-              organisation: widget.organisation,
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _handleDelete,
-                ),
-              ],
-            ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.organisationAbbreviation,
             child: TextField(

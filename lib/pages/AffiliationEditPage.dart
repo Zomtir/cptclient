@@ -6,7 +6,6 @@ import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppAffiliationTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -79,24 +78,15 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageAffiliationEdit),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _handleDelete,
+          ),
+        ],
       ),
       body: AppBody(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: AppAffiliationTile(
-                  affiliation: widget.affiliation,
-                  trailing: [
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: _handleDelete,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.affiliationMemberIdentifier}",
             child: TextField(

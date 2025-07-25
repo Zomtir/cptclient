@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 abstract class FieldInterface implements Comparable {
   const FieldInterface();
 
+  // TODO
   Widget buildEntry(BuildContext context);
   Widget buildTile(BuildContext context);
 

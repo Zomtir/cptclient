@@ -1,5 +1,5 @@
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppOrganisationTile.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +39,25 @@ class Organisation extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [abbreviation, name];
+  }
+
+  // TODO
+  static Widget buildListTile(BuildContext context, Organisation? org, {List<Widget>? trailing, VoidCallback? onTap}) {
+    if (org == null) {
+      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
+    }
+    return ListTile(
+      dense: true,
+      leading: Icon(Icons.domain),
+      trailing: trailing == null ? null : Column(children: trailing),
+      title: Text("${org.abbreviation}"),
+      subtitle: Text("${org.name}"),
+    );
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $abbreviation",
@@ -48,11 +67,8 @@ class Organisation extends FieldInterface implements Comparable {
 
   @override
   Widget buildTile(BuildContext context) {
-    return AppOrganisationTile(organisation: this);
+    // TODO: implement buildTile
+    throw UnimplementedError();
   }
-
-  @override
-  get searchable {
-    return [abbreviation, name];
-  }
+  
 }

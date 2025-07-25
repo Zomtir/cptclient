@@ -2,9 +2,12 @@
 
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
+import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:flutter/material.dart';
 
-class Affiliation {
+class Affiliation extends FieldInterface {
   User? user;
   Organisation? organisation;
   String? member_identifier;
@@ -43,4 +46,42 @@ class Affiliation {
         'permission_team_date': formatIsoDate(permission_team_date?.toUtc()),
         'residency_move_date': formatIsoDate(residency_move_date?.toUtc()),
       };
+
+  // TODO
+  static Widget buildListTile(BuildContext context, Affiliation? a, {List<Widget>? trailing, VoidCallback? onTap}) {
+    if (a == null) {
+      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
+    }
+    return ListTile(
+      dense: true,
+      leading: Icon(Icons.card_membership),
+      trailing: trailing == null ? null : Column(children: trailing),
+      title: Text("${a.organisation!.name} - ${a.user!.firstname} ${a.user!.lastname}"),
+      subtitle: Text(
+          "${AppLocalizations.of(context)!.affiliationMemberIdentifier} ${a.member_identifier ?? AppLocalizations.of(context)!.undefined}"),
+    );
+  }
+
+  @override
+  Widget buildEntry(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildTile(BuildContext context) {
+    // TODO: implement buildTile
+    throw UnimplementedError();
+  }
+
+  @override
+  int compareTo(other) {
+    if (other is! Affiliation) return 1;
+    return (member_identifier ?? '').compareTo(other.member_identifier ?? '');
+  }
+
+  @override
+  get searchable {
+    return [organisation!.name, organisation!.abbreviation, user!.firstname, user!.lastname, user!.nickname];
+  }
 }

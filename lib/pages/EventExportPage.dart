@@ -3,7 +3,9 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/export.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -83,9 +85,8 @@ class EventExportPageState extends State<EventExportPage> {
             trailing: IconButton(
               icon: Icon(Icons.copy_rounded),
               onPressed: () {
-                Clipboard.setData(ClipboardData(text: url)).then((_) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("URL copied to clipboard")));
-                });
+                clipText(url);
+                messageText("URL copied to clipboard");
               },
             ),
           )
