@@ -48,12 +48,13 @@ class Organisation extends FieldInterface implements Comparable {
     if (org == null) {
       return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
     }
-    return ListTile(
-      dense: true,
-      leading: Icon(Icons.domain),
-      trailing: trailing == null ? null : Column(children: trailing),
-      title: Text("${org.abbreviation}"),
-      subtitle: Text("${org.name}"),
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.domain),
+        trailing: trailing == null ? null : Column(children: trailing),
+        title: Text("${org.abbreviation}"),
+        subtitle: Text("${org.name}"),
+      ),
     );
   }
 

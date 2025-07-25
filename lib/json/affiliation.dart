@@ -47,18 +47,30 @@ class Affiliation extends FieldInterface {
         'residency_move_date': formatIsoDate(residency_move_date?.toUtc()),
       };
 
+  @override
+  int compareTo(other) {
+    if (other is! Affiliation) return 1;
+    return (member_identifier ?? '').compareTo(other.member_identifier ?? '');
+  }
+
+  @override
+  get searchable {
+    return [organisation!.name, organisation!.abbreviation, user!.firstname, user!.lastname, user!.nickname];
+  }
+
   // TODO
   static Widget buildListTile(BuildContext context, Affiliation? a, {List<Widget>? trailing, VoidCallback? onTap}) {
     if (a == null) {
       return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
     }
-    return ListTile(
-      dense: true,
-      leading: Icon(Icons.card_membership),
-      trailing: trailing == null ? null : Column(children: trailing),
-      title: Text("${a.organisation!.name} - ${a.user!.firstname} ${a.user!.lastname}"),
-      subtitle: Text(
-          "${AppLocalizations.of(context)!.affiliationMemberIdentifier} ${a.member_identifier ?? AppLocalizations.of(context)!.undefined}"),
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.card_membership),
+        trailing: trailing == null ? null : Column(children: trailing),
+        title: Text("${a.organisation!.name} - ${a.user!.firstname} ${a.user!.lastname}"),
+        subtitle: Text(
+            "${AppLocalizations.of(context)!.affiliationMemberIdentifier} ${a.member_identifier ?? AppLocalizations.of(context)!.undefined}"),
+      ),
     );
   }
 
@@ -72,16 +84,5 @@ class Affiliation extends FieldInterface {
   Widget buildTile(BuildContext context) {
     // TODO: implement buildTile
     throw UnimplementedError();
-  }
-
-  @override
-  int compareTo(other) {
-    if (other is! Affiliation) return 1;
-    return (member_identifier ?? '').compareTo(other.member_identifier ?? '');
-  }
-
-  @override
-  get searchable {
-    return [organisation!.name, organisation!.abbreviation, user!.firstname, user!.lastname, user!.nickname];
   }
 }
