@@ -51,7 +51,7 @@ class Club extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable => [key, name, description];
+  get searchable => [key, name, description ?? ''];
   
   @override
   Widget buildTile(BuildContext context) {

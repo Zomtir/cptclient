@@ -80,8 +80,9 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
             builder: (Club club, Function(Club)? onSelect) => Club.buildListTile(
               context,
               club,
-              onTap: () => _handleSelect(club),
+              onTap: () => onSelect?.call(club),
             ),
+            onSelect: _handleSelect,
           )
         ],
       ),

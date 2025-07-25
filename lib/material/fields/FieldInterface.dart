@@ -7,14 +7,14 @@ abstract class FieldInterface implements Comparable {
   Widget buildEntry(BuildContext context);
   Widget buildTile(BuildContext context);
 
-  get searchable;
+  List<String> get searchable;
 
   bool filter(String filter) {
     Set<String> fragments = filter.toLowerCase().split(' ').toSet();
 
-    for (var fragment in fragments) {
+    for (String fragment in fragments) {
       bool matchedAny = false;
-      for (var space in searchable) {
+      for (String space in searchable) {
         matchedAny = matchedAny || space.toLowerCase().contains(fragment);
       }
       if (!matchedAny) return false;

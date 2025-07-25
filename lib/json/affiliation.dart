@@ -55,7 +55,7 @@ class Affiliation extends FieldInterface {
 
   @override
   get searchable {
-    return [organisation!.name, organisation!.abbreviation, user!.firstname, user!.lastname, user!.nickname];
+    return [organisation!.name, organisation!.abbreviation, user!.firstname, user!.lastname, user?.nickname ?? ''];
   }
 
   // TODO
