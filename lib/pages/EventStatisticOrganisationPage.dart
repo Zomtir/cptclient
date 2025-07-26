@@ -55,101 +55,96 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
       ),
       body: AppBody(
         maxWidth: 1500,
+        minWidth: 1500,
         children: <Widget>[
           AppEventTile(
             event: widget.event,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 1500,
-              child: DataTable(
-                columns: [
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.user),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.user, b.user))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.organisation),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.organisation, b.organisation))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.affiliationMemberIdentifier),
-                      onTap: () => setState(
-                          () => _stats.sort((a, b) => nullCompareTo(a.member_identifier, b.member_identifier))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userGender),
-                      onTap: () =>
-                          setState(() => _stats.sort((a, b) => nullCompareTo<Gender>(a.user!.gender, b.user!.gender))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userBirthDate),
-                      onTap: () =>
-                          setState(() => _stats.sort((a, b) => nullCompareTo(a.user!.birth_date, b.user!.birth_date))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.userAgeEOY),
-                      onTap: () =>
-                          setState(() => _stats.sort((a, b) => nullCompareTo(a.user!.birth_date, b.user!.birth_date, revert: true))),
-                    ),
-                  ),
-                ],
-                rows: List<DataRow>.generate(_stats.length, (index) {
-                  String pm_solo_date = _stats[index].permission_solo_date == null
-                      ? AppLocalizations.of(context)!.unknown
-                      : "${_stats[index].permission_solo_date!.fmtDate(context)}";
-                  String pm_team_date = _stats[index].permission_team_date == null
-                      ? AppLocalizations.of(context)!.unknown
-                      : "${_stats[index].permission_team_date!.fmtDate(context)}";
-                  String rd_move_date = _stats[index].residency_move_date == null
-                      ? AppLocalizations.of(context)!.unknown
-                      : "${_stats[index].residency_move_date!.fmtDate(context)}";
-
-                  String desc_solo_date = AppLocalizations.of(context)!.affiliationPermissionSoloDate;
-                  String desc_team_date = AppLocalizations.of(context)!.affiliationPermissionTeamDate;
-                  String desc_move_date = AppLocalizations.of(context)!.affiliationResidencyMoveDate;
-
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(_stats[index].user!.buildEntry(context)),
-                      DataCell(_stats[index].organisation == null
-                          ? Text(AppLocalizations.of(context)!.undefined)
-                          : _stats[index].organisation!.buildEntry(context)),
-                      DataCell(
-                        _stats[index].member_identifier == null
-                            ? Text(AppLocalizations.of(context)!.unknown)
-                            : Tooltip(
-                                child: Text("${_stats[index].member_identifier}"),
-                                message:
-                                    "$desc_solo_date: $pm_solo_date\n$desc_team_date: $pm_team_date\n$desc_move_date: $rd_move_date",
-                              ),
-                      ),
-                      DataCell(Text(_stats[index].user!.gender == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${_stats[index].user!.gender!.localizedName(context)}")),
-                      DataCell(Text(_stats[index].user!.birth_date == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${_stats[index].user!.birth_date!.fmtDate(context)}")),
-                      DataCell(Text(_stats[index].user!.birth_date == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${widget.event.begin.year - _stats[index].user!.birth_date!.year}")),
-                    ],
-                  );
-                }),
+          DataTable(
+            columns: [
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.user),
+                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.user, b.user))),
+                ),
               ),
-            ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.organisation),
+                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.organisation, b.organisation))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.affiliationMemberIdentifier),
+                  onTap: () => setState(
+                      () => _stats.sort((a, b) => nullCompareTo(a.member_identifier, b.member_identifier))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.userGender),
+                  onTap: () =>
+                      setState(() => _stats.sort((a, b) => nullCompareTo<Gender>(a.user!.gender, b.user!.gender))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.userBirthDate),
+                  onTap: () =>
+                      setState(() => _stats.sort((a, b) => nullCompareTo(a.user!.birth_date, b.user!.birth_date))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.userAgeEOY),
+                  onTap: () =>
+                      setState(() => _stats.sort((a, b) => nullCompareTo(a.user!.birth_date, b.user!.birth_date, revert: true))),
+                ),
+              ),
+            ],
+            rows: List<DataRow>.generate(_stats.length, (index) {
+              String pm_solo_date = _stats[index].permission_solo_date == null
+                  ? AppLocalizations.of(context)!.unknown
+                  : "${_stats[index].permission_solo_date!.fmtDate(context)}";
+              String pm_team_date = _stats[index].permission_team_date == null
+                  ? AppLocalizations.of(context)!.unknown
+                  : "${_stats[index].permission_team_date!.fmtDate(context)}";
+              String rd_move_date = _stats[index].residency_move_date == null
+                  ? AppLocalizations.of(context)!.unknown
+                  : "${_stats[index].residency_move_date!.fmtDate(context)}";
+
+              String desc_solo_date = AppLocalizations.of(context)!.affiliationPermissionSoloDate;
+              String desc_team_date = AppLocalizations.of(context)!.affiliationPermissionTeamDate;
+              String desc_move_date = AppLocalizations.of(context)!.affiliationResidencyMoveDate;
+
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(_stats[index].user!.buildEntry(context)),
+                  DataCell(_stats[index].organisation == null
+                      ? Text(AppLocalizations.of(context)!.undefined)
+                      : _stats[index].organisation!.buildEntry(context)),
+                  DataCell(
+                    _stats[index].member_identifier == null
+                        ? Text(AppLocalizations.of(context)!.unknown)
+                        : Tooltip(
+                            child: Text("${_stats[index].member_identifier}"),
+                            message:
+                                "$desc_solo_date: $pm_solo_date\n$desc_team_date: $pm_team_date\n$desc_move_date: $rd_move_date",
+                          ),
+                  ),
+                  DataCell(Text(_stats[index].user!.gender == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${_stats[index].user!.gender!.localizedName(context)}")),
+                  DataCell(Text(_stats[index].user!.birth_date == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${_stats[index].user!.birth_date!.fmtDate(context)}")),
+                  DataCell(Text(_stats[index].user!.birth_date == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${widget.event.begin.year - _stats[index].user!.birth_date!.year}")),
+                ],
+              );
+            }),
           ),
         ],
       ),

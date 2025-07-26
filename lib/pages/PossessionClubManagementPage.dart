@@ -78,6 +78,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
       ),
       body: AppBody(
         maxWidth: 1000,
+        minWidth: 1000,
         children: <Widget>[
           if (widget.club == null) AppButton(
             text: AppLocalizations.of(context)!.possessionClub,
@@ -85,47 +86,41 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
             leading: Icon(Icons.refresh),
           ),
           Divider(),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 1000,
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionUser)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
-                ],
-                rows: List<DataRow>.generate(_possessions.length, (index) {
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(_possessions[index].user.buildEntry(context)),
-                      DataCell(_possessions[index].item.buildEntry(context)),
-                      DataCell(Text("${formatIsoDate(_possessions[index].acquisitionDate)}")),
-                      DataCell(
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.undo),
-                              onPressed: () => _handleReturn(_possessions[index]),
-                            ),
-                            PopupMenuButton<VoidCallback>(
-                              onSelected: (fn) => fn(),
-                              itemBuilder: (context) => [
-                                PopupMenuItem<VoidCallback>(
-                                  value: () => _handleHandout(_possessions[index]),
-                                  child: ListTile(title: Text("Handout"), leading: Icon(Icons.card_giftcard)),
-                                ),
-                              ],
+          DataTable(
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionUser)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.actionEdit)),
+            ],
+            rows: List<DataRow>.generate(_possessions.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(_possessions[index].user.buildEntry(context)),
+                  DataCell(_possessions[index].item.buildEntry(context)),
+                  DataCell(Text("${formatIsoDate(_possessions[index].acquisitionDate)}")),
+                  DataCell(
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.undo),
+                          onPressed: () => _handleReturn(_possessions[index]),
+                        ),
+                        PopupMenuButton<VoidCallback>(
+                          onSelected: (fn) => fn(),
+                          itemBuilder: (context) => [
+                            PopupMenuItem<VoidCallback>(
+                              value: () => _handleHandout(_possessions[index]),
+                              child: ListTile(title: Text("Handout"), leading: Icon(Icons.card_giftcard)),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
         ],
       ),

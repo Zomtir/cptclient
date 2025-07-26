@@ -58,6 +58,7 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
       ),
       body: AppBody(
         maxWidth: 1500,
+        minWidth: 1500,
         children: <Widget>[
           Club.buildListTile(context, widget.club),
           FilterToggle(
@@ -73,77 +74,71 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
               ),
             ],
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 1500,
-              child: DataTable(
-                columns: [
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.user),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.user, b.user))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.organisation),
-                      onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.organisation, b.organisation))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.affiliationMemberIdentifier),
-                      onTap: () => setState(
-                          () => _stats.sort((a, b) => nullCompareTo(a.member_identifier, b.member_identifier))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.affiliationPermissionSoloDate),
-                      onTap: () => setState(
-                          () => _stats.sort((a, b) => nullCompareTo(a.permission_solo_date, b.permission_solo_date))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.affiliationPermissionTeamDate),
-                      onTap: () => setState(
-                          () => _stats.sort((a, b) => nullCompareTo(a.permission_team_date, b.permission_team_date))),
-                    ),
-                  ),
-                  DataColumn(
-                    label: InkWell(
-                      child: Text(AppLocalizations.of(context)!.affiliationResidencyMoveDate),
-                      onTap: () => setState(
-                          () => _stats.sort((a, b) => nullCompareTo(a.residency_move_date, b.residency_move_date))),
-                    ),
-                  ),
-                ],
-                rows: List<DataRow>.generate(_stats.length, (index) {
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(_stats[index].user!.buildEntry(context)),
-                      DataCell(_stats[index].organisation == null
-                          ? Text(AppLocalizations.of(context)!.undefined)
-                          : _stats[index].organisation!.buildEntry(context)),
-                      DataCell(Text(_stats[index].member_identifier == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${_stats[index].member_identifier}")),
-                      DataCell(Text(_stats[index].permission_solo_date == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${_stats[index].permission_solo_date!.fmtDate(context)}")),
-                      DataCell(Text(_stats[index].permission_team_date == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${_stats[index].permission_team_date!.fmtDate(context)}")),
-                      DataCell(Text(_stats[index].residency_move_date == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${_stats[index].residency_move_date!.fmtDate(context)}")),
-                    ],
-                  );
-                }),
+          DataTable(
+            columns: [
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.user),
+                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.user, b.user))),
+                ),
               ),
-            ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.organisation),
+                  onTap: () => setState(() => _stats.sort((a, b) => nullCompareTo(a.organisation, b.organisation))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.affiliationMemberIdentifier),
+                  onTap: () => setState(
+                      () => _stats.sort((a, b) => nullCompareTo(a.member_identifier, b.member_identifier))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.affiliationPermissionSoloDate),
+                  onTap: () => setState(
+                      () => _stats.sort((a, b) => nullCompareTo(a.permission_solo_date, b.permission_solo_date))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.affiliationPermissionTeamDate),
+                  onTap: () => setState(
+                      () => _stats.sort((a, b) => nullCompareTo(a.permission_team_date, b.permission_team_date))),
+                ),
+              ),
+              DataColumn(
+                label: InkWell(
+                  child: Text(AppLocalizations.of(context)!.affiliationResidencyMoveDate),
+                  onTap: () => setState(
+                      () => _stats.sort((a, b) => nullCompareTo(a.residency_move_date, b.residency_move_date))),
+                ),
+              ),
+            ],
+            rows: List<DataRow>.generate(_stats.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(_stats[index].user!.buildEntry(context)),
+                  DataCell(_stats[index].organisation == null
+                      ? Text(AppLocalizations.of(context)!.undefined)
+                      : _stats[index].organisation!.buildEntry(context)),
+                  DataCell(Text(_stats[index].member_identifier == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${_stats[index].member_identifier}")),
+                  DataCell(Text(_stats[index].permission_solo_date == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${_stats[index].permission_solo_date!.fmtDate(context)}")),
+                  DataCell(Text(_stats[index].permission_team_date == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${_stats[index].permission_team_date!.fmtDate(context)}")),
+                  DataCell(Text(_stats[index].residency_move_date == null
+                      ? AppLocalizations.of(context)!.unknown
+                      : "${_stats[index].residency_move_date!.fmtDate(context)}")),
+                ],
+              );
+            }),
           ),
         ],
       ),

@@ -55,6 +55,7 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
         title: Text(AppLocalizations.of(context)!.pageClubStatisticTeam),
       ),
       body: AppBody(
+        minWidth: 600,
         children: <Widget>[
           Club.buildListTile(context, widget.club),
           FilterToggle(
@@ -78,25 +79,19 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
               ),
             ],
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 600,
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Text(AppLocalizations.of(context)!.userKey)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.user)),
+          DataTable(
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.userKey)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.user)),
+            ],
+            rows: List<DataRow>.generate(stats.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(Text("${stats[index].key}")),
+                  DataCell(Text("${stats[index].firstname} ${stats[index].lastname}")),
                 ],
-                rows: List<DataRow>.generate(stats.length, (index) {
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text("${stats[index].key}")),
-                      DataCell(Text("${stats[index].firstname} ${stats[index].lastname}")),
-                    ],
-                  );
-                }),
-              ),
-            ),
+              );
+            }),
           ),
         ],
       ),

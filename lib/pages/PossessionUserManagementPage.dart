@@ -98,6 +98,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
       ),
       body: AppBody(
         maxWidth: 1000,
+        minWidth: 1000,
         children: <Widget>[
           AppButton(
             text: AppLocalizations.of(context)!.possessionUser,
@@ -106,77 +107,71 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
           ),
           User.buildListTile(context, _user!),
           Divider(),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 1000,
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.possessionPossessed)),
-                ],
-                rows: List<DataRow>.generate(_possessions.length, (index) {
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(_possessions[index].item.buildEntry(context)),
-                      DataCell(Text(_possessions[index].acquisitionDate != null
-                          ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
-                          : AppLocalizations.of(context)!.undefined)),
-                      DataCell(
-                        Row(
-                          children: [
-                            Tooltip(
-                              message: _possessions[index].owned ? AppLocalizations.of(context)!.labelTrue : AppLocalizations.of(context)!.labelFalse,
-                              child: Icon(Icons.catching_pokemon, color: _possessions[index].owned ? Colors.green : Colors.red),
+          DataTable(
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionAcquisition)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionOwned)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.possessionPossessed)),
+            ],
+            rows: List<DataRow>.generate(_possessions.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(_possessions[index].item.buildEntry(context)),
+                  DataCell(Text(_possessions[index].acquisitionDate != null
+                      ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
+                      : AppLocalizations.of(context)!.undefined)),
+                  DataCell(
+                    Row(
+                      children: [
+                        Tooltip(
+                          message: _possessions[index].owned ? AppLocalizations.of(context)!.labelTrue : AppLocalizations.of(context)!.labelFalse,
+                          child: Icon(Icons.catching_pokemon, color: _possessions[index].owned ? Colors.green : Colors.red),
+                        ),
+                        if (!_possessions[index].owned)
+                          Tooltip(
+                            message: AppLocalizations.of(context)!.inventoryOwnershipFromClubToUser,
+                            child: IconButton(
+                              icon: Icon(Icons.card_giftcard),
+                              onPressed: () => _handleHandout(_possessions[index]),
                             ),
-                            if (!_possessions[index].owned)
-                              Tooltip(
-                                message: AppLocalizations.of(context)!.inventoryOwnershipFromClubToUser,
-                                child: IconButton(
-                                  icon: Icon(Icons.card_giftcard),
-                                  onPressed: () => _handleHandout(_possessions[index]),
-                                ),
-                              ),
-                            if (_possessions[index].owned)
-                              Tooltip(
-                                message: AppLocalizations.of(context)!.inventoryOwnershipFromUserToClub,
-                                child: IconButton(
-                                  icon: Icon(Icons.storefront),
-                                  onPressed: () => _handleRestock(_possessions[index]),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      DataCell(
-                        Row(
-                          children: [
-                            if (!_possessions[index].owned)
-                              Tooltip(
-                                message: AppLocalizations.of(context)!.inventoryPossessionFromUserToClub,
-                                child: IconButton(
-                                  icon: Icon(Icons.redo),
-                                  onPressed: () => _handleReturn(_possessions[index]),
-                                ),
-                              ),
-                            if (_possessions[index].owned)
-                              Tooltip(
-                                message: AppLocalizations.of(context)!.inventoryOwnershipFromUserDelete,
-                                child: IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () => _handleDelete(_possessions[index]),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
+                          ),
+                        if (_possessions[index].owned)
+                          Tooltip(
+                            message: AppLocalizations.of(context)!.inventoryOwnershipFromUserToClub,
+                            child: IconButton(
+                              icon: Icon(Icons.storefront),
+                              onPressed: () => _handleRestock(_possessions[index]),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  DataCell(
+                    Row(
+                      children: [
+                        if (!_possessions[index].owned)
+                          Tooltip(
+                            message: AppLocalizations.of(context)!.inventoryPossessionFromUserToClub,
+                            child: IconButton(
+                              icon: Icon(Icons.redo),
+                              onPressed: () => _handleReturn(_possessions[index]),
+                            ),
+                          ),
+                        if (_possessions[index].owned)
+                          Tooltip(
+                            message: AppLocalizations.of(context)!.inventoryOwnershipFromUserDelete,
+                            child: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () => _handleDelete(_possessions[index]),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionCreate,

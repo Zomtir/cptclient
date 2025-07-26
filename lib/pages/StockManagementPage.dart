@@ -124,6 +124,7 @@ class StockManagementPageState extends State<StockManagementPage> {
         title: Text(AppLocalizations.of(context)!.pageStockManagement),
       ),
       body: AppBody(
+        minWidth: 600,
         children: <Widget>[
           AppButton(
             text: AppLocalizations.of(context)!.stockClub,
@@ -131,60 +132,54 @@ class StockManagementPageState extends State<StockManagementPage> {
             leading: Icon(Icons.refresh),
           ),
           Divider(),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 550,
-              child: DataTable(
-              columnSpacing: 0,
-                columns: [
-                  DataColumn(
-                      label: Text(
-                          "${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}")),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
+          DataTable(
+            columnSpacing: 0,
+            columns: [
+              DataColumn(
+                  label: Text(
+                      "${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}")),
+              DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
+            ],
+            rows: List<DataRow>.generate(_stocks.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => _handleEdit(_stocks[index]),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(_stocks[index].item.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(_stocks[index].storage, style: Theme.of(context).textTheme.labelSmall),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  DataCell(Text("${_stocks[index].owned}")),
+                  DataCell(
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.list_alt_outlined),
+                          onPressed: () => _viewLoans(_stocks[index]),
+                        ),
+                        Text("${_stocks[index].loaned}"),
+                        IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          onPressed: () => _handleLoan(_stocks[index]),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
-                rows: List<DataRow>.generate(_stocks.length, (index) {
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () => _handleEdit(_stocks[index]),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(_stocks[index].item.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text(_stocks[index].storage, style: Theme.of(context).textTheme.labelSmall),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      DataCell(Text("${_stocks[index].owned}")),
-                      DataCell(
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.list_alt_outlined),
-                              onPressed: () => _viewLoans(_stocks[index]),
-                            ),
-                            Text("${_stocks[index].loaned}"),
-                            IconButton(
-                              icon: Icon(Icons.arrow_forward),
-                              onPressed: () => _handleLoan(_stocks[index]),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                }),
-              ),
-            ),
+              );
+            }),
           ),
           Divider(),
           AppButton(

@@ -46,6 +46,7 @@ class ClubStatisticMemberPageState extends State<ClubStatisticMemberPage> {
         title: Text(AppLocalizations.of(context)!.pageClubStatisticMember),
       ),
       body: AppBody(
+        minWidth: 600,
         children: <Widget>[
           Club.buildListTile(context, widget.club),
           FilterToggle(
@@ -60,27 +61,21 @@ class ClubStatisticMemberPageState extends State<ClubStatisticMemberPage> {
               ),
             ],
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 600,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('ID')),
-                  DataColumn(label: Text('Member')),
-                  DataColumn(label: Text('Years')),
+          DataTable(
+            columns: const [
+              DataColumn(label: Text('ID')),
+              DataColumn(label: Text('Member')),
+              DataColumn(label: Text('Years')),
+            ],
+            rows: List<DataRow>.generate(stats.length, (index) {
+              return DataRow(
+                cells: <DataCell>[
+                  DataCell(Text("${stats[index].$1.id}")),
+                  DataCell(Text("${stats[index].$1.firstname} ${stats[index].$1.lastname}")),
+                  DataCell(Text((stats[index].$2/365).toStringAsPrecision(2))),
                 ],
-                rows: List<DataRow>.generate(stats.length, (index) {
-                  return DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text("${stats[index].$1.id}")),
-                      DataCell(Text("${stats[index].$1.firstname} ${stats[index].$1.lastname}")),
-                      DataCell(Text((stats[index].$2/365).toStringAsPrecision(2))),
-                    ],
-                  );
-                }),
-              ),
-            ),
+              );
+            }),
           ),
         ],
       ),

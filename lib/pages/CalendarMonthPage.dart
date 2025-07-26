@@ -97,6 +97,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
       ),
       body: AppBody(
         maxWidth: 720,
+        minWidth: 720,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -111,25 +112,22 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
                   icon: Icon(Icons.chevron_right)),
             ],
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 700,
-              height: 650,
-              child: Column(
-                children: [
-                  Row(
-                    children: buildHeader(context),
+          SizedBox(
+            width: 700,
+            height: 650,
+            child: Column(
+              children: [
+                Row(
+                  children: buildHeader(context),
+                ),
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 7,
+                    mainAxisSpacing: 5.0,
+                    children: buildGrid(context),
                   ),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 7,
-                      mainAxisSpacing: 5.0,
-                      children: buildGrid(context),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

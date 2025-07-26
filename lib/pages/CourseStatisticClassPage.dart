@@ -55,7 +55,8 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
         title: Text(AppLocalizations.of(context)!.pageCourseStatisticClasses),
       ),
       body: AppBody(
-        maxWidth: 1000,
+        maxWidth: 1200,
+        minWidth: 1000,
         children: <Widget>[
           AppCourseTile(
             course: widget.course,
