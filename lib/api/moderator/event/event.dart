@@ -82,7 +82,7 @@ Future<Result<()>> event_password_edit(UserSession session, Event event, String 
   return Success(());
 }
 
-Future<Result<Course>> event_course_info(UserSession session, Event event) async {
+Future<Result<Course?>> event_course_info(UserSession session, Event event) async {
   final response = await client.get(
     uri('/mod/event_course_info', {
       'event_id': event.id.toString(),
@@ -94,7 +94,9 @@ Future<Result<Course>> event_course_info(UserSession session, Event event) async
   );
 
   if (response.statusCode != 200) return Failure();
-  return Success(json.decode(utf8.decode(response.bodyBytes)));
+  var model = json.decode(utf8.decode(response.bodyBytes));
+  if (model == null) return Success(null);
+  return Success(Course.fromJson(model));
 }
 
 Future<Result<()>> event_course_edit(UserSession session, Event event, Course? course) async {

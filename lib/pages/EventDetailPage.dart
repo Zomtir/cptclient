@@ -251,7 +251,7 @@ class EventDetailPageState extends State<EventDetailPage> {
     }
     if (resultItems is! Success) return;
 
-    late final Result<Course> resultValue;
+    late final Result<Course?> resultValue;
     if (_adminship_read) {
       resultValue = await api_admin.event_course_info(widget.session, _event!);
     } else if (_ownership) {
