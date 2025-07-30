@@ -165,7 +165,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                           nullable: false,
                         ),
                         onChanged: (User? user) async {
-                          user = await api_admin.user_detailed(widget.session, widget.session.user!.id);
+                          user = await api_admin.user_detailed(widget.session, user!.id);
                           setState(() => _ctrlUser = user!);
                         },
                       );
