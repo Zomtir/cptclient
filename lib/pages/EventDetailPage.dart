@@ -218,6 +218,26 @@ class EventDetailPageState extends State<EventDetailPage> {
         ),
       ),
     );
+
+    _updateOwnership();
+  }
+
+  Future<void> _handleOwnerSelf(bool makeOwner) async {
+    if (_adminship_write) {
+      makeOwner
+          ? api_admin.event_owner_add(widget.session, _event!, widget.session.user!)
+          : api_admin.event_owner_remove(widget.session, _event!, widget.session.user!);
+    } else if (_ownership) {
+      makeOwner
+          ? api_owner.event_owner_add(widget.session, _event!, widget.session.user!)
+          : api_owner.event_owner_remove(widget.session, _event!, widget.session.user!);
+    } else if (_moderatorship) {
+      makeOwner
+          ? api_mod.event_owner_add(widget.session, _event!, widget.session.user!)
+          : api_mod.event_owner_remove(widget.session, _event!, widget.session.user!);
+    }
+
+    _updateOwnership();
   }
 
   Future<void> _handleCourse() async {
@@ -795,7 +815,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       onChanged: (Valence v) {
                         setState(() => _ownership = v.toBool()!);
-                        // XXX TODO _handleOwnership()
+                        _handleOwnerSelf(_ownership);
                       },
                     ),
                   ),
