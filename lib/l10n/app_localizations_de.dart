@@ -13,6 +13,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get language_de => 'Deutsch';
 
   @override
+  String get labelFormat => 'Formattierung';
+
+  @override
   String get labelFilter => 'Filter';
 
   @override
@@ -164,6 +167,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get actionLogout => 'Ausloggen';
+
+  @override
+  String get actionDownload => 'Download';
 
   @override
   String get actionResume => 'Fortfahren';
@@ -996,7 +1002,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trainerTimeTotal => 'Übungsstunden';
 
   @override
-  String get trainerTimePerUnit => 'Dauer pro Einheit';
+  String get trainerUnitDuration => 'Dauer pro Einheit';
 
   @override
   String get trainerUnitTotal => 'Einheiten';
@@ -1008,10 +1014,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trainerCompensationTotal => 'Vergütungsbetrag';
 
   @override
-  String get trainerCompensationDisbursement => 'davon Auszahlungsbetrag';
+  String get trainerCompensationDisbursement => 'Auszahlungsbetrag';
 
   @override
-  String get trainerCompensationDontation => 'davon Zuwendungsspende';
+  String get trainerCompensationDontation => 'Zuwendungsspende';
 
   @override
   String get trainerTimeTable => 'Stundenaufstellung';

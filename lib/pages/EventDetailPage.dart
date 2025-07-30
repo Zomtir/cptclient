@@ -268,6 +268,7 @@ class EventDetailPageState extends State<EventDetailPage> {
       widget: MultiChoiceEdit<Course>(
         items: resultItems.unwrap(),
         value: resultValue.unwrap(),
+        builder: (course) => course.buildTile(context),
         nullable: true,
       ),
       onChanged: callEdit,
@@ -705,6 +706,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                             widget: MultiChoiceEdit<Location>(
                               items: items,
                               value: _event!.location!,
+                              builder: (event) => event.buildTile(context),
                               nullable: false,
                             ),
                             onChanged: (Location? location) {
@@ -867,6 +869,7 @@ class EventDetailPageState extends State<EventDetailPage> {
               widget: MultiChoiceEdit<Confirmation>(
                 items: Confirmation.values,
                 value: _attendanceRegistration[role],
+                builder: (confirmation) => confirmation.buildTile(context),
                 nullable: true,
               ),
               onChanged: (Confirmation? c) {

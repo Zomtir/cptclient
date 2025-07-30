@@ -496,6 +496,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                       widget: MultiChoiceEdit<Gender>(
                         items: Gender.values,
                         value: user_info!.gender,
+                        builder: (gender) => gender.buildTile(context),
                         nullable: true,
                       ),
                       onChanged: (Gender? g) {

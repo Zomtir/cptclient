@@ -13,8 +13,10 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-void trainer_accounting_pdf(BuildContext context, Club club, User user, String discipline, DateTime date_from,
-    DateTime date_until, List<Event> event_list) async {
+void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime date_from,
+    DateTime date_until, List<Event> event_list, {required String discipline, required double unit_duration,
+      required double compensation_rate, required double compensation_hours, required double compensation_units,
+      required double compensation_sum, required double disbursement_sum, required double donation_sum}) async {
   var docTheme = pw.ThemeData.withFont(
     base: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.regular.ttf")),
     bold: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.bold.ttf")),
@@ -27,14 +29,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
   final clubBannerBytes = (await api_anon.club_banner(club.id))!;
 
   final int fiscal_year = date_from.year;
-  final localeTag = Localizations.localeOf(context).toLanguageTag();
-
-  double compensation_hours =
-      event_list.fold(0, (total, event) => total + event.end.difference(event.begin).inMinutes) / 60;
-  double compensation_unit_duration = 0.75;
-  double compensation_units = (compensation_hours / compensation_unit_duration).roundToDouble();
-  double compensation_rate = 6.15;
-  double compensation_sum = compensation_rate * compensation_units;
+  final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag());
 
   pw.TextStyle styleBold = pw.TextStyle(fontWeight: pw.FontWeight.bold);
 
@@ -179,31 +174,31 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
               pw.TableRow(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.trainerTimeTotal),
-                  pw.Text("${NumberFormat.decimalPattern(localeTag).format(compensation_hours)} h"),
+                  pw.Text("${nf.format(compensation_hours)} h"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerTimePerUnit),
-                  pw.Text("${NumberFormat.decimalPattern(localeTag).format(compensation_unit_duration)} h"),
+                  pw.Text(AppLocalizations.of(context)!.trainerUnitDuration),
+                  pw.Text("${nf.format(unit_duration)} h"),
                 ],
               ),
               pw.TableRow(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.trainerUnitTotal),
-                  pw.Text("${NumberFormat.decimalPattern(localeTag).format(compensation_units)}"),
+                  pw.Text("${nf.format(compensation_units)}"),
                 ],
               ),
               pw.TableRow(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.trainerCompensationPerUnit),
-                  pw.Text("${NumberFormat.decimalPattern(localeTag).format(compensation_rate)} Euro"),
+                  pw.Text("${nf.format(compensation_rate)} Euro"),
                 ],
               ),
               pw.TableRow(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.trainerCompensationTotal),
-                  pw.Text("${NumberFormat.decimalPattern(localeTag).format(compensation_sum)} Euro"),
+                  pw.Text("${nf.format(compensation_sum)} Euro"),
                 ],
               ),
             ],
@@ -229,27 +224,21 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, String d
               pw.TableRow(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.trainerCompensationTotal),
-                  pw.Text("${NumberFormat.decimalPattern(localeTag).format(compensation_sum)} Euro"),
+                  pw.Text("${nf.format(compensation_sum)} Euro"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerCompensationDisbursement),
-                  pw.Container(
-                    height: 20,
-                    decoration: boxInputDecoration,
-                  ),
+                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDisbursement}"),
+                  pw.Text("${nf.format(disbursement_sum)} Euro"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerCompensationDontation),
-                  pw.Container(
-                    height: 20,
-                    decoration: boxInputDecoration,
-                  ),
+                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDontation}"),
+                  pw.Text("${nf.format(donation_sum)} Euro"),
                 ],
               ),
             ],

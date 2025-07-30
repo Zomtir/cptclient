@@ -1,26 +1,27 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class MultiChoiceEdit<T extends FieldInterface> extends StatefulWidget {
+class MultiChoiceEdit<T> extends StatefulWidget {
   MultiChoiceEdit({
     super.key,
     required this.items,
     required this.value,
+    required this.builder,
     this.nullable = false,
   });
 
   final List<T> items;
   final T? value;
+  final Widget Function(T) builder;
   final bool nullable;
 
   @override
   State<MultiChoiceEdit<T>> createState() => MultiChoiceEditState<T>();
 }
 
-class MultiChoiceEditState<T extends FieldInterface> extends State<MultiChoiceEdit<T>> {
+class MultiChoiceEditState<T> extends State<MultiChoiceEdit<T>> {
   late T? value;
 
   @override
@@ -59,7 +60,7 @@ class MultiChoiceEditState<T extends FieldInterface> extends State<MultiChoiceEd
           ),
         ...widget.items.map((i) =>
             ListTile(
-              title: i.buildEntry(context),
+              title: widget.builder(i),
               leading: Radio<T?>(
                 value: i,
                 groupValue: value,

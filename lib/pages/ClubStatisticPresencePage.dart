@@ -4,16 +4,18 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/pages/PresenceAccountingPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
-import 'package:cptclient/utils/trainer_accounting.dart';
 import 'package:flutter/material.dart';
 
 class ClubStatisticPresencePage extends StatefulWidget {
@@ -41,32 +43,32 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       DateTimeController(dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 1, day: 1));
   final DateTimeController _ctrlEnd =
       DateTimeController(dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 12, day: 31));
-  final TextEditingController _ctrlRole = TextEditingController(text: 'leader');
-  final TextEditingController _ctrlDiscipline = TextEditingController();
+  late User _ctrlUser;
+  String _ctrlRole = 'leader';
 
   List<Event> _eventList = [];
-  User? _userInfo;
 
   ClubStatisticPresencePageState();
 
   @override
   void initState() {
     super.initState();
+    _ctrlUser = widget.session.user!;
     _update();
   }
 
   void _update() async {
     List<Event>? eventList = await widget.presence(
-        widget.userID, _ctrlBegin.getDate().copyWith(hour: 0), _ctrlEnd.getDate().copyWith(hour: 24), _ctrlRole.text);
+      _ctrlUser.id,
+      _ctrlBegin.getDate().copyWith(hour: 0),
+      _ctrlEnd.getDate().copyWith(hour: 24),
+      _ctrlRole,
+    );
     if (eventList == null) return;
     eventList.sort();
 
-    User? userInfo = await api_admin.user_detailed(widget.session, widget.session.user!.id);
-    if (userInfo == null) return;
-
     setState(() {
       _eventList = eventList;
-      _userInfo = userInfo;
     });
   }
 
@@ -82,13 +84,25 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     );
   }
 
-  Future<void> _handleTrainerAccounting() async {
-    trainer_accounting_pdf(
-        context, widget.club, _userInfo!, _ctrlDiscipline.text, _ctrlBegin.getDate(), _ctrlEnd.getDate(), _eventList);
+  Future<void> _handlePresenceAccounting() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PresenceAccountingPage(
+          session: widget.session,
+          club: widget.club,
+          user: _ctrlUser,
+          role: _ctrlRole,
+          dateBegin: _ctrlBegin.getDateTime()!,
+          dateEnd: _ctrlEnd.getDateTime()!,
+          events: _eventList,
+        ),
+      ),
+    );
   }
 
   _handlePresenceTable() {
-    String fileName = "CPT_club_${widget.club.id}_user_${widget.userID}_presence_${_ctrlRole.text}";
+    String fileName = "CPT_club_${widget.club.id}_user_${widget.userID}_presence_$_ctrlRole";
     List<String> headers = [
       AppLocalizations.of(context)!.eventTitle,
       AppLocalizations.of(context)!.eventLocation,
@@ -116,48 +130,76 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.monetization_on_outlined),
+            onPressed: _handlePresenceAccounting,
+          ),
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: _handlePresenceTable,
+          ),
+        ],
       ),
       body: AppBody(
         maxWidth: 1000,
         children: <Widget>[
-          Club.buildListTile(context, widget.club),
-          User.buildListTile(
-            context,
-            widget.session.user!,
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.monetization_on_outlined),
-                onPressed: _handleTrainerAccounting,
-              ),
-              IconButton(
-                icon: const Icon(Icons.import_export),
-                onPressed: _handlePresenceTable,
-              ),
-            ],
-          ),
           FilterToggle(
+            hidden: false,
             onApply: _update,
             children: [
               AppInfoRow(
-                info: AppLocalizations.of(context)!.eventBegin,
-                child: DateTimeField(controller: _ctrlBegin, showTime: false),
-              ),
-              AppInfoRow(
-                info: AppLocalizations.of(context)!.eventEnd,
-                child: DateTimeField(controller: _ctrlEnd, showTime: false),
-              ),
-              AppInfoRow(
-                info: AppLocalizations.of(context)!.eventRole,
-                child: TextField(
-                  maxLines: 1,
-                  controller: _ctrlRole,
+                info: AppLocalizations.of(context)!.user,
+                child: ListTile(
+                  title: _ctrlUser.buildEntry(context),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async {
+                      var items = await api_admin.user_list(widget.session);
+                      useAppDialog<User?>(
+                        context: context,
+                        widget: MultiChoiceEdit<User>(
+                          items: items,
+                          value: _ctrlUser,
+                          builder: (user) => user.buildEntry(context),
+                          nullable: false,
+                        ),
+                        onChanged: (User? user) async {
+                          user = await api_admin.user_detailed(widget.session, widget.session.user!.id);
+                          setState(() => _ctrlUser = user!);
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
               AppInfoRow(
-                info: AppLocalizations.of(context)!.userDiscipline,
-                child: TextField(
-                  maxLines: 1,
-                  controller: _ctrlDiscipline,
+                info: AppLocalizations.of(context)!.eventBegin,
+                child: DateTimeField(controller: _ctrlBegin, showTime: false, nullable: false),
+              ),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventEnd,
+                child: DateTimeField(controller: _ctrlEnd, showTime: false, nullable: false),
+              ),
+              AppInfoRow(
+                info: AppLocalizations.of(context)!.eventRole,
+                child: ListTile(
+                  title: Text(_ctrlRole),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => useAppDialog<String?>(
+                      context: context,
+                      widget: MultiChoiceEdit<String>(
+                        items: ["leader", "supporter", "participant", "spectator"],
+                        value: "leader",
+                        builder: (role) => Text(role),
+                        nullable: false,
+                      ),
+                      onChanged: (String? role) {
+                        setState(() => _ctrlRole = role ?? 'leader');
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],

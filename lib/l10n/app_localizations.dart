@@ -107,6 +107,12 @@ abstract class AppLocalizations {
   /// **'German'**
   String get language_de;
 
+  /// No description provided for @labelFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Format'**
+  String get labelFormat;
+
   /// No description provided for @labelFilter.
   ///
   /// In en, this message translates to:
@@ -412,6 +418,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get actionLogout;
+
+  /// No description provided for @actionDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get actionDownload;
 
   /// No description provided for @actionResume.
   ///
@@ -2069,11 +2081,11 @@ abstract class AppLocalizations {
   /// **'Training hours'**
   String get trainerTimeTotal;
 
-  /// No description provided for @trainerTimePerUnit.
+  /// No description provided for @trainerUnitDuration.
   ///
   /// In en, this message translates to:
   /// **'Duration per unit'**
-  String get trainerTimePerUnit;
+  String get trainerUnitDuration;
 
   /// No description provided for @trainerUnitTotal.
   ///
@@ -2102,7 +2114,7 @@ abstract class AppLocalizations {
   /// No description provided for @trainerCompensationDontation.
   ///
   /// In en, this message translates to:
-  /// **'Donation portion'**
+  /// **'Amount to be donated'**
   String get trainerCompensationDontation;
 
   /// No description provided for @trainerTimeTable.

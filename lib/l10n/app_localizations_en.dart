@@ -13,6 +13,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language_de => 'German';
 
   @override
+  String get labelFormat => 'Format';
+
+  @override
   String get labelFilter => 'Filter';
 
   @override
@@ -164,6 +167,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionLogout => 'Logout';
+
+  @override
+  String get actionDownload => 'Download';
 
   @override
   String get actionResume => 'Resume';
@@ -996,7 +1002,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trainerTimeTotal => 'Training hours';
 
   @override
-  String get trainerTimePerUnit => 'Duration per unit';
+  String get trainerUnitDuration => 'Duration per unit';
 
   @override
   String get trainerUnitTotal => 'Units';
@@ -1011,7 +1017,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trainerCompensationDisbursement => 'Amount to be disbursed';
 
   @override
-  String get trainerCompensationDontation => 'Donation portion';
+  String get trainerCompensationDontation => 'Amount to be donated';
 
   @override
   String get trainerTimeTable => 'Time table';
