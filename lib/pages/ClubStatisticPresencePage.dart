@@ -1,3 +1,4 @@
+import 'package:cptclient/api/admin/club/club.dart' as api_admin;
 import 'package:cptclient/api/admin/user/user.dart' as api_admin;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/event.dart';
@@ -23,7 +24,6 @@ class ClubStatisticPresencePage extends StatefulWidget {
   final Club club;
   final int userID;
   final String title;
-  final Future<List<Event>?> Function(int, DateTime, DateTime, String) presence;
 
   ClubStatisticPresencePage({
     super.key,
@@ -31,7 +31,6 @@ class ClubStatisticPresencePage extends StatefulWidget {
     required this.club,
     required this.userID,
     required this.title,
-    required this.presence,
   });
 
   @override
@@ -58,7 +57,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   void _update() async {
-    List<Event>? eventList = await widget.presence(
+    List<Event>? eventList = await api_admin.club_statistic_presence(
+      widget.session,
+      widget.club.id,
       _ctrlUser.id,
       _ctrlBegin.getDate().copyWith(hour: 0),
       _ctrlEnd.getDate().copyWith(hour: 24),
@@ -155,11 +156,12 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () async {
-                      var items = await api_admin.user_list(widget.session);
+                      var users = await api_admin.user_list(widget.session);
+                      users.sort();
                       useAppDialog<User?>(
                         context: context,
                         widget: MultiChoiceEdit<User>(
-                          items: items,
+                          items: users,
                           value: _ctrlUser,
                           builder: (user) => user.buildEntry(context),
                           nullable: false,

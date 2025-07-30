@@ -94,14 +94,6 @@ class ClubDetailPageState extends State<ClubDetailPage> {
           userID: widget.session.user!.id,
           title:
               '${AppLocalizations.of(context)!.pageClubStatisticPresence} - ${AppLocalizations.of(context)!.eventLeader}',
-          presence: (int userID, DateTime begin, DateTime end, String role) => api_admin.club_statistic_presence(
-            widget.session,
-            widget.club.id,
-            widget.session.user!.id,
-            begin,
-            end,
-            role,
-          ),
         ),
       ),
     );
