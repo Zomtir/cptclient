@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewAvailablePage.dart';
 import 'package:flutter/material.dart';
 
@@ -59,9 +58,7 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
             itemBuilder: (Course course) {
               return InkWell(
                 onTap: () => _selectCourse(course, false),
-                child: AppCourseTile(
-                  course: course,
-                ),
+                child: course.buildTile(context),
               );
             },
           ),

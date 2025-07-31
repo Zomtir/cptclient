@@ -5,7 +5,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/EventCreateBatchPage.dart';
@@ -104,9 +103,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
       ),
       body: AppBody(
         children: <Widget>[
-          AppCourseTile(
-            course: widget.course,
-          ),
+          widget.course.buildCard(context),
           AppButton(
             leading: Icon(Icons.add),
             text: AppLocalizations.of(context)!.actionCreate,

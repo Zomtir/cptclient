@@ -16,8 +16,6 @@ import 'package:cptclient/material/fields/SkillRangeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
@@ -53,7 +51,8 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
     _ctrlSkill.callItems = () => api_anon.skill_list();
     _ctrlModerator.callItems = () => api_regular.user_list(widget.session);
 
-    Result<List<Course>> result = await api_admin.course_list(widget.session, user: _ctrlModerator.value, active: _ctrlActive?.toBool(), public: _ctrlPublic?.toBool());
+    Result<List<Course>> result = await api_admin.course_list(
+        widget.session, user: _ctrlModerator.value, active: _ctrlActive?.toBool(), public: _ctrlPublic?.toBool());
     if (result is! Success) return;
 
     _courses = result.unwrap();
@@ -76,12 +75,13 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CourseEditPage(
-          session: widget.session,
-          course: course,
-          isDraft: true,
-          onSubmit: api_admin.course_create,
-        ),
+        builder: (context) =>
+            CourseEditPage(
+              session: widget.session,
+              course: course,
+              isDraft: true,
+              onSubmit: api_admin.course_create,
+            ),
       ),
     );
 
@@ -93,14 +93,15 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCourseManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _createCourse,
+          )
+        ],
       ),
       body: AppBody(
         children: [
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _createCourse,
-          ),
           FilterToggle(
             onApply: _update,
             children: [
@@ -119,11 +120,12 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<Valence?>(
-                      context: context,
-                      widget: ChoiceEdit(value: _ctrlActive, nullable: true),
-                      onChanged: (Valence? v) => setState(() => _ctrlActive = v),
-                    ),
+                    onPressed: () =>
+                        useAppDialog<Valence?>(
+                          context: context,
+                          widget: ChoiceEdit(value: _ctrlActive, nullable: true),
+                          onChanged: (Valence? v) => setState(() => _ctrlActive = v),
+                        ),
                   ),
                 ),
               ),
@@ -135,11 +137,12 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<Valence?>(
-                      context: context,
-                      widget: ChoiceEdit(value: _ctrlPublic),
-                      onChanged: (Valence? v) => setState(() => _ctrlPublic = v),
-                    ),
+                    onPressed: () =>
+                        useAppDialog<Valence?>(
+                          context: context,
+                          widget: ChoiceEdit(value: _ctrlPublic),
+                          onChanged: (Valence? v) => setState(() => _ctrlPublic = v),
+                        ),
                   ),
                 ),
               ),
@@ -148,10 +151,11 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                 child: SkillRangeField(
                   controller: _ctrlSkill,
                   range: _ctrlSkillRange,
-                  onChanged: (Skill? skill, RangeValues range) => setState(() {
-                    _ctrlSkill.value = skill;
-                    _ctrlSkillRange = range;
-                  }),
+                  onChanged: (Skill? skill, RangeValues range) =>
+                      setState(() {
+                        _ctrlSkill.value = skill;
+                        _ctrlSkillRange = range;
+                      }),
                 ),
               ),
             ],
@@ -159,12 +163,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
           AppListView<Course>(
             items: _courses,
             itemBuilder: (Course course) {
-              return InkWell(
-                onTap: () => _selectCourse(course),
-                child: AppCourseTile(
-                  course: course,
-                ),
-              );
+              return course.buildTile(context, onTap: () => _selectCourse(course));
             },
           ),
         ],

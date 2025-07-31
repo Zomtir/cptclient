@@ -7,7 +7,6 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
@@ -135,9 +134,7 @@ class CourseOverviewModerationPageState extends State<CourseOverviewModerationPa
                 itemBuilder: (Course course) {
                   return InkWell(
                     onTap: () => _selectCourse(course, false),
-                    child: AppCourseTile(
-                      course: course,
-                    ),
+                    child: course.buildTile(context),
                   );
                 },
               ),

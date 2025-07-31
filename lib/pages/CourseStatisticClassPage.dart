@@ -4,7 +4,6 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +57,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
         maxWidth: 1200,
         minWidth: 1000,
         children: <Widget>[
-          AppCourseTile(
-            course: widget.course,
-          ),
+          widget.course.buildCard(context),
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.event)),

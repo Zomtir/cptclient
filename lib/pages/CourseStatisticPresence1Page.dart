@@ -3,7 +3,6 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
@@ -87,19 +86,17 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: _handleCSV,
+          ),
+        ],
       ),
       body: AppBody(
         maxWidth: 1000,
         children: <Widget>[
-          AppCourseTile(
-            course: widget.course,
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.import_export),
-                onPressed: _handleCSV,
-              ),
-            ],
-          ),
+          widget.course.buildCard(context),
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.event)),

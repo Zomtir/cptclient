@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
@@ -91,20 +90,17 @@ class CourseEditPageState extends State<CourseEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCourseEdit),
+        actions: [
+          if (!widget.isDraft && widget.onDelete != null)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: _deleteCourse,
+            ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          if (!widget.isDraft)
-            AppCourseTile(
-              course: widget.course,
-              trailing: [
-                if (widget.onDelete != null)
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: _deleteCourse,
-                  ),
-              ],
-            ),
+          if (!widget.isDraft) widget.course.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.courseKey,
             child: TextField(

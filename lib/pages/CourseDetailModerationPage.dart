@@ -10,7 +10,6 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/FilterPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/RequirementOverviewPage.dart';
@@ -90,7 +89,7 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageCourseModerators,
-          tile: AppCourseTile(course: widget.course),
+          tile: widget.course.buildCard(context),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_moderator.course_moderator_list(widget.session, widget.course.id),
           onCallAdd: (user) => api_moderator.course_moderator_add(widget.session, widget.course.id, user.id),
@@ -115,7 +114,7 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
       MaterialPageRoute(
         builder: (context) => FilterPage<Team>(
           title: AppLocalizations.of(context)!.pageCourseAttendanceSieves,
-          tile: AppCourseTile(course: widget.course),
+          tile: widget.course.buildCard(context),
           onCallAvailable: () => api_regular.team_list(widget.session),
           onCallSelected: () => api_moderator.course_attendance_sieve_list(widget.session, widget.course.id, role),
           onCallEdit: (team, access) => api_moderator.course_attendance_sieve_edit(widget.session, widget.course.id, team.id, role, access),
@@ -130,26 +129,24 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCourseDetails),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: _handleEdit,
+          ),
+          IconButton(
+            icon: const Icon(Icons.copy),
+            onPressed: _handleDuplicate,
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _handleDelete,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppCourseTile(
-            course: widget.course,
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: _handleEdit,
-              ),
-              IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: _handleDuplicate,
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _handleDelete,
-              ),
-            ],
-          ),
+          widget.course.buildCard(context),
           MenuSection(
             children: [
               ListTile(

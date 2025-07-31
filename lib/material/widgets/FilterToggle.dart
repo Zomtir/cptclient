@@ -28,6 +28,7 @@ class FilterToggleState extends State<FilterToggle> {
       children: [
         Row(
           children: [
+            Icon(Icons.tune),
             Expanded(
               child: _hidden
                   ? TextButton.icon(

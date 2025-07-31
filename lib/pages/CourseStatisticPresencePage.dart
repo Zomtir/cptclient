@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/pages/CourseStatisticPresence1Page.dart';
 import 'package:flutter/material.dart';
 
@@ -68,9 +67,7 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
       body: AppBody(
         maxWidth: 1000,
         children: <Widget>[
-          AppCourseTile(
-            course: widget.course,
-          ),
+          widget.course.buildCard(context),
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.user)),

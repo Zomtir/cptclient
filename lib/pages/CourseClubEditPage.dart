@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppCourseTile.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +61,7 @@ class CourseClubEditPageState extends State<CourseClubEditPage> {
       ),
       body: AppBody(
         children: [
-          AppCourseTile(
-            course: widget.course,
-          ),
+          widget.course.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.club,
             child: AppDropdown<Club>(
