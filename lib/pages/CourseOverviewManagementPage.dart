@@ -37,7 +37,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
   List<Course> _courses = [];
   final FieldController<User> _ctrlModerator = FieldController<User>();
   Valence? _ctrlPublic;
-  Valence? _ctrlActive;
+  Valence? _ctrlActive = Valence.yes;
   final FieldController<Skill> _ctrlSkill = FieldController<Skill>();
   RangeValues _ctrlSkillRange = RangeValues(0, 10);
 
@@ -121,7 +121,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                     icon: Icon(Icons.edit),
                     onPressed: () => useAppDialog<Valence?>(
                       context: context,
-                      widget: ChoiceEdit(value: _ctrlActive),
+                      widget: ChoiceEdit(value: _ctrlActive, nullable: true),
                       onChanged: (Valence? v) => setState(() => _ctrlActive = v),
                     ),
                   ),
