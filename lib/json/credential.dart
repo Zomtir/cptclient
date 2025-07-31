@@ -1,6 +1,6 @@
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/widgets/AppTile.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class Credential extends FieldInterface {
 
   @override
   Widget buildTile(BuildContext context) {
-    return AppTile(
+    return AppCard(
       icon: Icon(Icons.password),
       children: [
         ListTile(

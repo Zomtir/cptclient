@@ -1,6 +1,6 @@
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/widgets/AppTile.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
 import 'package:flutter/material.dart';
 
 class BankAccount extends FieldInterface implements Comparable {
@@ -80,7 +80,7 @@ class BankAccount extends FieldInterface implements Comparable {
 
   @override
   Widget buildTile(BuildContext context) {
-    return AppTile(
+    return AppCard(
       icon: Tooltip(
         message: "[$id]",
         child: Icon(Icons.account_balance),
