@@ -86,13 +86,16 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   Future<void> _handlePresenceAccounting() async {
+    User? userDetailed = await api_admin.user_detailed(widget.session, _ctrlUser.id);
+    if (userDetailed == null) return;
+
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PresenceAccountingPage(
           session: widget.session,
           club: widget.club,
-          user: _ctrlUser,
+          user: userDetailed,
           role: _ctrlRole,
           dateBegin: _ctrlBegin.getDateTime()!,
           dateEnd: _ctrlEnd.getDateTime()!,
@@ -166,10 +169,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                           builder: (user) => user.buildEntry(context),
                           nullable: false,
                         ),
-                        onChanged: (User? user) async {
-                          user = await api_admin.user_detailed(widget.session, user!.id);
-                          setState(() => _ctrlUser = user!);
-                        },
+                        onChanged: (User? user) => setState(() => _ctrlUser = user!),
                       );
                     },
                   ),
