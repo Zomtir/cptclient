@@ -86,4 +86,10 @@ class Affiliation extends FieldInterface {
     // TODO: implement buildTile
     throw UnimplementedError();
   }
+
+  @override
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
 }

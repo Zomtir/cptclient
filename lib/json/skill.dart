@@ -49,6 +49,11 @@ class Skill extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [key, title];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
@@ -62,7 +67,8 @@ class Skill extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable {
-    return [key, title];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

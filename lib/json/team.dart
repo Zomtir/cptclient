@@ -74,6 +74,12 @@ class Team extends FieldInterface implements Comparable {
     return Team.buildListTile(context, this);
   }
 
+  @override
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
+
   // TODO
   static Widget buildListTile(BuildContext context, Team? team, {List<Widget>? trailing, VoidCallback? onTap}) {
     if (team == null) {

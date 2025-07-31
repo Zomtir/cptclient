@@ -51,6 +51,11 @@ class Stock extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [club.name, item.name, storage];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
@@ -64,7 +69,8 @@ class Stock extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable {
-    return [club.name, item.name, storage];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

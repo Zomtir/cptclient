@@ -52,19 +52,6 @@ class Club extends FieldInterface implements Comparable {
 
   @override
   get searchable => [key, name, description ?? ''];
-  
-  @override
-  Widget buildTile(BuildContext context) {
-    return Club.buildListTile(context, this);
-  }
-
-  @override
-  Widget buildEntry(BuildContext context) {
-    return Tooltip(
-      message: "[$id] $key",
-      child: Text("$name"),
-    );
-  }
 
   // TODO
   static Widget buildListTile(BuildContext context, Club? club, {List<Widget>? trailing, VoidCallback? onTap}) {
@@ -80,5 +67,24 @@ class Club extends FieldInterface implements Comparable {
         onTap: onTap,
       ),
     );
+  }
+
+  @override
+  Widget buildTile(BuildContext context) {
+    return Club.buildListTile(context, this);
+  }
+
+  @override
+  Widget buildEntry(BuildContext context) {
+    return Tooltip(
+      message: "[$id] $key",
+      child: Text("$name"),
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

@@ -43,28 +43,6 @@ class BankAccount extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry(BuildContext context) {
-    return Tooltip(
-      message: "[$id]",
-      child: Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}"),
-    );
-  }
-
-  @override
-  Widget buildTile(BuildContext context) {
-    return AppTile(
-      icon: Tooltip(
-        message: "[$id]",
-        child: Icon(Icons.account_balance),
-      ),
-      children: [
-        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute} (${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})"),
-      ],
-    );
-  }
-
-  @override
   get searchable {
     return [iban, bic];
   }
@@ -90,5 +68,33 @@ class BankAccount extends FieldInterface implements Comparable {
     return "${ba.iban.isEmpty ? AppLocalizations.of(context)!.undefined : ba.iban},"
       "${ba.institute.isEmpty ? AppLocalizations.of(context)!.undefined : ba.institute}"
       "(${ba.bic.isEmpty ? AppLocalizations.of(context)!.undefined : ba.bic})";
+  }
+
+  @override
+  Widget buildEntry(BuildContext context) {
+    return Tooltip(
+      message: "[$id]",
+      child: Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}"),
+    );
+  }
+
+  @override
+  Widget buildTile(BuildContext context) {
+    return AppTile(
+      icon: Tooltip(
+        message: "[$id]",
+        child: Icon(Icons.account_balance),
+      ),
+      children: [
+        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute} (${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})"),
+      ],
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

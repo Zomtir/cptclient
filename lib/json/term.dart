@@ -50,6 +50,19 @@ class Term extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [
+      user?.firstname ?? "",
+      user?.lastname ?? "",
+      user?.nickname ?? "",
+      club?.key ?? "",
+      club?.name ?? "",
+      begin?.year.toString() ?? "",
+      end?.year.toString() ?? "",
+    ];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
@@ -63,15 +76,8 @@ class Term extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable {
-    return [
-      user?.firstname ?? "",
-      user?.lastname ?? "",
-      user?.nickname ?? "",
-      club?.key ?? "",
-      club?.name ?? "",
-      begin?.year.toString() ?? "",
-      end?.year.toString() ?? "",
-    ];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

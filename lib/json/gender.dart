@@ -48,6 +48,11 @@ class Gender extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [name];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Text(localizedName(context));
   }
@@ -58,7 +63,8 @@ class Gender extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable {
-    return [name];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

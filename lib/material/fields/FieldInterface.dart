@@ -6,6 +6,7 @@ abstract class FieldInterface implements Comparable {
   // TODO
   Widget buildEntry(BuildContext context);
   Widget buildTile(BuildContext context);
+  Widget buildCard(BuildContext context);
 
   List<String> get searchable;
 

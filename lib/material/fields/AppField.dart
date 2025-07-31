@@ -30,18 +30,21 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(child: controller.value?.buildEntry(context) ?? Text(AppLocalizations.of(context)!.undefined)),
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () => _handleSearch(context),
-        ),
-        IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: _handleClear,
-        ),
-      ],
+    return ListTile(
+      title: controller.value?.buildEntry(context) ?? Text(AppLocalizations.of(context)!.undefined),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => _handleSearch(context),
+          ),
+          IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: _handleClear,
+          ),
+        ],
+      ),
     );
   }
 }

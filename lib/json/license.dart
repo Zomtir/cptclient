@@ -46,19 +46,6 @@ class License extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildEntry(BuildContext context) {
-    return Tooltip(
-      message: "[$id]",
-      child: Text("$name ($number)"),
-    );
-  }
-
-  @override
-  Widget buildTile(BuildContext context) {
-    return AppLicenseTile(license: this);
-  }
-
-  @override
   get searchable {
     return [number, name];
   }
@@ -85,5 +72,24 @@ class License extends FieldInterface implements Comparable {
         "(${lic.number.isEmpty ? AppLocalizations.of(context)!.undefined : lic.number})"
         "${formatIsoDate(lic.expiration)}"
         ;
+  }
+
+  @override
+  Widget buildEntry(BuildContext context) {
+    return Tooltip(
+      message: "[$id]",
+      child: Text("$name ($number)"),
+    );
+  }
+
+  @override
+  Widget buildTile(BuildContext context) {
+    return AppLicenseTile(license: this);
+  }
+
+  @override
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

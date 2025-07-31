@@ -126,6 +126,12 @@ class User extends FieldInterface implements Comparable {
     return buildListTile(context, this);
   }
 
+  @override
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
+
   // TODO
   static Widget buildListTile(BuildContext context, User? user, {List<Widget>? trailing, VoidCallback? onTap}) {
     if (user == null) {

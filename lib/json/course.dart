@@ -57,6 +57,9 @@ class Course extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable => [title];
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
@@ -70,5 +73,8 @@ class Course extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable => [title];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
 }

@@ -44,6 +44,11 @@ class Location extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [key, name, description];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id] $key",
@@ -57,7 +62,8 @@ class Location extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable {
-    return [key, name, description];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

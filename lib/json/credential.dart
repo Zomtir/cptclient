@@ -34,6 +34,19 @@ class Credential extends FieldInterface {
   }
 
   @override
+  get searchable {
+    return [];
+  }
+
+  // TODO
+  static Widget buildEntryStatic(BuildContext context, Credential? cr) {
+    if (cr == null) {
+      return Text(AppLocalizations.of(context)!.labelMissing);
+    }
+    return Text("${cr.since?.fmtDateTime(context) ?? AppLocalizations.of(context)!.undefined}");
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return ListTile(
       title: Text(AppLocalizations.of(context)!.userPasswordSince),
@@ -55,15 +68,8 @@ class Credential extends FieldInterface {
   }
 
   @override
-  get searchable {
-    return [];
-  }
-
-  // TODO
-  static Widget buildEntryStatic(BuildContext context, Credential? cr) {
-    if (cr == null) {
-      return Text(AppLocalizations.of(context)!.labelMissing);
-    }
-    return Text("${cr.since?.fmtDateTime(context) ?? AppLocalizations.of(context)!.undefined}");
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }

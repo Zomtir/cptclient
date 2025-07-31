@@ -35,6 +35,11 @@ class ItemCategory extends FieldInterface implements Comparable {
   }
 
   @override
+  get searchable {
+    return [name];
+  }
+
+  @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
@@ -48,7 +53,8 @@ class ItemCategory extends FieldInterface implements Comparable {
   }
 
   @override
-  get searchable {
-    return [name];
+  Widget buildCard(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 }
