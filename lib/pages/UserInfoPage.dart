@@ -485,8 +485,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    onPressed: () =>
-                        clipText(user_info!.gender?.localizedName(context) ?? ''),
+                    onPressed: () => clipText(user_info!.gender?.localizedName(context) ?? ''),
                     icon: Icon(Icons.copy),
                   ),
                   IconButton(
@@ -607,105 +606,150 @@ class UserInfoPageState extends State<UserInfoPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userBankacc,
-            child: ListTile(
-              title: BankAccount.buildEntryStatic(context, user_info!.bank_account),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.copy),
-                    onPressed: () => clipText(BankAccount.copyEntryStatic(context, user_info!.bank_account)),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<BankAccount?>(
-                      context: context,
-                      widget: BankAccountEdit(bankacc: user_info!.bank_account ?? BankAccount.fromVoid()),
-                      onChanged: (BankAccount? ba) async {
-                        if (user_info!.bank_account == null && ba == null) {
-                          return;
-                        } else if (user_info!.bank_account == null && ba != null) {
-                          await api_admin.user_bank_account_create(widget.session, user_info!, ba);
-                        } else if (user_info!.bank_account != null && ba == null) {
-                          await api_admin.user_bank_account_delete(widget.session, user_info!);
-                        } else if (user_info!.bank_account != null && ba != null) {
-                          await api_admin.user_bank_account_edit(widget.session, user_info!, ba);
-                        }
-                        _update();
-                      },
+            child: user_info!.bank_account == null
+                ? ListTile(
+                    title: Text(AppLocalizations.of(context)!.labelMissing),
+                    trailing: IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () => useAppDialog<BankAccount?>(
+                        context: context,
+                        widget: BankAccountEdit(bankacc: BankAccount.fromVoid()),
+                        onChanged: (BankAccount? ba) async {
+                          if (ba == null) {
+                            return;
+                          } else {
+                            await api_admin.user_bank_account_create(widget.session, user_info!, ba);
+                          }
+                          _update();
+                        },
+                      ),
+                    ),
+                  )
+                : ListTile(
+                    title: user_info!.bank_account!.buildInfo(context),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.copy),
+                          onPressed: () => clipText(user_info!.bank_account!.clip(context)),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => useAppDialog<BankAccount?>(
+                            context: context,
+                            widget: BankAccountEdit(bankacc: user_info!.bank_account!),
+                            onChanged: (BankAccount? ba) async {
+                              if (ba == null) {
+                                await api_admin.user_bank_account_delete(widget.session, user_info!);
+                              } else {
+                                await api_admin.user_bank_account_edit(widget.session, user_info!, ba);
+                              }
+                              _update();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userLicenseMain,
-            child: ListTile(
-              title: License.buildEntryStatic(context, user_info!.license_main),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.copy),
-                    onPressed: () => clipText(License.copyEntryStatic(context, user_info!.license_main)),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<License?>(
-                      context: context,
-                      widget: LicenseEdit(license: user_info!.license_main ?? License.fromVoid()),
-                      onChanged: (License? lic) async {
-                        if (user_info!.license_main == null && lic == null) {
-                          return;
-                        } else if (user_info!.license_main == null && lic != null) {
-                          await api_admin.user_license_main_create(widget.session, user_info!, lic);
-                        } else if (user_info!.license_main != null && lic == null) {
-                          await api_admin.user_license_main_delete(widget.session, user_info!);
-                        } else if (user_info!.license_main != null && lic != null) {
-                          await api_admin.user_license_main_edit(widget.session, user_info!, lic);
-                        }
-                        _update();
-                      },
+            child: user_info!.license_main == null
+                ? ListTile(
+                    title: Text(AppLocalizations.of(context)!.labelMissing),
+                    trailing: IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () => useAppDialog<License?>(
+                        context: context,
+                        widget: LicenseEdit(license: License.fromVoid()),
+                        onChanged: (License? lic) async {
+                          if (lic == null) {
+                            return;
+                          } else {
+                            await api_admin.user_license_main_create(widget.session, user_info!, lic);
+                          }
+                          _update();
+                        },
+                      ),
+                    ),
+                  )
+                : ListTile(
+                    title: user_info!.license_main!.buildInfo(context),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.copy),
+                          onPressed: () => clipText(user_info!.license_main!.clip(context)),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => useAppDialog<License?>(
+                            context: context,
+                            widget: LicenseEdit(license: user_info!.license_main!),
+                            onChanged: (License? lic) async {
+                              if (lic == null) {
+                                await api_admin.user_license_main_delete(widget.session, user_info!);
+                              } else {
+                                await api_admin.user_license_main_edit(widget.session, user_info!, lic);
+                              }
+                              _update();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.userLicenseExtra,
-            child: ListTile(
-              title: License.buildEntryStatic(context, user_info!.license_extra),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.copy),
-                    onPressed: () => clipText(License.copyEntryStatic(context, user_info!.license_extra)),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<License?>(
-                      context: context,
-                      widget: LicenseEdit(license: user_info!.license_extra ?? License.fromVoid()),
-                      onChanged: (License? lic) async {
-                        if (user_info!.license_extra == null && lic == null) {
-                          return;
-                        } else if (user_info!.license_extra == null && lic != null) {
-                          await api_admin.user_license_extra_create(widget.session, user_info!, lic);
-                        } else if (user_info!.license_extra != null && lic == null) {
-                          await api_admin.user_license_extra_delete(widget.session, user_info!);
-                        } else if (user_info!.license_extra != null && lic != null) {
-                          await api_admin.user_license_extra_edit(widget.session, user_info!, lic);
-                        }
-                        _update();
-                      },
+            child: user_info!.license_extra == null
+                ? ListTile(
+                    title: Text(AppLocalizations.of(context)!.labelMissing),
+                    trailing: IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () => useAppDialog<License?>(
+                        context: context,
+                        widget: LicenseEdit(license: License.fromVoid()),
+                        onChanged: (License? lic) async {
+                          if (lic == null) {
+                            return;
+                          } else {
+                            await api_admin.user_license_extra_create(widget.session, user_info!, lic);
+                          }
+                          _update();
+                        },
+                      ),
+                    ),
+                  )
+                : ListTile(
+                    title: user_info!.license_extra!.buildInfo(context),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.copy),
+                          onPressed: () => clipText(user_info!.license_extra!.clip(context)),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => useAppDialog<License?>(
+                            context: context,
+                            widget: LicenseEdit(license: user_info!.license_extra!),
+                            onChanged: (License? lic) async {
+                              if (lic == null) {
+                                await api_admin.user_license_extra_delete(widget.session, user_info!);
+                              } else {
+                                await api_admin.user_license_extra_edit(widget.session, user_info!, lic);
+                              }
+                              _update();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
           ),
         ],
       ),

@@ -47,27 +47,10 @@ class BankAccount extends FieldInterface implements Comparable {
     return [iban, bic];
   }
 
-  // TODO
-  static Widget buildEntryStatic(BuildContext context, BankAccount? ba) {
-    if (ba == null) {
-      return Text(AppLocalizations.of(context)!.labelMissing);
-    }
-    return Column(
-      children: [
-        Text("${ba.iban.isEmpty ? AppLocalizations.of(context)!.undefined : ba.iban}"),
-        Text("${ba.institute.isEmpty ? AppLocalizations.of(context)!.undefined : ba.institute} (${ba.bic.isEmpty ? AppLocalizations.of(context)!.undefined : ba.bic})"),
-      ],
-    );
-  }
-
-  // TODO
-  static String copyEntryStatic(BuildContext context, BankAccount? ba) {
-    if (ba == null) {
-      return "";
-    }
-    return "${ba.iban.isEmpty ? AppLocalizations.of(context)!.undefined : ba.iban},"
-      "${ba.institute.isEmpty ? AppLocalizations.of(context)!.undefined : ba.institute}"
-      "(${ba.bic.isEmpty ? AppLocalizations.of(context)!.undefined : ba.bic})";
+  String clip(BuildContext context) {
+    return "${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban},"
+        "${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute}"
+        "(${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})";
   }
 
   @override
@@ -75,6 +58,15 @@ class BankAccount extends FieldInterface implements Comparable {
     return Tooltip(
       message: "[$id]",
       child: Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}"),
+    );
+  }
+
+  Widget buildInfo(BuildContext context) {
+    return Column(
+      children: [
+        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}"),
+        Text("${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute} (${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})"),
+      ],
     );
   }
 

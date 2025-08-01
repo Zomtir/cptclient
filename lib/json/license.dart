@@ -26,8 +26,7 @@ class License extends FieldInterface implements Comparable {
         name = json['name'],
         expiration = parseIsoDate(json['expiration'])!.toLocal();
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'number': number,
         'name': name,
@@ -50,28 +49,10 @@ class License extends FieldInterface implements Comparable {
     return [number, name];
   }
 
-  // TODO
-  static Widget buildEntryStatic(BuildContext context, License? lic) {
-    if (lic == null) {
-      return Text(AppLocalizations.of(context)!.labelMissing);
-    }
-    return Column(
-      children: [
-        Text("${lic.name.isEmpty ? AppLocalizations.of(context)!.undefined : lic.name} (${lic.number.isEmpty ? AppLocalizations.of(context)!.undefined : lic.number})"),
-        Text("${lic.expiration.fmtDate(context)}"),
-      ],
-    );
-  }
-
-  // TODO
-  static String copyEntryStatic(BuildContext context, License? lic) {
-    if (lic == null) {
-      return "";
-    }
-    return "${lic.name.isEmpty ? AppLocalizations.of(context)!.undefined : lic.name},"
-        "(${lic.number.isEmpty ? AppLocalizations.of(context)!.undefined : lic.number})"
-        "${formatIsoDate(lic.expiration)}"
-        ;
+  String clip(BuildContext context) {
+    return "${name.isEmpty ? AppLocalizations.of(context)!.undefined : name},"
+        "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})"
+        "${formatIsoDate(expiration)}";
   }
 
   @override
@@ -79,6 +60,16 @@ class License extends FieldInterface implements Comparable {
     return Tooltip(
       message: "[$id]",
       child: Text("$name ($number)"),
+    );
+  }
+
+  Widget buildInfo(BuildContext context) {
+    return Column(
+      children: [
+        Text("${name.isEmpty ? AppLocalizations.of(context)!.undefined : name} "
+            "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})"),
+        Text("${expiration.fmtDate(context)}"),
+      ],
     );
   }
 
