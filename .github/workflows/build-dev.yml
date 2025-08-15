@@ -1,0 +1,100 @@
+name: build-dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      flutter_version:
+        description: 'Flutter Version'
+        required: false
+        default: '3.27.3'
+        type: choice
+        options:
+          - 'stable'
+          - 'beta'
+          - '3.27.3'
+  workflow_call:
+    inputs:
+      flutter_version:
+        required: false
+        default: '3.27.3'
+        type: string
+
+jobs:
+  build-artifacts:
+    name: Build artifacts for ${{ matrix.build-type }} (${{ matrix.platform }})
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+
+    env:
+      APP_NAME: cptclient
+      SERVER_SCHEME: https
+      SERVER_HOST: cptserver.oberhauser.dev
+      SERVER_PORT: 443
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: android
+            build-type: apk
+            suffix: apk
+          - os: windows-latest
+            platform: windows
+            build-type: windows
+            suffix: zip
+          - os: ubuntu-latest
+            platform: linux
+            build-type: linux
+            suffix: deb
+          - os: ubuntu-latest
+            platform: web
+            build-type: web
+            suffix: tar.gz
+          - os: macos-14
+            platform: macos
+            build-type: macos
+            suffix: zip
+#          - os: macos-14
+#            platform: ios
+#            build-type: ipa
+#            suffix: ???
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter_version }}
+          channel: 'stable'
+      - name: Create Default Config File
+        run: cp cptclient-template.yaml cptclient.yaml
+      - uses: actions/setup-java@v4
+        if: matrix.platform == 'android'
+        with:
+          # AGP8 needs JDK 17
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install Linux Dependencies
+        if: matrix.platform == 'linux'
+        # Install libunwind-dev, see https://github.com/actions/runner-images/issues/6399#issuecomment-1285011525
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+          sudo apt-get install -y libunwind-dev
+      - name: Install current bash on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install bash
+          bash --version
+        shell: bash
+      - name: Build
+        id: build
+        run: |
+          flutter build ${{ matrix.build-type }} \
+          --build-name="${{ github.ref_name }}-nightly" \
+          --dart-define=SERVER_SCHEME=$SERVER_SCHEME \
+          --dart-define=SERVER_HOST=$SERVER_HOST \
+          --dart-define=SERVER_PORT=$SERVER_PORT \
+          ${{ matrix.platform == 'ios' && '--no-codesign' || '' }} \
+          ${{ matrix.platform == 'web' && '--profile' || '--debug' }}
+        shell: bash

@@ -1,0 +1,131 @@
+name: build-release
+
+on:
+  workflow_call:
+    inputs:
+      flutter_version:
+        required: false
+        default: '3.27.3'
+        type: string
+      upload_pages_artifact:
+        description: 'Upload build artifact for GH pages'
+        required: false
+        default: false
+        type: boolean
+      upload_release_artifact:
+        description: 'Upload build artifact for GH release'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  build-artifacts:
+    name: Release Client as ${{ matrix.build-type }} (${{ matrix.platform }})
+    runs-on: ${{ matrix.os }}
+
+    env:
+      APP_NAME: cptclient
+      SERVER_SCHEME: https
+      SERVER_HOST: cptserver.oberhauser.dev
+      SERVER_PORT: 443
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: android
+            build-type: apk
+            suffix: apk
+          - os: windows-latest
+            platform: windows
+            build-type: windows
+            suffix: zip
+          - os: ubuntu-latest
+            platform: linux
+            build-type: linux
+            suffix: deb
+          - os: ubuntu-latest
+            platform: web
+            build-type: web
+            suffix: tar.gz
+          - os: macos-14
+            platform: macos
+            build-type: macos
+            suffix: zip
+#          - os: macos-14
+#            platform: ios
+#            build-type: ipa
+#            suffix: ???
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter_version }}
+          channel: 'stable'
+      - name: Create Default Config File
+        run: cp cptclient-template.yaml cptclient.yaml
+      - uses: actions/setup-java@v4
+        if: matrix.platform == 'android'
+        with:
+          # AGP8 needs JDK 17
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install Linux Dependencies
+        if: matrix.platform == 'linux'
+        # Install libunwind-dev, see https://github.com/actions/runner-images/issues/6399#issuecomment-1285011525
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+          sudo apt-get install -y libunwind-dev
+      - name: Install current bash on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install bash
+          bash --version
+        shell: bash
+      - name: Build App
+        id: build
+        run: |
+          echo "ARTIFACT_PATH=build/${{ matrix.platform }}/${{ matrix.build-type }}" >> $GITHUB_ENV
+          echo "ARTIFACT_NAME=${APP_NAME}-${{ github.ref_name }}-${{ matrix.platform }}.${{ matrix.suffix }}" >> $GITHUB_ENV
+          mkdir -p "$ARTIFACT_PATH"
+          dart pub global run flutter_release build ${{ matrix.build-type }} \
+            --app-version="${{ github.ref_name }}" \
+            --dart-define=SERVER_SCHEME=$SERVER_SCHEME \
+            --dart-define=SERVER_HOST=$SERVER_HOST \
+            --dart-define=SERVER_PORT=$SERVER_PORT \
+            ${{ matrix.platform == 'web' && '--wasm' || '' }} \
+            ${{ matrix.platform == 'android' && '--keystore-file-base64=${{ secrets.ANDROID_KEYSTORE }} --keystore-password=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} --key-alias=${{ secrets.ANDROID_KEY_ALIAS }} --key-password=${{ secrets.ANDROID_KEY_PASSWORD }}' || '' }} \
+            --output="$ARTIFACT_PATH"
+      - name: Upload artifacts to pages
+        if: inputs.upload-pages-artifact && matrix.platform == 'web'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build/web
+      - name: Upload artifacts to release
+        # Only upload to GitHub if in build mode.
+        if: inputs.upload-release-artifact == 'true'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ github.token }}
+          file: ${{ steps.build.outputs.artifact-path }}
+          asset_name: ${{ steps.build.outputs.artifact-name }}
+          tag: ${{ github.ref }}
+
+  deploy-github-pages:
+    if: inputs.upload-pages-artifact
+    needs:
+      - build-artifacts
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
