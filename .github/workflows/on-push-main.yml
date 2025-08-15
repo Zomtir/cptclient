@@ -1,0 +1,15 @@
+name: on-push-main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  call-test:
+    uses: ./.github/workflows/test.yml
+  call-build:
+    needs:
+      - call-test
+    uses: ./.github/workflows/build-dev.yml

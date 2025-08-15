@@ -1,0 +1,18 @@
+name: on-release
+
+on:
+  release:
+    types: [published]
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/build-release.yml
+    with:
+      upload_pages_artifact: true
+      upload_release_artifact: true
