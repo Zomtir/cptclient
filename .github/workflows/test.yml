@@ -5,7 +5,12 @@ on:
       flutter_version:
         description: 'Flutter Version'
         required: false
-        default: 'any'
+        default: '3.35.3'
+        type: choice
+        options:
+          - 'stable'
+          - 'beta'
+          - '3.35.3'
       flutter_channel:
         description: 'Flutter Channel'
         required: false
@@ -26,7 +31,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.27.3'
+        default: '3.35.3'
         type: string
       flutter_channel:
         required: false
