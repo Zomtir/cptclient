@@ -25,13 +25,13 @@ class License extends FieldInterface implements Comparable {
       : id = json['id'],
         number = json['number'],
         name = json['name'],
-        expiration = parseIsoDate(json['expiration'])!.toLocal();
+        expiration = parseIsoDate(json['expiration'])!;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'number': number,
         'name': name,
-        'expiration': formatIsoDate(expiration.toUtc()),
+        'expiration': formatIsoDate(expiration),
       };
 
   @override

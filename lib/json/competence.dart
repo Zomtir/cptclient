@@ -32,7 +32,7 @@ class Competence extends FieldInterface implements Comparable {
       user = User.fromJson(json['user']),
       skill = Skill.fromJson(json['skill']),
       rank = json['rank'],
-      date = parseIsoDate(json['date'])!.toLocal(),
+      date = parseIsoDate(json['date'])!,
       judge = User.fromJson(json['judge']);
 
   Map<String, dynamic> toJson() =>
@@ -41,7 +41,7 @@ class Competence extends FieldInterface implements Comparable {
       'user': user?.toJson(),
       'skill': skill?.toJson(),
       'rank': rank,
-      'date' : formatIsoDate(date.toUtc()),
+      'date' : formatIsoDate(date),
       'judge' : judge?.toJson()
     };
 

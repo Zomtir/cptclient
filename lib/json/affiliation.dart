@@ -34,17 +34,17 @@ class Affiliation extends FieldInterface {
       : user = json['user'] == null ? null : User.fromJson(json['user']),
         organisation = json['organisation'] == null ? null : Organisation.fromJson(json['organisation']),
         member_identifier = json['member_identifier'],
-        permission_solo_date = parseIsoDate(json['permission_solo_date'])?.toLocal(),
-        permission_team_date = parseIsoDate(json['permission_team_date'])?.toLocal(),
-        residency_move_date = parseIsoDate(json['residency_move_date'])?.toLocal();
+        permission_solo_date = parseIsoDate(json['permission_solo_date']),
+        permission_team_date = parseIsoDate(json['permission_team_date']),
+        residency_move_date = parseIsoDate(json['residency_move_date']);
 
   Map<String, dynamic> toJson() => {
         'user': user?.toJson(),
         'organisation': organisation?.toJson(),
         'member_identifier': member_identifier,
-        'permission_solo_date': formatIsoDate(permission_solo_date?.toUtc()),
-        'permission_team_date': formatIsoDate(permission_team_date?.toUtc()),
-        'residency_move_date': formatIsoDate(residency_move_date?.toUtc()),
+        'permission_solo_date': formatIsoDate(permission_solo_date),
+        'permission_team_date': formatIsoDate(permission_team_date),
+        'residency_move_date': formatIsoDate(residency_move_date),
       };
 
   @override
