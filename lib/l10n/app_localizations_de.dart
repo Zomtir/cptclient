@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -373,7 +375,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageOrganisationEdit => 'Organisationen bearbeiten';
 
   @override
-  String get pageAffiliationManagement => 'Organisationenzugehörigkeit verwalten';
+  String get pageAffiliationManagement =>
+      'Organisationenzugehörigkeit verwalten';
 
   @override
   String get pageAffiliationEdit => 'Organisationenzugehörigkeit bearbeiten';
@@ -637,7 +640,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get affiliationPermissionTeamDate => 'Mannschaftsstartrecht (Datum)';
 
   @override
-  String get affiliationResidencyMoveDate => 'Wohnhaft im Verbandsbereich seit (Datum)';
+  String get affiliationResidencyMoveDate =>
+      'Wohnhaft im Verbandsbereich seit (Datum)';
 
   @override
   String get user => 'Benutzer';
@@ -793,16 +797,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get inventory => 'Inventar';
 
   @override
-  String get inventoryOwnershipFromClubToUser => 'Übertrage das Eigentum am Gegenstand vom Verein an den Benutzer';
+  String get inventoryOwnershipFromClubToUser =>
+      'Übertrage das Eigentum am Gegenstand vom Verein an den Benutzer';
 
   @override
-  String get inventoryOwnershipFromUserToClub => 'Übertrage das Eigentum am Gegenstand vom Benutzer an einen Verein';
+  String get inventoryOwnershipFromUserToClub =>
+      'Übertrage das Eigentum am Gegenstand vom Benutzer an einen Verein';
 
   @override
-  String get inventoryPossessionFromUserToClub => 'Rückgabe des Gegenstands an den Verein';
+  String get inventoryPossessionFromUserToClub =>
+      'Rückgabe des Gegenstands an den Verein';
 
   @override
-  String get inventoryOwnershipFromUserDelete => 'Den Gegenstand vom Benutzer löschen';
+  String get inventoryOwnershipFromUserDelete =>
+      'Den Gegenstand vom Benutzer löschen';
 
   @override
   String get item => 'Gegenstand';
@@ -1037,7 +1045,8 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get trainerWaiverTaxExemptionClause => 'Gleichzeitig versichere ich hiermit, dass die Steuerbefreiung nach § 3 Nr. 26a EStG nicht bereits für eine andere ehrenamtliche Tätigkeit berücksichtigt wurde.';
+  String get trainerWaiverTaxExemptionClause =>
+      'Gleichzeitig versichere ich hiermit, dass die Steuerbefreiung nach § 3 Nr. 26a EStG nicht bereits für eine andere ehrenamtliche Tätigkeit berücksichtigt wurde.';
 
   @override
   String get trainerTaxExemptionStatement => 'Freibetragserklärung';
@@ -1048,10 +1057,12 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get trainerTaxExemptionExplanation => 'Es besteht die Möglichkeit zur Nutzung des jeweiligen Freibetragsvolumens durch den Verein bis zum höchstmöglichen Freibetrag von derzeit 3.000 Euro pro Jahr. Bei Beachtung der sonstigen Vorgaben für diese steuerbegünstigte nebenberufliche Tätigkeit handelt es sich um einen persönlichen Steuerfreibetrag, den der nebenberuflich Beschäftigte personenbezogen bei der Zusammenarbeit mit Vereinen/Verbänden und sonstigen gemeinnützigen Organisationen für Vergütungsabrechnungen nutzen kann. Dadurch sind begünstigte Übungsleitertätigkeiten weitgehend von steuer- und sozialversicherungsrechtlichen Abgaben befreit.';
+  String get trainerTaxExemptionExplanation =>
+      'Es besteht die Möglichkeit zur Nutzung des jeweiligen Freibetragsvolumens durch den Verein bis zum höchstmöglichen Freibetrag von derzeit 3.000 Euro pro Jahr. Bei Beachtung der sonstigen Vorgaben für diese steuerbegünstigte nebenberufliche Tätigkeit handelt es sich um einen persönlichen Steuerfreibetrag, den der nebenberuflich Beschäftigte personenbezogen bei der Zusammenarbeit mit Vereinen/Verbänden und sonstigen gemeinnützigen Organisationen für Vergütungsabrechnungen nutzen kann. Dadurch sind begünstigte Übungsleitertätigkeiten weitgehend von steuer- und sozialversicherungsrechtlichen Abgaben befreit.';
 
   @override
-  String get trainerTaxPartTime => 'Ich bin als Übungsleiter/in für den Verein nur nebenberuflich tätig.';
+  String get trainerTaxPartTime =>
+      'Ich bin als Übungsleiter/in für den Verein nur nebenberuflich tätig.';
 
   @override
   String trainerTaxAssignmentDeclaration(Object fiscal_year) {
@@ -1059,13 +1070,16 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get trainerTaxAssignmentExclusive => 'Ich versichere, dass ich neben meiner Übungsleitertätigkeit beim Verein keine weiteren begünstigten Tätigkeiten nach § 3 Nr. 26 EStG ausübe bzw. ausgeübt habe. Eine auch teilweise Inanspruchnahme meines persönlichen Steuerfreibetrags bei anderen Dritten ist somit nicht erfolgt.';
+  String get trainerTaxAssignmentExclusive =>
+      'Ich versichere, dass ich neben meiner Übungsleitertätigkeit beim Verein keine weiteren begünstigten Tätigkeiten nach § 3 Nr. 26 EStG ausübe bzw. ausgeübt habe. Eine auch teilweise Inanspruchnahme meines persönlichen Steuerfreibetrags bei anderen Dritten ist somit nicht erfolgt.';
 
   @override
-  String get trainerTaxAssignmentShared => 'Neben meiner Tätigkeit für den Verein werden weitere Übungsleitertätigkeit(en) für nachfolgende Einrichtung(en) ausgeübt. Hierfür wird dort bereits vom persönlichen Steuerfreibetrag nach § 3 Nr. 26 EStG ein anteiliger Betrag für die dortigen Vergütungen genutzt.';
+  String get trainerTaxAssignmentShared =>
+      'Neben meiner Tätigkeit für den Verein werden weitere Übungsleitertätigkeit(en) für nachfolgende Einrichtung(en) ausgeübt. Hierfür wird dort bereits vom persönlichen Steuerfreibetrag nach § 3 Nr. 26 EStG ein anteiliger Betrag für die dortigen Vergütungen genutzt.';
 
   @override
-  String get trainerLicenseDeclaration => 'Einreichung von Lizenzen für die Vereinspauschale';
+  String get trainerLicenseDeclaration =>
+      'Einreichung von Lizenzen für die Vereinspauschale';
 
   @override
   String trainerLicenseUsageStatement(Object club_name, Object fiscal_year) {
@@ -1073,10 +1087,12 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get trainerLicenseUsageFull => 'Die Lizenz soll voll für den Verein verwendet werden.';
+  String get trainerLicenseUsageFull =>
+      'Die Lizenz soll voll für den Verein verwendet werden.';
 
   @override
-  String get trainerLicenseUsageSplit => 'Die Lizenz soll mit dem Verein geteilt werden.';
+  String get trainerLicenseUsageSplit =>
+      'Die Lizenz soll mit dem Verein geteilt werden.';
 
   @override
   String get signatureWithDateAndPlace => 'Ort/Datum/Unterschrift';
