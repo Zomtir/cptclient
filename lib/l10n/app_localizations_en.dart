@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -631,13 +633,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get affiliationMemberIdentifier => 'Member Identifier';
 
   @override
-  String get affiliationPermissionSoloDate => 'Solo Participation Permission (Date)';
+  String get affiliationPermissionSoloDate =>
+      'Solo Participation Permission (Date)';
 
   @override
-  String get affiliationPermissionTeamDate => 'Team Participation Permission (Date)';
+  String get affiliationPermissionTeamDate =>
+      'Team Participation Permission (Date)';
 
   @override
-  String get affiliationResidencyMoveDate => 'Residency in Competing Country Since (Date)';
+  String get affiliationResidencyMoveDate =>
+      'Residency in Competing Country Since (Date)';
 
   @override
   String get user => 'User';
@@ -793,10 +798,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inventory => 'Inventory';
 
   @override
-  String get inventoryOwnershipFromClubToUser => 'Give ownership of the club item to the user';
+  String get inventoryOwnershipFromClubToUser =>
+      'Give ownership of the club item to the user';
 
   @override
-  String get inventoryOwnershipFromUserToClub => 'Give ownership of the user item to a club';
+  String get inventoryOwnershipFromUserToClub =>
+      'Give ownership of the user item to a club';
 
   @override
   String get inventoryPossessionFromUserToClub => 'Return the item to the club';
@@ -1037,7 +1044,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get trainerWaiverTaxExemptionClause => 'I hereby state that the tax exemption under § 3 No. 26a EStG has not already been applied to other voluntary activities.';
+  String get trainerWaiverTaxExemptionClause =>
+      'I hereby state that the tax exemption under § 3 No. 26a EStG has not already been applied to other voluntary activities.';
 
   @override
   String get trainerTaxExemptionStatement => 'Tax exemption declaration';
@@ -1048,10 +1056,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get trainerTaxExemptionExplanation => 'It is possible to use the applicable tax exemption amount for compensation accounting, currently up to €3,000 per year. Provided the other requirements for this tax-benefited secondary employment are met, it represents a personal tax exemption that can be applied to compensation arrangements with clubs, associations, and other nonprofit organizations. Eligible training activities are largely exempt from tax and social security contributions.';
+  String get trainerTaxExemptionExplanation =>
+      'It is possible to use the applicable tax exemption amount for compensation accounting, currently up to €3,000 per year. Provided the other requirements for this tax-benefited secondary employment are met, it represents a personal tax exemption that can be applied to compensation arrangements with clubs, associations, and other nonprofit organizations. Eligible training activities are largely exempt from tax and social security contributions.';
 
   @override
-  String get trainerTaxPartTime => 'I am employed by the club as a coach only on a secondary basis.';
+  String get trainerTaxPartTime =>
+      'I am employed by the club as a coach only on a secondary basis.';
 
   @override
   String trainerTaxAssignmentDeclaration(Object fiscal_year) {
@@ -1059,13 +1069,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get trainerTaxAssignmentExclusive => 'I state that, apart from my coaching activities for the club, I do not engage in other eligible activities under § 3 No. 26 EStG. My personal tax exemption has not been partially or fully claimed elsewhere.';
+  String get trainerTaxAssignmentExclusive =>
+      'I state that, apart from my coaching activities for the club, I do not engage in other eligible activities under § 3 No. 26 EStG. My personal tax exemption has not been partially or fully claimed elsewhere.';
 
   @override
-  String get trainerTaxAssignmentShared => 'In addition to my activity for the club, I engage in other coaching activities for the following organization(s). A portion of my personal tax exemption under § 3 No. 26 EStG is already claimed there for compensation.';
+  String get trainerTaxAssignmentShared =>
+      'In addition to my activity for the club, I engage in other coaching activities for the following organization(s). A portion of my personal tax exemption under § 3 No. 26 EStG is already claimed there for compensation.';
 
   @override
-  String get trainerLicenseDeclaration => 'Submission of licenses for the club allowance';
+  String get trainerLicenseDeclaration =>
+      'Submission of licenses for the club allowance';
 
   @override
   String trainerLicenseUsageStatement(Object club_name, Object fiscal_year) {
@@ -1073,10 +1086,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get trainerLicenseUsageFull => 'The license should be used in full for the club.';
+  String get trainerLicenseUsageFull =>
+      'The license should be used in full for the club.';
 
   @override
-  String get trainerLicenseUsageSplit => 'The license should be shared with the club.';
+  String get trainerLicenseUsageSplit =>
+      'The license should be shared with the club.';
 
   @override
   String get signatureWithDateAndPlace => 'Place/Date/Signature';
