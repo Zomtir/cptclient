@@ -7,7 +7,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
@@ -64,9 +63,6 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
       body: AppBody(
         maxWidth: 1000,
         children: <Widget>[
-          AppEventTile(
-            event: widget.event,
-          ),
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.user)),

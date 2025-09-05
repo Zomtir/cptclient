@@ -10,9 +10,7 @@ import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CompetenceEditPage.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +25,7 @@ class CompetenceOverviewPage extends StatefulWidget {
 }
 
 class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
-  List<Competence> _competences = [];
+  GlobalKey<SearchablePanelState<Competence>> searchPanelKey = GlobalKey();
 
   final FieldController<User> _ctrlUser = FieldController();
   //final FieldController<User> _ctrlJudge = FieldController();
@@ -51,7 +49,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
     List<Competence> competences = await api_admin.competence_list(
         widget.session, _ctrlUser.value, _ctrlSkill.value);
 
-    setState(() => _competences = competences);
+    searchPanelKey.currentState?.setItems(competences);
   }
 
   Future<void> _handleSelect(Competence competence, bool isDraft) async {
@@ -74,6 +72,13 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCompetenceManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: () => _handleSelect(Competence.fromVoid(), true),
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
@@ -113,21 +118,9 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
               ),*/
             ],
           ),
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: () => _handleSelect(Competence.fromVoid(), true),
-          ),
-          AppListView<Competence>(
-            items: _competences,
-            itemBuilder: (Competence competence) {
-              return InkWell(
-                onTap: () => _handleSelect(competence, false),
-                child: AppCompetenceTile(
-                  competence: competence,
-                ),
-              );
-            },
+          SearchablePanel<Competence>(
+            key: searchPanelKey,
+            onTap: (Competence competence) => _handleSelect(competence, false),
           ),
         ],
       ),

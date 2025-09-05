@@ -75,12 +75,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
         children: <Widget>[
           SearchablePanel(
             key: searchPanelKey,
-            builder: (Organisation organisation, Function(Organisation)? onSelect) => Organisation.buildListTile(
-                context,
-                organisation,
-                onTap: () => onSelect?.call(organisation),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           )
         ],
       ),

@@ -3,8 +3,9 @@
 import 'dart:math';
 
 import 'package:cptclient/json/right.dart';
-import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/crypto.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -70,29 +71,31 @@ class Team extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    return Team.buildListTile(context, this);
-  }
-
-  @override
-  Widget buildCard(BuildContext context) {
+  Widget buildInfo(BuildContext context) {
     // TODO: implement buildEntry
     throw UnimplementedError();
   }
 
-  // TODO
-  static Widget buildListTile(BuildContext context, Team? team, {List<Widget>? trailing, VoidCallback? onTap}) {
-    if (team == null) {
-      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
-    }
-    return Card(
-      child: ListTile(
-        leading: Tooltip(child: Icon(Icons.group), message: "${team.key}"),
-        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
-        title: Text("${team.name}"),
-        subtitle: Text(team.description),
-        onTap: onTap,
-      ),
+  @override
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Icon(Icons.group),
+      child: Text(name),
+      child2: Text(description),
+      trailing: trailing,
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Tooltip(child: Icon(Icons.group), message: "$key"),
+      trailing: trailing,
+      children: [
+        Text(name),
+        Text(description),
+      ],
     );
   }
 }

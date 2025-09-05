@@ -2,8 +2,11 @@
 
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppTermTile.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 
@@ -71,13 +74,42 @@ class Term extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    return AppTermTile(term: this);
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 
   @override
-  Widget buildCard(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Tooltip(message: "[$id]", child: Icon(Icons.card_membership)),
+      trailing: trailing,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${user!.firstname} ${user!.lastname}",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${club!.name}"),
+          Text(
+              "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Tooltip(message: "[$id]", child: Icon(Icons.card_membership)),
+      trailing: trailing,
+      children: [
+        Text("${user!.firstname} ${user!.lastname}",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${club!.name}"),
+        Text(
+            "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
+      ],
+    );
   }
 }

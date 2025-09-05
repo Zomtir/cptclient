@@ -57,7 +57,7 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
       body: AppBody(
         minWidth: 600,
         children: <Widget>[
-          Club.buildListTile(context, widget.club),
+          widget.club.buildCard(context),
           FilterToggle(
             hidden: false,
             onApply: _update,

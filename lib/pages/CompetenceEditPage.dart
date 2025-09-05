@@ -13,7 +13,6 @@ import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -112,29 +111,20 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCompetenceEdit),
+        actions: [
+          if (!widget.isDraft) IconButton(
+            icon: const Icon(Icons.copy),
+            onPressed: _duplicateRanking,
+          ),
+          if (!widget.isDraft) IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _deleteRanking,
+          ),
+        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            Row(
-              children: [
-                Expanded(
-                  child: AppCompetenceTile(
-                    competence: widget.competence,
-                    trailing: [
-                      IconButton(
-                        icon: const Icon(Icons.copy),
-                        onPressed: _duplicateRanking,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: _deleteRanking,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          if (!widget.isDraft) widget.competence.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceUser,
             child: AppField<User>(

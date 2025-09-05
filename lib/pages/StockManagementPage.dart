@@ -122,6 +122,13 @@ class StockManagementPageState extends State<StockManagementPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageStockManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         minWidth: 600,
@@ -180,12 +187,6 @@ class StockManagementPageState extends State<StockManagementPage> {
                 ],
               );
             }),
-          ),
-          Divider(),
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
           ),
         ],
       ),

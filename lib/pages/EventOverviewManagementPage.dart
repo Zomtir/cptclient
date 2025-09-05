@@ -14,8 +14,6 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
@@ -208,14 +206,16 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           FilterToggle(
             onApply: _update,
             children: [
@@ -275,15 +275,11 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
           ),
           AppListView(
             items: _events,
-            itemBuilder: (Event event) {
-              return InkWell(
-                onTap: () => _handleSelect(event),
-                child: AppEventTile(
-                  event: event,
-                  trailing: _buildTrailing(event),
-                ),
-              );
-            },
+            itemBuilder: (Event event) => event.buildTile(
+              context,
+              onTap: () => _handleSelect(event),
+              trailing: _buildTrailing(event),
+            ),
           )
         ],
       ),

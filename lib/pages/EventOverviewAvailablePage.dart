@@ -11,8 +11,6 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
@@ -100,14 +98,16 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventAvailable),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _createEvent,
+          ),
+        ],
       ),
       body: AppBody(
         children: [
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _createEvent,
-          ),
           FilterToggle(
             onApply: _update,
             children: [
@@ -147,15 +147,11 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
           ),
           AppListView(
             items: _events,
-            itemBuilder: (Event event) {
-              return InkWell(
-                onTap: () => _selectEvent(event),
-                child: AppEventTile(
-                  event: event,
-                ),
-              );
-            },
-          )
+            itemBuilder: (Event event) => event.buildTile(
+              context,
+              onTap: () => _selectEvent(event),
+            ),
+          ),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
@@ -38,26 +39,29 @@ class Credential extends FieldInterface {
     return [];
   }
 
-  // TODO
-  static Widget buildEntryStatic(BuildContext context, Credential? cr) {
-    if (cr == null) {
-      return Text(AppLocalizations.of(context)!.labelMissing);
-    }
-    return Text("${cr.since?.fmtDateTime(context) ?? AppLocalizations.of(context)!.undefined}");
+  @override
+  Widget buildEntry(BuildContext context) {
+    return Text("${AppLocalizations.of(context)!.userPasswordSince} ${since?.fmtDateTime(context) ?? AppLocalizations.of(context)!.undefined}");
   }
 
   @override
-  Widget buildEntry(BuildContext context) {
-    return ListTile(
-      title: Text(AppLocalizations.of(context)!.userPasswordSince),
-      subtitle: Text(since!.fmtDateTime(context)),
+  Widget buildInfo(BuildContext context) {
+    return Text("${AppLocalizations.of(context)!.userPasswordSince} ${since?.fmtDateTime(context) ?? AppLocalizations.of(context)!.undefined}");
+  }
+
+  @override
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Icon(Icons.password),
+      child: Text(AppLocalizations.of(context)!.userPasswordSince),
+      child2: Text(since!.fmtDateTime(context)),
     );
   }
 
   @override
-  Widget buildTile(BuildContext context) {
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppCard(
-      icon: Icon(Icons.password),
+      leading: Icon(Icons.password),
       children: [
         ListTile(
           title: Text(AppLocalizations.of(context)!.userPasswordSince),
@@ -65,11 +69,5 @@ class Credential extends FieldInterface {
         ),
       ],
     );
-  }
-
-  @override
-  Widget buildCard(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
   }
 }

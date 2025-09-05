@@ -57,7 +57,7 @@ class TeamRightPageState extends State<TeamRightPage> {
       ),
       body: AppBody(
         children: [
-          Team.buildListTile(context, widget.team),
+          widget.team.buildCard(context),
           Divider(),
           DataTable(
             columns: [

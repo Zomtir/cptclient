@@ -164,7 +164,7 @@ class UserInfoPageState extends State<UserInfoPage> {
           AppInfoRow(
             info: AppLocalizations.of(context)!.userPassword,
             child: ListTile(
-              title: Credential.buildEntryStatic(context, user_info!.credential),
+              title: (user_info!.credential == null) ? Text(AppLocalizations.of(context)!.labelMissing) : user_info!.credential!.buildInfo(context),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

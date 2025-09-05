@@ -2,15 +2,15 @@ import 'package:cptclient/material/widgets/RoundBox.dart';
 import 'package:flutter/material.dart';
 
 class AppCard extends StatelessWidget {
-  final Widget icon;
+  final Widget leading;
   final List<Widget> children;
-  final List<Widget> trailing;
+  final List<Widget>? trailing;
 
   const AppCard({
     super.key,
-    required this.icon,
+    required this.leading,
     required this.children,
-    this.trailing = const [],
+    this.trailing,
   });
 
   @override
@@ -20,7 +20,7 @@ class AppCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: icon,
+            child: leading,
           ),
           Expanded(
             child: Column(
@@ -28,7 +28,7 @@ class AppCard extends StatelessWidget {
               children: children,
             ),
           ),
-          ...trailing,
+          ...?trailing,
         ],
       ),
     );

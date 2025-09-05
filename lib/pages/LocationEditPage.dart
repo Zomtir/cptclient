@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppLocationTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +12,7 @@ class LocationEditPage extends StatefulWidget {
   final Location location;
   final bool isDraft;
 
-  LocationEditPage(
-      {super.key, required this.session, required this.location, required this.isDraft});
+  LocationEditPage({super.key, required this.session, required this.location, required this.isDraft});
 
   @override
   LocationEditPageState createState() => LocationEditPageState();
@@ -49,14 +47,20 @@ class LocationEditPageState extends State<LocationEditPage> {
     _gatherInfo();
 
     if (widget.location.key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.isInvalid}")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.isInvalid}"),
+        ),
+      );
       return;
     }
 
     if (widget.location.name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.isInvalid}")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.isInvalid}"),
+        ),
+      );
       return;
     }
 
@@ -80,39 +84,28 @@ class LocationEditPageState extends State<LocationEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageLocationEdit),
+        actions: [
+          if (!widget.isDraft)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: _handleDelete,
+            ),
+        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppLocationTile(
-              location: widget.location,
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _handleDelete,
-                ),
-              ],
-            ),
+          if (!widget.isDraft) widget.location.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.locationKey,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlKey,
-            ),
+            child: TextField(maxLines: 1, controller: _ctrlKey),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.locationName,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlName,
-            ),
+            child: TextField(maxLines: 1, controller: _ctrlName),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.locationDescription,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlDescription,
-            ),
+            child: TextField(maxLines: 1, controller: _ctrlDescription),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,

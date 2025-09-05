@@ -84,7 +84,7 @@ class ClubEditPageState extends State<ClubEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) Club.buildListTile(context, widget.club),
+          if (!widget.isDraft) widget.club.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubKey,
             child: TextField(

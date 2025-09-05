@@ -2,8 +2,12 @@
 
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
+import 'package:flutter/material.dart';
 
-class Requirement {
+class Requirement extends FieldInterface implements Comparable {
   final int id;
   Course? course;
   Skill? skill;
@@ -41,4 +45,69 @@ class Requirement {
         course = competence.course,
         skill = competence.skill,
         rank = competence.rank;
+
+  @override
+  bool operator ==(other) => other is Requirement && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  int compareTo(other) {
+    int criteria1 = course!.compareTo(other.course);
+    if (criteria1 != 0) return criteria1;
+
+    int criteria2 = skill!.compareTo(other.skill);
+    if (criteria2 != 0) return criteria2;
+
+    int criteria3 = rank.compareTo(other.rank);
+    return criteria3;
+  }
+
+  @override
+  get searchable {
+    return [course?.title, skill?.title, rank.toString()];
+  }
+
+  @override
+  Widget buildEntry(BuildContext context) {
+    return Tooltip(
+      message: "[$id]",
+      child: Text("${course!.title} - ${skill!.title} - $rank"),
+    );
+  }
+
+  @override
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Tooltip(message: "$id", child: Icon(Icons.verified)),
+      trailing: trailing,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("${skill!.title} $rank"),
+          ]
+      ),
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Tooltip(message: "$id", child: Icon(Icons.verified)),
+      trailing: trailing,
+      children: [
+        Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${skill!.title} $rank"),
+      ],
+    );
+  }
 }

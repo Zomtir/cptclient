@@ -87,12 +87,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
       body: AppBody(
         children: <Widget>[
           SearchablePanel<Affiliation>(
-            key: searchPanelKey,
-            builder: (Affiliation affiliation, Function(Affiliation)? onSelect) => InkWell(
-              onTap: () => onSelect?.call(affiliation),
-              child: Affiliation.buildListTile(context, affiliation),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           ),
         ],
       ),

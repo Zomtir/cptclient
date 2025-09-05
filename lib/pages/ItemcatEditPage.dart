@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppItemcatTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +12,7 @@ class ItemcatEditPage extends StatefulWidget {
   final ItemCategory category;
   final bool isDraft;
 
-  ItemcatEditPage(
-      {super.key, required this.session, required this.category, required this.isDraft});
+  ItemcatEditPage({super.key, required this.session, required this.category, required this.isDraft});
 
   @override
   ItemcatEditPageState createState() => ItemcatEditPageState();
@@ -43,8 +41,11 @@ class ItemcatEditPageState extends State<ItemcatEditPage> {
     _gatherInfo();
 
     if (widget.category.name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.isInvalid}")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.isInvalid}"),
+        ),
+      );
       return;
     }
 
@@ -68,25 +69,20 @@ class ItemcatEditPageState extends State<ItemcatEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageItemcatEdit),
+        actions: [
+          if (!widget.isDraft)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: _handleDelete,
+            ),
+        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppItemcatTile(
-              category: widget.category,
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _handleDelete,
-                ),
-              ],
-            ),
+          if (!widget.isDraft) widget.category.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemcatName,
-            child: TextField(
-              maxLines: 1,
-              controller: _ctrlName,
-            ),
+            child: TextField(maxLines: 1, controller: _ctrlName),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,

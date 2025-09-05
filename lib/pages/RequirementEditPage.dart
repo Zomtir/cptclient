@@ -9,7 +9,6 @@ import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppRequirementTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -77,18 +76,16 @@ class RequirementEditPageState extends State<RequirementEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCourseRequirements),
+        actions: [
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: _handleDelete,
+            ),
+        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) AppRequirementTile(
-            requirement: widget.requirement,
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: _handleDelete,
-              ),
-            ],
-          ),
+          if (!widget.isDraft) widget.requirement.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceSkill,
             child: SkillRankField(

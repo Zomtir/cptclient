@@ -5,7 +5,6 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppCompetenceTile.dart';
 import 'package:flutter/material.dart';
 
 class CompetenceSummaryPage extends StatefulWidget {
@@ -70,9 +69,7 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
           AppListView<Competence>(
             items: _competences,
             itemBuilder: (Competence competence) {
-              return AppCompetenceTile(
-                competence: competence,
-              );
+              return competence.buildTile(context);
             },
           ),
         ],

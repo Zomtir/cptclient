@@ -5,7 +5,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:flutter/material.dart';
 
@@ -75,20 +74,15 @@ class ClassOverviewAvailablePageState
           widget.course.buildCard(context),
           AppListView<Event>(
             items: _events,
-            itemBuilder: (Event event) {
-              return InkWell(
-                onTap: () => _selectCourseEvent(event, false),
-                child: AppEventTile(
-                  event: event,
-                  trailing: [
-                    IconButton(onPressed: null, icon: Icon(Icons.star_border)),
-                    IconButton(onPressed: null, icon: Icon(Icons.star)),
-                    IconButton(onPressed: null, icon: Icon(Icons.group_add)),
-                    IconButton(onPressed: null, icon: Icon(Icons.group_off)),
-                  ],
-                ),
-              );
-            },
+            itemBuilder: (Event event) => event.buildTile(context,
+              onTap: () => _selectCourseEvent(event, false),
+              trailing: [
+                IconButton(onPressed: null, icon: Icon(Icons.star_border)),
+                IconButton(onPressed: null, icon: Icon(Icons.star)),
+                IconButton(onPressed: null, icon: Icon(Icons.group_add)),
+                IconButton(onPressed: null, icon: Icon(Icons.group_off)),
+              ],
+            ),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
-import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
@@ -42,22 +43,6 @@ class Organisation extends FieldInterface implements Comparable {
     return [abbreviation, name];
   }
 
-  // TODO
-  static Widget buildListTile(BuildContext context, Organisation? org, {List<Widget>? trailing, VoidCallback? onTap}) {
-    if (org == null) {
-      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
-    }
-    return Card(
-      child: ListTile(
-        leading: Icon(Icons.domain),
-        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
-        title: Text("${org.abbreviation}"),
-        subtitle: Text("${org.name}"),
-        onTap: onTap,
-      ),
-    );
-  }
-
   @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
@@ -67,14 +52,31 @@ class Organisation extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    // TODO: implement buildTile
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
     throw UnimplementedError();
   }
 
   @override
-  Widget buildCard(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Tooltip(child: Icon(Icons.domain), message: "[$id]"),
+      trailing: trailing,
+      child: Text("$abbreviation"),
+      child2: Text("$name"),
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Tooltip(child: Icon(Icons.domain), message: "[$id]"),
+      trailing: trailing,
+      children: [
+        Text("$abbreviation"),
+        Text("$name"),
+      ],
+    );
   }
 }

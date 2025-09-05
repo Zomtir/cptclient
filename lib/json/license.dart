@@ -1,6 +1,7 @@
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppLicenseTile.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:diacritic/diacritic.dart';
@@ -63,6 +64,7 @@ class License extends FieldInterface implements Comparable {
     );
   }
 
+  @override
   Widget buildInfo(BuildContext context) {
     return Column(
       children: [
@@ -74,13 +76,30 @@ class License extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    return AppLicenseTile(license: this);
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Tooltip(message: "$id", child: Icon(Icons.badge)),
+      trailing: trailing,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("${expiration.fmtDate(context)}"),
+          ]
+      ),
+      onTap: onTap,
+    );
   }
 
   @override
-  Widget buildCard(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Tooltip(message: "$id", child: Icon(Icons.badge)),
+      trailing: trailing,
+      children: [
+        Text("$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${expiration.fmtDate(context)}"),
+      ],
+    );
   }
 }

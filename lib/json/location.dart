@@ -1,5 +1,6 @@
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppLocationTile.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/crypto.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -57,13 +58,36 @@ class Location extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    return AppLocationTile(location: this);
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 
   @override
-  Widget buildCard(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Tooltip(
+        message: "[$id] $key",
+        child: Icon(Icons.house),
+      ),
+      trailing: trailing,
+      child: Text("$name"),
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Tooltip(
+        message: "[$id] $key",
+        child: Icon(Icons.house),
+      ),
+      trailing: trailing,
+      children: [
+        Text("$name", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("$description"),
+      ],
+    );
   }
 }

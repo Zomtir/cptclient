@@ -16,7 +16,6 @@ Future<void> showTileSelector<T extends FieldInterface>({
     builder: (BuildContext context) {
       return TileSelector<T>(
         items: items,
-        builder: builder,
       );
     },
   );
@@ -24,12 +23,10 @@ Future<void> showTileSelector<T extends FieldInterface>({
 
 class TileSelector<T extends FieldInterface> extends StatefulWidget {
   final List<T> items;
-  final Widget Function(T, Function(T)?) builder;
 
   TileSelector({
     super.key,
     required this.items,
-    required this.builder,
   });
 
   @override
@@ -64,8 +61,7 @@ class TileSelectorState<T extends FieldInterface> extends State<TileSelector<T>>
           ),
           SearchablePanel<T>(
             items: available,
-            onSelect: _handleSelect,
-            builder: widget.builder,
+            onTap: (item) => _handleSelect(item),
           ),
         ],
       ),

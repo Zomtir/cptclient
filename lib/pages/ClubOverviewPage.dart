@@ -77,12 +77,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
         children: <Widget>[
           SearchablePanel(
             key: searchPanelKey,
-            builder: (Club club, Function(Club)? onSelect) => Club.buildListTile(
-              context,
-              club,
-              onTap: () => onSelect?.call(club),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           )
         ],
       ),

@@ -61,6 +61,7 @@ class BankAccount extends FieldInterface implements Comparable {
     );
   }
 
+  @override
   Widget buildInfo(BuildContext context) {
     return Column(
       children: [
@@ -71,9 +72,9 @@ class BankAccount extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppCard(
-      icon: Tooltip(
+      leading: Tooltip(
         message: "[$id]",
         child: Icon(Icons.account_balance),
       ),
@@ -85,7 +86,7 @@ class BankAccount extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildCard(BuildContext context) {
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     // TODO: implement buildEntry
     throw UnimplementedError();
   }

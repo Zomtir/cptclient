@@ -74,12 +74,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
         children: <Widget>[
           SearchablePanel(
             key: searchPanelKey,
-            builder: (User user, Function(User)? onSelect) => User.buildListTile(
-              context,
-              user,
-              onTap: () => onSelect?.call(user),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           )
         ],
       ),

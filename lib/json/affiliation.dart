@@ -82,13 +82,19 @@ class Affiliation extends FieldInterface {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     // TODO: implement buildTile
     throw UnimplementedError();
   }
 
   @override
-  Widget buildCard(BuildContext context) {
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     // TODO: implement buildEntry
     throw UnimplementedError();
   }

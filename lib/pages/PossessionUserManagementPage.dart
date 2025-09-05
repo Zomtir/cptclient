@@ -10,6 +10,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class PossessionUserManagementPage extends StatefulWidget {
 }
 
 class PossessionUserManagementPageState extends State<PossessionUserManagementPage> {
+  bool _locked = true;
   User? _user;
   List<Possession> _possessions = [];
 
@@ -43,7 +45,8 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
     }
 
     setState(() => _user = user);
-    _update();
+    await _update();
+    _locked = false;
   }
 
   Future<void> _update() async {
@@ -92,6 +95,9 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
 
   @override
   Widget build(BuildContext context) {
+    if (_locked) {
+      return LoadingWidget();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pagePossessionUser),
@@ -105,7 +111,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
             onPressed: _prepare,
             leading: Icon(Icons.refresh),
           ),
-          User.buildListTile(context, _user!),
+          _user!.buildTile(context),
           Divider(),
           DataTable(
             columns: [

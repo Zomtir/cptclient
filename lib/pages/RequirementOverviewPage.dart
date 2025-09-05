@@ -5,8 +5,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppRequirementTile.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/RequirementEditPage.dart';
 import 'package:flutter/material.dart';
 
@@ -57,25 +55,23 @@ class RequirementOverviewPageState extends State<RequirementOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCourseRequirements),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: () => _handleSelect(Requirement.fromCourse(widget.course), true),
+          ),
+        ],
       ),
       body: AppBody(
         children: [
           widget.course.buildCard(context),
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: () => _handleSelect(Requirement.fromCourse(widget.course), true),
-          ),
           AppListView<Requirement>(
             items: _requirements,
-            itemBuilder: (Requirement requirement) {
-              return InkWell(
-                onTap: () => _handleSelect(requirement, false),
-                child: AppRequirementTile(
-                  requirement: requirement,
-                ),
-              );
-            },
+            itemBuilder: (Requirement requirement) => requirement.buildTile(
+              context,
+              onTap: () => _handleSelect(requirement, false),
+            ),
           ),
         ],
       ),
