@@ -67,7 +67,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
             text: AppLocalizations.of(context)!.actionAdd,
             onPressed: () => showTileSelector<T>(
               context: context,
-              items: this._available.difference<T>(this._selected),
+              items: _available.difference<T>(_selected),
               builder: (T item, Function(T)? onSelect) {
                 return Row(
                   children: [
@@ -88,7 +88,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
             ),
           ),
           AppListView<T>(
-            items: this._selected,
+            items: _selected,
             itemBuilder: (T item) {
               return Row(
                 children: [

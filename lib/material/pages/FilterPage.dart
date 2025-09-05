@@ -77,7 +77,7 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
             text: AppLocalizations.of(context)!.actionAdd,
             onPressed: () => showTileSelector<T>(
               context: context,
-              items: this._available.difference<T>(this._selected.map((tuple) => tuple.$1).toList()),
+              items: _available.difference<T>(_selected.map((tuple) => tuple.$1).toList()),
               builder: (T item, Function(T)? onSelect) {
                 return Row(
                   children: [
@@ -86,11 +86,11 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.block),
-                      onPressed: () {onSelect?.call(item); this._edit(item, false);},
+                      onPressed: () {onSelect?.call(item); _edit(item, false);},
                     ),
                     IconButton(
                       icon: const Icon(Icons.light_mode_outlined),
-                      onPressed: () {onSelect?.call(item); this._edit(item, true);},
+                      onPressed: () {onSelect?.call(item); _edit(item, true);},
                     ),
                   ],
                 );
@@ -98,7 +98,7 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
             ),
           ),
           AppListView<(T,bool)>(
-            items: this._selected,
+            items: _selected,
             itemBuilder: ((T,bool) item) {
               return Row(
                 children: [
@@ -107,15 +107,15 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
-                    onPressed: () => this._remove(item.$1),
+                    onPressed: () => _remove(item.$1),
                   ),
                   IconButton(
                     icon: const Icon(Icons.block),
-                    onPressed: (item.$2 == true) ? () => this._edit(item.$1, false) : null,
+                    onPressed: (item.$2 == true) ? () => _edit(item.$1, false) : null,
                   ),
                   IconButton(
                     icon: const Icon(Icons.light_mode_outlined),
-                    onPressed: (item.$2 == false) ? () => this._edit(item.$1, true) : null,
+                    onPressed: (item.$2 == false) ? () => _edit(item.$1, true) : null,
                   ),
                 ],
               );

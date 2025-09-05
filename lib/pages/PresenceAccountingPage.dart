@@ -54,7 +54,7 @@ class PresenceAccountingPageState extends State<PresenceAccountingPage> {
     _ctrlDonation.text = _nf.format(0.00);
   }
 
-  _handleSubmission() {
+  void _handleSubmission() {
     final num? unit_duration_num = _nf.tryParse(_ctrlUnitDuration.text);
     if (unit_duration_num == null) {
       messageText("${AppLocalizations.of(context)!.trainerUnitDuration} ${AppLocalizations.of(context)!.isInvalid}");

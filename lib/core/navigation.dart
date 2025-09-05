@@ -66,65 +66,65 @@ void _encodeList<T> (String prefString, Function() toJson) {
   prefs.setString(prefString, base64Encode(utf8.encode(json)));
 }
 
-applyCredentials() {
+void applyCredentials() {
   userCredentials = _decodeList('UserCredentials', (entry) => Credential.fromJson(entry));
   eventCredentials = _decodeList('EventCredentials', (entry) => Credential.fromJson(entry));
 }
 
-addUserCredential(Credential credential) {
+void addUserCredential(Credential credential) {
   userCredentials.add(credential);
   _encodeList('UserCredentials', () => userCredentials.map((e) => e.toJson()).toList());
 }
 
-removeUserCredential(Credential credential) {
+void removeUserCredential(Credential credential) {
   userCredentials.remove(credential);
   _encodeList('UserCredentials', () => userCredentials.map((e) => e.toJson()).toList());
 }
 
-addEventCredential(Credential credential) {
+void addEventCredential(Credential credential) {
   eventCredentials.add(credential);
   _encodeList('EventCredentials', () => eventCredentials.map((e) => e.toJson()).toList());
 }
 
-removeEventCredential(Credential credential) {
+void removeEventCredential(Credential credential) {
   eventCredentials.remove(credential);
   _encodeList('EventCredentials', () => eventCredentials.map((e) => e.toJson()).toList());
 }
 
-applySessions() {
+void applySessions() {
   userSessions = _decodeList('UserSessions', (entry) => UserSession.fromJson(entry));
   eventSessions = _decodeList('EventSessions', (entry) => EventSession.fromJson(entry));
 }
 
-addUserSession(UserSession session) {
+void addUserSession(UserSession session) {
   userSessions.add(session);
   var json = jsonEncode(userSessions.map((e) => e.toJson()).toList());
   prefs.setString('UserSessions', base64Encode(utf8.encode(json)));
 }
 
-removeUserSession(UserSession session) {
+void removeUserSession(UserSession session) {
   userSessions.remove(session);
   var json = jsonEncode(userSessions.map((e) => e.toJson()).toList());
   prefs.setString('UserSessions', base64Encode(utf8.encode(json)));
 }
 
-addEventSession(EventSession session) {
+void addEventSession(EventSession session) {
   eventSessions.add(session);
   var json = jsonEncode(eventSessions.map((e) => e.toJson()).toList());
   prefs.setString('EventSessions', base64Encode(utf8.encode(json)));
 }
 
-removeEventSession(EventSession session) {
+void removeEventSession(EventSession session) {
   eventSessions.remove(session);
   var json = jsonEncode(eventSessions.map((e) => e.toJson()).toList());
   prefs.setString('EventSessions', base64Encode(utf8.encode(json)));
 }
 
-applyLocale(BuildContext context) {
+void applyLocale(BuildContext context) {
   context.findAncestorStateOfType<CptState>()!.setLocale(Locale(prefs.getString('Language')!));
 }
 
-applyServer() {
+void applyServer() {
   prefs.reload();
   configServer(
     prefs.getString('ServerScheme')!,

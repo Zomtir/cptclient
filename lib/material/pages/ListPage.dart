@@ -49,7 +49,7 @@ class ListPageState<T extends FieldInterface> extends State<ListPage<T>> {
         children: [
           widget.tile,
           AppListView<T>(
-            items: this._list,
+            items: _list,
             itemBuilder: (T item) => item.buildTile(context),
           ),
         ],

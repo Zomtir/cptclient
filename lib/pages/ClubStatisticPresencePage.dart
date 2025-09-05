@@ -105,7 +105,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     );
   }
 
-  _handlePresenceTable() {
+  void _handlePresenceTable() {
     String fileName = "CPT_club_${widget.club.id}_user_${widget.userID}_presence_$_ctrlRole";
     List<String> headers = [
       AppLocalizations.of(context)!.eventTitle,

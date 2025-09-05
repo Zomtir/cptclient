@@ -18,7 +18,7 @@ class AttributeField<T extends FieldInterface> extends StatelessWidget {
     required this.builder,
   });
 
-  _handleEdit(BuildContext context) {
+  void _handleEdit(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(

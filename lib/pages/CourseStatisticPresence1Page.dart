@@ -57,7 +57,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
     );
   }
 
-  _handleCSV() {
+  void _handleCSV() {
     String fileName = "CPT_course_${widget.course.id}_user_${widget.userID}_presence";
     List<String> headers = [
       AppLocalizations.of(context)!.eventTitle,

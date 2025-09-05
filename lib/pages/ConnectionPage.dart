@@ -37,7 +37,7 @@ class ConnectionPageState extends State<ConnectionPage> {
     _loadPreferences();
   }
 
-  _loadPreferences() async {
+  Future<void> _loadPreferences() async {
     _prefs = await SharedPreferences.getInstance();
     _ctrlServerScheme.text = _prefs.getString('ServerScheme')!;
     _ctrlServerHost.text = _prefs.getString('ServerHost')!;
@@ -58,31 +58,31 @@ class ConnectionPageState extends State<ConnectionPage> {
     _testConnection();
   }
 
-  _updateServerScheme(String text) {
+  void _updateServerScheme(String text) {
     _prefs.setString('ServerScheme', text);
     navi.applyServer();
   }
 
-  _updateServerHost(String text) {
+  void _updateServerHost(String text) {
     _prefs.setString('ServerHost', text);
     navi.applyServer();
   }
 
-  _updateServerPort(String text) {
+  void _updateServerPort(String text) {
     var port = int.tryParse(text) ?? 443;
     _prefs.setInt('ServerPort', port);
     navi.applyServer();
   }
 
-  _updateClientScheme(String text) {
+  void _updateClientScheme(String text) {
     _prefs.setString('ClientScheme', text);
   }
 
-  _updateClientHost(String text) {
+  void _updateClientHost(String text) {
     _prefs.setString('ClientHost', text);
   }
 
-  _updateClientPort(String text) {
+  void _updateClientPort(String text) {
     var port = int.tryParse(text) ?? 443;
     _prefs.setInt('ClientPort', port);
   }

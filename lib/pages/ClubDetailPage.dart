@@ -33,7 +33,7 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     super.initState();
   }
 
-  _handleEdit() async {
+  Future<void> _handleEdit() async {
     await Navigator.push(
       context,
       MaterialPageRoute(

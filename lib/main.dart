@@ -9,9 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await navi.initPreferences();
-  await navi.applyServer();
-  await navi.applyCredentials();
-  await navi.applySessions();
+  navi.applyServer();
+  navi.applyCredentials();
+  navi.applySessions();
 
   runApp(CptApp());
 }
@@ -33,7 +33,7 @@ class CptState extends State<CptApp> {
     lazyLoad(context);
   }
 
-  lazyLoad(BuildContext context) async {
+  Future<void> lazyLoad(BuildContext context) async {
     // Cannot modify the current state before it is 100% initialized
     // navi.applyLocale();
     SharedPreferences prefs = await SharedPreferences.getInstance();
