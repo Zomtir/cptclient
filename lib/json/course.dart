@@ -67,19 +67,25 @@ class Course extends FieldInterface implements Comparable {
   }
 
   @override
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
+  }
+
+  @override
   Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppTile(
-      leading: Tooltip(message: "$key", child: Icon(Icons.info)),
+      leading: Tooltip(message: "$key", child: Icon(Icons.book)),
       child: Text("$title"),
       onTap: onTap,
     );
   }
 
   @override
-  Widget buildCard(BuildContext context) {
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return Card(
       child: ListTile(
-        leading: Tooltip(message: "$key", child: Icon(Icons.info)),
+        leading: Tooltip(message: "$key", child: Icon(Icons.book)),
         title: Text("$title"),
       ),
     );

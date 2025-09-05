@@ -90,7 +90,7 @@ class TeamEditPageState extends State<TeamEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) Team.buildListTile(context, widget.team),
+          if (!widget.isDraft) widget.team.buildCard(context),
           if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: AppLocalizations.of(context)!.teamKey,

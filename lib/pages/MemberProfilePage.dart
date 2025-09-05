@@ -45,11 +45,9 @@ class MemberProfilePageState extends State<MemberProfilePage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageUserProfile),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.pageUserProfile)),
       body: AppBody(
         children: <Widget>[
           AppInfoRow(
@@ -63,31 +61,26 @@ class MemberProfilePageState extends State<MemberProfilePage> {
 
           AppInfoRow(
             info: AppLocalizations.of(context)!.userPassword,
-            child: ListTile(
-              title: Credential.buildEntryStatic(context, credential),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<Credential?>(
-                      context: context,
-                      widget: PasswordPicker(credits: credential, nullable: false),
-                      onChanged: (Credential? cr) async {
-                        if (credential == null || cr == null) return;
-                        api_regular.user_password_edit(widget.session, cr.password!, cr.salt!);
-                        _update();
-                      },
+            child: (credential == null)
+                ? ListTile(title: Text(AppLocalizations.of(context)!.labelMissing))
+                : ListTile(
+                    title: credential!.buildInfo(context),
+                    trailing: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => useAppDialog<Credential?>(
+                        context: context,
+                        widget: PasswordPicker(credits: credential, nullable: false),
+                        onChanged: (Credential? cr) async {
+                          if (cr == null) return;
+                          api_regular.user_password_edit(widget.session, cr.password!, cr.salt!);
+                          _update();
+                        },
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
           ),
           Divider(),
-          InfoSection(
-            title: AppLocalizations.of(context)!.labelPermission,
-          ),
+          InfoSection(title: AppLocalizations.of(context)!.labelPermission),
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.labelPermission)),
@@ -98,18 +91,8 @@ class MemberProfilePageState extends State<MemberProfilePage> {
               return DataRow(
                 cells: <DataCell>[
                   DataCell(Text(Right.localeList(context)[index])),
-                  DataCell(
-                    Checkbox(
-                      value: _permissions[index].read,
-                      onChanged: null,
-                    ),
-                  ),
-                  DataCell(
-                    Checkbox(
-                      value: _permissions[index].write,
-                      onChanged: null,
-                    ),
-                  ),
+                  DataCell(Checkbox(value: _permissions[index].read, onChanged: null)),
+                  DataCell(Checkbox(value: _permissions[index].write, onChanged: null)),
                 ],
               );
             }),
@@ -118,5 +101,4 @@ class MemberProfilePageState extends State<MemberProfilePage> {
       ),
     );
   }
-
 }

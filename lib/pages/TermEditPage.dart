@@ -12,7 +12,6 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppTermTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -112,19 +111,16 @@ class TermEditPageState extends State<TermEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTermEdit),
+        actions: [
+          if (!widget.isDraft) IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _deleteTerm,
+          ),
+        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppTermTile(
-              term: widget.term,
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _deleteTerm,
-                ),
-              ],
-            ),
+          if (!widget.isDraft) widget.term.buildCard(context),
           if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: AppLocalizations.of(context)!.termUser,

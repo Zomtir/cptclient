@@ -135,7 +135,7 @@ class ClubDetailPageState extends State<ClubDetailPage> {
       ),
       body: AppBody(
         children: <Widget>[
-          Club.buildListTile(context, widget.club),
+          widget.club.buildCard(context),
           MenuSection(
             title: AppLocalizations.of(context)!.term,
             children: [

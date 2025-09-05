@@ -5,7 +5,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/EventCreateBatchPage.dart';
 import 'package:cptclient/pages/EventCreatePage.dart';
@@ -116,14 +115,10 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
           ),
           AppListView<Event>(
             items: _events,
-            itemBuilder: (Event event) {
-              return InkWell(
-                onTap: () => _selectCourseEvent(event, false),
-                child: AppEventTile(
-                  event: event,
-                ),
-              );
-            },
+            itemBuilder: (Event event) => event.buildTile(
+              context,
+              onTap: () => _selectCourseEvent(event, false),
+            ),
           ),
         ],
       ),

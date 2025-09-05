@@ -2,20 +2,13 @@ import 'dart:core';
 
 import 'package:cptclient/material/fields/AppSearchField.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:flutter/material.dart';
 
 class SearchablePanel<T extends FieldInterface> extends StatefulWidget {
   final List<T> items;
-  final Function(T)? onSelect;
-  final Widget Function(T, Function(T)?) builder;
+  final void Function(T)? onTap;
 
-  SearchablePanel({
-    super.key,
-    this.items = const [],
-    this.onSelect,
-    required this.builder,
-  });
+  SearchablePanel({super.key, this.items = const [], this.onTap});
 
   @override
   SearchablePanelState createState() => SearchablePanelState<T>();
@@ -55,16 +48,13 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppSearchField(
-          controller: _ctrlFilter,
-          onChanged: update,
-        ),
-        AppListView<T>(
-          items: _visible,
-          itemBuilder: (T item) => widget.builder(item, (item) {
-            widget.onSelect?.call(item);
-            update();
-          }),
+        AppSearchField(controller: _ctrlFilter, onChanged: update),
+        ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _visible.length,
+          itemBuilder: (context, index) =>
+              _visible[index].buildTile(context, onTap: () => widget.onTap?.call(_visible[index])),
         ),
       ],
     );

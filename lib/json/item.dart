@@ -1,6 +1,8 @@
 import 'package:cptclient/json/itemcat.dart';
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/tiles/AppItemTile.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 
@@ -52,13 +54,31 @@ class Item extends FieldInterface implements Comparable {
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    return AppItemTile(item: this);
+  Widget buildInfo(BuildContext context) {
+    // TODO: implement buildEntry
+    throw UnimplementedError();
   }
 
   @override
-  Widget buildCard(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Icon(Icons.checkroom),
+      trailing: trailing,
+      child: Text("$name"),
+      child2: Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppCard(
+      leading: Icon(Icons.checkroom),
+      trailing: trailing,
+      children: [
+        Text("$name"),
+        Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
+      ],
+    );
   }
 }

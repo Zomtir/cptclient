@@ -228,6 +228,10 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
                 title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleAttendanceSieves('SUPPORTER'),
               ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.eventSpectator),
+                onTap: () => _handleAttendanceSieves('SPECTATOR'),
+              ),
             ],
           ),
           Divider(),
@@ -258,6 +262,10 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
               ListTile(
                 title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleStatisticAttendance('SUPPORTER'),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.eventSpectator),
+                onTap: () => _handleStatisticAttendance('SPECTATOR'),
               ),
             ],
           ),

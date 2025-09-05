@@ -6,8 +6,8 @@ import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
-import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -39,58 +39,54 @@ class User extends FieldInterface implements Comparable {
 
   User.fromInfo(this.id, this.key, this.firstname, this.lastname) : active = false;
 
-  User.fromVoid()
-      : id = 0,
-        key = "",
-        firstname = "",
-        lastname = "";
+  User.fromVoid() : id = 0, key = "", firstname = "", lastname = "";
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        key = json['key'],
-        enabled = json['enabled'],
-        credential = json['credential'] == null ? null : Credential.fromJson(json['credential']),
-        active = json['active'],
-        firstname = json['firstname'],
-        lastname = json['lastname'],
-        nickname = json['nickname'],
-        address = json['address'],
-        email = json['email'],
-        phone = json['phone'],
-        birth_date = parseIsoDate(json['birth_date'])?.toLocal(),
-        birth_location = json['birth_location'],
-        nationality = json['nationality'],
-        gender = Gender.fromNullString(json['gender']),
-        height = json['height'],
-        weight = json['weight'],
-        bank_account = json['bank_account'] == null ? null : BankAccount.fromJson(json['bank_account']),
-        license_main = json['license_main'] == null ? null : License.fromJson(json['license_main']),
-        license_extra = json['license_extra'] == null ? null : License.fromJson(json['license_extra']),
-        note = json['note'];
+    : id = json['id'],
+      key = json['key'],
+      enabled = json['enabled'],
+      credential = json['credential'] == null ? null : Credential.fromJson(json['credential']),
+      active = json['active'],
+      firstname = json['firstname'],
+      lastname = json['lastname'],
+      nickname = json['nickname'],
+      address = json['address'],
+      email = json['email'],
+      phone = json['phone'],
+      birth_date = parseIsoDate(json['birth_date'])?.toLocal(),
+      birth_location = json['birth_location'],
+      nationality = json['nationality'],
+      gender = Gender.fromNullString(json['gender']),
+      height = json['height'],
+      weight = json['weight'],
+      bank_account = json['bank_account'] == null ? null : BankAccount.fromJson(json['bank_account']),
+      license_main = json['license_main'] == null ? null : License.fromJson(json['license_main']),
+      license_extra = json['license_extra'] == null ? null : License.fromJson(json['license_extra']),
+      note = json['note'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'key': key,
-        'enabled': enabled,
-        'credential': credential,
-        'active': active,
-        'firstname': firstname,
-        'lastname': lastname,
-        'nickname': nickname,
-        'address': address,
-        'email': email,
-        'phone': phone,
-        'birth_date': formatIsoDate(birth_date?.toUtc()),
-        'birth_location': birth_location,
-        'nationality': nationality,
-        'gender': gender?.name,
-        'height': height,
-        'weight': weight,
-        'bank_account': bank_account,
-        'license_main': license_main,
-        'license_extra': license_extra,
-        'note': note
-      };
+    'id': id,
+    'key': key,
+    'enabled': enabled,
+    'credential': credential,
+    'active': active,
+    'firstname': firstname,
+    'lastname': lastname,
+    'nickname': nickname,
+    'address': address,
+    'email': email,
+    'phone': phone,
+    'birth_date': formatIsoDate(birth_date?.toUtc()),
+    'birth_location': birth_location,
+    'nationality': nationality,
+    'gender': gender?.name,
+    'height': height,
+    'weight': weight,
+    'bank_account': bank_account,
+    'license_main': license_main,
+    'license_extra': license_extra,
+    'note': note,
+  };
 
   @override
   bool operator ==(other) => other is User && id == other.id;
@@ -115,34 +111,37 @@ class User extends FieldInterface implements Comparable {
 
   @override
   Widget buildEntry(BuildContext context) {
-    return Tooltip(
-      message: "[$id] $key",
-      child: Text("$firstname $lastname"),
-    );
+    return Tooltip(message: "[$id] $key", child: Text("$firstname $lastname"));
   }
 
   @override
-  Widget buildTile(BuildContext context) {
-    return buildListTile(context, this);
-  }
-
-  @override
-  Widget buildCard(BuildContext context) {
+  Widget buildInfo(BuildContext context) {
     // TODO: implement buildEntry
     throw UnimplementedError();
   }
 
-  // TODO
-  static Widget buildListTile(BuildContext context, User? user, {List<Widget>? trailing, VoidCallback? onTap}) {
-    if (user == null) {
-      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
-    }
+  @override
+  Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
+    return AppTile(
+      leading: Tooltip(message: "$key", child: Icon(Icons.person)),
+      child: Row(
+        children: [
+          Text("$firstname $lastname\t"),
+          if (nickname != null) Text("($nickname)", style: TextStyle(fontStyle: FontStyle.italic)),
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
+  @override
+  Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return Card(
       child: ListTile(
-        leading: Tooltip(child: Icon(Icons.person), message: "${user.key}"),
+        leading: Tooltip(child: Icon(Icons.person), message: "$key"),
         trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
-        title: Text("${user.firstname} ${user.lastname}"),
-        subtitle: Text(user.nickname ?? ''),
+        title: Text("$firstname $lastname"),
+        subtitle: nickname == null ? null : Text(nickname!),
         onTap: onTap,
       ),
     );

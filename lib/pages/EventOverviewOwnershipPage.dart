@@ -15,8 +15,6 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
@@ -130,7 +128,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventOwners,
-          tile: AppEventTile(event: event),
+          tile: event.buildCard(context),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_owner.event_owner_list(widget.session, event),
           onCallAdd: (user) => api_owner.event_owner_add(widget.session, event, user),
@@ -149,7 +147,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventAttendancePresences,
-          tile: AppEventTile(event: event),
+          tile: event.buildCard(context),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_owner.event_attendance_presence_list(widget.session, event, role),
           onCallAdd: (user) => api_owner.event_attendance_presence_add(widget.session, event, user, role),
@@ -176,14 +174,16 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventOwnership),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: [
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           FilterToggle(
             onApply: _update,
             children: [
@@ -227,15 +227,11 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
           ),
           AppListView(
             items: _events,
-            itemBuilder: (Event event) {
-              return InkWell(
-                onTap: () => _handleSelect(event),
-                child: AppEventTile(
-                  event: event,
-                  trailing: _buildTrailing(event),
-                ),
-              );
-            },
+            itemBuilder: (Event event) => event.buildTile(
+              context,
+              onTap: () => _handleSelect(event),
+              trailing: _buildTrailing(event),
+            ),
           )
         ],
       ),

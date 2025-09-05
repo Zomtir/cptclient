@@ -4,7 +4,6 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/SkillEditPage.dart';
 import 'package:flutter/material.dart';
 
@@ -66,21 +65,19 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageSkillManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           SearchablePanel(
             key: searchPanelKey,
-            builder: (Skill skill, Function(Skill)? onSelect) => InkWell(
-              onTap: () => onSelect?.call(skill),
-              child: skill.buildTile(context),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           )
         ],
       ),

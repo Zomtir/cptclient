@@ -80,11 +80,7 @@ class TermOverviewPageState extends State<TermOverviewPage> {
           ),
           SearchablePanel(
             key: searchPanelKey,
-            builder: (Term term, Function(Term)? onSelect) => InkWell(
-              onTap: () => onSelect?.call(term),
-              child: term.buildTile(context),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           )
         ],
       ),

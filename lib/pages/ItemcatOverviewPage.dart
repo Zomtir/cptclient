@@ -4,7 +4,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/ItemcatEditPage.dart';
 import 'package:flutter/material.dart';
 
@@ -67,21 +66,19 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageItemcatOverview),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-          ),
           SearchablePanel(
             key: searchPanelKey,
-            builder: (ItemCategory category, Function(ItemCategory)? onSelect) => InkWell(
-              onTap: () => onSelect?.call(category),
-              child: category.buildTile(context),
-            ),
-            onSelect: _handleSelect,
+            onTap: _handleSelect,
           )
         ],
       ),

@@ -6,7 +6,6 @@ import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/extensions.dart';
 import 'package:cptclient/utils/result.dart';
@@ -57,9 +56,6 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
         maxWidth: 1500,
         minWidth: 1500,
         children: <Widget>[
-          AppEventTile(
-            event: widget.event,
-          ),
           DataTable(
             columns: [
               DataColumn(

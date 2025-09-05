@@ -179,6 +179,10 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
                 title: Text(AppLocalizations.of(context)!.eventSupporter),
                 onTap: () => _handleAttendanceSieves('SUPPORTER'),
               ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.eventSpectator),
+                onTap: () => _handleAttendanceSieves('SPECTATOR'),
+              ),
             ],
           ),
         ],

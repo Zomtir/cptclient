@@ -60,7 +60,7 @@ class ClubStatisticOrganisationPageState extends State<ClubStatisticOrganisation
         maxWidth: 1500,
         minWidth: 1500,
         children: <Widget>[
-          Club.buildListTile(context, widget.club),
+          widget.club.buildCard(context),
           FilterToggle(
             hidden: false,
             onApply: _update,

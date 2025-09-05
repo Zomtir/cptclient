@@ -22,11 +22,7 @@ Future<T?> showTilePicker<T extends FieldInterface>({
             ),
             SearchablePanel<T>(
               items: items,
-              onSelect: (item) => Navigator.pop(context, item),
-              builder: (item, Function(T)? onSelect) => InkWell(
-                onTap: () => onSelect?.call(item),
-                child: item.buildTile(context),
-              ),
+              onTap: (item) => Navigator.pop(context, item),
             ),
           ],
         ),

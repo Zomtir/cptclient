@@ -32,7 +32,6 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/FilterPage.dart';
 import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:cptclient/material/widgets/SectionToggle.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticOrganisationPage.dart';
@@ -210,7 +209,7 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventOwners,
-          tile: AppEventTile(event: _event!),
+          tile: _event!.buildCard(context),
           onCallAvailable: callAvailable,
           onCallSelected: callSelected!,
           onCallAdd: callAdd!,
@@ -308,7 +307,7 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: "$heading ${AppLocalizations.of(context)!.pageEventAttendancePresences}",
-          tile: AppEventTile(event: _event!),
+          tile: _event!.buildCard(context),
           onCallAvailable: callAvailable!,
           onCallSelected: callSelected!,
           onCallAdd: callAdd!,
@@ -354,7 +353,7 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => FilterPage<User>(
           title: "$heading ${AppLocalizations.of(context)!.pageEventAttendanceFilters}",
-          tile: AppEventTile(event: _event!),
+          tile: _event!.buildCard(context),
           onCallAvailable: callAvailable!,
           onCallSelected: callSelected!,
           onCallEdit: callEdit!,
@@ -380,7 +379,7 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => ListPage<User>(
           title: "$heading ${AppLocalizations.of(context)!.pageEventAttendanceRegistrations}",
-          tile: AppEventTile(event: _event!),
+          tile: _event!.buildCard(context),
           onCallList: callList!,
         ),
       ),

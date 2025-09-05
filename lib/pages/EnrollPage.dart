@@ -7,7 +7,6 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
-import 'package:cptclient/material/tiles/AppEventTile.dart';
 import 'package:flutter/material.dart';
 
 class EnrollPage extends StatefulWidget {
@@ -48,7 +47,7 @@ class EnrollPageState extends State<EnrollPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventAttendancePresences,
-          tile: AppEventTile(event: _event!),
+          tile: _event!.buildCard(context),
           onCallAvailable: () => api_service.event_attendance_presence_pool(widget.session, role),
           onCallSelected: () => api_service.event_attendance_presence_list(widget.session, role),
           onCallAdd: (user) => api_service.event_attendance_presence_add(widget.session, user, role),
@@ -77,7 +76,7 @@ class EnrollPageState extends State<EnrollPage> {
       ),
       body: AppBody(
         children: [
-          AppEventTile(event: _event!),
+          _event!.buildCard(context),
           MenuSection(
             title: AppLocalizations.of(context)!.pageEventAttendancePresences,
             children: [

@@ -8,7 +8,6 @@ import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/tiles/AppItemTile.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
@@ -80,19 +79,16 @@ class ItemEditPageState extends State<ItemEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageItemEdit),
+        actions: [
+          if (!widget.isDraft) IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _handleDelete,
+          ),
+        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft)
-            AppItemTile(
-              item: widget.item,
-              trailing: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: _handleDelete,
-                ),
-              ],
-            ),
+          if (!widget.isDraft) widget.item.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemName,
             child: TextField(
