@@ -5,7 +5,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.27.3'
+        default: '3.35.3'
         type: string
       upload_pages_artifact:
         description: 'Upload build artifact for GH pages'
