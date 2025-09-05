@@ -1,4 +1,4 @@
-name: on-push-main
+name: on-push-stable
 
 on:
   push:
