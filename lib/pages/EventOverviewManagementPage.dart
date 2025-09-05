@@ -172,7 +172,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   }
 
   // ignore: unused_element
-  _pickDateBegin(DateTime newDateBegin) {
+  void _pickDateBegin(DateTime newDateBegin) {
     DateTime newDateEnd = _ctrlDateEnd.getDateTime()!;
 
     if (newDateEnd.isBefore(newDateBegin)) newDateEnd = newDateBegin;
@@ -188,7 +188,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   }
 
   // ignore: unused_element
-  _pickDateEnd(DateTime newDateEnd) {
+  void _pickDateEnd(DateTime newDateEnd) {
     DateTime newDateBegin = _ctrlDateBegin.getDateTime()!;
 
     if (newDateBegin.isAfter(newDateEnd)) newDateBegin = newDateEnd;

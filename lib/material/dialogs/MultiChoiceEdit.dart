@@ -47,28 +47,34 @@ class MultiChoiceEditState<T> extends State<MultiChoiceEdit<T>> {
       ],
     );
 
-    return Column(
-      children: [
-        if (widget.nullable)
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.undefined),
-            leading: Radio<T?>(
-              value: null,
-              groupValue: value,
-              onChanged: (T? v) => setState(() => value = v),
-            ),
-          ),
-        ...widget.items.map((i) =>
+    Widget radioGroup = RadioGroup<T?>(
+      groupValue: value,
+      onChanged: (T? v) => setState(() => value = v),
+      child: Column(
+        children: <Widget>[
+          if (widget.nullable)
             ListTile(
-              title: widget.builder(i),
+              title: Text(AppLocalizations.of(context)!.undefined),
               leading: Radio<T?>(
-                value: i,
-                groupValue: value,
-                onChanged: (T? v) => setState(() => value = v),
+                value: null,
               ),
             ),
-        ),
-        actions,
+          ...widget.items.map((i) =>
+              ListTile(
+                title: widget.builder(i),
+                leading: Radio<T?>(
+                  value: i,
+                ),
+              ),
+          ),
+        ],
+      ),
+    );
+
+    return Column(
+      children: [
+        radioGroup,
+        actions
       ],
     );
   }

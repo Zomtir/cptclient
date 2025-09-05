@@ -17,42 +17,40 @@ class ConfirmationField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: RadioListTile<Confirmation>(
-            value: Confirmation.positive,
-            groupValue: confirmation,
-            title: Text(AppLocalizations.of(context)!.confirmationPositive),
-            onChanged: onChanged,
-            toggleable: true,
-            dense: true,
-            contentPadding: EdgeInsets.all(0),
+    return RadioGroup<Confirmation>(
+      groupValue: confirmation,
+      onChanged: onChanged,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: RadioListTile<Confirmation>(
+              value: Confirmation.positive,
+              title: Text(AppLocalizations.of(context)!.confirmationPositive),
+              toggleable: true,
+              dense: true,
+              contentPadding: EdgeInsets.all(0),
+            ),
           ),
-        ),
-        Expanded(
-          child: RadioListTile<Confirmation>(
-            value: Confirmation.neutral,
-            groupValue: confirmation,
-            title: Text(AppLocalizations.of(context)!.confirmationNeutral),
-            onChanged: onChanged,
-            toggleable: true,
-            dense: true,
-            contentPadding: EdgeInsets.all(0),
+          Expanded(
+            child: RadioListTile<Confirmation>(
+              value: Confirmation.neutral,
+              title: Text(AppLocalizations.of(context)!.confirmationNeutral),
+              toggleable: true,
+              dense: true,
+              contentPadding: EdgeInsets.all(0),
+            ),
           ),
-        ),
-        Expanded(
-          child: RadioListTile<Confirmation>(
-            value: Confirmation.negative,
-            groupValue: confirmation,
-            title: Text(AppLocalizations.of(context)!.confirmationNegative),
-            onChanged: onChanged,
-            toggleable: true,
-            dense: true,
-            contentPadding: EdgeInsets.all(0),
+          Expanded(
+            child: RadioListTile<Confirmation>(
+              value: Confirmation.negative,
+              title: Text(AppLocalizations.of(context)!.confirmationNegative),
+              toggleable: true,
+              dense: true,
+              contentPadding: EdgeInsets.all(0),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -40,7 +40,7 @@ class EventExportPageState extends State<EventExportPage> {
     _update();
   }
 
-  _update() async {
+  Future<void> _update() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String scheme = prefs.getString('ClientScheme')!;
     String host = prefs.getString('ClientHost')!;

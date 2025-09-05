@@ -38,7 +38,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     super.initState();
   }
 
-  _handleEdit() async {
+  Future<void> _handleEdit() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -68,7 +68,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
     );
   }
 
-  _handleDelete() async {
+  Future<void> _handleDelete() async {
     if (!await api_admin.course_delete(widget.session, widget.course)) return;
 
     Navigator.pop(context);

@@ -115,7 +115,7 @@ class EventDetailPageState extends State<EventDetailPage> {
     setState(() => _moderatorship = result.unwrap());
   }
 
-  _updateEvent() async {
+  Future<void> _updateEvent() async {
     Result<Event>? result;
     if (_adminship_read) {
       result = await api_admin.event_info(widget.session, widget.eventID);
@@ -129,12 +129,12 @@ class EventDetailPageState extends State<EventDetailPage> {
     setState(() => _event = result!.unwrap());
   }
 
-  _updateCredential() async {
+  Future<void> _updateCredential() async {
     Credential? credential = await api_admin.event_credential(widget.session, widget.eventID);
     setState(() => _credential = credential);
   }
 
-  _handleExport() async {
+  Future<void> _handleExport() async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -152,7 +152,7 @@ class EventDetailPageState extends State<EventDetailPage> {
     _updateBookmark();
   }
 
-  _handleDelete() async {
+  Future<void> _handleDelete() async {
     Result<()>? result;
     if (_adminship_read) {
       result = await api_admin.event_delete(widget.session, _event!);

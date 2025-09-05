@@ -24,7 +24,7 @@ class SettingsPageState extends State<SettingsPage> {
     _loadPreferences();
   }
 
-  _loadPreferences() async {
+  Future<void> _loadPreferences() async {
     _prefs = await SharedPreferences.getInstance();
 
     setState(() {

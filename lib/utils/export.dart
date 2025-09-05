@@ -7,7 +7,7 @@ import 'package:csv/csv.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 
-exportPNG(String fileName, Uint8List image) async {
+Future<void> exportPNG(String fileName, Uint8List image) async {
   await saveSelector(
     content: image,
     fileExtension: 'png',
@@ -16,7 +16,7 @@ exportPNG(String fileName, Uint8List image) async {
   );
 }
 
-Future<void> exportCSV(fileName, List<List<dynamic>> table) async {
+Future<void> exportCSV(String fileName, List<List<dynamic>> table) async {
   const converter = ListToCsvConverter();
   final content = converter.convert(table);
   await saveSelector(
@@ -27,7 +27,7 @@ Future<void> exportCSV(fileName, List<List<dynamic>> table) async {
   );
 }
 
-exportPDF(String fileName, Uint8List doc) async {
+Future<void> exportPDF(String fileName, Uint8List doc) async {
   await saveSelector(
     content: doc,
     fileExtension: 'pdf',

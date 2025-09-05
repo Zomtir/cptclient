@@ -38,7 +38,7 @@ class CourseClubEditPageState extends State<CourseClubEditPage> {
     _update();
   }
 
-  _update() async {
+  Future<void> _update() async {
     List<Club> courses = await widget.callList();
     int? courseID = await widget.callInfo();
 
