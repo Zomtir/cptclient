@@ -21,14 +21,14 @@ class Possession implements Comparable {
       : id = json['id'],
         item = Item.fromJson(json['item']),
         user = User.fromJson(json['user']),
-        acquisitionDate = parseIsoDate(json['acquisition_date'])?.toLocal(),
+        acquisitionDate = parseIsoDate(json['acquisition_date']),
         owned = json['owned'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'item': item.toJson(),
         'user': user.toJson(),
-        'acquisition_date': formatIsoDate(acquisitionDate?.toUtc()),
+        'acquisition_date': formatIsoDate(acquisitionDate),
         'owned': owned,
       };
 

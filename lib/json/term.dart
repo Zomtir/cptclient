@@ -30,15 +30,15 @@ class Term extends FieldInterface implements Comparable {
       : id = json['id'],
         user = User.fromJson(json['user']),
         club = Club.fromJson(json['club']),
-        begin = parseIsoDate(json['begin'])?.toLocal(),
-        end = parseIsoDate(json['end'])?.toLocal();
+        begin = parseIsoDate(json['begin']),
+        end = parseIsoDate(json['end']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'user': user?.toJson(),
         'club': club?.toJson(),
-        'begin': formatIsoDate(begin?.toUtc()),
-        'end': formatIsoDate(end?.toUtc()),
+        'begin': formatIsoDate(begin),
+        'end': formatIsoDate(end),
       };
 
   @override
