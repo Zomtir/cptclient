@@ -35,7 +35,9 @@ Future<bool> location_create(UserSession session, Location location) async {
 
 Future<bool> location_edit(UserSession session, Location location) async {
   final response = await client.post(
-    uri('/admin/location_edit'),
+    uri('/admin/location_edit', {
+      'location_id': location.id.toString(),
+    }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Token': session.token,
@@ -48,7 +50,9 @@ Future<bool> location_edit(UserSession session, Location location) async {
 
 Future<bool> location_delete(UserSession session, Location location) async {
   final response = await client.head(
-    uri('/admin/location_delete', {'location': location.id.toString()}),
+    uri('/admin/location_delete', {
+      'location_id': location.id.toString(),
+    }),
     headers: {
       'Token': session.token,
     },
