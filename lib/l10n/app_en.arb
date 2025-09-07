@@ -16,6 +16,7 @@
   "labelGeneralAttendence": "General Attendence",
   "labelPersonalAttendence": "Personal Attendence",
   "labelLanguage": "Language",
+  "labelDateFormat": "Date Format",
   "labelServerScheme": "Server Protocol",
   "labelServerHost": "Server Host",
   "labelServerPort": "Server Port",

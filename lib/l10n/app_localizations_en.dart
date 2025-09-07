@@ -60,6 +60,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelLanguage => 'Language';
 
   @override
+  String get labelDateFormat => 'Date Format';
+
+  @override
   String get labelServerScheme => 'Server Protocol';
 
   @override

@@ -17,6 +17,7 @@ class SettingsPageState extends State<SettingsPage> {
   late SharedPreferences _prefs;
 
   Language? _ctrlLanguage;
+  String? _ctrlDateFormat;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class SettingsPageState extends State<SettingsPage> {
 
     setState(() {
       _ctrlLanguage = Language(Locale(_prefs.getString('Language')!));
+      _ctrlDateFormat = _prefs.getString('DateFormat')!;
     });
   }
 
@@ -66,6 +68,32 @@ class SettingsPageState extends State<SettingsPage> {
                 );
               }).toList(),
               //selectedItemBuilder,
+            ),
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.labelDateFormat,
+            child: DropdownButton<String>(
+              value: _ctrlDateFormat,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.grey),
+              isExpanded: true,
+              underline: Container(
+                height: 2,
+                color: Colors.grey,
+              ),
+              onChanged: (String? fmt) async {
+                if (fmt == null) return;
+                await _prefs.setString('DateFormat', fmt);
+                setState(() => _ctrlDateFormat = fmt);
+              },
+              items: ["ISO", "EU", "US"].map<DropdownMenuItem<String>>((String df) {
+                return DropdownMenuItem<String>(
+                  value: df,
+                  child: Text(df),
+                );
+              }).toList(),
             ),
           ),
         ],
