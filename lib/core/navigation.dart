@@ -43,6 +43,7 @@ Future<void> initPreferences() async {
   }
 
   await putMissingString('Language', 'en');
+  await putMissingString('DateFormat', 'ISO');
   await putMissingString('ServerScheme', Env.serverScheme.fromString() ?? configMap['ServerScheme']);
   await putMissingString('ServerHost', Env.serverHost.fromString() ?? configMap['ServerHost']);
   await putMissingInt('ServerPort', Env.serverPort.fromInt() ?? int.tryParse(configMap['ServerPort'])!);

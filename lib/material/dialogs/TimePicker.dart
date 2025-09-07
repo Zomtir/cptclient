@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
+import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
@@ -24,13 +25,13 @@ class TimePicker extends StatefulWidget {
 class _TimePickerState extends State<TimePicker> {
   late TimeOfDay _selectedTime;
 
-  final TextEditingController _ctrlHour = TextEditingController();
-  final TextEditingController _ctrlMinute = TextEditingController();
+  final TextEditingController _ctrlTime = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _selectTime(widget.initialTime);
+    _changeTime(widget.initialTime);
+    _formatTimeField(_selectedTime);
   }
 
   void _handleConfirm() {
@@ -41,76 +42,89 @@ class _TimePickerState extends State<TimePicker> {
     }
   }
 
-  void _parseTimeFields() {
-    int hour = int.tryParse(_ctrlHour.text) ?? _selectedTime.hour;
-    int minute = int.tryParse(_ctrlMinute.text) ?? _selectedTime.minute;
-    _selectTime(TimeOfDay(hour: hour, minute: minute));
+  TimeOfDay _parseTimeField() {
+     return parseTime(_ctrlTime.text) ?? _selectedTime;
   }
 
-  void _selectTime(TimeOfDay time) {
-    _selectedTime = TimeOfDay(hour: time.hour % TimeOfDay.hoursPerDay, minute: time.minute % TimeOfDay.minutesPerHour);
+  void _formatTimeField(TimeOfDay tod) {
+    String ts = formatTime(tod);
+    setState(() => _ctrlTime.text = ts);
+  }
 
+  void _changeTime(TimeOfDay time) {
     setState(() {
-      _ctrlHour.text = _selectedTime.hour.toString();
-      _ctrlMinute.text = _selectedTime.minute.toString();
+      _selectedTime = TimeOfDay(hour: time.hour % TimeOfDay.hoursPerDay, minute: time.minute % TimeOfDay.minutesPerHour);
     });
   }
 
   void _handleHourJump(int jump) {
-    _parseTimeFields();
     if (jump == 0) return;
     TimeOfDay newTime = TimeOfDay(hour: _selectedTime.hour + jump, minute: _selectedTime.minute);
-    _selectTime(newTime);
+    _changeTime(newTime);
+    _formatTimeField(_selectedTime);
   }
 
   void _handleMinuteJump(int jump) {
-    _parseTimeFields();
     if (jump == 0) return;
     TimeOfDay newTime =
         TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute + jump % TimeOfDay.minutesPerHour);
-    _selectTime(newTime);
+    _changeTime(newTime);
+    _formatTimeField(_selectedTime);
   }
 
   void _handleHourPick(int hour) {
     TimeOfDay newTime = TimeOfDay(hour: hour, minute: _selectedTime.minute);
-    _selectTime(newTime);
+    _changeTime(newTime);
+    _formatTimeField(_selectedTime);
   }
 
   void _handleMinutePick(int minute) {
     TimeOfDay newTime = TimeOfDay(hour: _selectedTime.hour, minute: minute);
-    _selectTime(newTime);
+    _changeTime(newTime);
+    _formatTimeField(_selectedTime);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Widget form = Container(
+    final Widget selector = Container(
       alignment: AlignmentDirectional.center,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dateHour,
-                style: TextStyle(color: Colors.amber),
-                textAlign: TextAlign.center,
-              ),
-              NumberSelector(controller: _ctrlHour, onChange: _handleHourJump),
-            ],
-          ),
+
+          NumberSelector(child: Text(
+            AppLocalizations.of(context)!.dateHour,
+            style: TextStyle(color: Colors.amber),
+            textAlign: TextAlign.center,
+          ), onChange: _handleHourJump,),
           SizedBox(width: 5),
-          Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dateMinute,
-                style: TextStyle(color: Colors.amber),
-                textAlign: TextAlign.center,
-              ),
-              NumberSelector(controller: _ctrlMinute, onChange: _handleMinuteJump),
-            ],
-          ),
+
+        NumberSelector(child:Text(
+          AppLocalizations.of(context)!.dateMinute,
+          style: TextStyle(color: Colors.amber),
+          textAlign: TextAlign.center,
+        ), onChange: _handleMinuteJump,),
         ],
+      ),
+    );
+
+    Widget form = SizedBox(
+      width: 120,
+      child: Focus(
+        child: TextFormField(
+          controller: _ctrlTime,
+          keyboardType: TextInputType.text,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.fromLTRB(0, 10, 2, 0),
+          ),
+        ),
+        onFocusChange: (hasFocus) {
+          if (!hasFocus) _changeTime(_parseTimeField());
+        },
       ),
     );
 
@@ -172,7 +186,9 @@ class _TimePickerState extends State<TimePicker> {
 
     return Column(
       children: [
+        Text(_selectedTime.format(context), style: TextStyle(fontWeight: FontWeight.bold)),
         form,
+        selector,
         SizedBox(height: 10),
         clock,
         actions,

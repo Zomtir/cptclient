@@ -200,6 +200,12 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get labelLanguage;
 
+  /// No description provided for @labelDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Format'**
+  String get labelDateFormat;
+
   /// No description provided for @labelServerScheme.
   ///
   /// In en, this message translates to:

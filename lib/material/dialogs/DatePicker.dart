@@ -4,6 +4,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/format.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +15,9 @@ class DatePicker extends StatefulWidget {
     DateTime? firstDate,
     DateTime? lastDate,
     this.nullable = true,
-  })  : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
-        firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1900)),
-        lastDate = DateUtils.dateOnly(lastDate ?? DateTime(2100)) {
+  }) : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
+       firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1900)),
+       lastDate = DateUtils.dateOnly(lastDate ?? DateTime(2100)) {
     assert(
       (this.lastDate).isAfter(this.firstDate),
       'lastDate $this.lastDate must be on or after firstDate $this.firstDate.',
@@ -45,14 +46,13 @@ class _DatePickerState extends State<DatePicker> {
   int _monthlyDays = 0;
   int _firstDayOffset = 0;
 
-  final TextEditingController _ctrlYear = TextEditingController();
-  final TextEditingController _ctrlMonth = TextEditingController();
-  final TextEditingController _ctrlDay = TextEditingController();
+  final TextEditingController _ctrlDate = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _selectDate(widget.initialDate);
+    _changeDate(widget.initialDate);
+    _formatDateField(_selectedDate);
   }
 
   void _handleConfirm() {
@@ -63,96 +63,108 @@ class _DatePickerState extends State<DatePicker> {
     }
   }
 
-  void _parseDateFields() {
-    int year = int.tryParse(_ctrlYear.text) ?? _selectedDate.year;
-    int month = int.tryParse(_ctrlMonth.text) ?? _selectedDate.month;
-    int day = int.tryParse(_ctrlDay.text) ?? _selectedDate.day;
-
-    _selectDate(DateTime(year, month, day));
+  DateTime _parseDateField() {
+    return parseUnknownDate(_ctrlDate.text) ?? _selectedDate;
   }
 
-  void _selectDate(DateTime date) {
+  void _formatDateField(DateTime dt) {
+    String ds = formatUnknownDate(dt);
+    setState(() => _ctrlDate.text = ds);
+  }
+
+  void _changeDate(DateTime date) {
     if (date.isBefore(widget.firstDate)) date = widget.firstDate;
     if (date.isAfter(widget.lastDate)) date = widget.lastDate;
 
-    _selectedDate = date;
-    _monthlyDays = DateTime(_selectedDate.year, _selectedDate.month + 1, 0).day;
-    _firstDayOffset = DateTime(_selectedDate.year, _selectedDate.month).weekday - 1;
-
     setState(() {
-      _ctrlYear.text = _selectedDate.year.toString();
-      _ctrlMonth.text = _selectedDate.month.toString();
-      _ctrlDay.text = _selectedDate.day.toString();
+      _selectedDate = date;
+      _monthlyDays = DateTime(_selectedDate.year, _selectedDate.month + 1, 0).day;
+      _firstDayOffset = DateTime(_selectedDate.year, _selectedDate.month).weekday - 1;
     });
   }
 
   void _handleYearJump(int jump) {
-    _parseDateFields();
     if (jump == 0) return;
     int maxDays = DateTime(_selectedDate.year + jump, _selectedDate.month + 1, 0).day;
     DateTime newDate = DateTime(_selectedDate.year + jump, _selectedDate.month, min(_selectedDate.day, maxDays));
-    _selectDate(newDate);
+    _changeDate(newDate);
+    _formatDateField(_selectedDate);
   }
 
   void _handleMonthJump(int jump) {
-    _parseDateFields();
     if (jump == 0) return;
     int maxDays = DateTime(_selectedDate.year, _selectedDate.month + jump + 1, 0).day;
     DateTime newDate = DateTime(_selectedDate.year, _selectedDate.month + jump, min(_selectedDate.day, maxDays));
-    _selectDate(newDate);
+    _changeDate(newDate);
+    _formatDateField(_selectedDate);
   }
 
   void _handleDayJump(int jump) {
-    _parseDateFields();
     if (jump == 0) return;
     DateTime newDate = _selectedDate.add(Duration(days: jump));
-    _selectDate(newDate);
+    _changeDate(newDate);
+    _formatDateField(_selectedDate);
   }
 
   void _handleDayPick(int day) {
     DateTime newDate = DateTime(_selectedDate.year, _selectedDate.month, day);
-    _selectDate(newDate);
+    setState(() => _ctrlDate.text = formatIsoDate(_selectedDate) ?? '');
+    _changeDate(newDate);
+    _formatDateField(_selectedDate);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Widget form = Container(
+    final Widget selector = Container(
       alignment: AlignmentDirectional.center,
       child: Flex(
-        direction: MediaQuery.sizeOf(context).width > 400 ? Axis.horizontal : Axis.vertical,
+        direction: MediaQuery.sizeOf(context).width > 300 ? Axis.horizontal : Axis.vertical,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dateYear,
-                style: TextStyle(color: Colors.amber),
-                textAlign: TextAlign.center,
-              ),
-              NumberSelector(controller: _ctrlYear, onChange: _handleYearJump),
-            ],
+          NumberSelector(
+            child: Text(
+              AppLocalizations.of(context)!.dateYear,
+              style: TextStyle(color: Colors.amber),
+              textAlign: TextAlign.center,
+            ),
+            onChange: _handleYearJump,
           ),
-          Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dateMonth,
-                style: TextStyle(color: Colors.amber),
-                textAlign: TextAlign.center,
-              ),
-              NumberSelector(controller: _ctrlMonth, onChange: _handleMonthJump),
-            ],
+          NumberSelector(
+            child: Text(
+              AppLocalizations.of(context)!.dateMonth,
+              style: TextStyle(color: Colors.amber),
+              textAlign: TextAlign.center,
+            ),
+            onChange: _handleMonthJump,
           ),
-          Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dateDay,
-                style: TextStyle(color: Colors.amber),
-                textAlign: TextAlign.center,
-              ),
-              NumberSelector(controller: _ctrlDay, onChange: _handleDayJump),
-            ],
+          NumberSelector(
+            child: Text(
+              AppLocalizations.of(context)!.dateDay,
+              style: TextStyle(color: Colors.amber),
+              textAlign: TextAlign.center,
+            ),
+            onChange: _handleDayJump,
           ),
         ],
+      ),
+    );
+
+    Widget form = SizedBox(
+      width: 180,
+      child: Focus(
+        child: TextFormField(
+          controller: _ctrlDate,
+          keyboardType: TextInputType.text,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.fromLTRB(0, 10, 2, 0),
+          ),
+        ),
+        onFocusChange: (hasFocus) {
+          if (!hasFocus) _changeDate(_parseDateField());
+        },
       ),
     );
 
@@ -164,7 +176,8 @@ class _DatePickerState extends State<DatePicker> {
         physics: NeverScrollableScrollPhysics(),
         crossAxisCount: 7,
         childAspectRatio: 1.5,
-        children: List.generate(7, (index) {
+        children:
+            List.generate(7, (index) {
               return Center(
                 child: Text('${weekdays[index]}', style: TextStyle(color: Colors.amber)),
               );
@@ -211,7 +224,9 @@ class _DatePickerState extends State<DatePicker> {
 
     return Column(
       children: [
+        Text(_selectedDate.fmtDate(context), style: TextStyle(fontWeight: FontWeight.bold)),
         form,
+        selector,
         calendar,
         actions,
       ],

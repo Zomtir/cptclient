@@ -16,6 +16,7 @@
   "labelGeneralAttendence": "Allgemeine Anwesenheit",
   "labelPersonalAttendence": "Persönliche Anwesenheit",
   "labelLanguage": "Sprache",
+  "labelDateFormat": "Datumsformat",
   "labelServerScheme": "Server-Protokoll",
   "labelServerHost": "Server-Host",
   "labelServerPort": "Server-Port",
