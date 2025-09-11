@@ -128,7 +128,6 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventOwners,
-          tile: event.buildCard(context),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_owner.event_owner_list(widget.session, event),
           onCallAdd: (user) => api_owner.event_owner_add(widget.session, event, user),
@@ -147,7 +146,6 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventAttendancePresences,
-          tile: event.buildCard(context),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_owner.event_attendance_presence_list(widget.session, event, role),
           onCallAdd: (user) => api_owner.event_attendance_presence_add(widget.session, event, user, role),

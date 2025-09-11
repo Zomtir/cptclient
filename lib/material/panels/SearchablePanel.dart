@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 class SearchablePanel<T extends FieldInterface> extends StatefulWidget {
   final List<T> items;
   final void Function(T)? onTap;
+  final List<Widget> Function(BuildContext, T)? actionBuilder;
 
-  SearchablePanel({super.key, this.items = const [], this.onTap});
+  SearchablePanel({super.key, this.items = const [], this.onTap, this.actionBuilder});
 
   @override
   SearchablePanelState createState() => SearchablePanelState<T>();
@@ -53,8 +54,11 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: _visible.length,
-          itemBuilder: (context, index) =>
-              _visible[index].buildTile(context, onTap: () => widget.onTap?.call(_visible[index])),
+          itemBuilder: (context, index) => _visible[index].buildTile(
+            context,
+            onTap: () => widget.onTap?.call(_visible[index]),
+            trailing: widget.actionBuilder?.call(context, _visible[index])
+          ),
         ),
       ],
     );

@@ -3,7 +3,7 @@ import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
-import 'package:cptclient/material/dialogs/TextEdit.dart';
+import 'package:cptclient/material/dialogs/TextEditDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
@@ -16,8 +16,7 @@ class OrganisationDetailPage extends StatefulWidget {
   final UserSession session;
   final Organisation organisation;
 
-  OrganisationDetailPage(
-      {super.key, required this.session, required this.organisation});
+  OrganisationDetailPage({super.key, required this.session, required this.organisation});
 
   @override
   OrganisationDetailPageState createState() => OrganisationDetailPageState();
@@ -33,7 +32,9 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
 
   void _handleSubmit() async {
     if (widget.organisation.abbreviation.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText(
+        "${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.isInvalid}",
+      );
       return;
     }
 
@@ -55,7 +56,9 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
   void _handleAffiliations() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OrganisationAffiliationPage(session: widget.session, organisation: widget.organisation)),
+      MaterialPageRoute(
+        builder: (context) => OrganisationAffiliationPage(session: widget.session, organisation: widget.organisation),
+      ),
     );
   }
 
@@ -86,18 +89,17 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: TextEdit(
-                        text: widget.organisation.abbreviation,
+                      child: TextEditDialog(
+                        initialValue: widget.organisation.abbreviation,
                         minLength: 1,
                         maxLength: 10,
-                        nullable: false,
+                        onConfirm: (String text) {
+                          setState(() => widget.organisation.abbreviation = text);
+                          _handleSubmit();
+                        },
                       ),
-                      onChanged: (String text) {
-                        setState(() => widget.organisation.abbreviation = text);
-                        _handleSubmit();
-                      },
                     ),
                   ),
                 ],
@@ -117,18 +119,17 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: TextEdit(
-                        text: widget.organisation.name,
+                      child: TextEditDialog(
+                        initialValue: widget.organisation.name,
                         minLength: 1,
                         maxLength: 30,
-                        nullable: false,
+                        onConfirm: (String text) {
+                          setState(() => widget.organisation.name = text);
+                          _handleSubmit();
+                        },
                       ),
-                      onChanged: (String text) {
-                        setState(() => widget.organisation.name = text);
-                        _handleSubmit();
-                      },
                     ),
                   ),
                 ],

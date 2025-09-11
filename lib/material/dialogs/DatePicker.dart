@@ -1,20 +1,28 @@
 import 'dart:math';
 
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
-import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class DatePicker extends StatefulWidget {
+  final DateTime initialDate;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final VoidCallback? onDelete;
+  final VoidCallback? onReset;
+  final Function(DateTime)? onConfirm;
+
   DatePicker({
     super.key,
     DateTime? initialDate,
     DateTime? firstDate,
     DateTime? lastDate,
-    this.nullable = true,
+    this.onDelete,
+    this.onReset,
+    this.onConfirm,
   }) : initialDate = DateUtils.dateOnly(initialDate ?? DateTime.now()),
        firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1900)),
        lastDate = DateUtils.dateOnly(lastDate ?? DateTime(2100)) {
@@ -32,17 +40,12 @@ class DatePicker extends StatefulWidget {
     );
   }
 
-  final DateTime initialDate;
-  final DateTime firstDate;
-  final DateTime lastDate;
-  final bool nullable;
-
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
 
 class _DatePickerState extends State<DatePicker> {
-  late DateTime _selectedDate = widget.initialDate;
+  late DateTime _selectedDate;
   int _monthlyDays = 0;
   int _firstDayOffset = 0;
 
@@ -53,14 +56,6 @@ class _DatePickerState extends State<DatePicker> {
     super.initState();
     _changeDate(widget.initialDate);
     _formatDateField(_selectedDate);
-  }
-
-  void _handleConfirm() {
-    if (_selectedDate == widget.initialDate) {
-      Navigator.pop(context);
-    } else {
-      Navigator.pop(context, Success(_selectedDate));
-    }
   }
 
   DateTime _parseDateField() {
@@ -201,34 +196,40 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
 
-    final Widget actions = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        AppButton(
-          onPressed: () => Navigator.pop(context),
-          text: AppLocalizations.of(context)!.actionCancel,
-        ),
-        if (widget.nullable) Spacer(),
-        if (widget.nullable)
-          AppButton(
-            onPressed: () => Navigator.pop(context, Success(null)),
-            text: AppLocalizations.of(context)!.actionRemove,
+    return AppDialog(
+      child: Column(
+        children: [
+          Text(_selectedDate.fmtDate(context), style: TextStyle(fontWeight: FontWeight.bold)),
+          form,
+          selector,
+          calendar,
+        ],
+      ),
+      actions: [
+        if (widget.onDelete != null)
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              widget.onDelete?.call();
+              Navigator.pop(context);
+            },
           ),
-        Spacer(),
-        AppButton(
-          onPressed: _handleConfirm,
-          text: AppLocalizations.of(context)!.actionConfirm,
-        ),
-      ],
-    );
-
-    return Column(
-      children: [
-        Text(_selectedDate.fmtDate(context), style: TextStyle(fontWeight: FontWeight.bold)),
-        form,
-        selector,
-        calendar,
-        actions,
+        if (widget.onReset != null)
+          IconButton(
+            icon: const Icon(Icons.circle_outlined),
+            onPressed: () {
+              widget.onReset?.call();
+              Navigator.pop(context);
+            },
+          ),
+        if (widget.onConfirm != null)
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              widget.onConfirm?.call(_selectedDate);
+              Navigator.pop(context);
+            },
+          ),
       ],
     );
   }

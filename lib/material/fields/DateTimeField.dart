@@ -38,30 +38,34 @@ class _DateTimeFieldState extends State<DateTimeField> {
   }
 
   void _handleDateChange(BuildContext context) async {
-    useAppDialog<DateTime>(
+    useAppDialog(
       context: context,
-      widget: DatePicker(initialDate: widget.controller.getDate()),
-      onChanged: (DateTime dt) {
-        setState(() {
-          widget.controller.setDate(dt);
-          dateController.text = DateFormat("yyyy-MM-dd").format(widget.controller.getDate());
-        });
-        widget.onUpdate?.call(widget.controller.getDateTime()!);
-      },
+      child: DatePicker(
+        initialDate: widget.controller.getDate(),
+        onConfirm: (DateTime dt) {
+          setState(() {
+            widget.controller.setDate(dt);
+            dateController.text = DateFormat("yyyy-MM-dd").format(widget.controller.getDate());
+          });
+          widget.onUpdate?.call(widget.controller.getDateTime()!);
+        },
+      ),
     );
   }
 
   void _handleTimeChange(BuildContext context) async {
-    useAppDialog<TimeOfDay>(
+    useAppDialog(
       context: context,
-      widget: TimePicker(initialTime: widget.controller.getTime()),
-      onChanged: (TimeOfDay tod) {
-        setState(() {
-          widget.controller.setTime(tod);
-          timeController.text = DateFormat("HH:mm").format(widget.controller.getDate());
-        });
-        widget.onUpdate?.call(widget.controller.getDateTime()!);
-      },
+      child: TimePicker(
+        initialTime: widget.controller.getTime(),
+        onConfirm: (TimeOfDay tod) {
+          setState(() {
+            widget.controller.setTime(tod);
+            timeController.text = DateFormat("HH:mm").format(widget.controller.getDate());
+          });
+          widget.onUpdate?.call(widget.controller.getDateTime()!);
+        },
+      ),
     );
   }
 

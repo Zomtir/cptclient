@@ -38,10 +38,12 @@ class ClubStatisticPresencePage extends StatefulWidget {
 }
 
 class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
-  final DateTimeController _ctrlBegin =
-      DateTimeController(dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 1, day: 1));
-  final DateTimeController _ctrlEnd =
-      DateTimeController(dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 12, day: 31));
+  final DateTimeController _ctrlBegin = DateTimeController(
+    dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 1, day: 1),
+  );
+  final DateTimeController _ctrlEnd = DateTimeController(
+    dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 12, day: 31),
+  );
   late User _ctrlUser;
   String _ctrlRole = 'leader';
 
@@ -117,7 +119,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       AppLocalizations.of(context)!.dateMinute,
     ];
     List<List<String?>> table = [headers];
-    table.addAll(_eventList.map((row) => [
+    table.addAll(
+      _eventList.map(
+        (row) => [
           row.title.toString(),
           row.location?.name ?? AppLocalizations.of(context)!.unknown,
           formatIsoDate(row.begin),
@@ -125,7 +129,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
           formatIsoDate(row.end),
           formatIsoTime(row.end),
           row.end.difference(row.begin).inMinutes.toString(),
-        ]));
+        ],
+      ),
+    );
     exportCSV(fileName, table);
   }
 
@@ -161,15 +167,14 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                     onPressed: () async {
                       var users = await api_admin.user_list(widget.session);
                       users.sort();
-                      useAppDialog<User?>(
+                      useAppDialog(
                         context: context,
-                        widget: MultiChoiceEdit<User>(
+                        child: MultiChoiceEdit<User>(
                           items: users,
                           value: _ctrlUser,
                           builder: (user) => user.buildEntry(context),
-                          nullable: false,
+                          onConfirm: (User? user) => setState(() => _ctrlUser = user!),
                         ),
-                        onChanged: (User? user) => setState(() => _ctrlUser = user!),
                       );
                     },
                   ),
@@ -189,17 +194,14 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                   title: Text(_ctrlRole),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String?>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: MultiChoiceEdit<String>(
+                      child: MultiChoiceEdit<String>(
                         items: ["leader", "supporter", "participant", "spectator"],
                         value: "leader",
                         builder: (role) => Text(role),
-                        nullable: false,
+                        onConfirm: (String? role) => setState(() => _ctrlRole = role ?? 'leader'),
                       ),
-                      onChanged: (String? role) {
-                        setState(() => _ctrlRole = role ?? 'leader');
-                      },
                     ),
                   ),
                 ),
