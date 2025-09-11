@@ -22,7 +22,7 @@ import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
 import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
-import 'package:cptclient/material/dialogs/TextEdit.dart';
+import 'package:cptclient/material/dialogs/TextEditDialog.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/dialogs/TimePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -209,7 +209,6 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventOwners,
-          tile: _event!.buildCard(context),
           onCallAvailable: callAvailable,
           onCallSelected: callSelected!,
           onCallAdd: callAdd!,
@@ -262,15 +261,15 @@ class EventDetailPageState extends State<EventDetailPage> {
 
     callEdit(Course? course) => api_owner.event_course_edit(widget.session, _event!, course);
 
-    useAppDialog<Course?>(
+    useAppDialog(
       context: context,
-      widget: MultiChoiceEdit<Course>(
+      child: MultiChoiceEdit<Course>(
         items: resultItems.unwrap(),
         value: resultValue.unwrap(),
         builder: (course) => course.buildTile(context),
-        nullable: true,
+        onReset: () => callEdit(null),
+        onConfirm: callEdit,
       ),
-      onChanged: callEdit,
     );
   }
 
@@ -307,7 +306,6 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: "$heading ${AppLocalizations.of(context)!.pageEventAttendancePresences}",
-          tile: _event!.buildCard(context),
           onCallAvailable: callAvailable!,
           onCallSelected: callSelected!,
           onCallAdd: callAdd!,
@@ -335,16 +333,16 @@ class EventDetailPageState extends State<EventDetailPage> {
     }
 
     if (_adminship_write) {
-      callEdit =
-          (user, access) => api_admin.event_attendance_filter_edit(widget.session, _event!.id, user.id, role, access);
+      callEdit = (user, access) =>
+          api_admin.event_attendance_filter_edit(widget.session, _event!.id, user.id, role, access);
       callRemove = (user) => api_admin.event_attendance_filter_remove(widget.session, _event!.id, user.id, role);
     } else if (_ownership) {
-      callEdit =
-          (user, access) => api_owner.event_attendance_filter_edit(widget.session, _event!.id, user.id, role, access);
+      callEdit = (user, access) =>
+          api_owner.event_attendance_filter_edit(widget.session, _event!.id, user.id, role, access);
       callRemove = (user) => api_owner.event_attendance_filter_remove(widget.session, _event!.id, user.id, role);
     } else if (_moderatorship) {
-      callEdit =
-          (user, access) => api_mod.event_attendance_filter_edit(widget.session, _event!.id, user.id, role, access);
+      callEdit = (user, access) =>
+          api_mod.event_attendance_filter_edit(widget.session, _event!.id, user.id, role, access);
       callRemove = (user) => api_mod.event_attendance_filter_remove(widget.session, _event!.id, user.id, role);
     }
 
@@ -353,7 +351,6 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => FilterPage<User>(
           title: "$heading ${AppLocalizations.of(context)!.pageEventAttendanceFilters}",
-          tile: _event!.buildCard(context),
           onCallAvailable: callAvailable!,
           onCallSelected: callSelected!,
           onCallEdit: callEdit!,
@@ -423,16 +420,20 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _updateAttendanceRegistration(String role) async {
-    Confirmation? registration =
-        await api_regular.event_attendance_registration_info(widget.session, widget.eventID, role);
+    Confirmation? registration = await api_regular.event_attendance_registration_info(
+      widget.session,
+      widget.eventID,
+      role,
+    );
     if (registration == null) return;
 
     setState(() => _attendanceRegistration[role] = registration);
   }
 
   Future<void> _updateAttendancePresence(String role) async {
-    Valence? presence =
-        Valence.fromBool(await api_regular.event_attendance_presence_true(widget.session, widget.eventID, role));
+    Valence? presence = Valence.fromBool(
+      await api_regular.event_attendance_presence_true(widget.session, widget.eventID, role),
+    );
     if (presence == null) return;
 
     setState(() => _attendancePresence[role] = presence);
@@ -491,18 +492,17 @@ class EventDetailPageState extends State<EventDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: TextEdit(
-                        text: _event!.title,
+                      child: TextEditDialog(
+                        initialValue: _event!.title,
                         minLength: 6,
                         maxLength: 100,
-                        nullable: false,
+                        onConfirm: (String t) {
+                          setState(() => _event!.title = t);
+                          _handleEvent();
+                        },
                       ),
-                      onChanged: (String t) {
-                        setState(() => _event!.title = t);
-                        _handleEvent();
-                      },
                     ),
                   ),
                 ],
@@ -522,19 +522,23 @@ class EventDetailPageState extends State<EventDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<String?>(
-                        context: context,
-                        widget: TextEdit(
-                          text: _event!.note ?? '',
-                          minLength: 1,
-                          maxLength: 500,
-                          nullable: true,
-                          maxLines: 20,
-                        ),
-                        onChanged: (note) {
-                          setState(() => _event!.note = note == null ? null : (note.isEmpty ? null : note));
+                    onPressed: () => useAppDialog(
+                      context: context,
+                      child: TextEditDialog(
+                        initialValue: _event!.note ?? '',
+                        minLength: 0,
+                        maxLength: 500,
+                        maxLines: 20,
+                        onConfirm: (note) {
+                          setState(() => _event!.note = (note.isEmpty ? null : note));
                           _handleEvent();
-                        }),
+                        },
+                        onReset: () {
+                          setState(() => _event!.note = null);
+                          _handleEvent();
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -556,18 +560,17 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () => useAppDialog<String>(
+                        onPressed: () => useAppDialog(
                           context: context,
-                          widget: TextEdit(
-                            text: _event!.key,
+                          child: TextEditDialog(
+                            initialValue: _event!.key,
                             minLength: 1,
                             maxLength: 12,
-                            nullable: false,
+                            onConfirm: (String key) {
+                              setState(() => _event!.key = key);
+                              _handleEvent();
+                            },
                           ),
-                          onChanged: (String key) {
-                            setState(() => _event!.key = key);
-                            _handleEvent();
-                          },
                         ),
                       ),
                     ],
@@ -578,8 +581,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                 AppInfoRow(
                   info: AppLocalizations.of(context)!.eventPassword,
                   child: ListTile(
-                    title:
-                        _credentialCleartext ? Text(_credential!.password!) : Text('•' * _credential!.password!.length),
+                    title: _credentialCleartext
+                        ? Text(_credential!.password!)
+                        : Text('•' * _credential!.password!.length),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -593,18 +597,17 @@ class EventDetailPageState extends State<EventDetailPage> {
                         ),
                         IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () => useAppDialog<String>(
+                          onPressed: () => useAppDialog(
                             context: context,
-                            widget: TextEdit(
-                              text: _credential!.password!,
+                            child: TextEditDialog(
+                              initialValue: _credential!.password!,
                               minLength: 5,
                               maxLength: 20,
-                              nullable: false,
+                              onConfirm: (String pw) async {
+                                api_admin.event_password_edit(widget.session, _event!, pw);
+                                _updateCredential();
+                              },
                             ),
-                            onChanged: (String pw) async {
-                              api_admin.event_password_edit(widget.session, _event!, pw);
-                              _updateCredential();
-                            },
                           ),
                         ),
                       ],
@@ -624,24 +627,28 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.calendar_today),
-                        onPressed: () => useAppDialog<DateTime>(
+                        onPressed: () => useAppDialog(
                           context: context,
-                          widget: DatePicker(initialDate: _event!.begin, nullable: false),
-                          onChanged: (DateTime dt) {
-                            setState(() => _event!.begin = dt);
-                            _handleEvent();
-                          },
+                          child: DatePicker(
+                            initialDate: _event!.begin,
+                            onConfirm: (DateTime dt) {
+                              setState(() => _event!.begin = dt);
+                              _handleEvent();
+                            },
+                          ),
                         ),
                       ),
                       IconButton(
                         icon: Icon(Icons.watch_later_outlined),
-                        onPressed: () => useAppDialog<TimeOfDay>(
+                        onPressed: () => useAppDialog(
                           context: context,
-                          widget: TimePicker(initialTime: TimeOfDay.fromDateTime(_event!.begin), nullable: false),
-                          onChanged: (TimeOfDay tod) {
-                            setState(() => _event!.begin = _event!.begin.withTime(tod));
-                            _handleEvent();
-                          },
+                          child: TimePicker(
+                            initialTime: TimeOfDay.fromDateTime(_event!.begin),
+                            onConfirm: (TimeOfDay tod) {
+                              setState(() => _event!.begin = _event!.begin.withTime(tod));
+                              _handleEvent();
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -661,24 +668,28 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.calendar_today),
-                        onPressed: () => useAppDialog<DateTime>(
+                        onPressed: () => useAppDialog(
                           context: context,
-                          widget: DatePicker(initialDate: _event!.end, nullable: false),
-                          onChanged: (DateTime dt) {
-                            setState(() => _event!.end = dt);
-                            _handleEvent();
-                          },
+                          child: DatePicker(
+                            initialDate: _event!.end,
+                            onConfirm: (DateTime dt) {
+                              setState(() => _event!.end = dt);
+                              _handleEvent();
+                            },
+                          ),
                         ),
                       ),
                       IconButton(
                         icon: Icon(Icons.watch_later_outlined),
-                        onPressed: () => useAppDialog<TimeOfDay>(
+                        onPressed: () => useAppDialog(
                           context: context,
-                          widget: TimePicker(initialTime: TimeOfDay.fromDateTime(_event!.end), nullable: false),
-                          onChanged: (TimeOfDay tod) {
-                            setState(() => _event!.end = _event!.end.withTime(tod));
-                            _handleEvent();
-                          },
+                          child: TimePicker(
+                            initialTime: TimeOfDay.fromDateTime(_event!.end),
+                            onConfirm: (TimeOfDay tod) {
+                              setState(() => _event!.end = _event!.end.withTime(tod));
+                              _handleEvent();
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -700,18 +711,17 @@ class EventDetailPageState extends State<EventDetailPage> {
                         icon: Icon(Icons.edit),
                         onPressed: () async {
                           var items = await api_anon.location_list();
-                          useAppDialog<Location?>(
+                          useAppDialog(
                             context: context,
-                            widget: MultiChoiceEdit<Location>(
+                            child: MultiChoiceEdit<Location>(
                               items: items,
                               value: _event!.location!,
                               builder: (event) => event.buildTile(context),
-                              nullable: false,
+                              onConfirm: (Location? location) {
+                                setState(() => _event!.location = location);
+                                _handleEvent();
+                              },
                             ),
-                            onChanged: (Location? location) {
-                              setState(() => _event!.location = location);
-                              _handleEvent();
-                            },
                           );
                         },
                       ),
@@ -725,13 +735,15 @@ class EventDetailPageState extends State<EventDetailPage> {
                   value: Valence.fromBool(_event!.public),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<Valence>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: ChoiceEdit(value: Valence.fromBool(_event!.public)),
-                      onChanged: (Valence v) {
-                        setState(() => _event!.public = v.toBool());
-                        _handleEvent();
-                      },
+                      child: ChoiceEdit(
+                        value: Valence.fromBool(_event!.public),
+                        onConfirm: (Valence v) {
+                          setState(() => _event!.public = v.toBool());
+                          _handleEvent();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -742,13 +754,15 @@ class EventDetailPageState extends State<EventDetailPage> {
                   value: Valence.fromBool(_event!.scrutable),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<Valence>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: ChoiceEdit(value: Valence.fromBool(_event!.scrutable)),
-                      onChanged: (Valence v) {
-                        setState(() => _event!.scrutable = v.toBool());
-                        _handleEvent();
-                      },
+                      child: ChoiceEdit(
+                        value: Valence.fromBool(_event!.scrutable),
+                        onConfirm: (Valence v) {
+                          setState(() => _event!.scrutable = v.toBool());
+                          _handleEvent();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -805,19 +819,19 @@ class EventDetailPageState extends State<EventDetailPage> {
                 info: AppLocalizations.of(context)!.eventOwner,
                 child: ListTile(
                   title: Text(
-                      _ownership ? AppLocalizations.of(context)!.labelTrue : AppLocalizations.of(context)!.labelFalse),
+                    _ownership ? AppLocalizations.of(context)!.labelTrue : AppLocalizations.of(context)!.labelFalse,
+                  ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog<Valence>(
+                    onPressed: () => useAppDialog(
                       context: context,
-                      widget: ChoiceEdit(
+                      child: ChoiceEdit(
                         value: Valence.fromBool(_ownership),
-                        nullable: false,
+                        onConfirm: (Valence v) {
+                          setState(() => _ownership = v.toBool()!);
+                          _handleOwnerSelf(_ownership);
+                        },
                       ),
-                      onChanged: (Valence v) {
-                        setState(() => _ownership = v.toBool()!);
-                        _handleOwnerSelf(_ownership);
-                      },
                     ),
                   ),
                 ),
@@ -827,7 +841,7 @@ class EventDetailPageState extends State<EventDetailPage> {
               ...buildPersonalAttendance('SUPPORTER', AppLocalizations.of(context)!.eventSupporter),
               ...buildPersonalAttendance('SPECTATOR', AppLocalizations.of(context)!.eventSpectator),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -859,23 +873,28 @@ class EventDetailPageState extends State<EventDetailPage> {
       AppInfoRow(
         info: AppLocalizations.of(context)!.eventRegistration,
         child: ListTile(
-          title:
-              Text(_attendanceRegistration[role]?.localizedName(context) ?? AppLocalizations.of(context)!.labelMissing),
+          title: Text(
+            _attendanceRegistration[role]?.localizedName(context) ?? AppLocalizations.of(context)!.labelMissing,
+          ),
           trailing: IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => useAppDialog<Confirmation?>(
+            onPressed: () => useAppDialog(
               context: context,
-              widget: MultiChoiceEdit<Confirmation>(
+              child: MultiChoiceEdit<Confirmation>(
                 items: Confirmation.values,
                 value: _attendanceRegistration[role],
                 builder: (confirmation) => confirmation.buildTile(context),
-                nullable: true,
+                onReset: () {
+                  setState(() => _attendanceRegistration[role] = null);
+                  _handleAttendanceRegistration(role, null);
+                  _updateAttendanceRegistration(role);
+                },
+                onConfirm: (Confirmation? c) {
+                  setState(() => _attendanceRegistration[role] = c);
+                  _handleAttendanceRegistration(role, c);
+                  _updateAttendanceRegistration(role);
+                },
               ),
-              onChanged: (Confirmation? c) {
-                setState(() => _attendanceRegistration[role] = c);
-                _handleAttendanceRegistration(role, c);
-                _updateAttendanceRegistration(role);
-              },
             ),
           ),
         ),
@@ -886,21 +905,20 @@ class EventDetailPageState extends State<EventDetailPage> {
           title: Text(_attendancePresence[role]?.localizedName(context) ?? AppLocalizations.of(context)!.labelMissing),
           trailing: IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => useAppDialog<Valence>(
+            onPressed: () => useAppDialog(
               context: context,
-              widget: ChoiceEdit(
+              child: ChoiceEdit(
                 value: _attendancePresence[role],
-                nullable: false,
+                onConfirm: (Valence v) {
+                  setState(() => _attendancePresence[role] = v);
+                  _handleAttendancePresence(role, v);
+                  _updateAttendancePresence(role);
+                },
               ),
-              onChanged: (Valence v) {
-                setState(() => _attendancePresence[role] = v);
-                _handleAttendancePresence(role, v);
-                _updateAttendancePresence(role);
-              },
             ),
           ),
         ),
-      )
+      ),
     ];
   }
 }

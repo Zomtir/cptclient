@@ -1,5 +1,6 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/TileSelector.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/SelectionDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 
 class SelectionPage<T extends FieldInterface> extends StatefulWidget {
   final String title;
-  final Widget tile;
   final Future<List<T>> Function() onCallAvailable;
   final Future<List<T>> Function() onCallSelected;
   final Future<bool> Function(T) onCallAdd;
@@ -18,7 +18,6 @@ class SelectionPage<T extends FieldInterface> extends StatefulWidget {
   SelectionPage({
     super.key,
     required this.title,
-    required this.tile,
     required this.onCallAvailable,
     required this.onCallSelected,
     required this.onCallAdd,
@@ -32,6 +31,7 @@ class SelectionPage<T extends FieldInterface> extends StatefulWidget {
 class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T>> {
   List<T> _available = [];
   List<T> _selected = [];
+  List<T> _delta = [];
 
   SelectionPageState();
 
@@ -51,6 +51,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
     setState(() {
       _available = available;
       _selected = selected;
+      _delta = _available.difference<T>(_selected);
     });
   }
 
@@ -62,41 +63,34 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
       ),
       body: AppBody(
         children: [
-          widget.tile,
           AppButton(
             text: AppLocalizations.of(context)!.actionAdd,
-            onPressed: () => showTileSelector<T>(
+            onPressed: () => useAppDialog(
               context: context,
-              items: _available.difference<T>(_selected),
-              builder: (T item, Function(T)? onSelect) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: item.buildTile(context),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () async {
-                        if (!await widget.onCallAdd(item)) return;
-                        _update();
-                        onSelect?.call(item);
-                      },
-                    ),
-                  ],
-                );
-              },
+              child: SelectionDialog(
+                title: widget.title,
+                items: _delta,
+                onConfirm: (List<T> values) async {
+                  setState(() {
+                    _selected.addAll(values);
+                    _delta.removeWhere((T t) => values.any((e) => e == t));
+                  });
+                  for (var v in values) {
+                    if (!await widget.onCallAdd(v)) return;
+                  }
+                  _update();
+                },
+              ),
             ),
           ),
           AppListView<T>(
             items: _selected,
             itemBuilder: (T item) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: item.buildTile(context),
-                  ),
+              return item.buildTile(
+                context,
+                trailing: [
                   IconButton(
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(Icons.remove_circle_outline),
                     onPressed: () async {
                       if (!await widget.onCallRemove(item)) return;
                       _update();

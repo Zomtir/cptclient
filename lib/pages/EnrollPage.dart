@@ -47,7 +47,6 @@ class EnrollPageState extends State<EnrollPage> {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageEventAttendancePresences,
-          tile: _event!.buildCard(context),
           onCallAvailable: () => api_service.event_attendance_presence_pool(widget.session, role),
           onCallSelected: () => api_service.event_attendance_presence_list(widget.session, role),
           onCallAdd: (user) => api_service.event_attendance_presence_add(widget.session, user, role),

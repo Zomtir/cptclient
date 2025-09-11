@@ -7,6 +7,7 @@ import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/gender.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:diacritic/diacritic.dart';
@@ -124,6 +125,7 @@ class User extends FieldInterface implements Comparable {
   Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppTile(
       leading: Tooltip(message: "$key", child: Icon(Icons.person)),
+      trailing: trailing,
       child: Row(
         children: [
           Text("$firstname $lastname\t"),
@@ -136,14 +138,13 @@ class User extends FieldInterface implements Comparable {
 
   @override
   Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
-    return Card(
-      child: ListTile(
-        leading: Tooltip(child: Icon(Icons.person), message: "$key"),
-        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
-        title: Text("$firstname $lastname"),
-        subtitle: nickname == null ? null : Text(nickname!),
-        onTap: onTap,
-      ),
+    return AppCard(
+      leading: Tooltip(child: Icon(Icons.person), message: "$key"),
+      trailing: trailing,
+      children: [
+        Text("$firstname $lastname"),
+        if (nickname != null) Text(nickname!),
+      ],
     );
   }
 }

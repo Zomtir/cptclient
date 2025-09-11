@@ -4,7 +4,7 @@ import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
-import 'package:cptclient/material/dialogs/PasswordPicker.dart';
+import 'package:cptclient/material/dialogs/PasswordEditDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/InfoSection.dart';
@@ -67,14 +67,14 @@ class MemberProfilePageState extends State<MemberProfilePage> {
                     title: credential!.buildInfo(context),
                     trailing: IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed: () => useAppDialog<Credential?>(
+                      onPressed: () => useAppDialog(
                         context: context,
-                        widget: PasswordPicker(credits: credential, nullable: false),
-                        onChanged: (Credential? cr) async {
+                        child: PasswordEditDialog(initialValue: credential, onConfirm: (Credential? cr) async {
                           if (cr == null) return;
                           api_regular.user_password_edit(widget.session, cr.password!, cr.salt!);
                           _update();
-                        },
+                        },),
+
                       ),
                     ),
                   ),

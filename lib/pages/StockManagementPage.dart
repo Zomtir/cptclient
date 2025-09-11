@@ -8,7 +8,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/StockDialog.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/StockEditDialog.dart';
 import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
@@ -63,32 +64,27 @@ class StockManagementPageState extends State<StockManagementPage> {
 
     if (item == null) return;
 
-    Stock stock = Stock(id: 0, club: _club!, item: item, storage: "", owned: 1, loaned: 0);
+    Stock? stock = Stock(id: 0, club: _club!, item: item, storage: "", owned: 1, loaned: 0);
 
-    Stock? stockEdited = await showStockDialog(
+    useAppDialog(
       context: context,
-      stock: stock,
-      callCreate: (Stock stock) => api_admin.stock_create(widget.session, stock),
-      callEdit: (Stock stock) => api_admin.stock_edit(widget.session, stock),
-      callDelete: (Stock stock) => api_admin.stock_delete(widget.session, stock),
-      isDraft: true,
+      child: StockEditDialog(
+        initialValue: stock,
+        onConfirm: (Stock stock) {
+          api_admin.stock_create(widget.session, stock);
+          _update();
+        },
+      ),
     );
-
-    if (stockEdited == null) return;
-
-    _update();
   }
 
   void _handleEdit(Stock stock) async {
-    Stock? stockEdited = await showStockDialog(
+    await useAppDialog(
       context: context,
-      stock: stock,
-      callCreate: (Stock stock) => api_admin.stock_create(widget.session, stock),
-      callEdit: (Stock stock) => api_admin.stock_edit(widget.session, stock),
-      callDelete: (Stock stock) => api_admin.stock_delete(widget.session, stock),
+      child: StockEditDialog(initialValue: stock,
+        onDelete: () => api_admin.stock_delete(widget.session, stock),
+        onConfirm: (Stock stock) => api_admin.stock_edit(widget.session, stock),),
     );
-
-    if (stockEdited == null) return;
 
     _update();
   }
@@ -143,8 +139,10 @@ class StockManagementPageState extends State<StockManagementPage> {
             columnSpacing: 0,
             columns: [
               DataColumn(
-                  label: Text(
-                      "${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}")),
+                label: Text(
+                  "${AppLocalizations.of(context)!.stockItem}\n${AppLocalizations.of(context)!.stockStorage}",
+                ),
+              ),
               DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
               DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
             ],
@@ -183,7 +181,7 @@ class StockManagementPageState extends State<StockManagementPage> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               );
             }),

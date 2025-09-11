@@ -2,21 +2,24 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:cptclient/utils/datetime.dart';
-import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TimePicker extends StatefulWidget {
+  final TimeOfDay initialTime;
+  final VoidCallback? onDelete;
+  final VoidCallback? onReset;
+  final Function(TimeOfDay)? onConfirm;
+
   TimePicker({
     super.key,
     TimeOfDay? initialTime,
-    this.nullable = true,
+    this.onDelete,
+    this.onReset,
+    this.onConfirm,
   }) : initialTime = initialTime ?? TimeOfDay.fromDateTime(DateTime.now());
-
-  final TimeOfDay initialTime;
-  final bool nullable;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -34,16 +37,8 @@ class _TimePickerState extends State<TimePicker> {
     _formatTimeField(_selectedTime);
   }
 
-  void _handleConfirm() {
-    if (_selectedTime == widget.initialTime) {
-      Navigator.pop(context);
-    } else {
-      Navigator.pop(context, Success(_selectedTime));
-    }
-  }
-
   TimeOfDay _parseTimeField() {
-     return parseTime(_ctrlTime.text) ?? _selectedTime;
+    return parseTime(_ctrlTime.text) ?? _selectedTime;
   }
 
   void _formatTimeField(TimeOfDay tod) {
@@ -53,7 +48,10 @@ class _TimePickerState extends State<TimePicker> {
 
   void _changeTime(TimeOfDay time) {
     setState(() {
-      _selectedTime = TimeOfDay(hour: time.hour % TimeOfDay.hoursPerDay, minute: time.minute % TimeOfDay.minutesPerHour);
+      _selectedTime = TimeOfDay(
+        hour: time.hour % TimeOfDay.hoursPerDay,
+        minute: time.minute % TimeOfDay.minutesPerHour,
+      );
     });
   }
 
@@ -66,8 +64,10 @@ class _TimePickerState extends State<TimePicker> {
 
   void _handleMinuteJump(int jump) {
     if (jump == 0) return;
-    TimeOfDay newTime =
-        TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute + jump % TimeOfDay.minutesPerHour);
+    TimeOfDay newTime = TimeOfDay(
+      hour: _selectedTime.hour,
+      minute: _selectedTime.minute + jump % TimeOfDay.minutesPerHour,
+    );
     _changeTime(newTime);
     _formatTimeField(_selectedTime);
   }
@@ -92,19 +92,24 @@ class _TimePickerState extends State<TimePicker> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-
-          NumberSelector(child: Text(
-            AppLocalizations.of(context)!.dateHour,
-            style: TextStyle(color: Colors.amber),
-            textAlign: TextAlign.center,
-          ), onChange: _handleHourJump,),
+          NumberSelector(
+            child: Text(
+              AppLocalizations.of(context)!.dateHour,
+              style: TextStyle(color: Colors.amber),
+              textAlign: TextAlign.center,
+            ),
+            onChange: _handleHourJump,
+          ),
           SizedBox(width: 5),
 
-        NumberSelector(child:Text(
-          AppLocalizations.of(context)!.dateMinute,
-          style: TextStyle(color: Colors.amber),
-          textAlign: TextAlign.center,
-        ), onChange: _handleMinuteJump,),
+          NumberSelector(
+            child: Text(
+              AppLocalizations.of(context)!.dateMinute,
+              style: TextStyle(color: Colors.amber),
+              textAlign: TextAlign.center,
+            ),
+            onChange: _handleMinuteJump,
+          ),
         ],
       ),
     );
@@ -163,41 +168,53 @@ class _TimePickerState extends State<TimePicker> {
       ),
     );
 
-    final Widget actions = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        AppButton(
-          onPressed: () => Navigator.pop(context),
-          text: AppLocalizations.of(context)!.actionCancel,
-        ),
-        if (widget.nullable) Spacer(),
-        if (widget.nullable)
-          AppButton(
-            onPressed: () => Navigator.pop(context, Success(null)),
-            text: AppLocalizations.of(context)!.actionRemove,
+    return AppDialog(
+      child: Column(
+        children: [
+          Text(_selectedTime.format(context), style: TextStyle(fontWeight: FontWeight.bold)),
+          form,
+          selector,
+          SizedBox(height: 10),
+          clock,
+        ],
+      ),
+      actions: [
+        if (widget.onDelete != null)
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              widget.onDelete?.call();
+              Navigator.pop(context);
+            },
           ),
-        Spacer(),
-        AppButton(
-          onPressed: _handleConfirm,
-          text: AppLocalizations.of(context)!.actionConfirm,
-        ),
-      ],
-    );
-
-    return Column(
-      children: [
-        Text(_selectedTime.format(context), style: TextStyle(fontWeight: FontWeight.bold)),
-        form,
-        selector,
-        SizedBox(height: 10),
-        clock,
-        actions,
+        if (widget.onReset != null)
+          IconButton(
+            icon: const Icon(Icons.circle_outlined),
+            onPressed: () {
+              widget.onReset?.call();
+              Navigator.pop(context);
+            },
+          ),
+        if (widget.onConfirm != null)
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              widget.onConfirm?.call(_selectedTime);
+              Navigator.pop(context);
+            },
+          ),
       ],
     );
   }
 
-  Positioned buildWatchNumbers(Offset position, String label, Color color, VoidCallback onPressed,
-      {Offset center = const Offset(150, 150), double radius = 24}) {
+  Positioned buildWatchNumbers(
+    Offset position,
+    String label,
+    Color color,
+    VoidCallback onPressed, {
+    Offset center = const Offset(150, 150),
+    double radius = 24,
+  }) {
     return Positioned(
       left: center.dx - radius / 2 + position.dx,
       top: center.dy - radius / 2 + position.dy,
@@ -220,10 +237,10 @@ class ClockPainter extends CustomPainter {
   final double hx, hy, mx, my;
 
   ClockPainter(int hour, int minute)
-      : hx = sin(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
-        hy = -cos(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
-        mx = sin(minute / 60 * 2 * pi) * 115,
-        my = -cos(minute / 60 * 2 * pi) * 115;
+    : hx = sin(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
+      hy = -cos(hour / 12 * 2 * pi) * ((hour > 11) ? 45 : 80),
+      mx = sin(minute / 60 * 2 * pi) * 115,
+      my = -cos(minute / 60 * 2 * pi) * 115;
 
   @override
   void paint(Canvas canvas, Size size) {

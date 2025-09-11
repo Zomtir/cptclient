@@ -52,7 +52,11 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
     _ctrlModerator.callItems = () => api_regular.user_list(widget.session);
 
     Result<List<Course>> result = await api_admin.course_list(
-        widget.session, user: _ctrlModerator.value, active: _ctrlActive?.toBool(), public: _ctrlPublic?.toBool());
+      widget.session,
+      user: _ctrlModerator.value,
+      active: _ctrlActive?.toBool(),
+      public: _ctrlPublic?.toBool(),
+    );
     if (result is! Success) return;
 
     _courses = result.unwrap();
@@ -75,13 +79,12 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CourseEditPage(
-              session: widget.session,
-              course: course,
-              isDraft: true,
-              onSubmit: api_admin.course_create,
-            ),
+        builder: (context) => CourseEditPage(
+          session: widget.session,
+          course: course,
+          isDraft: true,
+          onSubmit: api_admin.course_create,
+        ),
       ),
     );
 
@@ -97,7 +100,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
           IconButton(
             icon: Icon(Icons.add),
             onPressed: _createCourse,
-          )
+          ),
         ],
       ),
       body: AppBody(
@@ -120,12 +123,14 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () =>
-                        useAppDialog<Valence?>(
-                          context: context,
-                          widget: ChoiceEdit(value: _ctrlActive, nullable: true),
-                          onChanged: (Valence? v) => setState(() => _ctrlActive = v),
-                        ),
+                    onPressed: () => useAppDialog(
+                      context: context,
+                      child: ChoiceEdit(
+                        value: _ctrlActive,
+                        onReset: () => setState(() => _ctrlActive = null),
+                        onConfirm: (Valence? v) => setState(() => _ctrlActive = v),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -137,12 +142,14 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () =>
-                        useAppDialog<Valence?>(
-                          context: context,
-                          widget: ChoiceEdit(value: _ctrlPublic),
-                          onChanged: (Valence? v) => setState(() => _ctrlPublic = v),
-                        ),
+                    onPressed: () => useAppDialog(
+                      context: context,
+                      child: ChoiceEdit(
+                        value: _ctrlPublic,
+                        onReset: () => setState(() => _ctrlPublic = null),
+                        onConfirm: (Valence? v) => setState(() => _ctrlPublic = v),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -151,11 +158,10 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                 child: SkillRangeField(
                   controller: _ctrlSkill,
                   range: _ctrlSkillRange,
-                  onChanged: (Skill? skill, RangeValues range) =>
-                      setState(() {
-                        _ctrlSkill.value = skill;
-                        _ctrlSkillRange = range;
-                      }),
+                  onChanged: (Skill? skill, RangeValues range) => setState(() {
+                    _ctrlSkill.value = skill;
+                    _ctrlSkillRange = range;
+                  }),
                 ),
               ),
             ],

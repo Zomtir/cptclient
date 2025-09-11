@@ -89,7 +89,6 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageCourseModerators,
-          tile: widget.course.buildCard(context),
           onCallAvailable: () => api_regular.user_list(widget.session),
           onCallSelected: () => api_moderator.course_moderator_list(widget.session, widget.course.id),
           onCallAdd: (user) => api_moderator.course_moderator_add(widget.session, widget.course.id, user.id),
@@ -114,7 +113,6 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
       MaterialPageRoute(
         builder: (context) => FilterPage<Team>(
           title: AppLocalizations.of(context)!.pageCourseAttendanceSieves,
-          tile: widget.course.buildCard(context),
           onCallAvailable: () => api_regular.team_list(widget.session),
           onCallSelected: () => api_moderator.course_attendance_sieve_list(widget.session, widget.course.id, role),
           onCallEdit: (team, access) => api_moderator.course_attendance_sieve_edit(widget.session, widget.course.id, team.id, role, access),

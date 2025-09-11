@@ -23,7 +23,6 @@ class TeamDetailManagementPage extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => SelectionPage<User>(
           title: AppLocalizations.of(context)!.pageTeamMember,
-          tile: team.buildCard(context),
           onCallAvailable: () => api_admin.user_list(session),
           onCallSelected: () => api_admin.team_member_list(session, team.id),
           onCallAdd: (user) => api_admin.team_member_add(session, team.id, user.id),

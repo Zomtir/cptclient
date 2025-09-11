@@ -7,10 +7,10 @@ import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 
 class Credential extends FieldInterface {
-  final String? login;
-  final String? password;
-  final String? salt;
-  final DateTime? since;
+  String? login;
+  String? password;
+  String? salt;
+  DateTime? since;
 
   Credential({this.login, this.password, this.salt, this.since});
 

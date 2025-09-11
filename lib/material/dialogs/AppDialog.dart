@@ -1,34 +1,32 @@
 import 'package:cptclient/material/design/AppBoxDecoration.dart';
-import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-void useAppDialog<T>({
+Future<void> useAppDialog({
   required BuildContext context,
-  required Widget widget,
-  required Function(T) onChanged,
-  double maxWidth = 600,
+  required Widget child,
 }) async {
-  final response = await showDialog<Result<T?>>(
+  await showDialog(
     context: context,
     useSafeArea: false,
     builder: (BuildContext context) {
-      return AppDialog(
-        child: widget,
-        maxWidth: maxWidth,
-      );
+      return child;
     },
   );
-
-  if (response case Success(:T value)) {
-    onChanged(value);
-  }
 }
 
 class AppDialog extends StatelessWidget {
-  final Widget child;
   final double maxWidth;
+  final Widget child;
+  final Widget? title;
+  final List<Widget>? actions;
 
-  const AppDialog({required this.child, this.maxWidth = 600});
+  const AppDialog({
+    super.key,
+    this.maxWidth = 600,
+    required this.child,
+    this.title,
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +35,33 @@ class AppDialog extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxWidth),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
-              Container(
-                decoration: const AppBoxDecoration(),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                margin: const EdgeInsets.all(5.0),
-                child: child,
-              )
-            ],
+          child: Container(
+            decoration: const AppBoxDecoration(),
+            padding: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 16.0),
+            margin: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    Expanded(
+                      child: title ?? Spacer(),
+                    ),
+                    ...?actions,
+                  ],
+                ),
+                Divider(),
+                Flexible(
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    children: [child],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
