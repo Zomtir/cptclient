@@ -101,17 +101,28 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pagePossessionUser),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+            onPressed: _handleCreate,
+          ),
+        ],
       ),
       body: AppBody(
         maxWidth: 1000,
         minWidth: 1000,
         children: <Widget>[
-          AppButton(
-            text: AppLocalizations.of(context)!.possessionUser,
-            onPressed: _prepare,
-            leading: Icon(Icons.refresh),
+          _user!.buildTile(
+            context,
+            trailing: [
+              IconButton(
+                onPressed: _prepare,
+                icon: Icon(Icons.refresh),
+                tooltip: AppLocalizations.of(context)!.possessionUser,
+              ),
+            ],
           ),
-          _user!.buildTile(context),
           Divider(),
           DataTable(
             columns: [
@@ -124,15 +135,24 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
               return DataRow(
                 cells: <DataCell>[
                   DataCell(_possessions[index].item.buildEntry(context)),
-                  DataCell(Text(_possessions[index].acquisitionDate != null
-                      ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
-                      : AppLocalizations.of(context)!.undefined)),
+                  DataCell(
+                    Text(
+                      _possessions[index].acquisitionDate != null
+                          ? "${formatIsoDate(_possessions[index].acquisitionDate)}"
+                          : AppLocalizations.of(context)!.undefined,
+                    ),
+                  ),
                   DataCell(
                     Row(
                       children: [
                         Tooltip(
-                          message: _possessions[index].owned ? AppLocalizations.of(context)!.labelTrue : AppLocalizations.of(context)!.labelFalse,
-                          child: Icon(Icons.catching_pokemon, color: _possessions[index].owned ? Colors.green : Colors.red),
+                          message: _possessions[index].owned
+                              ? AppLocalizations.of(context)!.labelTrue
+                              : AppLocalizations.of(context)!.labelFalse,
+                          child: Icon(
+                            Icons.catching_pokemon,
+                            color: _possessions[index].owned ? Colors.green : Colors.red,
+                          ),
                         ),
                         if (!_possessions[index].owned)
                           Tooltip(
@@ -178,11 +198,6 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                 ],
               );
             }),
-          ),
-          AppButton(
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _handleCreate,
-            leading: Icon(Icons.add),
           ),
         ],
       ),
