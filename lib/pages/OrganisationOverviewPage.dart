@@ -28,7 +28,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
 
   Future<void> _update() async {
     List<Organisation> organisations = await api_admin.organisation_list(widget.session);
-    searchPanelKey.currentState?.setItems(organisations);
+    searchPanelKey.currentState?.update(organisations);
   }
 
   void _handleSelect(Organisation organisation) async {

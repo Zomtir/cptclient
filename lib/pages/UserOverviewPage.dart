@@ -28,7 +28,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
 
   Future<void> _update() async {
     List<User> users = await api_admin.user_list(widget.session);
-    searchPanelKey.currentState?.setItems(users);
+    searchPanelKey.currentState?.update(users);
   }
 
   void _handleSelect(User user) async {
@@ -75,7 +75,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
           SearchablePanel(
             key: searchPanelKey,
             onTap: _handleSelect,
-          )
+          ),
         ],
       ),
     );

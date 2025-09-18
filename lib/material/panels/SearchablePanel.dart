@@ -23,17 +23,15 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
   @override
   void initState() {
     super.initState();
-    _all = widget.items;
-    update();
+    update(widget.items);
   }
 
-  void setItems(List<T> items) {
-    _all = items;
-    _all.sort();
-    update();
+  void update(List<T> items) {
+    _all = List.of(items)..sort();
+    setState(() => _visible = _all);
   }
 
-  void update() {
+  void filter() {
     if (_ctrlFilter.text.isEmpty) {
       setState(() => _visible = _all);
       return;
@@ -49,7 +47,7 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppSearchField(controller: _ctrlFilter, onChanged: update),
+        AppSearchField(controller: _ctrlFilter, onChanged: filter),
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -57,7 +55,7 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
           itemBuilder: (context, index) => _visible[index].buildTile(
             context,
             onTap: () => widget.onTap?.call(_visible[index]),
-            trailing: widget.actionBuilder?.call(context, _visible[index])
+            trailing: widget.actionBuilder?.call(context, _visible[index]),
           ),
         ),
       ],

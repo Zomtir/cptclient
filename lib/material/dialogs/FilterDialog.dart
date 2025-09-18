@@ -25,11 +25,6 @@ class FilterDialogState<T extends FieldInterface> extends State<FilterDialog<T>>
   };
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AppDialog(
       title: Text(widget.title, textAlign: TextAlign.center),

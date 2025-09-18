@@ -35,7 +35,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
 
   Future<void> _update() async {
     List<Affiliation> affiliations = await api_admin.affiliation_list(widget.session, null, widget.organisation);
-    searchPanelKey.currentState?.setItems(affiliations);
+    searchPanelKey.currentState?.update(affiliations);
   }
 
   Future<void> _handleSelect(Affiliation affiliation) async {
@@ -89,6 +89,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
       body: AppBody(
         children: <Widget>[
           SearchablePanel<Affiliation>(
+            key: searchPanelKey,
             onTap: _handleSelect,
           ),
         ],
