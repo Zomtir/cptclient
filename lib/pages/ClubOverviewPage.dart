@@ -28,7 +28,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
 
   Future<void> _update() async {
     List<Club> clubs = await api_admin.club_list(widget.session);
-    searchPanelKey.currentState?.setItems(clubs);
+    searchPanelKey.currentState?.update(clubs);
   }
 
   void _handleSelect(Club club) async {

@@ -49,7 +49,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
     List<Competence> competences = await api_admin.competence_list(
         widget.session, _ctrlUser.value, _ctrlSkill.value);
 
-    searchPanelKey.currentState?.setItems(competences);
+    searchPanelKey.currentState?.update(competences);
   }
 
   Future<void> _handleSelect(Competence competence, bool isDraft) async {

@@ -27,7 +27,7 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
 
   Future<void> _update() async {
     List<Skill> skills = await api_admin.skill_list(widget.session);
-    searchPanelKey.currentState?.setItems(skills);
+    searchPanelKey.currentState?.update(skills);
   }
 
   void _handleSelect(Skill skill) async {

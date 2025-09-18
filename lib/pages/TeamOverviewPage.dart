@@ -29,8 +29,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
   Future<void> _update() async {
     List<Team>? teams = await api_admin.team_list(widget.session);
     if (teams == null) return;
-    teams.sort();
-    searchPanelKey.currentState?.setItems(teams);
+    searchPanelKey.currentState?.update(teams);
   }
 
   Future<void> _handleCreate() async {
@@ -82,7 +81,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
           SearchablePanel(
             key: searchPanelKey,
             onTap: _handleSelect,
-          )
+          ),
         ],
       ),
     );

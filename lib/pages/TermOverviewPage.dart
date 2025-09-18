@@ -30,7 +30,7 @@ class TermOverviewPageState extends State<TermOverviewPage> {
 
   Future<void> _update() async {
     List<Term> terms = await api_admin.term_list(widget.session, widget.club);
-    searchPanelKey.currentState?.setItems(terms);
+    searchPanelKey.currentState?.update(terms);
   }
 
   void _handleSelect(Term term) async {
