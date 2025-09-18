@@ -15,22 +15,19 @@ class Confirmation extends FieldInterface implements Comparable {
 
   String get name => _value;
 
-  static const Confirmation empty = Confirmation._init('NULL');
   static const Confirmation positive = Confirmation._init('POSITIVE');
   static const Confirmation neutral = Confirmation._init('NEUTRAL');
   static const Confirmation negative = Confirmation._init('NEGATIVE');
 
   static Confirmation? fromNullString(String? value) {
-    if (value == null) return null;
+    if (value == null || value == 'NULL') return null;
 
     return values.firstWhere((confirmation) => confirmation._value == value.toUpperCase(),
         orElse: () => throw ArgumentError('Invalid confirmation value'));
   }
 
   String localizedName(BuildContext context) {
-    if (this == Confirmation.empty) {
-      return AppLocalizations.of(context)!.undefined;
-    } else if (this == Confirmation.positive) {
+    if (this == Confirmation.positive) {
       return AppLocalizations.of(context)!.confirmationPositive;
     } else if (this == Confirmation.neutral) {
       return AppLocalizations.of(context)!.confirmationNeutral;
