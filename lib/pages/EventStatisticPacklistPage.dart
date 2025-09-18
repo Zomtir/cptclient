@@ -5,7 +5,8 @@ import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -48,8 +49,8 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
 
   void _handleCategories(int index) async {
     List<ItemCategory> categories = await api_regular.itemcat_list(widget.session);
-    ItemCategory? category = await showTilePicker(context: context, items: categories);
-
+    ItemCategory? category;
+    await useAppDialog(context: context, child: PickerDialog(items: categories, onPick: (item) => category = item));
     setState(() => _ctrlCategories[index] = category);
     _update();
   }

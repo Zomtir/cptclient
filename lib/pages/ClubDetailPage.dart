@@ -4,7 +4,8 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/ClubEditPage.dart';
@@ -101,7 +102,15 @@ class ClubDetailPageState extends State<ClubDetailPage> {
 
   Future<void> _handleStatisticOrganisation() async {
     List<Organisation> organisations = await api_anon.organisation_list();
-    Organisation? organisation = await showTilePicker(context: context, items: organisations);
+    Organisation? organisation;
+
+    await useAppDialog(
+      context: context,
+      child: PickerDialog(
+        items: organisations,
+        onPick: (item) => organisation = item,
+      ),
+    );
 
     if (organisation == null) return;
 
@@ -111,7 +120,7 @@ class ClubDetailPageState extends State<ClubDetailPage> {
         builder: (context) => ClubStatisticOrganisationPage(
           session: widget.session,
           club: widget.club,
-          organisation: organisation,
+          organisation: organisation!,
         ),
       ),
     );

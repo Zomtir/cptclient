@@ -5,7 +5,8 @@ import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/panels/SearchablePanel.dart';
 import 'package:cptclient/pages/AffiliationEditPage.dart';
@@ -53,11 +54,12 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
 
   Future<void> _handleCreate() async {
     List<User> users = await api_regular.user_list(widget.session);
-    User? user = await showTilePicker(context: context, items: users);
+    User? user;
+    await useAppDialog(context: context, child: PickerDialog(items: users, onPick: (item) => user = item));
 
     if (user == null) return;
 
-    await api_admin.affiliation_create(widget.session, user, widget.organisation);
+    await api_admin.affiliation_create(widget.session, user!, widget.organisation);
     Affiliation affiliation = Affiliation.fromNew(user, widget.organisation);
     await Navigator.push(
       context,
