@@ -1,5 +1,6 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,14 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
   });
 
   void _handleSearch(BuildContext context) async {
-    T? item = await showTilePicker<T>(
+    List<T>? items = await controller.callItems?.call() ?? [];
+    await useAppDialog(
       context: context,
-      items: await controller.callItems?.call() ?? [],
+      child: PickerDialog(
+        items: items,
+        onPick: (item) => onChanged.call(item),
+      ),
     );
-
-    if (item == null) return;
-    onChanged.call(item);
   }
 
   void _handleClear() {

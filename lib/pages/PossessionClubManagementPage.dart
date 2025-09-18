@@ -6,7 +6,8 @@ import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/format.dart';
@@ -37,7 +38,8 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
   Future<void> _prepare() async {
     if (widget.club == null) {
       List<Club> clubs = await api_anon.club_list();
-      Club? club = await showTilePicker(context: context, items: clubs);
+      Club? club;
+      await useAppDialog(context: context, child: PickerDialog(items: clubs, onPick: (item) => club = item));
 
       if (club == null) {
         Navigator.pop(context);

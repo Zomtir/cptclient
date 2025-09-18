@@ -22,8 +22,8 @@ import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
 import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/dialogs/TextEditDialog.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/dialogs/TimePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
@@ -394,7 +394,15 @@ class EventDetailPageState extends State<EventDetailPage> {
 
   Future<void> _handleStatisticOrganisation() async {
     List<Organisation> organisations = await api_anon.organisation_list();
-    Organisation? organisation = await showTilePicker(context: context, items: organisations);
+    Organisation? organisation;
+
+    await useAppDialog(
+      context: context,
+      child: PickerDialog(
+        items: organisations,
+        onPick: (item) => organisation = item,
+      ),
+    );
 
     if (organisation == null) return;
 
@@ -404,7 +412,7 @@ class EventDetailPageState extends State<EventDetailPage> {
         builder: (context) => EventStatisticOrganisationPage(
           session: widget.session,
           event: _event!,
-          organisation: organisation,
+          organisation: organisation!,
         ),
       ),
     );

@@ -9,8 +9,8 @@ import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/dialogs/StockEditDialog.dart';
-import 'package:cptclient/material/dialogs/TilePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
@@ -38,7 +38,8 @@ class StockManagementPageState extends State<StockManagementPage> {
 
   Future<void> _prepare() async {
     List<Club> clubs = await api_anon.club_list();
-    Club? club = await showTilePicker(context: context, items: clubs);
+    Club? club;
+    await useAppDialog(context: context, child: PickerDialog(items: clubs, onPick: (e) => club = e));
 
     if (club == null) {
       Navigator.pop(context);
@@ -60,11 +61,12 @@ class StockManagementPageState extends State<StockManagementPage> {
 
   void _handleCreate() async {
     List<Item> items = await api_admin.item_list(widget.session);
-    Item? item = await showTilePicker(context: context, items: items);
+    Item? item;
+    await useAppDialog(context: context, child: PickerDialog(items: items, onPick: (e) => item = e));
 
     if (item == null) return;
 
-    Stock? stock = Stock(id: 0, club: _club!, item: item, storage: "", owned: 1, loaned: 0);
+    Stock? stock = Stock(id: 0, club: _club!, item: item!, storage: "", owned: 1, loaned: 0);
 
     useAppDialog(
       context: context,
@@ -105,11 +107,12 @@ class StockManagementPageState extends State<StockManagementPage> {
 
   void _handleLoan(Stock stock) async {
     List<User> users = await api_regular.user_list(widget.session);
-    User? user = await showTilePicker(context: context, items: users);
+    User? user;
+    await useAppDialog(context: context, child: PickerDialog(items: users, onPick: (e) => user = e));
 
     if (user == null) return;
 
-    await api_admin.item_loan(widget.session, stock, user);
+    await api_admin.item_loan(widget.session, stock, user!);
     _update();
   }
 
