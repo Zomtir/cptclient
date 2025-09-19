@@ -35,29 +35,31 @@ class AppDialog extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxWidth),
-          child: Container(
-            decoration: const AppBoxDecoration(),
-            padding: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 16.0),
-            margin: const EdgeInsets.all(5.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    (title != null) ? Expanded(child: title!) : Spacer(),
-                    ...?actions,
-                  ],
-                ),
-                Divider(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: child,
+          child: SafeArea(
+            child: Container(
+              decoration: const AppBoxDecoration(),
+              padding: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 16.0),
+              margin: const EdgeInsets.all(5.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      (title != null) ? Expanded(child: title!) : Spacer(),
+                      ...?actions,
+                    ],
                   ),
-                ),
-              ],
+                  Divider(),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: child,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
