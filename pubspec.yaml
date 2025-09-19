@@ -6,7 +6,7 @@ description: Course Participation Tracker
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
-version: 1.5.0-alpha2+8
+version: 1.5.0-alpha3+9
 
 environment:
   sdk: '>=3.8.0 <4.0.0'
