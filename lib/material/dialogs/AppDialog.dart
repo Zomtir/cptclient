@@ -47,17 +47,14 @@ class AppDialog extends StatelessWidget {
                       icon: const Icon(Icons.close),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    Expanded(
-                      child: title ?? Spacer(),
-                    ),
+                    (title != null) ? Expanded(child: title!) : Spacer(),
                     ...?actions,
                   ],
                 ),
                 Divider(),
-                Flexible(
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    children: [child],
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: child,
                   ),
                 ),
               ],
