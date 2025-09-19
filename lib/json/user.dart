@@ -126,11 +126,20 @@ class User extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "$key", child: Icon(Icons.person)),
       trailing: trailing,
-      child: Row(
-        children: [
-          Text("$firstname $lastname\t"),
-          if (nickname != null) Text("($nickname)", style: TextStyle(fontStyle: FontStyle.italic)),
-        ],
+      child: Text.rich(
+        TextSpan(
+          style: Theme.of(context).textTheme.bodyLarge,
+          children: [
+            TextSpan(text: "$firstname $lastname"),
+            if (nickname != null)
+              TextSpan(
+                text: "\t($nickname)",
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
+          ],
+        ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
       ),
       onTap: onTap,
     );
