@@ -5,6 +5,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
 class SkillEditPage extends StatefulWidget {
@@ -34,7 +35,7 @@ class SkillEditPageState extends State<SkillEditPage> {
   void _applySkill() {
     _ctrlKey.text = widget.skill.key;
     _ctrlTitle.text = widget.skill.title;
-    _ctrlRange = RangeValues(widget.skill.min as double, widget.skill.max as double);
+    _ctrlRange = RangeValues(widget.skill.min.toDouble(), widget.skill.max.toDouble());
   }
 
   void _gatherSkill() {
@@ -48,18 +49,12 @@ class SkillEditPageState extends State<SkillEditPage> {
     _gatherSkill();
 
     if (widget.skill.key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("${AppLocalizations.of(context)!.skillKey} ${AppLocalizations.of(context)!.isInvalid}")),
-      );
+      messageText("${AppLocalizations.of(context)!.skillKey} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
     if (widget.skill.title.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.isInvalid}"),
-        ),
-      );
+      messageText("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.isInvalid}");
       return;
     }
 
