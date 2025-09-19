@@ -11,10 +11,15 @@ Should mostly work out of the box, if a cptserver is running.
    2) Enable Flutter Plugin
 2) Install Flutter SDK
 3) Adapt the server details in `cptclient.yaml`. A template can be found in `cptclient-template.yaml`.
-4) Choose Chrome (web) as build target and press the Run button. Alternatively you can use the command line:
+4) Build the client for your desired target platform. Your host has to support the target:
 
 ```
-flutter build web
+flutter build web --wasm
+flutter build apk
+flutter build linux
+flutter build windows
+flutter build macos
+flutter build ios
 ```
 
 ### Initial admin user
@@ -33,7 +38,7 @@ After login, you should perform those steps:
 
 ### Localization
 
-Current supported locales are EN and DE in `main.dart`.
+Current supported locales are EN and DE.
 
 ```
 supportedLocales: [
@@ -46,8 +51,9 @@ The localization files are located at `lib/l10n/` and can be applied to the pack
 
 ### App Name
 
-Change App name with: `flutter pub global activate rename` & `rename setAppName --targets ios,android,macos,windows,web --value "YourAppName"`
-You can also set the name for linux, but this isn't the launcher name. Update debians `.desktop` file manually.
+Change App name with: `flutter pub global activate rename` & `rename setAppName --targets ios,android,macos,windows,web --value "YourAppName"`.
+
+You can also set the name for linux, but this isn't the launcher name. Update the Debian `.desktop` file manually.
 
 ### Icons
 
