@@ -278,10 +278,14 @@ class UserInfoPageState extends State<UserInfoPage> {
                       context: context,
                       child: TextEditDialog(
                         initialValue: user_info!.nickname ?? '',
-                        minLength: 1,
+                        minLength: 0,
                         maxLength: 20,
-                        onConfirm: (String? t) {
-                          setState(() => user_info!.nickname = (t?.isEmpty ?? true ? null : t));
+                        onReset: () {
+                          setState(() => user_info!.nickname = null);
+                          _submitUser();
+                        },
+                        onConfirm: (String t) {
+                          setState(() => user_info!.nickname = (t.isEmpty ? null : t));
                           _submitUser();
                         },
                       ),
@@ -311,10 +315,14 @@ class UserInfoPageState extends State<UserInfoPage> {
                       context: context,
                       child: TextEditDialog(
                         initialValue: user_info!.address ?? '',
-                        minLength: 2,
+                        minLength: 0,
                         maxLength: 60,
-                        onConfirm: (String? t) {
-                          setState(() => user_info!.address = (t?.isEmpty ?? true ? null : t));
+                        onReset: () {
+                          setState(() => user_info!.address = null);
+                          _submitUser();
+                        },
+                        onConfirm: (String t) {
+                          setState(() => user_info!.address = (t.isEmpty ? null : t));
                           _submitUser();
                         },
                       ),
@@ -341,10 +349,14 @@ class UserInfoPageState extends State<UserInfoPage> {
                       context: context,
                       child: TextEditDialog(
                         initialValue: user_info!.email ?? '',
-                        minLength: 3,
+                        minLength: 0,
                         maxLength: 40,
-                        onConfirm: (String? t) {
-                          setState(() => user_info!.email = (t?.isEmpty ?? true ? null : t));
+                        onReset: () {
+                          setState(() => user_info!.email = null);
+                          _submitUser();
+                        },
+                        onConfirm: (String t) {
+                          setState(() => user_info!.email = (t.isEmpty ? null : t.trim()));
                           _submitUser();
                         },
                       ),
@@ -438,8 +450,12 @@ class UserInfoPageState extends State<UserInfoPage> {
                         initialValue: user_info!.birth_location ?? '',
                         minLength: 2,
                         maxLength: 60,
-                        onConfirm: (String? t) {
-                          setState(() => user_info!.birth_location = (t?.isEmpty ?? true ? null : t));
+                        onReset: () {
+                          setState(() => user_info!.birth_location = null);
+                          _submitUser();
+                        },
+                        onConfirm: (String t) {
+                          setState(() => user_info!.birth_location = (t.isEmpty ? null : t));
                           _submitUser();
                         },
                       ),

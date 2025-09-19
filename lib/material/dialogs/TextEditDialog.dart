@@ -82,7 +82,7 @@ class TextEditDialogState extends State<TextEditDialog> {
                 return;
               }
 
-              widget.onConfirm?.call(currentValue);
+              widget.onConfirm?.call(currentValue.trim());
               Navigator.pop(context);
             },
           ),
