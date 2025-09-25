@@ -1,5 +1,4 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/FilterDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -75,12 +74,12 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
         children: [
           AppButton(
             text: AppLocalizations.of(context)!.actionAdd,
-            onPressed: () => useAppDialog(
+            onPressed: () => showDialog(
               context: context,
-              child: FilterDialog(
+              builder: (context) => FilterDialog(
                 title: widget.title,
                 items: _delta,
-                onConfirm: (List<(T,bool)> values) {
+                onConfirm: (List<(T, bool)> values) {
                   setState(() {
                     _selected.addAll(values);
                     _delta.removeWhere((T t) => values.any((e) => e.$1 == t));
@@ -88,7 +87,7 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
                   for (var v in values) {
                     _edit(v.$1, v.$2);
                   }
-                }
+                },
               ),
             ),
           ),

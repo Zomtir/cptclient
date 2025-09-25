@@ -8,7 +8,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/dialogs/StockEditDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -39,7 +38,10 @@ class StockManagementPageState extends State<StockManagementPage> {
   Future<void> _prepare() async {
     List<Club> clubs = await api_anon.club_list();
     Club? club;
-    await useAppDialog(context: context, child: PickerDialog(items: clubs, onPick: (e) => club = e));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: clubs, onPick: (e) => club = e),
+    );
 
     if (club == null) {
       Navigator.pop(context);
@@ -62,15 +64,18 @@ class StockManagementPageState extends State<StockManagementPage> {
   void _handleCreate() async {
     List<Item> items = await api_admin.item_list(widget.session);
     Item? item;
-    await useAppDialog(context: context, child: PickerDialog(items: items, onPick: (e) => item = e));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: items, onPick: (e) => item = e),
+    );
 
     if (item == null) return;
 
     Stock? stock = Stock(id: 0, club: _club!, item: item!, storage: "", owned: 1, loaned: 0);
 
-    useAppDialog(
+    showDialog(
       context: context,
-      child: StockEditDialog(
+      builder: (context) => StockEditDialog(
         initialValue: stock,
         onConfirm: (Stock stock) {
           api_admin.stock_create(widget.session, stock);
@@ -81,11 +86,13 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   void _handleEdit(Stock stock) async {
-    await useAppDialog(
+    await showDialog(
       context: context,
-      child: StockEditDialog(initialValue: stock,
+      builder: (context) => StockEditDialog(
+        initialValue: stock,
         onDelete: () => api_admin.stock_delete(widget.session, stock),
-        onConfirm: (Stock stock) => api_admin.stock_edit(widget.session, stock),),
+        onConfirm: (Stock stock) => api_admin.stock_edit(widget.session, stock),
+      ),
     );
 
     _update();
@@ -108,7 +115,10 @@ class StockManagementPageState extends State<StockManagementPage> {
   void _handleLoan(Stock stock) async {
     List<User> users = await api_regular.user_list(widget.session);
     User? user;
-    await useAppDialog(context: context, child: PickerDialog(items: users, onPick: (e) => user = e));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: users, onPick: (e) => user = e),
+    );
 
     if (user == null) return;
 

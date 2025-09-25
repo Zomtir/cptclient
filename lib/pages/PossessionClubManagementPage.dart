@@ -6,7 +6,6 @@ import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
@@ -39,7 +38,10 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
     if (widget.club == null) {
       List<Club> clubs = await api_anon.club_list();
       Club? club;
-      await useAppDialog(context: context, child: PickerDialog(items: clubs, onPick: (item) => club = item));
+      await showDialog(
+        context: context,
+        builder: (context) => PickerDialog(items: clubs, onPick: (item) => club = item),
+      );
 
       if (club == null) {
         Navigator.pop(context);
@@ -82,11 +84,12 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
         maxWidth: 1000,
         minWidth: 1000,
         children: <Widget>[
-          if (widget.club == null) AppButton(
-            text: AppLocalizations.of(context)!.possessionClub,
-            onPressed: _prepare,
-            leading: Icon(Icons.refresh),
-          ),
+          if (widget.club == null)
+            AppButton(
+              text: AppLocalizations.of(context)!.possessionClub,
+              onPressed: _prepare,
+              leading: Icon(Icons.refresh),
+            ),
           Divider(),
           DataTable(
             columns: [

@@ -4,7 +4,6 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
@@ -104,9 +103,9 @@ class ClubDetailPageState extends State<ClubDetailPage> {
     List<Organisation> organisations = await api_anon.organisation_list();
     Organisation? organisation;
 
-    await useAppDialog(
+    await showDialog(
       context: context,
-      child: PickerDialog(
+      builder: (context) => PickerDialog(
         items: organisations,
         onPick: (item) => organisation = item,
       ),

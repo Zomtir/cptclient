@@ -1,5 +1,4 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/SelectionDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -65,9 +64,9 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
         children: [
           AppButton(
             text: AppLocalizations.of(context)!.actionAdd,
-            onPressed: () => useAppDialog(
+            onPressed: () => showDialog(
               context: context,
-              child: SelectionDialog(
+              builder: (context) => SelectionDialog(
                 title: widget.title,
                 items: _delta,
                 onConfirm: (List<T> values) async {

@@ -7,7 +7,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/LoadingWidget.dart';
@@ -38,7 +37,10 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   Future<void> _prepare() async {
     List<User> users = await api_regular.user_list(widget.session);
     User? user;
-    await useAppDialog(context: context, child: PickerDialog(items: users, onPick: (item) => user = item));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: users, onPick: (item) => user = item),
+    );
 
     if (user == null) {
       Navigator.pop(context);
@@ -67,7 +69,10 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   void _handleRestock(Possession possession) async {
     List<Stock> stocks = await api_admin.stock_list(widget.session, null, possession.item);
     Stock? stock;
-    await useAppDialog(context: context, child: PickerDialog(items: stocks, onPick: (item) => stock = item));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: stocks, onPick: (item) => stock = item),
+    );
 
     if (stock == null) return;
 
@@ -83,7 +88,10 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   void _handleCreate() async {
     List<Item> items = await api_admin.item_list(widget.session);
     Item? item;
-    await useAppDialog(context: context, child: PickerDialog(items: items, onPick: (e) => item = e));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: items, onPick: (e) => item = e),
+    );
 
     if (item == null) return;
 

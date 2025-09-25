@@ -2,7 +2,6 @@ import 'package:cptclient/api/admin/organisation/organisation.dart' as api_admin
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/TextEditDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
@@ -89,9 +88,9 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: widget.organisation.abbreviation,
                         minLength: 1,
                         maxLength: 10,
@@ -119,9 +118,9 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: widget.organisation.name,
                         minLength: 1,
                         maxLength: 30,

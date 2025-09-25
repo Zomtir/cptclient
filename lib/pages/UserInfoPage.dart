@@ -9,7 +9,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/BankAccountEdit.dart';
 import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
 import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
@@ -109,9 +108,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.key,
                         minLength: 1,
                         maxLength: 20,
@@ -132,9 +131,9 @@ class UserInfoPageState extends State<UserInfoPage> {
               value: Valence.fromBool(user_info!.enabled),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () => useAppDialog(
+                onPressed: () => showDialog(
                   context: context,
-                  child: ChoiceEdit(
+                  builder: (context) => ChoiceEdit(
                     value: Valence.fromBool(user_info!.enabled!),
                     onConfirm: (Valence? v) {
                       setState(() => user_info!.enabled = v?.toBool());
@@ -151,9 +150,9 @@ class UserInfoPageState extends State<UserInfoPage> {
               value: Valence.fromBool(user_info!.active!),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () => useAppDialog(
+                onPressed: () => showDialog(
                   context: context,
-                  child: ChoiceEdit(
+                  builder: (context) => ChoiceEdit(
                     value: Valence.fromBool(user_info!.active!),
                     onConfirm: (Valence? v) {
                       setState(() => user_info!.active = v?.toBool());
@@ -175,9 +174,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: PasswordEditDialog(
+                      builder: (context) => PasswordEditDialog(
                         initialValue: user_info!.credential,
                         onConfirm: (Credential? cr) async {
                           if (user_info!.credential == null && cr == null) {
@@ -214,9 +213,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.firstname,
                         minLength: 1,
                         maxLength: 20,
@@ -244,9 +243,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.lastname,
                         minLength: 1,
                         maxLength: 20,
@@ -274,9 +273,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.nickname ?? '',
                         minLength: 0,
                         maxLength: 20,
@@ -311,9 +310,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.address ?? '',
                         minLength: 0,
                         maxLength: 60,
@@ -345,9 +344,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.email ?? '',
                         minLength: 0,
                         maxLength: 40,
@@ -379,9 +378,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.phone ?? '',
                         minLength: 4,
                         maxLength: 20,
@@ -416,9 +415,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.calendar_today),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: DatePicker(
+                      builder: (context) => DatePicker(
                         initialDate: user_info!.birth_date,
                         onConfirm: (DateTime? dt) {
                           setState(() => user_info!.birth_date = dt);
@@ -444,9 +443,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.birth_location ?? '',
                         minLength: 2,
                         maxLength: 60,
@@ -478,9 +477,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.nationality ?? '',
                         minLength: 2,
                         maxLength: 40,
@@ -515,9 +514,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: MultiChoiceEdit<Gender>(
+                      builder: (context) => MultiChoiceEdit<Gender>(
                         items: Gender.values,
                         value: user_info!.gender,
                         builder: (gender) => gender.buildTile(context),
@@ -549,9 +548,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.height?.toString() ?? '',
                         minLength: 1,
                         maxLength: 3,
@@ -588,9 +587,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.weight?.toString() ?? '',
                         minLength: 1,
                         maxLength: 3,
@@ -630,9 +629,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: user_info!.note ?? '',
                         minLength: 0,
                         maxLength: 20,
@@ -658,9 +657,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                     title: Text(AppLocalizations.of(context)!.labelMissing),
                     trailing: IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: () => useAppDialog(
+                      onPressed: () => showDialog(
                         context: context,
-                        child: BankAccountEdit(
+                        builder: (context) => BankAccountEdit(
                           initialValue: BankAccount.fromVoid(),
                           onConfirm: (BankAccount ba) async {
                             await api_admin.user_bank_account_create(widget.session, user_info!, ba);
@@ -681,9 +680,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                         ),
                         IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () => useAppDialog(
+                          onPressed: () => showDialog(
                             context: context,
-                            child: BankAccountEdit(
+                            builder: (context) => BankAccountEdit(
                               initialValue: user_info!.bank_account!,
                               onDelete: () async {
                                 await api_admin.user_bank_account_delete(widget.session, user_info!);
@@ -707,9 +706,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                     title: Text(AppLocalizations.of(context)!.labelMissing),
                     trailing: IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: () => useAppDialog(
+                      onPressed: () => showDialog(
                         context: context,
-                        child: LicenseEdit(
+                        builder: (context) => LicenseEdit(
                           initialValue: License.fromVoid(),
                           onConfirm: (License lic) async {
                             await api_admin.user_license_main_create(widget.session, user_info!, lic);
@@ -730,9 +729,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                         ),
                         IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () => useAppDialog(
+                          onPressed: () => showDialog(
                             context: context,
-                            child: LicenseEdit(
+                            builder: (context) => LicenseEdit(
                               initialValue: user_info!.license_main!,
                               onDelete: () async {
                                 await api_admin.user_license_main_delete(widget.session, user_info!);
@@ -756,9 +755,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                     title: Text(AppLocalizations.of(context)!.labelMissing),
                     trailing: IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: () => useAppDialog(
+                      onPressed: () => showDialog(
                         context: context,
-                        child: LicenseEdit(
+                        builder: (context) => LicenseEdit(
                           initialValue: License.fromVoid(),
                           onConfirm: (License lic) async {
                             await api_admin.user_license_extra_create(widget.session, user_info!, lic);
@@ -779,9 +778,9 @@ class UserInfoPageState extends State<UserInfoPage> {
                         ),
                         IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () => useAppDialog(
+                          onPressed: () => showDialog(
                             context: context,
-                            child: LicenseEdit(
+                            builder: (context) => LicenseEdit(
                               initialValue: user_info!.license_extra!,
                               onDelete: () async {
                                 await api_admin.user_license_extra_delete(widget.session, user_info!);

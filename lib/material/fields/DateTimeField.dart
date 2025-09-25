@@ -1,5 +1,4 @@
 import 'package:cptclient/material/design/AppInputDecoration.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/dialogs/TimePicker.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
@@ -38,9 +37,9 @@ class _DateTimeFieldState extends State<DateTimeField> {
   }
 
   void _handleDateChange(BuildContext context) async {
-    useAppDialog(
+    showDialog(
       context: context,
-      child: DatePicker(
+      builder: (context) => DatePicker(
         initialDate: widget.controller.getDate(),
         onConfirm: (DateTime dt) {
           setState(() {
@@ -54,9 +53,9 @@ class _DateTimeFieldState extends State<DateTimeField> {
   }
 
   void _handleTimeChange(BuildContext context) async {
-    useAppDialog(
+    showDialog(
       context: context,
-      child: TimePicker(
+      builder: (context) => TimePicker(
         initialTime: widget.controller.getTime(),
         onConfirm: (TimeOfDay tod) {
           setState(() {

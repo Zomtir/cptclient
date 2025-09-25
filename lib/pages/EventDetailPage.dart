@@ -17,7 +17,6 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
 import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
@@ -261,9 +260,9 @@ class EventDetailPageState extends State<EventDetailPage> {
 
     callEdit(Course? course) => api_owner.event_course_edit(widget.session, _event!, course);
 
-    useAppDialog(
+    showDialog(
       context: context,
-      child: MultiChoiceEdit<Course>(
+      builder: (context) => MultiChoiceEdit<Course>(
         items: resultItems.unwrap(),
         value: resultValue.unwrap(),
         builder: (course) => course.buildTile(context),
@@ -396,9 +395,9 @@ class EventDetailPageState extends State<EventDetailPage> {
     List<Organisation> organisations = await api_anon.organisation_list();
     Organisation? organisation;
 
-    await useAppDialog(
+    await showDialog(
       context: context,
-      child: PickerDialog(
+      builder: (context) => PickerDialog(
         items: organisations,
         onPick: (item) => organisation = item,
       ),
@@ -500,9 +499,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: _event!.title,
                         minLength: 6,
                         maxLength: 100,
@@ -530,9 +529,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: TextEditDialog(
+                      builder: (context) => TextEditDialog(
                         initialValue: _event!.note ?? '',
                         minLength: 0,
                         maxLength: 500,
@@ -568,9 +567,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () => useAppDialog(
+                        onPressed: () => showDialog(
                           context: context,
-                          child: TextEditDialog(
+                          builder: (context) => TextEditDialog(
                             initialValue: _event!.key,
                             minLength: 1,
                             maxLength: 12,
@@ -605,9 +604,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                         ),
                         IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () => useAppDialog(
+                          onPressed: () => showDialog(
                             context: context,
-                            child: TextEditDialog(
+                            builder: (context) => TextEditDialog(
                               initialValue: _credential!.password!,
                               minLength: 5,
                               maxLength: 20,
@@ -635,9 +634,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.calendar_today),
-                        onPressed: () => useAppDialog(
+                        onPressed: () => showDialog(
                           context: context,
-                          child: DatePicker(
+                          builder: (context) => DatePicker(
                             initialDate: _event!.begin,
                             onConfirm: (DateTime dt) {
                               setState(() => _event!.begin = dt);
@@ -648,9 +647,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.watch_later_outlined),
-                        onPressed: () => useAppDialog(
+                        onPressed: () => showDialog(
                           context: context,
-                          child: TimePicker(
+                          builder: (context) => TimePicker(
                             initialTime: TimeOfDay.fromDateTime(_event!.begin),
                             onConfirm: (TimeOfDay tod) {
                               setState(() => _event!.begin = _event!.begin.withTime(tod));
@@ -676,9 +675,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.calendar_today),
-                        onPressed: () => useAppDialog(
+                        onPressed: () => showDialog(
                           context: context,
-                          child: DatePicker(
+                          builder: (context) => DatePicker(
                             initialDate: _event!.end,
                             onConfirm: (DateTime dt) {
                               setState(() => _event!.end = dt);
@@ -689,9 +688,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.watch_later_outlined),
-                        onPressed: () => useAppDialog(
+                        onPressed: () => showDialog(
                           context: context,
-                          child: TimePicker(
+                          builder: (context) => TimePicker(
                             initialTime: TimeOfDay.fromDateTime(_event!.end),
                             onConfirm: (TimeOfDay tod) {
                               setState(() => _event!.end = _event!.end.withTime(tod));
@@ -719,9 +718,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                         icon: Icon(Icons.edit),
                         onPressed: () async {
                           var items = await api_anon.location_list();
-                          useAppDialog(
+                          showDialog(
                             context: context,
-                            child: MultiChoiceEdit<Location>(
+                            builder: (context) => MultiChoiceEdit<Location>(
                               items: items,
                               value: _event!.location!,
                               builder: (event) => event.buildTile(context),
@@ -743,9 +742,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                   value: Valence.fromBool(_event!.public),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: ChoiceEdit(
+                      builder: (context) => ChoiceEdit(
                         value: Valence.fromBool(_event!.public),
                         onConfirm: (Valence v) {
                           setState(() => _event!.public = v.toBool());
@@ -762,9 +761,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                   value: Valence.fromBool(_event!.scrutable),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: ChoiceEdit(
+                      builder: (context) => ChoiceEdit(
                         value: Valence.fromBool(_event!.scrutable),
                         onConfirm: (Valence v) {
                           setState(() => _event!.scrutable = v.toBool());
@@ -831,9 +830,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: ChoiceEdit(
+                      builder: (context) => ChoiceEdit(
                         value: Valence.fromBool(_ownership),
                         onConfirm: (Valence v) {
                           setState(() => _ownership = v.toBool()!);
@@ -886,9 +885,9 @@ class EventDetailPageState extends State<EventDetailPage> {
           ),
           trailing: IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => useAppDialog(
+            onPressed: () => showDialog(
               context: context,
-              child: MultiChoiceEdit<Confirmation>(
+              builder: (context) => MultiChoiceEdit<Confirmation>(
                 items: Confirmation.values,
                 value: _attendanceRegistration[role],
                 builder: (confirmation) => confirmation.buildTile(context),
@@ -913,9 +912,9 @@ class EventDetailPageState extends State<EventDetailPage> {
           title: Text(_attendancePresence[role]?.localizedName(context) ?? AppLocalizations.of(context)!.labelMissing),
           trailing: IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => useAppDialog(
+            onPressed: () => showDialog(
               context: context,
-              child: ChoiceEdit(
+              builder: (context) => ChoiceEdit(
                 value: _attendancePresence[role],
                 onConfirm: (Valence v) {
                   setState(() => _attendancePresence[role] = v);

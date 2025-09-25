@@ -5,7 +5,6 @@ import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/utils/result.dart';
@@ -28,7 +27,6 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
   List<(User, int, int, int)> _stats = [];
   final List<int> _missing = List<int>.filled(3, 0);
 
-
   @override
   void initState() {
     super.initState();
@@ -50,7 +48,10 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
   void _handleCategories(int index) async {
     List<ItemCategory> categories = await api_regular.itemcat_list(widget.session);
     ItemCategory? category;
-    await useAppDialog(context: context, child: PickerDialog(items: categories, onPick: (item) => category = item));
+    await showDialog(
+      context: context,
+      builder: (context) => PickerDialog(items: categories, onPick: (item) => category = item),
+    );
     setState(() => _ctrlCategories[index] = category);
     _update();
   }
@@ -102,12 +103,14 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
               }),
               DataRow(
                 cells: <DataCell>[
-                  DataCell(Text(AppLocalizations.of(context)!.labelMissing, style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataCell(
+                    Text(AppLocalizations.of(context)!.labelMissing, style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
                   DataCell(Text("${_missing[0]}")),
                   DataCell(Text("${_missing[1]}")),
                   DataCell(Text("${_missing[2]}")),
                 ],
-              )
+              ),
             ],
           ),
         ],

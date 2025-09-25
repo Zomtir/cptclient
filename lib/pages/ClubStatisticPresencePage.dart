@@ -5,7 +5,6 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
@@ -167,9 +166,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                     onPressed: () async {
                       var users = await api_admin.user_list(widget.session);
                       users.sort();
-                      useAppDialog(
+                      showDialog(
                         context: context,
-                        child: MultiChoiceEdit<User>(
+                        builder: (context) => MultiChoiceEdit<User>(
                           items: users,
                           value: _ctrlUser,
                           builder: (user) => user.buildEntry(context),
@@ -194,9 +193,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                   title: Text(_ctrlRole),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: MultiChoiceEdit<String>(
+                      builder: (context) => MultiChoiceEdit<String>(
                         items: ["leader", "supporter", "participant", "spectator"],
                         value: "leader",
                         builder: (role) => Text(role),

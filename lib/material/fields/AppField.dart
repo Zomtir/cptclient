@@ -1,5 +1,4 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
@@ -17,9 +16,9 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
 
   void _handleSearch(BuildContext context) async {
     List<T>? items = await controller.callItems?.call() ?? [];
-    await useAppDialog(
+    await showDialog(
       context: context,
-      child: PickerDialog(
+      builder: (context) => PickerDialog(
         items: items,
         onPick: (item) => onChanged.call(item),
       ),

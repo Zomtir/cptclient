@@ -7,7 +7,6 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/ChoiceDisplay.dart';
 import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
 import 'package:cptclient/material/fields/AppField.dart';
@@ -123,9 +122,9 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: ChoiceEdit(
+                      builder: (context) => ChoiceEdit(
                         value: _ctrlActive,
                         onReset: () => setState(() => _ctrlActive = null),
                         onConfirm: (Valence? v) => setState(() => _ctrlActive = v),
@@ -142,9 +141,9 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () => useAppDialog(
+                    onPressed: () => showDialog(
                       context: context,
-                      child: ChoiceEdit(
+                      builder: (context) => ChoiceEdit(
                         value: _ctrlPublic,
                         onReset: () => setState(() => _ctrlPublic = null),
                         onConfirm: (Valence? v) => setState(() => _ctrlPublic = v),
