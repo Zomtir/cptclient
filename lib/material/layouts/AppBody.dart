@@ -9,33 +9,35 @@ class AppBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final screenWidth = constraints.maxWidth;
-
-        final child = ListView(
-          scrollDirection: Axis.vertical,
-          padding: const EdgeInsets.all(8.0),
-          children: children,
-        );
-
-        if (screenWidth > minWidth) {
-          return Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: maxWidth),
-              child: child,
-            ),
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final screenWidth = constraints.maxWidth;
+      
+          final child = ListView(
+            scrollDirection: Axis.vertical,
+            padding: const EdgeInsets.all(8.0),
+            children: children,
           );
-        } else {
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: minWidth,
-              child: child,
-            ),
-          );
-        }
-      },
+      
+          if (screenWidth > minWidth) {
+            return Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: child,
+              ),
+            );
+          } else {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: minWidth,
+                child: child,
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
