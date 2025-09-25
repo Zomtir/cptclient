@@ -11,6 +11,7 @@ import 'package:cptclient/pages/CompetenceSummaryPage.dart';
 import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseOverviewManagementPage.dart';
 import 'package:cptclient/pages/CourseOverviewModerationPage.dart';
+import 'package:cptclient/pages/DisciplineOverviewPage.dart';
 import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
 import 'package:cptclient/pages/EventOverviewManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
@@ -279,6 +280,12 @@ class MemberLandingPage extends StatelessWidget {
                   title: Text(AppLocalizations.of(context)!.pageSkillManagement),
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (context) => SkillOverviewPage(session: session))),
+                ),
+              if (session.right!.competence.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageDisciplineManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => DisciplineOverviewPage(session: session))),
                 ),
             ],
           ),

@@ -1100,6 +1100,24 @@ abstract class AppLocalizations {
   /// **'Edit Competence'**
   String get pageCompetenceEdit;
 
+  /// No description provided for @pageDisciplineManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Disciplines'**
+  String get pageDisciplineManagement;
+
+  /// No description provided for @pageDisciplineCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Discipline'**
+  String get pageDisciplineCreate;
+
+  /// No description provided for @pageDisciplineInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Discipline Information'**
+  String get pageDisciplineInfo;
+
   /// No description provided for @pageSkillManagement.
   ///
   /// In en, this message translates to:
@@ -1987,6 +2005,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Role'**
   String get eventRole;
+
+  /// No description provided for @discipline.
+  ///
+  /// In en, this message translates to:
+  /// **'Sportart'**
+  String get discipline;
+
+  /// No description provided for @disciplineKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Schlüssel'**
+  String get disciplineKey;
+
+  /// No description provided for @disciplineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sportart'**
+  String get disciplineTitle;
 
   /// No description provided for @skill.
   ///

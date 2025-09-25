@@ -511,6 +511,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageCompetenceEdit => 'Kompetenzen bearbeiten';
 
   @override
+  String get pageDisciplineManagement => 'Sportarten verwalten';
+
+  @override
+  String get pageDisciplineCreate => 'Sportart erstellen';
+
+  @override
+  String get pageDisciplineInfo => 'Sportart betrachten';
+
+  @override
   String get pageSkillManagement => 'Fähigkeiten verwalten';
 
   @override
@@ -958,6 +967,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get eventRole => 'Rolle';
+
+  @override
+  String get discipline => 'Discipline';
+
+  @override
+  String get disciplineKey => 'Key';
+
+  @override
+  String get disciplineTitle => 'Title';
 
   @override
   String get skill => 'Fähigkeit';

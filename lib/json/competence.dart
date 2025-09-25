@@ -65,7 +65,7 @@ class Competence extends FieldInterface implements Comparable {
     int criteria1 = user!.compareTo(other.user);
     if (criteria1 != 0) return criteria1;
 
-    int criteria2 = skill!.compareTo(other.skill);
+    int criteria2 = skill!.compareTo(other.discipline);
     if (criteria2 != 0) return criteria2;
 
     int criteria3 = rank.compareTo(other.rank);
