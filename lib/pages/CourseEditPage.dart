@@ -6,13 +6,14 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseEditPage extends StatefulWidget {
   final UserSession session;
   final Course course;
   final bool isDraft;
-  final Future<bool> Function(UserSession, Course) onSubmit;
+  final Future<Result> Function(UserSession, Course) onSubmit;
   final Future<bool> Function(UserSession, Course)? onDelete;
 
   CourseEditPage({super.key, required this.session, required this.course, required this.isDraft, required this.onSubmit, this.onDelete});
@@ -61,27 +62,25 @@ class CourseEditPageState extends State<CourseEditPage> {
 
   void _submitCourse() async {
     if (_ctrlCourseKey.text.isEmpty || _ctrlCourseKey.text.length > 10) {
-      messageText("${AppLocalizations.of(context)!.courseKey} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.courseKey} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (_ctrlCourseTitle.text.isEmpty || _ctrlCourseTitle.text.length > 100) {
-      messageText("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     _gatherCourse();
 
-    bool success;
+    Result result;
     if (widget.isDraft) {
-      success = await api_admin.course_create(widget.session, widget.course);
+      result = await api_admin.course_create(widget.session, widget.course);
     } else {
-      success = await api_admin.course_edit(widget.session, widget.course);
+      result = await api_admin.course_edit(widget.session, widget.course);
     }
 
-    messageFailureOnly(success);
-    if (!success) return;
-
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 

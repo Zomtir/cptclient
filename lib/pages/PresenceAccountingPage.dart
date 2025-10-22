@@ -57,21 +57,21 @@ class PresenceAccountingPageState extends State<PresenceAccountingPage> {
   void _handleSubmission() {
     final num? unit_duration_num = _nf.tryParse(_ctrlUnitDuration.text);
     if (unit_duration_num == null) {
-      messageText("${AppLocalizations.of(context)!.trainerUnitDuration} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.trainerUnitDuration} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     final num? compensation_num = _nf.tryParse(_ctrlCompensation.text);
     if (compensation_num == null) {
       messageText(
-          "${AppLocalizations.of(context)!.trainerCompensationPerUnit} ${AppLocalizations.of(context)!.isInvalid}");
+          "${AppLocalizations.of(context)!.trainerCompensationPerUnit} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     final num? donation_num = _nf.tryParse(_ctrlDonation.text);
     if (donation_num == null) {
       messageText(
-          "${AppLocalizations.of(context)!.trainerCompensationDontation} ${AppLocalizations.of(context)!.isInvalid}");
+          "${AppLocalizations.of(context)!.trainerCompensationDontation} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 

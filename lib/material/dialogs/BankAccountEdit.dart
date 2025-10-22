@@ -76,17 +76,17 @@ class BankAccountEditState extends State<BankAccountEdit> {
             icon: const Icon(Icons.check),
             onPressed: () {
               if (_ctrlIban.text.isEmpty) {
-                messageText("${AppLocalizations.of(context)!.bankaccIban} ${AppLocalizations.of(context)!.isInvalid}");
+                messageText("${AppLocalizations.of(context)!.bankaccIban} ${AppLocalizations.of(context)!.statusIsInvalid}");
                 return;
               }
 
               if (_ctrlBic.text.isEmpty) {
-                messageText("${AppLocalizations.of(context)!.bankaccBic} ${AppLocalizations.of(context)!.isInvalid}");
+                messageText("${AppLocalizations.of(context)!.bankaccBic} ${AppLocalizations.of(context)!.statusIsInvalid}");
                 return;
               }
 
               if (_ctrlInstitute.text.isEmpty) {
-                messageText("${AppLocalizations.of(context)!.bankaccInstitute} ${AppLocalizations.of(context)!.isInvalid}");
+                messageText("${AppLocalizations.of(context)!.bankaccInstitute} ${AppLocalizations.of(context)!.statusIsInvalid}");
                 return;
               }
 

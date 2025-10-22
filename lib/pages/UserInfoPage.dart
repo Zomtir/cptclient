@@ -50,8 +50,7 @@ class UserInfoPageState extends State<UserInfoPage> {
   }
 
   Future<void> _submitUser() async {
-    bool success = await api_admin.user_edit(widget.session, user_info!);
-    messageFailureOnly(success);
+    await api_admin.user_edit(widget.session, user_info!);
     _update();
   }
 
@@ -67,7 +66,7 @@ class UserInfoPageState extends State<UserInfoPage> {
 
   void _handleDelete() async {
     if (!await api_admin.user_delete(widget.session, user_info!)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
+      messageText('${AppLocalizations.of(context)!.actionDelete} ${AppLocalizations.of(context)!.statusHasFailed}');
       return;
     }
 

@@ -7,6 +7,8 @@ import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/crypto.dart' as crypto;
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
 Future<List<User>> user_list(UserSession session) async {
   final response = await client.get(
@@ -68,7 +70,7 @@ Future<bool> user_create(UserSession session, User user) async {
   return (response.statusCode == 200);
 }
 
-Future<bool> user_edit(UserSession session, User user) async {
+Future<Result> user_edit(UserSession session, User user) async {
   final response = await client.post(
     uri('/admin/user_edit', {
       'user_id': user.id.toString(),
@@ -80,7 +82,9 @@ Future<bool> user_edit(UserSession session, User user) async {
     body: json.encode(user),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
 Future<bool> user_delete(UserSession session, User user) async {

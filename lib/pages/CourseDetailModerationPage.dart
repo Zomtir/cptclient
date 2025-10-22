@@ -13,6 +13,7 @@ import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/pages/ClassOverviewMangementPage.dart';
 import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/RequirementOverviewPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseDetailModerationPage extends StatefulWidget {
@@ -65,8 +66,8 @@ class CourseDetailModerationPageState extends State<CourseDetailModerationPage> 
   }
 
   Future<void> _handleDelete() async {
-    if(!await api_moderator.course_delete(widget.session, widget.course)) return;
-
+    var result = await api_moderator.course_delete(widget.session, widget.course);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 

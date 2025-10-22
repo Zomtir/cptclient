@@ -6,6 +6,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/pages/RequirementEditPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class RequirementOverviewPage extends StatefulWidget {
@@ -30,9 +31,9 @@ class RequirementOverviewPageState extends State<RequirementOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Requirement> requirements = await api_admin.course_requirement_list(widget.session, widget.course);
-
-    setState(() => _requirements = requirements);
+    var result_requirements = await api_admin.course_requirement_list(widget.session, widget.course);
+    if (result_requirements is! Success) return;
+    setState(() => _requirements = result_requirements.unwrap());
   }
 
   Future<void> _handleSelect(Requirement requirement, bool isDraft) async {

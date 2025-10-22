@@ -58,17 +58,17 @@ class UserCreatePageState extends State<UserCreatePage> {
 
   void _submit() async {
     if (_ctrlFirstname.text.isEmpty || _ctrlFirstname.text.length > 20) {
-      messageText("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.userFirstname} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (_ctrlLastname.text.isEmpty || _ctrlLastname.text.length > 20) {
-      messageText("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.userLastname} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (_ctrlNickname.text.length > 20) {
-      messageText("${AppLocalizations.of(context)!.userNickname} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.userNickname} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
     
@@ -76,7 +76,6 @@ class UserCreatePageState extends State<UserCreatePage> {
 
     bool success = await api_admin.user_create(widget.session, user_info);
 
-    messageFailureOnly(success);
     if (!success) return;
 
     Navigator.pop(context);

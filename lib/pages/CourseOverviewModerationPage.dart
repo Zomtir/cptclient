@@ -11,6 +11,7 @@ import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CourseDetailModerationPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseOverviewModerationPage extends StatefulWidget {
@@ -40,11 +41,13 @@ class CourseOverviewModerationPageState extends State<CourseOverviewModerationPa
 
   void _update() async {
     List<Skill> skills = await api_anon.skill_list();
-    List<Course> courses = await api_moderator.course_responsibility(widget.session, _isActive, _isPublic);
+    Result<List<Course>> result_courses = await api_moderator.course_responsibility(widget.session, _isActive, _isPublic);
+
+    if (result_courses is! Success) return;
 
     setState(() {
       _ctrlDropdownSkill.items = skills;
-      _courses = courses;
+      _courses = result_courses.unwrap();
     });
   }
 

@@ -49,7 +49,7 @@ class LocationEditPageState extends State<LocationEditPage> {
     if (widget.location.key.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.isInvalid}"),
+          content: Text("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.statusIsInvalid}"),
         ),
       );
       return;
@@ -58,7 +58,7 @@ class LocationEditPageState extends State<LocationEditPage> {
     if (widget.location.name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.isInvalid}"),
+          content: Text("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.statusIsInvalid}"),
         ),
       );
       return;

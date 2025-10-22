@@ -13,10 +13,22 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime date_from,
-    DateTime date_until, List<Event> event_list, {required String discipline, required double unit_duration,
-      required double compensation_rate, required double compensation_hours, required double compensation_units,
-      required double compensation_sum, required double disbursement_sum, required double donation_sum}) async {
+void trainer_accounting_pdf(
+  BuildContext context,
+  Club club,
+  User user,
+  DateTime date_from,
+  DateTime date_until,
+  List<Event> event_list, {
+  required String discipline,
+  required double unit_duration,
+  required double compensation_rate,
+  required double compensation_hours,
+  required double compensation_units,
+  required double compensation_sum,
+  required double disbursement_sum,
+  required double donation_sum,
+}) async {
   var docTheme = pw.ThemeData.withFont(
     base: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.regular.ttf")),
     bold: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.bold.ttf")),
@@ -75,7 +87,7 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
                 pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
                 pw.Text("${user.firstname} ${user.lastname}"),
               ],
-            )
+            ),
           ],
         ),
         pw.Divider(color: PdfColors.grey, thickness: 1),
@@ -119,7 +131,8 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
               pw.TableRow(
                 children: [
                   pw.Text(
-                      "${AppLocalizations.of(context)!.userFirstname}, ${AppLocalizations.of(context)!.userLastname}"),
+                    "${AppLocalizations.of(context)!.userFirstname}, ${AppLocalizations.of(context)!.userLastname}",
+                  ),
                   pw.Text("${user.firstname} ${user.lastname}"),
                 ],
               ),
@@ -249,8 +262,9 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
             child: pw.Text(
-                "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
-                style: styleTinyBold),
+              "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
+              style: styleTinyBold,
+            ),
           ),
         ],
       ),
@@ -330,8 +344,9 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
                     padding: const pw.EdgeInsets.all(5),
                     decoration: boxInputDecoration,
                     child: pw.Text(
-                        "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.trainer}",
-                        style: styleTinyBold),
+                      "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.trainer}",
+                      style: styleTinyBold,
+                    ),
                   ),
                 ),
                 pw.Expanded(
@@ -340,8 +355,9 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
                     padding: const pw.EdgeInsets.all(5),
                     decoration: boxInputDecoration,
                     child: pw.Text(
-                        "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.clubDivisionHead}",
-                        style: styleTinyBold),
+                      "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.clubDivisionHead}",
+                      style: styleTinyBold,
+                    ),
                   ),
                 ),
               ],
@@ -380,10 +396,10 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text("☐ "),
-              pw.Text(AppLocalizations.of(context)!.actionYes),
+              pw.Text(AppLocalizations.of(context)!.labelYes),
               pw.SizedBox(width: 50),
               pw.Text("☐ "),
-              pw.Text(AppLocalizations.of(context)!.actionNo),
+              pw.Text(AppLocalizations.of(context)!.labelNo),
             ],
           ),
           pw.SizedBox(height: 10),
@@ -394,12 +410,15 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
             children: [
               pw.Text("☐ "),
               pw.Expanded(
-                  child: pw.Column(children: [
-                pw.Text(
-                  AppLocalizations.of(context)!.trainerTaxAssignmentExclusive,
-                  textAlign: pw.TextAlign.justify,
+                child: pw.Column(
+                  children: [
+                    pw.Text(
+                      AppLocalizations.of(context)!.trainerTaxAssignmentExclusive,
+                      textAlign: pw.TextAlign.justify,
+                    ),
+                  ],
                 ),
-              ])),
+              ),
             ],
           ),
           pw.SizedBox(height: 5),
@@ -408,45 +427,46 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
             children: [
               pw.Text("☐ "),
               pw.Expanded(
-                  child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.stretch,
-                children: [
-                  pw.Text(
-                    AppLocalizations.of(context)!.trainerTaxAssignmentShared,
-                    textAlign: pw.TextAlign.justify,
-                  ),
-                  pw.SizedBox(height: 5),
-                  pw.Container(
-                    decoration: boxInputDecoration,
-                    child: pw.Table(
-                      border: pw.TableBorder.all(color: PdfColors.grey),
-                      columnWidths: {
-                        0: const pw.FlexColumnWidth(100),
-                        1: const pw.FlexColumnWidth(100),
-                        2: const pw.FixedColumnWidth(50),
-                      },
-                      children: [
-                        pw.TableRow(
-                          children: [
-                            pw.Text(AppLocalizations.of(context)!.clubName, style: styleTinyBold),
-                            pw.Text(AppLocalizations.of(context)!.clubAddress, style: styleTinyBold),
-                            pw.Text(AppLocalizations.of(context)!.labelAmount, style: styleTinyBold),
-                          ],
-                        ),
-                        pw.TableRow(
-                          children: [pw.SizedBox(height: 15)],
-                        ),
-                        pw.TableRow(
-                          children: [pw.SizedBox(height: 15)],
-                        ),
-                        pw.TableRow(
-                          children: [pw.SizedBox(height: 15)],
-                        ),
-                      ],
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+                  children: [
+                    pw.Text(
+                      AppLocalizations.of(context)!.trainerTaxAssignmentShared,
+                      textAlign: pw.TextAlign.justify,
                     ),
-                  ),
-                ],
-              )),
+                    pw.SizedBox(height: 5),
+                    pw.Container(
+                      decoration: boxInputDecoration,
+                      child: pw.Table(
+                        border: pw.TableBorder.all(color: PdfColors.grey),
+                        columnWidths: {
+                          0: const pw.FlexColumnWidth(100),
+                          1: const pw.FlexColumnWidth(100),
+                          2: const pw.FixedColumnWidth(50),
+                        },
+                        children: [
+                          pw.TableRow(
+                            children: [
+                              pw.Text(AppLocalizations.of(context)!.clubName, style: styleTinyBold),
+                              pw.Text(AppLocalizations.of(context)!.clubAddress, style: styleTinyBold),
+                              pw.Text(AppLocalizations.of(context)!.labelAmount, style: styleTinyBold),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [pw.SizedBox(height: 15)],
+                          ),
+                          pw.TableRow(
+                            children: [pw.SizedBox(height: 15)],
+                          ),
+                          pw.TableRow(
+                            children: [pw.SizedBox(height: 15)],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
           pw.SizedBox(height: 10),
@@ -465,15 +485,17 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
               pw.TableRow(
                 children: [
                   pw.Text("${AppLocalizations.of(context)!.userLicenseMain}:"),
-                  pw.Text(user.license_main == null ? AppLocalizations.of(context)!.labelUnavailable : "${user.license_main!.name} (${user.license_main!.number})"),
+                  pw.Text(
+                    user.license_main == null ? "-" : "${user.license_main!.name} (${user.license_main!.number})",
+                  ),
                 ],
               ),
               pw.TableRow(
                 children: [
                   pw.Text("${AppLocalizations.of(context)!.userLicenseExtra}:"),
-                  pw.Text(user.license_extra == null
-                      ? AppLocalizations.of(context)!.labelUnavailable
-                      : "${user.license_extra!.name} (${user.license_extra!.number})"),
+                  pw.Text(
+                    user.license_extra == null ? "-" : "${user.license_extra!.name} (${user.license_extra!.number})",
+                  ),
                 ],
               ),
             ],
@@ -502,8 +524,9 @@ void trainer_accounting_pdf(BuildContext context, Club club, User user, DateTime
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
             child: pw.Text(
-                "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
-                style: styleTinyBold),
+              "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
+              style: styleTinyBold,
+            ),
           ),
         ],
       ),

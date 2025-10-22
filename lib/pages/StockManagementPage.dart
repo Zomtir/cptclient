@@ -13,6 +13,7 @@ import 'package:cptclient/material/dialogs/StockEditDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class StockManagementPage extends StatefulWidget {
@@ -36,11 +37,16 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   Future<void> _prepare() async {
-    List<Club> clubs = await api_anon.club_list();
+    Result<List<Club>> result_clubs = await api_anon.club_list();
+    if (result_clubs is! Success) {
+      Navigator.pop(context);
+      return;
+    }
+
     Club? club;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: clubs, onPick: (e) => club = e),
+      builder: (context) => PickerDialog(items: result_clubs.unwrap(), onPick: (e) => club = e),
     );
 
     if (club == null) {

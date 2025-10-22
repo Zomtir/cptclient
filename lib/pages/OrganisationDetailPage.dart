@@ -32,18 +32,22 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
   void _handleSubmit() async {
     if (widget.organisation.abbreviation.isEmpty) {
       messageText(
-        "${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.isInvalid}",
+        "${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.statusIsInvalid}",
       );
       return;
     }
 
     if (widget.organisation.name.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     bool success = await api_admin.organisation_edit(widget.session, widget.organisation);
-    messageFailureOnly(success);
+
+    if (!success) {
+      messageText("${AppLocalizations.of(context)!.actionSubmission} ${AppLocalizations.of(context)!.statusHasFailed}");
+      return;
+    }
   }
 
   void _handleDelete() async {

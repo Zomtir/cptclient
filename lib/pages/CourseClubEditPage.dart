@@ -6,13 +6,14 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseClubEditPage extends StatefulWidget {
   final UserSession session;
   final Course course;
-  final Future<List<Club>> Function() callList;
-  final Future<int?> Function() callInfo;
+  final Future<Result<List<Club>>> Function() callList;
+  final Future<Result<int>> Function() callInfo;
   final Future<void> Function(Club?) callEdit;
 
   CourseClubEditPage(
@@ -39,12 +40,14 @@ class CourseClubEditPageState extends State<CourseClubEditPage> {
   }
 
   Future<void> _update() async {
-    List<Club> courses = await widget.callList();
-    int? courseID = await widget.callInfo();
+    Result<List<Club>> result_courses = await widget.callList();
+    Result<int> result_course_id = await widget.callInfo();
+
+    if (result_courses is! Success || result_course_id is! Success) return;
 
     setState(() {
-      _ctrlClub.items = courses;
-      _ctrlClub.value = (courseID == null) ? null : courses.firstWhere((club) => club.id == courseID);
+      _ctrlClub.items = result_courses.unwrap();
+      _ctrlClub.value = result_courses.unwrap().firstWhere((club) => club.id == result_course_id.unwrap());
     });
   }
 

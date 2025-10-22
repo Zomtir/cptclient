@@ -17,6 +17,7 @@ import 'package:cptclient/pages/CourseEditPage.dart';
 import 'package:cptclient/pages/CourseStatisticClassPage.dart';
 import 'package:cptclient/pages/CourseStatisticPresencePage.dart';
 import 'package:cptclient/pages/RequirementOverviewPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseDetailManagementPage extends StatefulWidget {
@@ -69,8 +70,8 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
   }
 
   Future<void> _handleDelete() async {
-    if (!await api_admin.course_delete(widget.session, widget.course)) return;
-
+    var result = await api_admin.course_delete(widget.session, widget.course);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 

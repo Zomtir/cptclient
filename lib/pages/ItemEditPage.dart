@@ -55,7 +55,7 @@ class ItemEditPageState extends State<ItemEditPage> {
 
     if (widget.item.name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.isInvalid}")));
+          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.statusIsInvalid}")));
       return;
     }
 

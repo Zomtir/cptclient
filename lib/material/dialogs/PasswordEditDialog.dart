@@ -97,15 +97,15 @@ class PasswordEditDialogState extends State<PasswordEditDialog> {
             icon: const Icon(Icons.check),
             onPressed: () {
               if ((currentValue.salt?.length ?? 0) != 32) {
-                messageText("${AppLocalizations.of(context)!.userSalt} ${AppLocalizations.of(context)!.isInvalid}: x != 32");
+                messageText("${AppLocalizations.of(context)!.userSalt} ${AppLocalizations.of(context)!.statusIsInvalid}: x != 32");
                 return;
               }
               if ((currentValue.password?.length ?? 0) < widget.minLength) {
-                messageText("${AppLocalizations.of(context)!.userPassword} ${AppLocalizations.of(context)!.isInvalid}: x < ${widget.minLength}");
+                messageText("${AppLocalizations.of(context)!.userPassword} ${AppLocalizations.of(context)!.statusIsInvalid}: x < ${widget.minLength}");
                 return;
               }
               if ((currentValue.password?.length ?? 0) > widget.maxLength) {
-                messageText("${AppLocalizations.of(context)!.userPassword} ${AppLocalizations.of(context)!.isInvalid}: x > ${widget.maxLength}");
+                messageText("${AppLocalizations.of(context)!.userPassword} ${AppLocalizations.of(context)!.statusIsInvalid}: x > ${widget.maxLength}");
                 return;
               }
               widget.onConfirm?.call(currentValue);

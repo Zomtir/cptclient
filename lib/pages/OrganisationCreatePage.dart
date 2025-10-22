@@ -44,12 +44,12 @@ class OrganisationCreatePageState extends State<OrganisationCreatePage> {
     _gatherInfo();
 
     if (widget.organisation.abbreviation.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (widget.organisation.name.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 

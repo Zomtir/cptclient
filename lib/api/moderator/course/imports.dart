@@ -6,13 +6,14 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
 export 'leader.dart';
 export 'moderator.dart';
 export 'participant.dart';
 export 'supporter.dart';
 
-Future<List<Course>> course_responsibility(UserSession session, bool? active, bool? public) async {
+Future<Result<List<Course>>> course_responsibility(UserSession session, bool? active, bool? public) async {
   final response = await client.get(
     uri('/mod/course_responsibility', {
       if (active != null) 'active': active.toString(),
@@ -23,13 +24,14 @@ Future<List<Course>> course_responsibility(UserSession session, bool? active, bo
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Course>.from(list.map((model) => Course.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var li = List<Course>.from(it.map((model) => Course.fromJson(model)));
+  return Success(li);
 }
 
-Future<bool> course_create(UserSession session, Course course) async {
+Future<Result> course_create(UserSession session, Course course) async {
   final response = await client.post(
     uri('/mod/course_create'),
     headers: {
@@ -39,12 +41,11 @@ Future<bool> course_create(UserSession session, Course course) async {
     body: json.encode(course),
   );
 
-  bool success = (response.statusCode == 200);
-  messageStatus(success);
-  return success;
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> course_edit(UserSession session, Course course) async {
+Future<Result> course_edit(UserSession session, Course course) async {
   final response = await client.post(
     uri('/mod/course_edit', {
       'course_id': course.id.toString(),
@@ -56,10 +57,11 @@ Future<bool> course_edit(UserSession session, Course course) async {
     body: json.encode(course),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> course_delete(UserSession session, Course course) async {
+Future<Result> course_delete(UserSession session, Course course) async {
   final response = await client.head(
     uri('/mod/course_delete', {'course_id': course.id.toString()}),
     headers: {
@@ -67,5 +69,6 @@ Future<bool> course_delete(UserSession session, Course course) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

@@ -6,6 +6,8 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
 Future<List<Team>?> team_list(UserSession session) async {
   final response = await client.get(
@@ -38,7 +40,7 @@ Future<Team?> team_info(UserSession session, int teamID) async {
   return Team.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 }
 
-Future<int?> team_create(UserSession session, Team team) async {
+Future<Result<int>> team_create(UserSession session, Team team) async {
   final response = await client.post(
     uri('/admin/team_create'),
     headers: {
@@ -48,13 +50,15 @@ Future<int?> team_create(UserSession session, Team team) async {
     body: json.encode(team),
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
+  int? id = int.tryParse(utf8.decode(response.bodyBytes));
+  if (id == null) return Failure();
 
-  return int.tryParse(utf8.decode(response.bodyBytes));
+  return Success(id);
 }
 
-Future<bool> team_edit(UserSession session, Team team) async {
+Future<Result> team_edit(UserSession session, Team team) async {
   final response = await client.post(
     uri('/admin/team_edit', {
       'team_id': team.id.toString(),
@@ -66,7 +70,9 @@ Future<bool> team_edit(UserSession session, Team team) async {
     body: json.encode(team),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
 Future<bool> team_right_edit(UserSession session, Team team) async {

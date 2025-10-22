@@ -4,7 +4,6 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/license.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/utils/message.dart';
 
 Future<bool> user_license_main_create(UserSession session, User user, License license) async {
   final response = await client.post(
@@ -19,7 +18,6 @@ Future<bool> user_license_main_create(UserSession session, User user, License li
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }
 
@@ -36,7 +34,6 @@ Future<bool> user_license_main_edit(UserSession session, User user, License lice
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }
 
@@ -51,7 +48,6 @@ Future<bool> user_license_main_delete(UserSession session, User user) async {
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }
 
@@ -68,7 +64,6 @@ Future<bool> user_license_extra_create(UserSession session, User user, License l
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }
 
@@ -85,7 +80,6 @@ Future<bool> user_license_extra_edit(UserSession session, User user, License lic
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }
 
@@ -100,6 +94,5 @@ Future<bool> user_license_extra_delete(UserSession session, User user) async {
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }

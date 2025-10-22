@@ -6,6 +6,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TeamEditPage extends StatefulWidget {
@@ -54,32 +55,30 @@ class TeamEditPageState extends State<TeamEditPage> {
 
   void _submitTeam() async {
     if (_ctrlKey.text.isEmpty || _ctrlKey.text.length > 10) {
-      messageText("${AppLocalizations.of(context)!.teamKey} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.teamKey} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (_ctrlName.text.isEmpty || _ctrlName.text.length > 30) {
-      messageText("${AppLocalizations.of(context)!.teamName} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.teamName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (_ctrlDescription.text.isEmpty || _ctrlDescription.text.length > 100) {
-      messageText("${AppLocalizations.of(context)!.teamDescription} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.teamDescription} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     _gatherTeam();
 
-    bool success;
+    Result result;
     if (widget.isDraft) {
-      success = await server.team_create(widget.session, widget.team) != null;
+      result = await server.team_create(widget.session, widget.team);
     } else {
-      success = await server.team_edit(widget.session, widget.team);
+      result = await server.team_edit(widget.session, widget.team);
     }
 
-    messageFailureOnly(success);
-    if (!success) return;
-    Navigator.pop(context);
+    if (result is Success) Navigator.pop(context);
   }
 
   @override

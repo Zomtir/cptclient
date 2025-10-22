@@ -58,12 +58,12 @@ class ClubEditPageState extends State<ClubEditPage> {
     _gatherInfo();
 
     if (widget.club.key.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.clubKey} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.clubKey} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (widget.club.name.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.clubName} ${AppLocalizations.of(context)!.isInvalid}");
+      messageText("${AppLocalizations.of(context)!.clubName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 

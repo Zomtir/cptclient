@@ -10,6 +10,7 @@ import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class RequirementEditPage extends StatefulWidget {
@@ -54,20 +55,18 @@ class RequirementEditPageState extends State<RequirementEditPage> {
 
     if (widget.requirement.skill == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.skill} ${AppLocalizations.of(context)!.isInvalid}")));
+          content: Text("${AppLocalizations.of(context)!.skill} ${AppLocalizations.of(context)!.statusIsInvalid}")));
       return;
     }
 
-    bool success = await api_admin.course_requirement_add(widget.session, widget.requirement);
-
-    if (!success) return;
-
+    var result = await api_admin.course_requirement_add(widget.session, widget.requirement);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 
   void _handleDelete() async {
-    if (!await api_admin.course_requirement_remove(widget.session, widget.requirement)) return;
-
+    var result = await api_admin.course_requirement_remove(widget.session, widget.requirement);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 

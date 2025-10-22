@@ -7,6 +7,7 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
 class AffiliationEditPage extends StatefulWidget {
@@ -53,11 +54,10 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
     final success = await api_admin.affiliation_edit(widget.session, widget.affiliation);
 
     if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save ranking')));
+      messageText('${AppLocalizations.of(context)!.actionSubmission} ${AppLocalizations.of(context)!.statusHasFailed}');
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully saved ranking')));
     Navigator.pop(context);
   }
 
@@ -65,11 +65,10 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
     final success = await api_admin.affiliation_delete(widget.session, widget.affiliation);
 
     if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete ranking')));
+      messageText('${AppLocalizations.of(context)!.actionDelete} ${AppLocalizations.of(context)!.statusHasFailed}');
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted ranking')));
     Navigator.pop(context);
   }
 

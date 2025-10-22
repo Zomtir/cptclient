@@ -78,17 +78,17 @@ class LicenseEditState extends State<LicenseEdit> {
             icon: const Icon(Icons.check),
             onPressed: () {
               if (_ctrlName.text.isEmpty || _ctrlNumber.text.length > 50) {
-                messageText("${AppLocalizations.of(context)!.licenseName} ${AppLocalizations.of(context)!.isInvalid}");
+                messageText("${AppLocalizations.of(context)!.licenseName} ${AppLocalizations.of(context)!.statusIsInvalid}");
                 return;
               }
 
               if (_ctrlNumber.text.isEmpty || _ctrlNumber.text.length > 20 ) {
-                messageText("${AppLocalizations.of(context)!.licenseNumber} ${AppLocalizations.of(context)!.isInvalid}");
+                messageText("${AppLocalizations.of(context)!.licenseNumber} ${AppLocalizations.of(context)!.statusIsInvalid}");
                 return;
               }
 
               if (_ctrlExpiration.getDateTime() == null) {
-                messageText("${AppLocalizations.of(context)!.licenseExpiration} ${AppLocalizations.of(context)!.isInvalid}");
+                messageText("${AppLocalizations.of(context)!.licenseExpiration} ${AppLocalizations.of(context)!.statusIsInvalid}");
                 return;
               }
 

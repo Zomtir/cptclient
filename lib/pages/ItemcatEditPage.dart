@@ -43,7 +43,7 @@ class ItemcatEditPageState extends State<ItemcatEditPage> {
     if (widget.category.name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.isInvalid}"),
+          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.statusIsInvalid}"),
         ),
       );
       return;

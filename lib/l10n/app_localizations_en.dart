@@ -15,6 +15,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language_de => 'German';
 
   @override
+  String get labelMissing => 'Missing';
+
+  @override
+  String get labelUnknown => 'Unknown';
+
+  @override
   String get labelFormat => 'Format';
 
   @override
@@ -25,15 +31,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelStatistics => 'Statistics';
-
-  @override
-  String get labelAvailable => 'Available';
-
-  @override
-  String get labelUnavailable => 'Unavailable';
-
-  @override
-  String get labelMissing => 'Missing';
 
   @override
   String get labelRequired => 'Required';
@@ -109,6 +106,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelAmount => 'Amount';
+
+  @override
+  String get labelYes => 'Yes';
+
+  @override
+  String get labelMaybe => 'Maybe';
+
+  @override
+  String get labelNo => 'No';
 
   @override
   String get labelTrue => 'True';
@@ -222,28 +228,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionWrite => 'Write';
 
   @override
-  String get actionYes => 'Yes';
+  String get actionRequest => 'Request';
 
   @override
-  String get actionNo => 'No';
+  String get actionSubmission => 'Submission';
 
   @override
-  String get submissionFail => 'Failed to submit the information';
+  String get actionRetrieval => 'Retrieval';
 
   @override
-  String get submissionSuccess => 'Succeeded to submit the information';
+  String get statusHasSucceeded => 'has succeeded';
 
   @override
-  String get responseSuccess => 'Success';
+  String get statusHasFailed => 'has failed';
 
   @override
-  String get responseFail => 'Failed';
+  String get statusIsValid => 'is valid';
 
   @override
-  String get isValid => 'is valid';
+  String get statusIsInvalid => 'is invalid';
 
   @override
-  String get isInvalid => 'is invalid';
+  String get statusIsAvailable => 'is available';
+
+  @override
+  String get statusIsUnavailable => 'is unavailable';
 
   @override
   String get dateYear => 'Year';

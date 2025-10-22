@@ -15,7 +15,7 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
   });
 
   void _handleSearch(BuildContext context) async {
-    List<T>? items = await controller.callItems?.call() ?? [];
+    List<T>? items = await controller.callItems?.call() ?? []; // TODO Result
     await showDialog(
       context: context,
       builder: (context) => PickerDialog(

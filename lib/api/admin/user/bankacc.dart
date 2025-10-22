@@ -4,7 +4,6 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/utils/message.dart';
 
 Future<bool> user_bank_account_create(UserSession session, User user, BankAccount bankacc) async {
   final response = await client.post(
@@ -19,8 +18,7 @@ Future<bool> user_bank_account_create(UserSession session, User user, BankAccoun
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
-  return (success);
+  return success;
 }
 
 Future<bool> user_bank_account_edit(UserSession session, User user, BankAccount bankacc) async {
@@ -36,7 +34,6 @@ Future<bool> user_bank_account_edit(UserSession session, User user, BankAccount 
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }
 
@@ -51,6 +48,5 @@ Future<bool> user_bank_account_delete(UserSession session, User user) async {
   );
 
   bool success = response.statusCode == 200;
-  messageFailureOnly(success);
   return (success);
 }

@@ -24,14 +24,14 @@ Future<Result<List<Course>>> course_list(UserSession session, {User? user, bool?
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
 
   Iterable it = json.decode(utf8.decode(response.bodyBytes));
   var list = List<Course>.from(it.map((model) => Course.fromJson(model)));
   return Success(list);
 }
 
-Future<bool> course_create(UserSession session, Course course) async {
+Future<Result> course_create(UserSession session, Course course) async {
   final response = await client.post(
     uri('/admin/course_create'),
     headers: {
@@ -41,12 +41,12 @@ Future<bool> course_create(UserSession session, Course course) async {
     body: json.encode(course),
   );
 
-  bool success = (response.statusCode == 200);
-  messageStatus(success);
-  return success;
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
-Future<bool> course_edit(UserSession session, Course course) async {
+Future<Result> course_edit(UserSession session, Course course) async {
   final response = await client.post(
     uri('/admin/course_edit', {
       'course_id': course.id.toString(),
@@ -58,10 +58,12 @@ Future<bool> course_edit(UserSession session, Course course) async {
     body: json.encode(course),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
-Future<bool> course_delete(UserSession session, Course course) async {
+Future<Result> course_delete(UserSession session, Course course) async {
   final response = await client.head(
     uri('/admin/course_delete', {'course_id': course.id.toString()}),
     headers: {
@@ -69,10 +71,12 @@ Future<bool> course_delete(UserSession session, Course course) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
-Future<List<Requirement>> course_requirement_list(UserSession session, Course course) async {
+Future<Result<List<Requirement>>> course_requirement_list(UserSession session, Course course) async {
   final response = await client.get(
     uri('/admin/course_requirement_list', {
       'course_id': course.id.toString(),
@@ -82,13 +86,14 @@ Future<List<Requirement>> course_requirement_list(UserSession session, Course co
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
   Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Requirement>.from(l.map((model) => Requirement.fromJson(model)));
+  var list = List<Requirement>.from(l.map((model) => Requirement.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> course_requirement_add(UserSession session, Requirement requirement) async {
+Future<Result> course_requirement_add(UserSession session, Requirement requirement) async {
   final response = await client.head(
     uri('/admin/course_requirement_add', {
       'course_id': requirement.course!.id.toString(),
@@ -100,12 +105,11 @@ Future<bool> course_requirement_add(UserSession session, Requirement requirement
     },
   );
 
-  bool success = (response.statusCode == 200);
-  messageStatus(success);
-  return success;
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> course_requirement_remove(UserSession session, Requirement requirement) async {
+Future<Result> course_requirement_remove(UserSession session, Requirement requirement) async {
   final response = await client.head(
     uri('/admin/course_requirement_remove', {
       'requirement_id': requirement.id.toString(),
@@ -115,12 +119,11 @@ Future<bool> course_requirement_remove(UserSession session, Requirement requirem
     },
   );
 
-  bool success = (response.statusCode == 200);
-  messageStatus(success);
-  return success;
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<int?> course_club_info(UserSession session, Course course) async {
+Future<Result<int>> course_club_info(UserSession session, Course course) async {
   final response = await client.get(
     uri('/admin/course_club_info', {
       'course_id': course.id.toString(),
@@ -131,12 +134,13 @@ Future<int?> course_club_info(UserSession session, Course course) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return json.decode(utf8.decode(response.bodyBytes));
+  int club_id = json.decode(utf8.decode(response.bodyBytes));
+  return Success(club_id);
 }
 
-Future<bool> course_club_edit(UserSession session, Course course, Club? club) async {
+Future<Result> course_club_edit(UserSession session, Course course, Club? club) async {
   final response = await client.head(
     uri('/admin/course_club_edit', {
       'course_id': course.id.toString(),
@@ -147,7 +151,8 @@ Future<bool> course_club_edit(UserSession session, Course course, Club? club) as
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
 Future<List<(Event, int, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {

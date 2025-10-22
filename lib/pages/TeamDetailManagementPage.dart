@@ -9,6 +9,7 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
 import 'package:cptclient/pages/TeamRightPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TeamDetailManagementPage extends StatelessWidget {
@@ -58,17 +59,18 @@ class TeamDetailManagementPage extends StatelessWidget {
   }
 
   Future<void> _handleDuplicate(BuildContext context) async {
-    int? newTeamID = await api_admin.team_create(session, Team.fromTeam(team));
+    Result<int> resultId = (await api_admin.team_create(session, Team.fromTeam(team)));
 
-    if (newTeamID == null) return;
+    if (resultId is! Success) return;
+
     List<User> members = await api_admin.team_member_list(session, team.id);
 
     for (User member in members){
-      api_admin.team_member_add(session, newTeamID, member.id);
+      api_admin.team_member_add(session, resultId.unwrap(), member.id);
     }
     Navigator.pop(context);
 
-    Team? newTeam = await api_admin.team_info(session, newTeamID);
+    Team? newTeam = await api_admin.team_info(session, resultId.unwrap());
     if (newTeam == null) return;
 
     await Navigator.push(

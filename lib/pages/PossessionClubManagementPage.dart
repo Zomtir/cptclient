@@ -10,6 +10,7 @@ import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class PossessionClubManagementPage extends StatefulWidget {
@@ -36,11 +37,12 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
 
   Future<void> _prepare() async {
     if (widget.club == null) {
-      List<Club> clubs = await api_anon.club_list();
+      Result<List<Club>> result_clubs = await api_anon.club_list();
+      if (result_clubs is! Success) return;
       Club? club;
       await showDialog(
         context: context,
-        builder: (context) => PickerDialog(items: clubs, onPick: (item) => club = item),
+        builder: (context) => PickerDialog(items: result_clubs.unwrap(), onPick: (item) => club = item),
       );
 
       if (club == null) {

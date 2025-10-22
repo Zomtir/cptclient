@@ -110,6 +110,18 @@ abstract class AppLocalizations {
   /// **'German'**
   String get language_de;
 
+  /// No description provided for @labelMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get labelMissing;
+
+  /// No description provided for @labelUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get labelUnknown;
+
   /// No description provided for @labelFormat.
   ///
   /// In en, this message translates to:
@@ -133,24 +145,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Statistics'**
   String get labelStatistics;
-
-  /// No description provided for @labelAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Available'**
-  String get labelAvailable;
-
-  /// No description provided for @labelUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Unavailable'**
-  String get labelUnavailable;
-
-  /// No description provided for @labelMissing.
-  ///
-  /// In en, this message translates to:
-  /// **'Missing'**
-  String get labelMissing;
 
   /// No description provided for @labelRequired.
   ///
@@ -301,6 +295,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Amount'**
   String get labelAmount;
+
+  /// No description provided for @labelYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get labelYes;
+
+  /// No description provided for @labelMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe'**
+  String get labelMaybe;
+
+  /// No description provided for @labelNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get labelNo;
 
   /// No description provided for @labelTrue.
   ///
@@ -524,53 +536,59 @@ abstract class AppLocalizations {
   /// **'Write'**
   String get actionWrite;
 
-  /// No description provided for @actionYes.
+  /// No description provided for @actionRequest.
   ///
   /// In en, this message translates to:
-  /// **'Yes'**
-  String get actionYes;
+  /// **'Request'**
+  String get actionRequest;
 
-  /// No description provided for @actionNo.
+  /// No description provided for @actionSubmission.
   ///
   /// In en, this message translates to:
-  /// **'No'**
-  String get actionNo;
+  /// **'Submission'**
+  String get actionSubmission;
 
-  /// No description provided for @submissionFail.
+  /// No description provided for @actionRetrieval.
   ///
   /// In en, this message translates to:
-  /// **'Failed to submit the information'**
-  String get submissionFail;
+  /// **'Retrieval'**
+  String get actionRetrieval;
 
-  /// No description provided for @submissionSuccess.
+  /// No description provided for @statusHasSucceeded.
   ///
   /// In en, this message translates to:
-  /// **'Succeeded to submit the information'**
-  String get submissionSuccess;
+  /// **'has succeeded'**
+  String get statusHasSucceeded;
 
-  /// No description provided for @responseSuccess.
+  /// No description provided for @statusHasFailed.
   ///
   /// In en, this message translates to:
-  /// **'Success'**
-  String get responseSuccess;
+  /// **'has failed'**
+  String get statusHasFailed;
 
-  /// No description provided for @responseFail.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed'**
-  String get responseFail;
-
-  /// No description provided for @isValid.
+  /// No description provided for @statusIsValid.
   ///
   /// In en, this message translates to:
   /// **'is valid'**
-  String get isValid;
+  String get statusIsValid;
 
-  /// No description provided for @isInvalid.
+  /// No description provided for @statusIsInvalid.
   ///
   /// In en, this message translates to:
   /// **'is invalid'**
-  String get isInvalid;
+  String get statusIsInvalid;
+
+  /// No description provided for @statusIsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'is available'**
+  String get statusIsAvailable;
+
+  /// No description provided for @statusIsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'is unavailable'**
+  String get statusIsUnavailable;
 
   /// No description provided for @dateYear.
   ///

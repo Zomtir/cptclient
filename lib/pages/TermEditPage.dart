@@ -13,6 +13,7 @@ import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
 class TermEditPage extends StatefulWidget {
@@ -49,7 +50,10 @@ class TermEditPageState extends State<TermEditPage> {
 
   Future<void> _update() async {
     _ctrlTermUser.callItems = () => api_regular.user_list(widget.session);
-    _ctrlTermClub.callItems = () => api_anon.club_list();
+    // TODO Pipe the result
+    _ctrlTermClub.callItems = () async {
+      return (await api_anon.club_list()).unwrap();
+    };
   }
 
   void _applyTerm() {
@@ -70,16 +74,12 @@ class TermEditPageState extends State<TermEditPage> {
     _gatherTerm();
 
     if (_ctrlTermUser.value == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context)!.termUser} ${AppLocalizations.of(context)!.isInvalid}")));
+      messageText("${AppLocalizations.of(context)!.termUser} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (widget.club == null && _ctrlTermClub.value == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context)!.termClub} ${AppLocalizations.of(context)!.isInvalid}")));
+      messageText("${AppLocalizations.of(context)!.termClub} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
@@ -88,8 +88,7 @@ class TermEditPageState extends State<TermEditPage> {
         : await api_admin.term_edit(widget.session, widget.term);
 
     if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context)!.submissionFail)));
+      messageText('${AppLocalizations.of(context)!.actionSubmission} ${AppLocalizations.of(context)!.statusHasFailed}');
       return;
     }
 
@@ -98,8 +97,7 @@ class TermEditPageState extends State<TermEditPage> {
 
   void _deleteTerm() async {
     if (!await api_admin.term_delete(widget.session, widget.term)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.submissionFail)));
+      messageText('${AppLocalizations.of(context)!.actionDelete} ${AppLocalizations.of(context)!.statusHasFailed}');
       return;
     }
 

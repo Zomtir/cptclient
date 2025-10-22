@@ -15,6 +15,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get language_de => 'Deutsch';
 
   @override
+  String get labelMissing => 'Fehlend';
+
+  @override
+  String get labelUnknown => 'Unbekannt';
+
+  @override
   String get labelFormat => 'Formattierung';
 
   @override
@@ -25,15 +31,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelStatistics => 'Übersichten';
-
-  @override
-  String get labelAvailable => 'Vorhanden';
-
-  @override
-  String get labelUnavailable => 'Nicht vorhanden';
-
-  @override
-  String get labelMissing => 'Fehlend';
 
   @override
   String get labelRequired => 'Benötigt';
@@ -109,6 +106,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelAmount => 'Betrag';
+
+  @override
+  String get labelYes => 'Ja';
+
+  @override
+  String get labelMaybe => 'Vielleicht';
+
+  @override
+  String get labelNo => 'Nein';
 
   @override
   String get labelTrue => 'Wahr';
@@ -222,28 +228,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionWrite => 'Schreiben';
 
   @override
-  String get actionYes => 'Ja';
+  String get actionRequest => 'Anfrage';
 
   @override
-  String get actionNo => 'Nein';
+  String get actionSubmission => 'Versand';
 
   @override
-  String get submissionFail => 'Übermittlung der Information fehlgeschlagen';
+  String get actionRetrieval => 'Empfang';
 
   @override
-  String get submissionSuccess => 'Übermittlung der Information erfolgreich';
+  String get statusHasSucceeded => 'war erfolgreich';
 
   @override
-  String get responseSuccess => 'Erfolgreich';
+  String get statusHasFailed => 'war erfolglos';
 
   @override
-  String get responseFail => 'Fehlgeschlagen';
+  String get statusIsValid => 'ist korrekt';
 
   @override
-  String get isValid => 'is korrekt';
+  String get statusIsInvalid => 'ist ungültig';
 
   @override
-  String get isInvalid => 'ist ungültig';
+  String get statusIsAvailable => 'ist vorhanden';
+
+  @override
+  String get statusIsUnavailable => 'ist nicht vorhanden';
 
   @override
   String get dateYear => 'Jahr';

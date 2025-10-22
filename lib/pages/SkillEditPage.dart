@@ -49,7 +49,7 @@ class SkillEditPageState extends State<SkillEditPage> {
 
     if (widget.skill.key.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("${AppLocalizations.of(context)!.skillKey} ${AppLocalizations.of(context)!.isInvalid}")),
+        SnackBar(content: Text("${AppLocalizations.of(context)!.skillKey} ${AppLocalizations.of(context)!.statusIsInvalid}")),
       );
       return;
     }
@@ -57,7 +57,7 @@ class SkillEditPageState extends State<SkillEditPage> {
     if (widget.skill.title.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.isInvalid}"),
+          content: Text("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.statusIsInvalid}"),
         ),
       );
       return;
