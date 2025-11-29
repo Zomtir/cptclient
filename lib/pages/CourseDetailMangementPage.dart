@@ -163,6 +163,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
         builder: (context) => CourseStatisticPresencePage(
           session: widget.session,
           course: widget.course,
+          role: role,
           title: AppLocalizations.of(context)!.pageCourseStatisticAttendance,
           presence: () => api_admin.course_statistic_attendance(widget.session, widget.course.id, role),
           presence1: (int ownerID) =>
