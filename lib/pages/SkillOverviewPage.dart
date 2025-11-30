@@ -3,7 +3,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/SkillEditPage.dart';
 import 'package:flutter/material.dart';
 

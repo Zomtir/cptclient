@@ -99,17 +99,23 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
                 trailing: [
                   IconButton(
                     icon: const Icon(Icons.delete),
+                    padding: EdgeInsets.all(2),
+                    constraints: const BoxConstraints(),
                     onPressed: () => _remove(item.$1),
                   ),
                   IconButton(
                     icon: const Icon(Icons.block),
                     color: Theme.of(context).disabledColor,
+                    padding: EdgeInsets.all(2),
+                    constraints: const BoxConstraints(),
                     disabledColor: Colors.black87,
                     onPressed: (item.$2 == true) ? () => _edit(item.$1, false) : null,
                   ),
                   IconButton(
                     icon: const Icon(Icons.check_circle_outline),
                     color: Theme.of(context).disabledColor,
+                    padding: EdgeInsets.all(2),
+                    constraints: const BoxConstraints(),
                     disabledColor: Colors.black87,
                     onPressed: (item.$2 == false) ? () => _edit(item.$1, true) : null,
                   ),

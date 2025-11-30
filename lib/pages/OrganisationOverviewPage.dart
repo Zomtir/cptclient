@@ -3,7 +3,7 @@ import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/OrganisationCreatePage.dart';
 import 'package:cptclient/pages/OrganisationDetailPage.dart';
 import 'package:flutter/material.dart';

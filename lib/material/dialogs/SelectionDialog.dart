@@ -1,6 +1,6 @@
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:flutter/material.dart';
 
 class SelectionDialog<T extends FieldInterface> extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/panels/SearchablePanel.dart';
+import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:flutter/material.dart';
 
 class FilterDialog<T extends FieldInterface> extends StatefulWidget {
@@ -37,6 +37,8 @@ class FilterDialogState<T extends FieldInterface> extends State<FilterDialog<T>>
                 icon: const Icon(Icons.circle_outlined),
                 color: Theme.of(context).disabledColor,
                 disabledColor: Colors.black87,
+                padding: EdgeInsets.all(2),
+                constraints: const BoxConstraints(),
                 onPressed: values[item] == null
                     ? null
                     : () {
@@ -49,6 +51,8 @@ class FilterDialogState<T extends FieldInterface> extends State<FilterDialog<T>>
                 icon: const Icon(Icons.block),
                 color: Theme.of(context).disabledColor,
                 disabledColor: Colors.black87,
+                padding: EdgeInsets.all(2),
+                constraints: const BoxConstraints(),
                 onPressed: values[item] == false
                     ? null
                     : () {
@@ -61,6 +65,8 @@ class FilterDialogState<T extends FieldInterface> extends State<FilterDialog<T>>
                 icon: const Icon(Icons.check_circle_outline),
                 color: Theme.of(context).disabledColor,
                 disabledColor: Colors.black87,
+                padding: EdgeInsets.all(2),
+                constraints: const BoxConstraints(),
                 onPressed: values[item] == true
                     ? null
                     : () {
