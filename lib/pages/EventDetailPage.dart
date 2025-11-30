@@ -639,7 +639,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                           builder: (context) => DatePicker(
                             initialDate: _event!.begin,
                             onConfirm: (DateTime dt) {
-                              setState(() => _event!.begin = dt);
+                              setState(() => _event!.begin = _event!.begin.withDate(dt));
                               _handleEvent();
                             },
                           ),
@@ -680,7 +680,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                           builder: (context) => DatePicker(
                             initialDate: _event!.end,
                             onConfirm: (DateTime dt) {
-                              setState(() => _event!.end = dt);
+                              setState(() => _event!.end = _event!.end.withDate(dt));
                               _handleEvent();
                             },
                           ),

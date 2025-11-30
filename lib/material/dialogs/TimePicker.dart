@@ -169,9 +169,9 @@ class _TimePickerState extends State<TimePicker> {
     );
 
     return AppDialog(
+      title: Text(_selectedTime.format(context), textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
       child: Column(
         children: [
-          Text(_selectedTime.format(context), style: TextStyle(fontWeight: FontWeight.bold)),
           form,
           selector,
           SizedBox(height: 10),

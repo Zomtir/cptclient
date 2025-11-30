@@ -197,9 +197,9 @@ class _DatePickerState extends State<DatePicker> {
     );
 
     return AppDialog(
+      title: Text(_selectedDate.fmtDate(context), textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
       child: Column(
         children: [
-          Text(_selectedDate.fmtDate(context), style: TextStyle(fontWeight: FontWeight.bold)),
           form,
           selector,
           calendar,

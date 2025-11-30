@@ -27,7 +27,7 @@ class FilterDialogState<T extends FieldInterface> extends State<FilterDialog<T>>
   @override
   Widget build(BuildContext context) {
     return AppDialog(
-      title: Text(widget.title, textAlign: TextAlign.center),
+      title: Text(widget.title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
       child: Column(
         children: [
           SearchablePanel<T>(
