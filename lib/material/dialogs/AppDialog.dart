@@ -24,7 +24,7 @@ class AppDialog extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: maxWidth),
           child: Container(
             decoration: const AppBoxDecoration(),
-            padding: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 16.0),
+            padding: const EdgeInsets.fromLTRB(5.0, 5.0, 1.0, 5.0),
             margin: const EdgeInsets.all(5.0),
             child: Column(
               children: [
@@ -41,6 +41,7 @@ class AppDialog extends StatelessWidget {
                 Divider(),
                 Expanded(
                   child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(right: 14),
                     child: child,
                   ),
                 ),
