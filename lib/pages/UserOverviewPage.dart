@@ -28,7 +28,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
 
   Future<void> _update() async {
     List<User> users = await api_admin.user_list(widget.session);
-    searchPanelKey.currentState?.update(users);
+    searchPanelKey.currentState?.populate(users);
   }
 
   void _handleSelect(User user) async {

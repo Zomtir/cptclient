@@ -27,7 +27,7 @@ class ItemOverviewPageState extends State<ItemOverviewPage> {
 
   Future<void> _update() async {
     List<Item> items = await api_admin.item_list(widget.session);
-    searchPanelKey.currentState?.update(items);
+    searchPanelKey.currentState?.populate(items);
   }
 
   void _handleSelect(Item item) async {

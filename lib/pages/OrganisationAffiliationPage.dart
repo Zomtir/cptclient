@@ -34,7 +34,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
 
   Future<void> _update() async {
     List<Affiliation> affiliations = await api_admin.affiliation_list(widget.session, null, widget.organisation);
-    searchPanelKey.currentState?.update(affiliations);
+    searchPanelKey.currentState?.populate(affiliations);
   }
 
   Future<void> _handleSelect(Affiliation affiliation) async {

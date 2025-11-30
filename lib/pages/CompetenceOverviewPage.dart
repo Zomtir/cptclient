@@ -10,8 +10,8 @@ import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
+import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/CompetenceEditPage.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +49,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
     List<Competence> competences = await api_admin.competence_list(
         widget.session, _ctrlUser.value, _ctrlSkill.value);
 
-    searchPanelKey.currentState?.update(competences);
+    searchPanelKey.currentState?.populate(competences);
   }
 
   Future<void> _handleSelect(Competence competence, bool isDraft) async {

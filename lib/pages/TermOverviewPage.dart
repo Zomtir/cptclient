@@ -4,8 +4,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/TermEditPage.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class TermOverviewPageState extends State<TermOverviewPage> {
 
   Future<void> _update() async {
     List<Term> terms = await api_admin.term_list(widget.session, widget.club);
-    searchPanelKey.currentState?.update(terms);
+    searchPanelKey.currentState?.populate(terms);
   }
 
   void _handleSelect(Term term) async {

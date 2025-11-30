@@ -27,7 +27,7 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
 
   Future<void> _update() async {
     List<Location> locations = await api_admin.location_list(widget.session);
-    searchPanelKey.currentState?.update(locations);
+    searchPanelKey.currentState?.populate(locations);
   }
 
   void _handleSelect(Location location) async {

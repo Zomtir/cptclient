@@ -27,7 +27,7 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
 
   Future<void> _update() async {
     List<ItemCategory> itemcats = await api_admin.itemcat_list(widget.session);
-    searchPanelKey.currentState?.update(itemcats);
+    searchPanelKey.currentState?.populate(itemcats);
   }
 
   void _handleSelect(ItemCategory category) async {
