@@ -54,7 +54,7 @@ class SearchablePanelState<T extends FieldInterface> extends State<SearchablePan
           itemCount: _visible.length,
           itemBuilder: (context, index) => _visible[index].buildTile(
             context,
-            onTap: () => widget.onTap?.call(_visible[index]),
+            onTap: widget.onTap == null ? null : () => widget.onTap!.call(_visible[index]),
             trailing: widget.actionBuilder?.call(context, _visible[index]),
           ),
         ),

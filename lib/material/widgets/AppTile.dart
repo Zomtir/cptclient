@@ -22,6 +22,8 @@ class AppTile extends StatelessWidget {
           leading: leading,
           trailing: trailing == null ? null : Row(children: trailing!, mainAxisSize: MainAxisSize.min),
           onTap: onTap,
+          dense: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
         ),
       ),
     );

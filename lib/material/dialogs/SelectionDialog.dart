@@ -42,6 +42,8 @@ class SelectionDialogState<T extends FieldInterface> extends State<SelectionDial
                 icon: const Icon(Icons.circle_outlined),
                 color: Theme.of(context).disabledColor,
                 disabledColor: Colors.black87,
+                padding: EdgeInsets.all(2),
+                constraints: const BoxConstraints(),
                 onPressed: values[item] == false
                     ? null
                     : () {
@@ -54,6 +56,8 @@ class SelectionDialogState<T extends FieldInterface> extends State<SelectionDial
                 icon: const Icon(Icons.add_circle_outline),
                 color: Theme.of(context).disabledColor,
                 disabledColor: Colors.black87,
+                padding: EdgeInsets.all(2),
+                constraints: const BoxConstraints(),
                 onPressed: values[item] == true
                     ? null
                     : () {

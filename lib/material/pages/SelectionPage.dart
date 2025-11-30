@@ -90,6 +90,8 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
                 trailing: [
                   IconButton(
                     icon: const Icon(Icons.remove_circle_outline),
+                    padding: EdgeInsets.all(2),
+                    constraints: const BoxConstraints(),
                     onPressed: () async {
                       if (!await widget.onCallRemove(item)) return;
                       _update();
