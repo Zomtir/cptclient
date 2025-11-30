@@ -633,7 +633,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                       builder: (context) => TextEditDialog(
                         initialValue: user_info!.note ?? '',
                         minLength: 0,
-                        maxLength: 20,
+                        maxLength: 500,
                         onReset: () {
                           setState(() => user_info!.note = null);
                           _submitUser();
