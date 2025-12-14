@@ -3,6 +3,7 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/ClubCreatePage.dart';
 import 'package:cptclient/pages/ClubDetailPage.dart';
@@ -18,22 +19,24 @@ class ClubOverviewPage extends StatefulWidget {
 }
 
 class ClubOverviewPageState extends State<ClubOverviewPage> {
+  bool _locked = true;
   GlobalKey<SearchablePanelState<Club>> searchPanelKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _update();
+    update();
   }
 
-  Future<void> _update() async {
+  Future<void> update() async {
+    _locked = true;
     var result = await api_admin.club_list(widget.session);
     searchPanelKey.currentState?.populate(result.unwrap());
-    // TODO lock during update
+    _locked = false;
   }
 
   void _handleSelect(Club club) async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClubDetailPage(
@@ -43,11 +46,11 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
       ),
     );
 
-    _update();
+    update();
   }
 
   void _handleCreate() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClubCreatePage(
@@ -56,11 +59,12 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
       ),
     );
 
-    _update();
+    update();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageClubManagement),
