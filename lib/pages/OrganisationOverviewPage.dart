@@ -6,6 +6,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/OrganisationCreatePage.dart';
 import 'package:cptclient/pages/OrganisationDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class OrganisationOverviewPage extends StatefulWidget {
@@ -27,8 +28,9 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Organisation> organisations = await api_admin.organisation_list(widget.session);
-    searchPanelKey.currentState?.populate(organisations);
+    Result<List<Organisation>> result_organisations = await api_admin.organisation_list(widget.session);
+    if (result_organisations is! Success) return;
+    searchPanelKey.currentState?.populate(result_organisations.unwrap());
   }
 
   void _handleSelect(Organisation organisation) async {
@@ -51,7 +53,6 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
       MaterialPageRoute(
         builder: (context) => OrganisationCreatePage(
           session: widget.session,
-          organisation: Organisation.fromVoid(),
         ),
       ),
     );
@@ -76,7 +77,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
           SearchablePanel(
             key: searchPanelKey,
             onTap: _handleSelect,
-          )
+          ),
         ],
       ),
     );

@@ -4,8 +4,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
+import 'package:cptclient/pages/ClubCreatePage.dart';
 import 'package:cptclient/pages/ClubDetailPage.dart';
-import 'package:cptclient/pages/ClubEditPage.dart';
 import 'package:flutter/material.dart';
 
 class ClubOverviewPage extends StatefulWidget {
@@ -27,21 +27,18 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Club> clubs = await api_admin.club_list(widget.session);
-    searchPanelKey.currentState?.populate(clubs);
+    var result = await api_admin.club_list(widget.session);
+    searchPanelKey.currentState?.populate(result.unwrap());
+    // TODO lock during update
   }
 
   void _handleSelect(Club club) async {
-    Club? club_info = await api_admin.club_info(widget.session, club);
-
-    if (club_info == null) return;
-
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ClubDetailPage(
           session: widget.session,
-          club: club_info,
+          clubID: club.id,
         ),
       ),
     );
@@ -53,10 +50,8 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ClubEditPage(
+        builder: (context) => ClubCreatePage(
           session: widget.session,
-          club: Club.fromVoid(),
-          isDraft: true,
         ),
       ),
     );
@@ -78,7 +73,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
           SearchablePanel(
             key: searchPanelKey,
             onTap: _handleSelect,
-          )
+          ),
         ],
       ),
     );

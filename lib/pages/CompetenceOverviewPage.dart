@@ -12,7 +12,9 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/CompetenceEditPage.dart';
+import 'package:cptclient/pages/CompetenceCreatePage.dart';
+import 'package:cptclient/pages/CompetenceDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CompetenceOverviewPage extends StatefulWidget {
@@ -28,8 +30,10 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
   GlobalKey<SearchablePanelState<Competence>> searchPanelKey = GlobalKey();
 
   final FieldController<User> _ctrlUser = FieldController();
+
   //final FieldController<User> _ctrlJudge = FieldController();
   final FieldController<Skill> _ctrlSkill = FieldController();
+
   //RangeValues _ctrlSkillRange = RangeValues(0, 10);
 
   CompetenceOverviewPageState();
@@ -46,20 +50,37 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Competence> competences = await api_admin.competence_list(
-        widget.session, _ctrlUser.value, _ctrlSkill.value);
+    Result<List<Competence>> result_competences = await api_admin.competence_list(
+      widget.session,
+      _ctrlUser.value,
+      _ctrlSkill.value,
+    );
+    if (result_competences is! Success) return;
 
-    searchPanelKey.currentState?.populate(competences);
+    searchPanelKey.currentState?.populate(result_competences.unwrap());
   }
 
-  Future<void> _handleSelect(Competence competence, bool isDraft) async {
+  Future<void> _handleSelect(Competence competence) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CompetenceEditPage(
+        builder: (context) => CompetenceDetailPage(
           session: widget.session,
-          competence: competence,
-          isDraft: isDraft,
+          competenceID: competence.id,
+        ),
+      ),
+    );
+
+    _update();
+  }
+
+  Future<void> _handleCreate() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompetenceCreatePage(
+          session: widget.session,
+          competence: Competence.fromVoid(),
         ),
       ),
     );
@@ -76,7 +97,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
           IconButton(
             icon: Icon(Icons.add),
             tooltip: AppLocalizations.of(context)!.actionCreate,
-            onPressed: () => _handleSelect(Competence.fromVoid(), true),
+            onPressed: _handleCreate,
           ),
         ],
       ),
@@ -89,16 +110,14 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
                 info: AppLocalizations.of(context)!.competenceUser,
                 child: AppField<User>(
                   controller: _ctrlUser,
-                  onChanged: (User? user) =>
-                      setState(() => _ctrlUser.value = user),
+                  onChanged: (User? user) => setState(() => _ctrlUser.value = user),
                 ),
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.competenceSkill,
                 child: AppField<Skill>(
                   controller: _ctrlSkill,
-                  onChanged: (Skill? skill) =>
-                      setState(() => _ctrlSkill.value = skill),
+                  onChanged: (Skill? skill) => setState(() => _ctrlSkill.value = skill),
                 ),
               ),
               /*AppInfoRow(
@@ -120,7 +139,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
           ),
           SearchablePanel<Competence>(
             key: searchPanelKey,
-            onTap: (Competence competence) => _handleSelect(competence, false),
+            onTap: (Competence competence) => _handleSelect(competence),
           ),
         ],
       ),

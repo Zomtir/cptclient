@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Skill>> skill_list(UserSession session) async {
+Future<Result<List<Skill>>> skill_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/skill_list'),
     headers: {
@@ -14,13 +16,14 @@ Future<List<Skill>> skill_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Skill>.from(l.map((model) => Skill.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Skill>.from(it.map((model) => Skill.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> skill_create(UserSession session, Skill skill) async {
+Future<Result> skill_create(UserSession session, Skill skill) async {
   final response = await client.post(
     uri('/admin/skill_create'),
     headers: {
@@ -30,10 +33,11 @@ Future<bool> skill_create(UserSession session, Skill skill) async {
     body: json.encode(skill),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> skill_edit(UserSession session, Skill skill) async {
+Future<Result> skill_edit(UserSession session, Skill skill) async {
   final response = await client.post(
     uri('/admin/skill_edit', {
       'skill_id': skill.id.toString(),
@@ -45,10 +49,11 @@ Future<bool> skill_edit(UserSession session, Skill skill) async {
     body: json.encode(skill),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> skill_delete(UserSession session, Skill skill) async {
+Future<Result> skill_delete(UserSession session, Skill skill) async {
   final response = await client.head(
     uri('/admin/skill_delete', {
       'skill_id': skill.id.toString(),
@@ -58,5 +63,6 @@ Future<bool> skill_delete(UserSession session, Skill skill) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

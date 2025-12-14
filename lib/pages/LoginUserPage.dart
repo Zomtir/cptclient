@@ -7,6 +7,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class LoginUserPage extends StatefulWidget {
@@ -35,7 +36,8 @@ class LoginUserPageState extends State<LoginUserPage> {
   }
 
   void _loginUser(String login, String passwd, bool remember) async {
-    UserSession? session = await server.loginUser(login, passwd);
+    Result<UserSession> result_session = await server.loginUser(login, passwd);
+    if (result_session is! Success) return;
 
     if (remember) {
       navi.addUserCredential(Credential(login: login, password: passwd, since: DateTime.now()));
@@ -45,8 +47,7 @@ class LoginUserPageState extends State<LoginUserPage> {
     _ctrlPasswd.text = "";
     _ctrlRemember = false;
 
-    if (session == null) return;
-    
+    var session = result_session.unwrap();
     navi.addUserSession(session);
     navi.loginUser(context, session);
   }

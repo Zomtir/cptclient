@@ -5,77 +5,48 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class LocationEditPage extends StatefulWidget {
+class LocationDetailPage extends StatefulWidget {
   final UserSession session;
   final Location location;
-  final bool isDraft;
 
-  LocationEditPage({super.key, required this.session, required this.location, required this.isDraft});
+  LocationDetailPage({super.key, required this.session, required this.location});
 
   @override
-  LocationEditPageState createState() => LocationEditPageState();
+  LocationDetailPageState createState() => LocationDetailPageState();
 }
 
-class LocationEditPageState extends State<LocationEditPage> {
+class LocationDetailPageState extends State<LocationDetailPage> {
   final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlDescription = TextEditingController();
 
-  LocationEditPageState();
-
-  @override
-  void initState() {
-    super.initState();
-    _applyInfo();
-  }
-
-  void _applyInfo() {
-    _ctrlKey.text = widget.location.key;
-    _ctrlName.text = widget.location.name;
-    _ctrlDescription.text = widget.location.description;
-  }
-
-  void _gatherInfo() {
-    widget.location.key = _ctrlKey.text;
-    widget.location.name = _ctrlName.text;
-    widget.location.description = _ctrlDescription.text;
-  }
+  LocationDetailPageState();
 
   void _handleSubmit() async {
-    _gatherInfo();
 
     if (widget.location.key.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.statusIsInvalid}"),
-        ),
-      );
+      messageText("${AppLocalizations.of(context)!.locationKey} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
     if (widget.location.name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.statusIsInvalid}"),
-        ),
-      );
+      messageText("${AppLocalizations.of(context)!.locationName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
-    bool success = widget.isDraft
-        ? await api_admin.location_create(widget.session, widget.location)
-        : await api_admin.location_edit(widget.session, widget.location);
-
-    if (!success) return;
+    var result = await api_admin.location_edit(widget.session, widget.location);
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }
 
   void _handleDelete() async {
-    if (!await api_admin.location_delete(widget.session, widget.location)) return;
-
+    var result = await api_admin.location_delete(widget.session, widget.location);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 
@@ -85,7 +56,6 @@ class LocationEditPageState extends State<LocationEditPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageLocationEdit),
         actions: [
-          if (!widget.isDraft)
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: _handleDelete,
@@ -94,7 +64,6 @@ class LocationEditPageState extends State<LocationEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) widget.location.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.locationKey,
             child: TextField(maxLines: 1, controller: _ctrlKey),

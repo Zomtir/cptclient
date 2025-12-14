@@ -35,11 +35,12 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
   }
 
   Future<void> _update() async {
-    List<Event> events = await api_admin.event_list(widget.session, courseTrue: true, courseID: widget.course.id);
-    events.sort();
+    var result_events = await api_admin.event_list(widget.session, courseTrue: true, courseID: widget.course.id);
+    if (result_events is! Success) return;
 
     setState(() {
-      _events = events;
+      _events = result_events.unwrap();
+      _events.sort();
     });
   }
 

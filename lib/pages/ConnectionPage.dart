@@ -8,6 +8,7 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/AboutPage.dart';
 import 'package:cptclient/pages/SettingsPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,8 +89,8 @@ class ConnectionPageState extends State<ConnectionPage> {
   }
 
   void _testConnection() async {
-    bool tmpStatus = await api.loadStatus();
-    setState(() => _serverOnline = tmpStatus);
+    var result = await api.loadStatus();
+    setState(() => _serverOnline = (result is Success));
   }
 
   @override

@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Skill>> skill_list() async {
+Future<Result<List<Skill>>> skill_list() async {
   final response = await client.get(
     uri('/anon/skill_list'),
     headers: {
@@ -13,8 +15,9 @@ Future<List<Skill>> skill_list() async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Skill>.from(l.map((model) => Skill.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Skill>.from(it.map((model) => Skill.fromJson(model)));
+  return Success(list);
 }

@@ -9,6 +9,7 @@ import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/pages/OrganisationAffiliationPage.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class OrganisationDetailPage extends StatefulWidget {
@@ -42,17 +43,13 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
       return;
     }
 
-    bool success = await api_admin.organisation_edit(widget.session, widget.organisation);
-
-    if (!success) {
-      messageText("${AppLocalizations.of(context)!.actionSubmission} ${AppLocalizations.of(context)!.statusHasFailed}");
-      return;
-    }
+    var result = await api_admin.organisation_edit(widget.session, widget.organisation);
+    if (result is! Success) return;
   }
 
   void _handleDelete() async {
-    if (!await api_admin.organisation_delete(widget.session, widget.organisation)) return;
-
+    var result = await api_admin.organisation_delete(widget.session, widget.organisation);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 

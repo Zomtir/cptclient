@@ -6,8 +6,10 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<User>> event_attendance_registration_list(UserSession session, Event event, String role) async {
+Future<Result<List<User>>> event_attendance_registration_list(UserSession session, Event event, String role) async {
   final response = await client.get(
     uri('/admin/event_attendance_registration_list', {
       'event_id': event.id.toString(),
@@ -19,12 +21,13 @@ Future<List<User>> event_attendance_registration_list(UserSession session, Event
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  var list = List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  return Success(list);
 }
 
-Future<List<(User, bool)>> event_attendance_filter_list(UserSession session, int eventID, String role) async {
+Future<Result<List<(User, bool)>>> event_attendance_filter_list(UserSession session, int eventID, String role) async {
   final response = await client.get(
     uri('/admin/event_attendance_filter_list', {
       'event_id': eventID.toString(),
@@ -36,20 +39,21 @@ Future<List<(User, bool)>> event_attendance_filter_list(UserSession session, int
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(User, bool)>.from(
-    list.map((model) {
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(User, bool)>.from(
+    it.map((model) {
       return (
         User.fromJson(model[0]),
         model[1],
       );
     }),
   );
+  return Success(list);
 }
 
-Future<bool> event_attendance_filter_edit(UserSession session, int eventID, int userID, String role, bool access) async {
+Future<Result> event_attendance_filter_edit(UserSession session, int eventID, int userID, String role, bool access) async {
   final response = await client.head(
     uri('/admin/event_attendance_filter_edit', {
       'event_id': eventID.toString(),
@@ -62,10 +66,11 @@ Future<bool> event_attendance_filter_edit(UserSession session, int eventID, int 
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> event_attendance_filter_remove(UserSession session, int eventID, int userID, String role) async {
+Future<Result> event_attendance_filter_remove(UserSession session, int eventID, int userID, String role) async {
   final response = await client.head(
     uri('/admin/event_attendance_filter_remove', {
       'event_id': eventID.toString(),
@@ -77,10 +82,11 @@ Future<bool> event_attendance_filter_remove(UserSession session, int eventID, in
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<List<User>> event_attendance_presence_pool(UserSession session, Event event, String role) async {
+Future<Result<List<User>>> event_attendance_presence_pool(UserSession session, Event event, String role) async {
   final response = await client.get(
     uri('/admin/event_attendance_presence_pool', {
       'event_id': event.id.toString(),
@@ -92,12 +98,13 @@ Future<List<User>> event_attendance_presence_pool(UserSession session, Event eve
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  var list = List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  return Success(list);
 }
 
-Future<List<User>> event_attendance_presence_list(UserSession session, Event event, String role) async {
+Future<Result<List<User>>> event_attendance_presence_list(UserSession session, Event event, String role) async {
   final response = await client.get(
     uri('/admin/event_attendance_presence_list', {
       'event_id': event.id.toString(),
@@ -109,12 +116,14 @@ Future<List<User>> event_attendance_presence_list(UserSession session, Event eve
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  return List<User>.from(json.decode(utf8.decode(response.bodyBytes)).map((data) => User.fromJson(data)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<User>.from(it.map((data) => User.fromJson(data)));
+  return Success(list);
 }
 
-Future<bool> event_attendance_presence_add(UserSession session, Event event, User user, String role) async {
+Future<Result> event_attendance_presence_add(UserSession session, Event event, User user, String role) async {
   final response = await client.head(
     uri('/admin/event_attendance_presence_add', {
       'event_id': event.id.toString(),
@@ -126,10 +135,11 @@ Future<bool> event_attendance_presence_add(UserSession session, Event event, Use
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> event_attendance_presence_remove(UserSession session, Event event, User user, String role) async {
+Future<Result> event_attendance_presence_remove(UserSession session, Event event, User user, String role) async {
   final response = await client.head(
     uri('/admin/event_attendance_presence_remove', {
       'event_id': event.id.toString(),
@@ -141,5 +151,6 @@ Future<bool> event_attendance_presence_remove(UserSession session, Event event, 
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

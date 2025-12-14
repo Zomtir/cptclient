@@ -7,67 +7,44 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class AffiliationEditPage extends StatefulWidget {
+class AffiliationCreatePage extends StatefulWidget {
   final UserSession session;
   final Affiliation affiliation;
 
-  AffiliationEditPage({super.key, required this.session, required this.affiliation});
+  AffiliationCreatePage({super.key, required this.session, required this.affiliation});
 
   @override
-  State<StatefulWidget> createState() => AffiliationEditPageState();
+  State<StatefulWidget> createState() => AffiliationCreatePageState();
 }
 
-class AffiliationEditPageState extends State<AffiliationEditPage> {
+class AffiliationCreatePageState extends State<AffiliationCreatePage> {
   final TextEditingController _ctrlMemberIdentifier = TextEditingController();
   final DateTimeController _ctrlPermissionSolo = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlPermissionTeam = DateTimeController(dateTime: DateTime.now());
   final DateTimeController _ctrlResidencyMove = DateTimeController(dateTime: DateTime.now());
 
-  AffiliationEditPageState();
+  AffiliationCreatePageState();
 
   @override
   void initState() {
     super.initState();
-    _apply();
-  }
-
-  void _apply() {
     _ctrlMemberIdentifier.text = widget.affiliation.member_identifier ?? "";
     _ctrlPermissionSolo.setDateTime(widget.affiliation.permission_solo_date);
     _ctrlPermissionTeam.setDateTime(widget.affiliation.permission_team_date);
     _ctrlResidencyMove.setDateTime(widget.affiliation.residency_move_date);
   }
 
-  void _gather() {
+  void _submit() async {
     widget.affiliation.member_identifier = _ctrlMemberIdentifier.text;
     widget.affiliation.permission_solo_date = _ctrlPermissionSolo.getDateTime();
     widget.affiliation.permission_team_date = _ctrlPermissionTeam.getDateTime();
     widget.affiliation.residency_move_date = _ctrlResidencyMove.getDateTime();
-  }
 
-  void _handleSubmit() async {
-    _gather();
-
-    final success = await api_admin.affiliation_edit(widget.session, widget.affiliation);
-
-    if (!success) {
-      messageText('${AppLocalizations.of(context)!.actionSubmission} ${AppLocalizations.of(context)!.statusHasFailed}');
-      return;
-    }
-
-    Navigator.pop(context);
-  }
-
-  void _handleDelete() async {
-    final success = await api_admin.affiliation_delete(widget.session, widget.affiliation);
-
-    if (!success) {
-      messageText('${AppLocalizations.of(context)!.actionDelete} ${AppLocalizations.of(context)!.statusHasFailed}');
-      return;
-    }
+    final result = await api_admin.affiliation_edit(widget.session, widget.affiliation);
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }
@@ -77,12 +54,6 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageAffiliationEdit),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: _handleDelete,
-          ),
-        ],
       ),
       body: AppBody(
         children: [
@@ -119,7 +90,7 @@ class AffiliationEditPageState extends State<AffiliationEditPage> {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,
-            onPressed: _handleSubmit,
+            onPressed: _submit,
           ),
         ],
       ),

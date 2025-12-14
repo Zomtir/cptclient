@@ -7,8 +7,10 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/itemcat.dart';
 import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Possession>> possession_list(UserSession session, bool? owned, Club? club) async {
+Future<Result<List<Possession>>> possession_list(UserSession session, bool? owned, Club? club) async {
   final response = await client.get(
     uri('/regular/possession_list', {
       'owned': owned?.toString(),
@@ -19,13 +21,14 @@ Future<List<Possession>> possession_list(UserSession session, bool? owned, Club?
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Possession>.from(l.map((model) => Possession.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Possession>.from(it.map((model) => Possession.fromJson(model)));
+  return Success(list);
 }
 
-Future<List<ItemCategory>> itemcat_list(UserSession session) async {
+Future<Result<List<ItemCategory>>> itemcat_list(UserSession session) async {
   final response = await client.get(
     uri('/regular/itemcat_list'),
     headers: {
@@ -33,8 +36,9 @@ Future<List<ItemCategory>> itemcat_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<ItemCategory>.from(l.map((model) => ItemCategory.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<ItemCategory>.from(it.map((model) => ItemCategory.fromJson(model)));
+  return Success(list);
 }

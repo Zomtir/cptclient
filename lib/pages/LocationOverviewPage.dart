@@ -4,7 +4,9 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/LocationEditPage.dart';
+import 'package:cptclient/pages/LocationCreatePage.dart';
+import 'package:cptclient/pages/LocationDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class LocationOverviewPage extends StatefulWidget {
@@ -26,18 +28,18 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Location> locations = await api_admin.location_list(widget.session);
-    searchPanelKey.currentState?.populate(locations);
+    Result<List<Location>> result_locations = await api_admin.location_list(widget.session);
+    if (result_locations is! Success) return;
+    searchPanelKey.currentState?.populate(result_locations.unwrap());
   }
 
   void _handleSelect(Location location) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LocationEditPage(
+        builder: (context) => LocationDetailPage(
           session: widget.session,
           location: location,
-          isDraft: false,
         ),
       ),
     );
@@ -49,10 +51,8 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LocationEditPage(
+        builder: (context) => LocationCreatePage(
           session: widget.session,
-          location: Location.fromVoid(),
-          isDraft: true,
         ),
       ),
     );

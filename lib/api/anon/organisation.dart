@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/organisation.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Organisation>> organisation_list() async {
+Future<Result<List<Organisation>>> organisation_list() async {
   final response = await client.get(
     uri('/anon/organisation_list'),
     headers: {
@@ -13,8 +15,9 @@ Future<List<Organisation>> organisation_list() async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Organisation>.from(l.map((model) => Organisation.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Organisation>.from(it.map((model) => Organisation.fromJson(model)));
+  return Success(list);
 }

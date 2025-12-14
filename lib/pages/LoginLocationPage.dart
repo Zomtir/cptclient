@@ -7,6 +7,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class LoginLocationPage extends StatefulWidget {
@@ -27,16 +28,18 @@ class LoginLocationPageState extends State<LoginLocationPage> {
   }
 
   Future<void> _receiveLocations() async {
-    List<Location> locations = await api_anon.location_list();
+    Result<List<Location>> result_locations = await api_anon.location_list();
+    if (result_locations is! Success) return;
 
     setState(() {
-      _locations = locations;
+      _locations = result_locations.unwrap();
     });
   }
 
   void _loginLocation() async {
-    EventSession? session = await server.loginLocation(_ctrlLogin.text);
-    if (session == null) return;
+    Result<EventSession> result_session = await server.loginLocation(_ctrlLogin.text);
+    if (result_session is! Success) return;
+    var session = result_session.unwrap();
     navi.addEventSession(session);
     navi.loginEvent(context, session);
   }

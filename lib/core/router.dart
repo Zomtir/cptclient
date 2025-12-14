@@ -6,6 +6,7 @@ import 'package:cptclient/pages/ConnectionPage.dart';
 import 'package:cptclient/pages/EnrollPage.dart';
 import 'package:cptclient/pages/LoginLandingPage.dart';
 import 'package:cptclient/pages/MemberLandingPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,7 +28,7 @@ GoRouter createRouter() {
             if (!firstStart) return;
             firstStart = false;
 
-            if (await server.loadStatus()) {
+            if (await server.loadStatus() is Success) {
               gotoRoute(context, '/login');
             } else {
               gotoRoute(context, '/connect');
@@ -78,14 +79,14 @@ GoRouter createRouter() {
               return;
             }
 
-            EventSession? session = await server.loginEvent(key, pwd);
+            Result<EventSession> result_session = await server.loginEvent(key, pwd);
 
-            if (session == null) {
+            if (result_session is! Success) {
               gotoRoute(context, '/login');
               return;
             }
-            navi.addEventSession(session);
-            navi.loginEvent(context, session);
+            navi.addEventSession(result_session.unwrap());
+            navi.loginEvent(context, result_session.unwrap());
           });
         },
       ),

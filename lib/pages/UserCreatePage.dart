@@ -6,20 +6,20 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class UserCreatePage extends StatefulWidget {
   final UserSession session;
+  final User? user;
 
-  UserCreatePage({super.key, required this.session});
+  UserCreatePage({super.key, required this.session, this.user});
 
   @override
   UserCreatePageState createState() => UserCreatePageState();
 }
 
 class UserCreatePageState extends State<UserCreatePage> {
-  User user_info = User.fromVoid();
-
   bool _ctrlActive = true;
   final TextEditingController _ctrlFirstname = TextEditingController();
   final TextEditingController _ctrlLastname = TextEditingController();
@@ -31,29 +31,13 @@ class UserCreatePageState extends State<UserCreatePage> {
   @override
   void initState() {
     super.initState();
-    _update();
-    _apply();
-  }
 
-  void _update() {
-    user_info.enabled = false;
-    user_info.active = true;
-  }
-  
-  void _apply() {
-    _ctrlActive = user_info.active ?? false;
-    _ctrlFirstname.text = user_info.firstname;
-    _ctrlLastname.text = user_info.lastname;
-    _ctrlNickname.text = user_info.nickname ?? '';
-    _ctrlNote.text = user_info.note ?? '';
-  }
-
-  void _collect() {
-    user_info.active = _ctrlActive;
-    user_info.firstname = _ctrlFirstname.text;
-    user_info.lastname = _ctrlLastname.text;
-    user_info.nickname = _ctrlNickname.text.isNotEmpty ? _ctrlNickname.text : null;
-    user_info.note = _ctrlNote.text.isNotEmpty ? _ctrlNote.text : null;
+    User user = widget.user ?? User.fromVoid();
+    _ctrlActive = user.active ?? false;
+    _ctrlFirstname.text = user.firstname;
+    _ctrlLastname.text = user.lastname;
+    _ctrlNickname.text = user.nickname ?? '';
+    _ctrlNote.text = user.note ?? '';
   }
 
   void _submit() async {
@@ -71,12 +55,16 @@ class UserCreatePageState extends State<UserCreatePage> {
       messageText("${AppLocalizations.of(context)!.userNickname} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
-    
-    _collect();
 
-    bool success = await api_admin.user_create(widget.session, user_info);
+    User user = User.fromVoid();
+    user.active = _ctrlActive;
+    user.firstname = _ctrlFirstname.text;
+    user.lastname = _ctrlLastname.text;
+    user.nickname = _ctrlNickname.text.isNotEmpty ? _ctrlNickname.text : null;
+    user.note = _ctrlNote.text.isNotEmpty ? _ctrlNote.text : null;
 
-    if (!success) return;
+    var result = await api_admin.user_create(widget.session, user);
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }

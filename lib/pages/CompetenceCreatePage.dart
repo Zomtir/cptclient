@@ -1,6 +1,4 @@
 import 'package:cptclient/api/admin/competence/competence.dart' as api_admin;
-import 'package:cptclient/api/anon/skill.dart' as api_anon;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
@@ -14,95 +12,50 @@ import 'package:cptclient/material/fields/SkillRankField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class CompetenceEditPage extends StatefulWidget {
+class CompetenceCreatePage extends StatefulWidget {
   final UserSession session;
-  final Competence competence;
-  final bool isDraft;
+  final Competence? competence;
 
-  CompetenceEditPage({super.key, required this.session, required this.competence, required this.isDraft});
+  CompetenceCreatePage({super.key, required this.session, this.competence});
 
   @override
-  State<StatefulWidget> createState() => CompetenceEditPageState();
+  State<StatefulWidget> createState() => CompetenceCreatePageState();
 }
 
-class CompetenceEditPageState extends State<CompetenceEditPage> {
+class CompetenceCreatePageState extends State<CompetenceCreatePage> {
   final FieldController<User> _ctrlUser = FieldController();
   final FieldController<Skill> _ctrlSkill = FieldController();
   int _ctrlRank = 0;
   final FieldController<User> _ctrlJudge = FieldController();
   final DateTimeController _ctrlDate = DateTimeController(dateTime: DateTime.now());
 
-  CompetenceEditPageState();
+  CompetenceCreatePageState();
 
   @override
   void initState() {
     super.initState();
-    _update();
-    _applyRanking();
+    Competence competence = widget.competence ?? Competence.fromVoid();
+    _ctrlUser.value = competence.user;
+    _ctrlSkill.value = competence.skill;
+    _ctrlRank = competence.rank;
+    _ctrlJudge.value = competence.judge;
+    _ctrlDate.setDate(competence.date);
   }
 
-  Future<void> _update() async {
-    _ctrlUser.callItems = () => api_regular.user_list(widget.session);
-    _ctrlSkill.callItems = () => api_anon.skill_list();
-    _ctrlJudge.callItems = () => api_regular.user_list(widget.session);
-  }
-
-  void _applyRanking() {
-    _ctrlUser.value = widget.competence.user;
-    _ctrlSkill.value = widget.competence.skill;
-    _ctrlRank = widget.competence.rank;
-    _ctrlJudge.value = widget.competence.judge;
-    _ctrlDate.setDate(widget.competence.date);
-  }
-
-  void _gatherRanking() {
-    widget.competence.user = _ctrlUser.value;
-    widget.competence.skill = _ctrlSkill.value;
-    widget.competence.rank = _ctrlRank;
-    widget.competence.judge = _ctrlJudge.value;
-    widget.competence.date = _ctrlDate.getDate();
-  }
-
-  void _submitRanking() async {
-    _gatherRanking();
-
-    final success = widget.isDraft ? await api_admin.competence_create(widget.session, widget.competence) : await api_admin.competence_edit(widget.session, widget.competence);
-
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save ranking')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully saved ranking')));
-    Navigator.pop(context);
-  }
-
-  void _deleteRanking() async {
-    final success = await api_admin.competence_delete(widget.session, widget.competence);
-
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete ranking')));
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully deleted ranking')));
-    Navigator.pop(context);
-  }
-
-  Future<void> _duplicateRanking() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CompetenceEditPage(
-          session: widget.session,
-          competence: Competence.fromCompetence(widget.competence),
-          isDraft: true,
-        ),
-      ),
+  void submit() async {
+    Competence competence = Competence(
+      user: _ctrlUser.value,
+      skill: _ctrlSkill.value,
+      rank: _ctrlRank,
+      judge: _ctrlJudge.value,
+      date: _ctrlDate.getDate(),
     );
 
+    var result = await api_admin.competence_create(widget.session, competence);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 
@@ -111,20 +64,9 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCompetenceEdit),
-        actions: [
-          if (!widget.isDraft) IconButton(
-            icon: const Icon(Icons.copy),
-            onPressed: _duplicateRanking,
-          ),
-          if (!widget.isDraft) IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: _deleteRanking,
-          ),
-        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) widget.competence.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceUser,
             child: AppField<User>(
@@ -146,7 +88,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.competenceSkill,
+            info: AppLocalizations.of(context)!.competenceSkillRank,
             child: SkillRankField(
               controller: _ctrlSkill,
               rank: _ctrlRank,
@@ -176,7 +118,7 @@ class CompetenceEditPageState extends State<CompetenceEditPage> {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,
-            onPressed: _submitRanking,
+            onPressed: submit,
           ),
         ],
       ),

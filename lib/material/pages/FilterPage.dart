@@ -5,14 +5,15 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/extensions.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class FilterPage<T extends FieldInterface> extends StatefulWidget {
   final String title;
-  final Future<List<T>> Function() onCallAvailable;
-  final Future<List<(T, bool)>> Function() onCallSelected;
-  final Future<bool> Function(T, bool) onCallEdit;
-  final Future<bool> Function(T) onCallRemove;
+  final Future<Result<List<T>>> Function() onCallAvailable;
+  final Future<Result<List<(T, bool)>>> Function() onCallSelected;
+  final Future<Result> Function(T, bool) onCallEdit;
+  final Future<Result> Function(T) onCallRemove;
 
   FilterPage({
     super.key,
@@ -41,26 +42,25 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
   }
 
   void _update() async {
-    List<T> available = await widget.onCallAvailable();
-    available.sort();
-
-    List<(T, bool)> selected = await widget.onCallSelected();
-    selected.sort((a, b) => a.$1.compareTo(b.$1));
+    Result<List<T>> result_available = await widget.onCallAvailable();
+    Result<List<(T, bool)>> result_selected = await widget.onCallSelected();
 
     setState(() {
-      _available = available;
-      _selected = selected;
+      _available = result_available.unwrap();
+      _available.sort();
+      _selected = result_selected.unwrap();
+      _selected.sort((a, b) => a.$1.compareTo(b.$1));
       _delta = _available.difference<T>(_selected.map((tuple) => tuple.$1).toList());
     });
   }
 
   void _edit(T item, bool access) async {
-    if (!await widget.onCallEdit(item, access)) return;
+    if (await widget.onCallEdit(item, access) is! Success) return;
     _update();
   }
 
   void _remove(T item) async {
-    if (!await widget.onCallRemove(item)) return;
+    if (await widget.onCallRemove(item) is! Success) return;
     _update();
   }
 

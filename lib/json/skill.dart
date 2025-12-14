@@ -50,8 +50,7 @@ class Skill extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Text("$title ($min - $max)");
   }
 
   @override
@@ -59,8 +58,12 @@ class Skill extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.fitness_center)),
       trailing: trailing,
-      child: Text("$title"),
-      child2: Text("$min - $max"),
+      child: Column(
+        children: [
+          Text("$title"),
+          Text("$min - $max")
+        ],
+      ),
       onTap: onTap,
     );
   }

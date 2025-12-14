@@ -15,9 +15,10 @@ import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
 
-Future<List<Event>> event_list(UserSession session,
+Future<Result<List<Event>>> event_list(UserSession session,
     {DateTime? begin,
     DateTime? end,
     Location? location,
@@ -42,10 +43,11 @@ Future<List<Event>> event_list(UserSession session,
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Event>.from(l.map((model) => Event.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Event>.from(it.map((model) => Event.fromJson(model)));
+  return Success(list);
 }
 
 Future<Result<Event>> event_info(UserSession session, int eventID) async {
@@ -59,11 +61,11 @@ Future<Result<Event>> event_info(UserSession session, int eventID) async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(Event.fromJson(json.decode(utf8.decode(response.bodyBytes))));
 }
 
-Future<Credential?> event_credential(UserSession session, int eventID) async {
+Future<Result<Credential>> event_credential(UserSession session, int eventID) async {
   final response = await client.get(
     uri('/admin/event_credential', {
       'event_id': eventID.toString(),
@@ -74,12 +76,13 @@ Future<Credential?> event_credential(UserSession session, int eventID) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return Credential.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  var object = Credential.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  return Success(object);
 }
 
-Future<Result<()>> event_create(UserSession session, Event event, int? courseID) async {
+Future<Result> event_create(UserSession session, Event event, int? courseID) async {
   final response = await client.post(
     uri('/admin/event_create', {
       'course_id': courseID?.toString(),
@@ -91,11 +94,11 @@ Future<Result<()>> event_create(UserSession session, Event event, int? courseID)
     body: json.encode(event),
   );
 
-  if (response.statusCode == 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
-Future<Result<()>> event_edit(UserSession session, Event event) async {
+Future<Result> event_edit(UserSession session, Event event) async {
   final response = await client.post(
     uri('/admin/event_edit', {
       'event_id': event.id.toString(),
@@ -107,12 +110,12 @@ Future<Result<()>> event_edit(UserSession session, Event event) async {
     body: json.encode(event),
   );
 
-  if (response.statusCode == 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
-Future<bool> event_password_edit(UserSession session, Event event, String password) async {
-  if (password.isEmpty) return true;
+Future<Result> event_password_edit(UserSession session, Event event, String password) async {
+  if (password.isEmpty) return Failure();
 
   final response = await client.post(
     uri('/admin/event_password_edit', {
@@ -125,7 +128,8 @@ Future<bool> event_password_edit(UserSession session, Event event, String passwo
     body: utf8.encode(password),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
 Future<Result<Course?>> event_course_info(UserSession session, Event event) async {
@@ -139,13 +143,13 @@ Future<Result<Course?>> event_course_info(UserSession session, Event event) asyn
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   var model = json.decode(utf8.decode(response.bodyBytes));
   if (model == null) return Success(null);
   return Success(Course.fromJson(model));
 }
 
-Future<bool> event_course_edit(UserSession session, Event event, Course? course) async {
+Future<Result> event_course_edit(UserSession session, Event event, Course? course) async {
   final response = await client.head(
     uri('/admin/event_course_edit', {
       'event_id': event.id.toString(),
@@ -156,7 +160,8 @@ Future<bool> event_course_edit(UserSession session, Event event, Course? course)
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
 Future<Result<()>> event_delete(UserSession session, Event event) async {
@@ -169,11 +174,11 @@ Future<Result<()>> event_delete(UserSession session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
-Future<Result<()>> event_accept(UserSession session, Event event) async {
+Future<Result> event_accept(UserSession session, Event event) async {
   final response = await client.head(
     uri('/admin/event_accept', {
       'event_id': event.id.toString(),
@@ -183,11 +188,11 @@ Future<Result<()>> event_accept(UserSession session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
-Future<Result<()>> event_reject(UserSession session, Event event) async {
+Future<Result> event_reject(UserSession session, Event event) async {
   final response = await client.head(
     uri('/admin/event_reject', {
       'event_id': event.id.toString(),
@@ -197,11 +202,11 @@ Future<Result<()>> event_reject(UserSession session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
-Future<Result<()>> event_suspend(UserSession session, Event event) async {
+Future<Result> event_suspend(UserSession session, Event event) async {
   final response = await client.head(
     uri('/admin/event_suspend', {
       'event_id': event.id.toString(),
@@ -211,7 +216,7 @@ Future<Result<()>> event_suspend(UserSession session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
@@ -225,7 +230,7 @@ Future<Result<()>> event_withdraw(UserSession session, Event event) async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
   return Success(());
 }
 
@@ -244,7 +249,7 @@ Future<Result<List<(User, int, int, int)>>> event_statistic_packlist(
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
 
   Iterable jlist = json.decode(utf8.decode(response.bodyBytes));
   var list = List<(User, int, int, int)>.from(
@@ -273,7 +278,7 @@ Future<Result<List<Affiliation>>> event_statistic_organisation(UserSession sessi
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
 
   Iterable jlist = json.decode(utf8.decode(response.bodyBytes));
   var list = List<Affiliation>.from(jlist.map((model) => Affiliation.fromJson(model)));

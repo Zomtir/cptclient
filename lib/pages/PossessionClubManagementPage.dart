@@ -58,11 +58,12 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
   }
 
   Future<void> _update() async {
-    List<Possession> possessions = await api_admin.possession_list(widget.session, null, widget.item, false, _club!);
-    possessions.sort();
+    Result<List<Possession>> result_possessions = await api_admin.possession_list(widget.session, null, widget.item, false, _club!);
+    if (result_possessions is! Success) return;
 
     setState(() {
-      _possessions = possessions;
+      _possessions = result_possessions.unwrap();
+      _possessions.sort();
     });
   }
 

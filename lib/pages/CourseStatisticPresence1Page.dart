@@ -7,6 +7,7 @@ import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseStatisticPresence1Page extends StatefulWidget {
@@ -14,15 +15,16 @@ class CourseStatisticPresence1Page extends StatefulWidget {
   final Course course;
   final int userID;
   final String title;
-  final Future<List<Event>> Function(int) presence1;
+  final Future<Result<List<Event>>> Function(int) presence1;
 
-  CourseStatisticPresence1Page(
-      {super.key,
-      required this.session,
-      required this.course,
-      required this.userID,
-      required this.title,
-      required this.presence1});
+  CourseStatisticPresence1Page({
+    super.key,
+    required this.session,
+    required this.course,
+    required this.userID,
+    required this.title,
+    required this.presence1,
+  });
 
   @override
   CourseStatisticPresence1PageState createState() => CourseStatisticPresence1PageState();
@@ -40,9 +42,13 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
   }
 
   void _update() async {
-    List<Event> stats = await widget.presence1(widget.userID);
-    stats.sort((a, b) => a.compareTo(b));
-    setState(() => this.stats = stats);
+    Result<List<Event>> result_stats = await widget.presence1(widget.userID);
+    if (result_stats is! Success) return;
+
+    setState(() {
+      stats = result_stats.unwrap();
+      stats.sort((a, b) => a.compareTo(b));
+    });
   }
 
   Future<void> _handleEvent(int eventID) async {
@@ -69,15 +75,19 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
       AppLocalizations.of(context)!.dateMinute,
     ];
     List<List<String?>> table = [headers];
-    table.addAll(stats.map((row) => [
-      row.title.toString(),
-      row.location?.name ?? AppLocalizations.of(context)!.unknown,
-      formatIsoDate(row.begin),
-      formatIsoTime(row.begin),
-      formatIsoDate(row.end),
-      formatIsoTime(row.end),
-      row.end.difference(row.begin).inMinutes.toString(),
-    ]));
+    table.addAll(
+      stats.map(
+        (row) => [
+          row.title.toString(),
+          row.location?.name ?? AppLocalizations.of(context)!.unknown,
+          formatIsoDate(row.begin),
+          formatIsoTime(row.begin),
+          formatIsoDate(row.end),
+          formatIsoTime(row.end),
+          row.end.difference(row.begin).inMinutes.toString(),
+        ],
+      ),
+    );
     exportCSV(fileName, table);
   }
 

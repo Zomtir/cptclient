@@ -5,22 +5,21 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
-import 'package:cptclient/material/widgets/TextWrapList.dart';
+import 'package:cptclient/material/widgets/CategoryEdit.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class ClubEditPage extends StatefulWidget {
+class ClubCreatePage extends StatefulWidget {
   final UserSession session;
-  final Club club;
-  final bool isDraft;
 
-  ClubEditPage({super.key, required this.session, required this.club, required this.isDraft});
+  ClubCreatePage({super.key, required this.session});
 
   @override
-  ClubEditPageState createState() => ClubEditPageState();
+  ClubCreatePageState createState() => ClubCreatePageState();
 }
 
-class ClubEditPageState extends State<ClubEditPage> {
+class ClubCreatePageState extends State<ClubCreatePage> {
   final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlDescription = TextEditingController();
@@ -28,50 +27,30 @@ class ClubEditPageState extends State<ClubEditPage> {
   final TextEditingController _ctrlImageURL = TextEditingController();
   final TextEditingController _ctrlChairman = TextEditingController();
 
-  ClubEditPageState();
-
-  @override
-  void initState() {
-    super.initState();
-    _applyInfo();
-  }
-
-  void _applyInfo() {
-    _ctrlKey.text = widget.club.key;
-    _ctrlName.text = widget.club.name;
-    _ctrlDescription.text = widget.club.description ?? '';
-    _ctrlDisciplines = widget.club.disciplines ?? '';
-    _ctrlImageURL.text = widget.club.image_url ?? '';
-    _ctrlChairman.text = widget.club.chairman ?? '';
-  }
-
-  void _gatherInfo() {
-    widget.club.key = _ctrlKey.text;
-    widget.club.name = _ctrlName.text;
-    widget.club.description = _ctrlDescription.text.isNotEmpty ? _ctrlDescription.text : null;
-    widget.club.disciplines = _ctrlDisciplines!.isNotEmpty ? _ctrlDisciplines! : null;
-    widget.club.image_url = _ctrlImageURL.text.isNotEmpty ? _ctrlImageURL.text : null;
-    widget.club.chairman = _ctrlChairman.text.isNotEmpty ? _ctrlChairman.text : null;
-  }
+  ClubCreatePageState();
 
   void _handleSubmit() async {
-    _gatherInfo();
-
-    if (widget.club.key.isEmpty) {
+    if (_ctrlKey.text.isEmpty) {
       messageText("${AppLocalizations.of(context)!.clubKey} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
-    if (widget.club.name.isEmpty) {
+    if (_ctrlName.text.isEmpty) {
       messageText("${AppLocalizations.of(context)!.clubName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
-    bool success = widget.isDraft
-        ? await api_admin.club_create(widget.session, widget.club)
-        : await api_admin.club_edit(widget.session, widget.club);
+    Club club = Club.fromVoid();
+    club.key = _ctrlKey.text;
+    club.name = _ctrlName.text;
+    club.description = _ctrlDescription.text.isNotEmpty ? _ctrlDescription.text : null;
+    club.disciplines = _ctrlDisciplines!.isNotEmpty ? _ctrlDisciplines! : null;
+    club.image_url = _ctrlImageURL.text.isNotEmpty ? _ctrlImageURL.text : null;
+    club.chairman = _ctrlChairman.text.isNotEmpty ? _ctrlChairman.text : null;
 
-    if (!success) return;
+    var result = await api_admin.club_create(widget.session, club);
+
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }
@@ -84,7 +63,6 @@ class ClubEditPageState extends State<ClubEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) widget.club.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubKey,
             child: TextField(
@@ -108,7 +86,7 @@ class ClubEditPageState extends State<ClubEditPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubDisciplines,
-            child: TextWrapList(
+            child: CategoryEdit(
               text: _ctrlDisciplines!,
               onChanged: (text) => _ctrlDisciplines = text,
             ),

@@ -1,17 +1,18 @@
 import 'package:cptclient/material/design/AppInputDecoration.dart';
+import 'package:cptclient/utils/string.dart';
 import 'package:flutter/material.dart';
 
-class TextWrapList extends StatefulWidget {
-  const TextWrapList({super.key, required this.text, required this.onChanged});
+class CategoryEdit extends StatefulWidget {
+  const CategoryEdit({super.key, required this.text, required this.onChanged});
 
   final String text;
   final Function(String) onChanged;
 
   @override
-  State<StatefulWidget> createState() => TextWrapListState();
+  State<StatefulWidget> createState() => CategoryEditState();
 }
 
-class TextWrapListState extends State<TextWrapList> {
+class CategoryEditState extends State<CategoryEdit> {
   List<String> _list = [];
 
   final TextEditingController _ctrlInput = TextEditingController();
@@ -20,13 +21,6 @@ class TextWrapListState extends State<TextWrapList> {
   void initState() {
     super.initState();
     _list = cleanSplit(widget.text);
-  }
-
-  List<String> cleanSplit(String text) {
-    List<String> extraList = text.replaceAll(RegExp(r'\s+'), ' ').split(',');
-    extraList = extraList.map((e) => e.trim()).toList();
-    extraList = extraList.where((e) => e.isNotEmpty).toList();
-    return extraList;
   }
 
   void addEntry(String entry) {

@@ -22,7 +22,7 @@ class TextEditDialog extends StatefulWidget {
     this.onConfirm,
   }) {
     assert(
-      (minLength < maxLength),
+      (minLength <= maxLength),
       'minLength $minLength must be less or equal than maxLength $maxLength.',
     );
   }

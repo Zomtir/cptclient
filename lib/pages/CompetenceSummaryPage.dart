@@ -5,6 +5,7 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CompetenceSummaryPage extends StatefulWidget {
@@ -30,13 +31,15 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
   }
 
   Future<void> _requestList() async {
-    List<Competence> competences = await server.competence_list(widget.session);
-    setState(() => _competences = competences);
+    Result<List<Competence>> result_competences = await server.competence_list(widget.session);
+    if (result_competences is! Success) return;
+    setState(() => _competences = result_competences.unwrap());
   }
 
   Future<void> _requestSummary() async {
-    List<(Skill, int)> summary = await server.competence_summary(widget.session);
-    setState(() => _summary = summary);
+    Result<List<(Skill, int)>> result_summary = await server.competence_summary(widget.session);
+    if (result_summary is! Success) return;
+    setState(() => _summary = result_summary.unwrap());
   }
 
   @override

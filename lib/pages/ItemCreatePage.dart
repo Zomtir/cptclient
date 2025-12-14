@@ -9,67 +9,52 @@ import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class ItemEditPage extends StatefulWidget {
+class ItemCreatePage extends StatefulWidget {
   final UserSession session;
-  final Item item;
-  final bool isDraft;
+  final Item? item;
 
-  ItemEditPage(
-      {super.key, required this.session, required this.item, required this.isDraft});
+  ItemCreatePage(
+      {super.key, required this.session, this.item});
 
   @override
-  ItemEditPageState createState() => ItemEditPageState();
+  ItemCreatePageState createState() => ItemCreatePageState();
 }
 
-class ItemEditPageState extends State<ItemEditPage> {
+class ItemCreatePageState extends State<ItemCreatePage> {
   final TextEditingController _ctrlName = TextEditingController();
   final FieldController<ItemCategory> _ctrlCategory = FieldController();
 
-  ItemEditPageState();
+  ItemCreatePageState();
 
   @override
   void initState() {
     super.initState();
+    Item item = widget.item ?? Item.fromVoid();
+    _ctrlName.text = item.name;
+    _ctrlCategory.value = item.category;
     _update();
-    _applyInfo();
   }
 
   Future<void> _update() async {
     _ctrlCategory.callItems = () => api_admin.itemcat_list(widget.session);
   }
 
-  void _applyInfo() {
-    _ctrlName.text = widget.item.name;
-    _ctrlCategory.value = widget.item.category;
-  }
-
-  void _gatherInfo() {
-    widget.item.name = _ctrlName.text;
-    widget.item.category = _ctrlCategory.value;
-  }
-
   void _handleSubmit() async {
-    _gatherInfo();
-
-    if (widget.item.name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.statusIsInvalid}")));
+    if (_ctrlName.text.isEmpty) {
+      messageText("${AppLocalizations.of(context)!.itemcatName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
-    bool success = widget.isDraft
-        ? await api_admin.item_create(widget.session, widget.item)
-        : await api_admin.item_edit(widget.session, widget.item);
+    Item item = Item.fromVoid();
+    item.name = _ctrlName.text;
+    item.category = _ctrlCategory.value;
 
-    if (!success) return;
-
-    Navigator.pop(context);
-  }
-
-  void _handleDelete() async {
-    if (!await api_admin.item_delete(widget.session, widget.item)) return;
+    var result = await api_admin.item_create(widget.session, item);
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }
@@ -79,16 +64,9 @@ class ItemEditPageState extends State<ItemEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageItemEdit),
-        actions: [
-          if (!widget.isDraft) IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: _handleDelete,
-          ),
-        ],
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) widget.item.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemName,
             child: TextField(

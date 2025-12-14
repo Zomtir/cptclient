@@ -1250,6 +1250,12 @@ abstract class AppLocalizations {
   /// **'Image Filename'**
   String get clubImageURL;
 
+  /// No description provided for @clubBannerURL.
+  ///
+  /// In en, this message translates to:
+  /// **'Banner Filename'**
+  String get clubBannerURL;
+
   /// No description provided for @clubChairman.
   ///
   /// In en, this message translates to:

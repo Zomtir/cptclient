@@ -9,23 +9,20 @@ class Organisation extends FieldInterface implements Comparable {
   String abbreviation;
   String name;
 
-  Organisation(this.id, this.abbreviation, this.name);
+  Organisation({this.id = 0, required this.abbreviation, required this.name});
 
-  Organisation.fromVoid()
-      : id = 0,
-        abbreviation = "",
-        name = "";
+  Organisation.fromVoid() : id = 0, abbreviation = "", name = "";
 
   Organisation.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        abbreviation = json['abbreviation'],
-        name = json['name'];
+    : id = json['id'],
+      abbreviation = json['abbreviation'],
+      name = json['name'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'abbreviation': abbreviation,
-        'name': name,
-      };
+    'id': id,
+    'abbreviation': abbreviation,
+    'name': name,
+  };
 
   @override
   bool operator ==(other) => other is Organisation && id == other.id;
@@ -62,8 +59,7 @@ class Organisation extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(child: Icon(Icons.domain), message: "[$id]"),
       trailing: trailing,
-      child: Text("$abbreviation"),
-      child2: Text("$name"),
+      child: Text("$abbreviation: $name"),
       onTap: onTap,
     );
   }

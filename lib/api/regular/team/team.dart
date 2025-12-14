@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Team>> team_list(UserSession session) async {
+Future<Result<List<Team>>> team_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/team_list'),
     headers: {
@@ -15,8 +17,9 @@ Future<List<Team>> team_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Team>.from(l.map((model) => Team.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Team>.from(it.map((model) => Team.fromJson(model)));
+  return Success(list);
 }

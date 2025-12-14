@@ -117,8 +117,12 @@ class User extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      children: [
+        Text("$firstname $lastname"),
+        if (nickname != null) Text(nickname!),
+      ],
+    );
   }
 
   @override

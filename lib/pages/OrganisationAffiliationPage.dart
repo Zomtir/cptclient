@@ -8,7 +8,8 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/AffiliationEditPage.dart';
+import 'package:cptclient/pages/AffiliationDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class OrganisationAffiliationPage extends StatefulWidget {
@@ -33,15 +34,16 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
   }
 
   Future<void> _update() async {
-    List<Affiliation> affiliations = await api_admin.affiliation_list(widget.session, null, widget.organisation);
-    searchPanelKey.currentState?.populate(affiliations);
+    Result<List<Affiliation>> result_affiliations = await api_admin.affiliation_list(widget.session, null, widget.organisation);
+    if (result_affiliations is! Success) return;
+    searchPanelKey.currentState?.populate(result_affiliations.unwrap());
   }
 
   Future<void> _handleSelect(Affiliation affiliation) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AffiliationEditPage(
+        builder: (context) => AffiliationDetailPage(
           session: widget.session,
           affiliation: affiliation,
         ),
@@ -52,11 +54,11 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
   }
 
   Future<void> _handleCreate() async {
-    List<User> users = await api_regular.user_list(widget.session);
+    Result<List<User>> result_users = await api_regular.user_list(widget.session);
     User? user;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: users, onPick: (item) => user = item),
+      builder: (context) => PickerDialog(items: result_users.unwrap(), onPick: (item) => user = item),
     );
 
     if (user == null) return;
@@ -66,7 +68,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AffiliationEditPage(
+        builder: (context) => AffiliationDetailPage(
           session: widget.session,
           affiliation: affiliation,
         ),

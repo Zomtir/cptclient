@@ -5,25 +5,29 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/crypto.dart' as crypto;
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:http/http.dart' as http;
 
-Future<bool> loadStatus() async {
+Future<Result> loadStatus() async {
   final http.Response response;
 
   try {
     response = await client.head(uri('status')).timeout(const Duration(seconds: 3));
   } on Exception {
-    return false;
+    return Failure();
   }
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<UserSession?> loginUser(String key, String pwd) async {
-  if (key.isEmpty || pwd.isEmpty) return null;
+Future<Result<UserSession>> loginUser(String key, String pwd) async {
+  if (key.isEmpty || pwd.isEmpty) return Failure();
 
-  String? salt = await api_anon.user_salt(key);
-  if (salt == null || salt.isEmpty) return null;
+  Result<String> result_salt = await api_anon.user_salt(key);
+  if (result_salt is! Success) return Failure();
+  var salt = result_salt.unwrap();
 
   Credential credential = Credential(login: key, password: crypto.hashPassword(pwd, salt), salt: salt);
 
@@ -36,16 +40,14 @@ Future<UserSession?> loginUser(String key, String pwd) async {
     body: json.encode(credential),
   );
 
-  if (response.statusCode != 200) {
-    print("User login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return null;
-  }
+  if (handleFailedResponse(response)) return Failure();
 
-  return UserSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var session = UserSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  return Success(session);
 }
 
-Future<EventSession?> loginEvent(String key, String pwd) async {
-  if (key.isEmpty || pwd.isEmpty) return null;
+Future<Result<EventSession>> loginEvent(String key, String pwd) async {
+  if (key.isEmpty || pwd.isEmpty) return Failure();
 
   Credential credential = Credential(login: key, password: pwd);
 
@@ -58,16 +60,14 @@ Future<EventSession?> loginEvent(String key, String pwd) async {
     body: json.encode(credential),
   );
 
-  if (response.statusCode != 200) {
-    print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return null;
-  }
+  if (handleFailedResponse(response)) return Failure();
 
-  return EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var object = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  return Success(object);
 }
 
-Future<EventSession?> loginCourse(String key) async {
-  if (key.isEmpty) return null;
+Future<Result<EventSession>> loginCourse(String key) async {
+  if (key.isEmpty) return Failure();
 
   final response = await client.get(
     uri('/course_login', {'course_key': key}),
@@ -76,16 +76,14 @@ Future<EventSession?> loginCourse(String key) async {
     },
   );
 
-  if (response.statusCode != 200) {
-    print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return null;
-  }
+  if (handleFailedResponse(response)) return Failure();
 
-  return EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var session = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  return Success(session);
 }
 
-Future<EventSession?> loginLocation(String key) async {
-  if (key.isEmpty) return null;
+Future<Result<EventSession>> loginLocation(String key) async {
+  if (key.isEmpty) return Failure();
 
   final response = await client.get(
     uri('/location_login', {'location_key': key}),
@@ -94,10 +92,8 @@ Future<EventSession?> loginLocation(String key) async {
     },
   );
 
-  if (response.statusCode != 200) {
-    print("Event login error: ${response.headers["error-uri"]} error: ${response.headers["error-msg"]}");
-    return null;
-  }
+  if (handleFailedResponse(response)) return Failure();
 
-  return EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var session = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  return Success(session);
 }

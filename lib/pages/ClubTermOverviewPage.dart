@@ -4,22 +4,23 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/TermEditPage.dart';
+import 'package:cptclient/pages/TermCreatePage.dart';
+import 'package:cptclient/pages/TermDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class TermOverviewPage extends StatefulWidget {
+class ClubTermOverviewPage extends StatefulWidget {
   final UserSession session;
   final Club club;
 
-  TermOverviewPage({super.key, required this.session, required this.club});
+  ClubTermOverviewPage({super.key, required this.session, required this.club});
 
   @override
-  TermOverviewPageState createState() => TermOverviewPageState();
+  ClubTermOverviewPageState createState() => ClubTermOverviewPageState();
 }
 
-class TermOverviewPageState extends State<TermOverviewPage> {
+class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
   GlobalKey<SearchablePanelState<Term>> searchPanelKey = GlobalKey();
 
   @override
@@ -29,19 +30,18 @@ class TermOverviewPageState extends State<TermOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Term> terms = await api_admin.term_list(widget.session, widget.club);
-    searchPanelKey.currentState?.populate(terms);
+    var result_terms = await api_admin.term_list(widget.session, widget.club);
+    if (result_terms is! Success) return;
+    searchPanelKey.currentState?.populate(result_terms.unwrap());
   }
 
   void _handleSelect(Term term) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TermEditPage(
+        builder: (context) => TermDetailPage(
           session: widget.session,
-          term: term,
-          isDraft: false,
-          club: widget.club,
+          termID: term.id,
         ),
       ),
     );
@@ -49,14 +49,12 @@ class TermOverviewPageState extends State<TermOverviewPage> {
     _update();
   }
 
-  void _createTerm() async {
+  void _handleCreate() async {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TermEditPage(
+        builder: (context) => TermCreatePage(
           session: widget.session,
-          term: Term.fromVoid(),
-          isDraft: true,
           club: widget.club,
         ),
       ),
@@ -70,14 +68,16 @@ class TermOverviewPageState extends State<TermOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTermManagement),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _handleCreate,
+            tooltip: AppLocalizations.of(context)!.actionCreate,
+          ),
+        ],
       ),
       body: AppBody(
         children: <Widget>[
-          AppButton(
-            leading: Icon(Icons.add),
-            text: AppLocalizations.of(context)!.actionCreate,
-            onPressed: _createTerm,
-          ),
           SearchablePanel(
             key: searchPanelKey,
             onTap: _handleSelect,

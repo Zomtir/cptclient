@@ -1,18 +1,17 @@
-import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/SelectionDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/extensions.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class SelectionPage<T extends FieldInterface> extends StatefulWidget {
   final String title;
-  final Future<List<T>> Function() onCallAvailable;
-  final Future<List<T>> Function() onCallSelected;
-  final Future<bool> Function(T) onCallAdd;
-  final Future<bool> Function(T) onCallRemove;
+  final Future<Result<List<T>>> Function() onCallAvailable;
+  final Future<Result<List<T>>> Function() onCallSelected;
+  final Future<Result> Function(T) onCallAdd;
+  final Future<Result> Function(T) onCallRemove;
 
   SelectionPage({
     super.key,
@@ -41,15 +40,14 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
   }
 
   void _update() async {
-    List<T> available = await widget.onCallAvailable();
-    available.sort();
-
-    List<T> selected = await widget.onCallSelected();
-    selected.sort();
+    Result<List<T>> result_available = await widget.onCallAvailable();
+    Result<List<T>> result_selected = await widget.onCallSelected();
 
     setState(() {
-      _available = available;
-      _selected = selected;
+      _available = result_available.unwrap();
+      _available.sort();
+      _selected = result_selected.unwrap();
+      _selected.sort();
       _delta = _available.difference<T>(_selected);
     });
   }
@@ -59,11 +57,9 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-      ),
-      body: AppBody(
-        children: [
-          AppButton(
-            text: AppLocalizations.of(context)!.actionAdd,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
               builder: (context) => SelectionDialog(
@@ -75,13 +71,17 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
                     _delta.removeWhere((T t) => values.any((e) => e == t));
                   });
                   for (var v in values) {
-                    if (!await widget.onCallAdd(v)) return;
+                    if (await widget.onCallAdd(v) is! Success) return;
                   }
                   _update();
                 },
               ),
             ),
           ),
+        ],
+      ),
+      body: AppBody(
+        children: [
           AppListView<T>(
             items: _selected,
             itemBuilder: (T item) {
@@ -93,7 +93,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
                     padding: EdgeInsets.all(2),
                     constraints: const BoxConstraints(),
                     onPressed: () async {
-                      if (!await widget.onCallRemove(item)) return;
+                      if (await widget.onCallRemove(item) is! Success) return;
                       _update();
                     },
                   ),

@@ -16,6 +16,7 @@ import 'package:cptclient/pages/PresenceAccountingPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class ClubStatisticPresencePage extends StatefulWidget {
@@ -58,7 +59,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   void _update() async {
-    List<Event>? eventList = await api_admin.club_statistic_presence(
+    Result<List<Event>> result = await api_admin.club_statistic_presence(
       widget.session,
       widget.club.id,
       _ctrlUser.id,
@@ -66,11 +67,11 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       _ctrlEnd.getDate().copyWith(hour: 24),
       _ctrlRole,
     );
-    if (eventList == null) return;
-    eventList.sort();
+    if (result is! Success) return;
 
     setState(() {
-      _eventList = eventList;
+      _eventList = result.unwrap();
+      _eventList.sort();
     });
   }
 
@@ -87,8 +88,8 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   Future<void> _handlePresenceAccounting() async {
-    User? userDetailed = await api_admin.user_detailed(widget.session, _ctrlUser.id);
-    if (userDetailed == null) return;
+    Result<User> result_user_detailed = await api_admin.user_detailed(widget.session, _ctrlUser.id);
+    if (result_user_detailed is! Success) return;
 
     await Navigator.push(
       context,
@@ -96,7 +97,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
         builder: (context) => PresenceAccountingPage(
           session: widget.session,
           club: widget.club,
-          user: userDetailed,
+          user: result_user_detailed.unwrap(),
           role: _ctrlRole,
           dateBegin: _ctrlBegin.getDateTime()!,
           dateEnd: _ctrlEnd.getDateTime()!,
@@ -164,7 +165,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () async {
-                      var users = await api_admin.user_list(widget.session);
+                      var result = await api_admin.user_list(widget.session);
+                      if (result is! Success) return;
+                      var users = result.unwrap();
                       users.sort();
                       showDialog(
                         context: context,

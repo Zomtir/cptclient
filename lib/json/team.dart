@@ -81,7 +81,6 @@ class Team extends FieldInterface implements Comparable {
     return AppTile(
       leading: Icon(Icons.group),
       child: Text(name),
-      child2: Text(description),
       trailing: trailing,
       onTap: onTap,
     );

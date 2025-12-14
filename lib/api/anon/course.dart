@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/course.dart';
+import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
 
 Future<Result<List<Course>>> course_list() async {
@@ -14,7 +15,7 @@ Future<Result<List<Course>>> course_list() async {
     },
   );
 
-  if (response.statusCode != 200) return Failure();
+  if (handleFailedResponse(response)) return Failure();
 
   Iterable it = json.decode(utf8.decode(response.bodyBytes));
   var list = List<Course>.from(it.map((model) => Course.fromJson(model)));

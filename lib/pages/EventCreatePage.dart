@@ -17,8 +17,8 @@ import 'package:flutter/material.dart';
 class EventCreatePage extends StatefulWidget {
   final UserSession session;
   final Event event;
-  final Future<Result<()>> Function(UserSession, Event) onSubmit;
-  final Future<Result<()>> Function(UserSession, Event, String)? onPasswordChange;
+  final Future<Result> Function(UserSession, Event) onSubmit;
+  final Future<Result> Function(UserSession, Event, String)? onPasswordChange;
 
   EventCreatePage({
     super.key,
@@ -53,8 +53,9 @@ class EventCreatePageState extends State<EventCreatePage> {
   }
 
   Future<void> _receiveLocations() async {
-    List<Location> locations = await api_anon.location_list();
-    setState(() => _ctrlLocation.items = locations);
+    Result<List<Location>> result_locations = await api_anon.location_list();
+    if (result_locations is! Success) return;
+    setState(() => _ctrlLocation.items = result_locations.unwrap());
   }
 
   void _applyEvent() {

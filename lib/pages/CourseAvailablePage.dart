@@ -5,6 +5,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/pages/ClassOverviewAvailablePage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseAvailablePage extends StatefulWidget {
@@ -28,8 +29,9 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
   }
 
   void _update() async {
-    List<Course>? courses = await server.course_availability(widget.session);
-    setState(() => _courses = courses!);
+    Result<List<Course>> result_courses = await server.course_availability(widget.session);
+    if (result_courses is! Success) return;
+    setState(() => _courses = result_courses.unwrap());
   }
 
   Future<void> _selectCourse(Course course, bool isDraft) async {

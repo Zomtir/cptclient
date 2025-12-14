@@ -6,6 +6,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseStatisticClassPage extends StatefulWidget {
@@ -30,9 +31,16 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
   }
 
   void _update() async {
-    List<(Event, int, int, int, int)> stats = await api_admin.course_statistic_class(widget.session, widget.course.id);
-    stats.sort((a, b) => a.$1.compareTo(b.$1));
-    setState(() => this.stats = stats);
+    Result<List<(Event, int, int, int, int)>> result_stats = await api_admin.course_statistic_class(
+      widget.session,
+      widget.course.id,
+    );
+    if (result_stats is! Success) return;
+
+    setState(() {
+      stats = result_stats.unwrap();
+      stats.sort((a, b) => a.$1.compareTo(b.$1));
+    });
   }
 
   Future<void> _handleEvent(Event event) async {

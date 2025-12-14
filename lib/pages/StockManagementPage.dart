@@ -59,20 +59,23 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   Future<void> _update() async {
-    List<Stock> stocks = await api_admin.stock_list(widget.session, _club, null);
-    stocks.sort();
+    Result<List<Stock>> result_stocks = await api_admin.stock_list(widget.session, _club, null);
+    if (result_stocks is! Success) return;
 
     setState(() {
-      _stocks = stocks;
+      _stocks = result_stocks.unwrap();
+      _stocks.sort();
     });
   }
 
   void _handleCreate() async {
-    List<Item> items = await api_admin.item_list(widget.session);
+    Result<List<Item>> result_items = await api_admin.item_list(widget.session);
+    if (result_items is! Success) return;
+
     Item? item;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: items, onPick: (e) => item = e),
+      builder: (context) => PickerDialog(items: result_items.unwrap(), onPick: (e) => item = e),
     );
 
     if (item == null) return;
@@ -119,11 +122,13 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   void _handleLoan(Stock stock) async {
-    List<User> users = await api_regular.user_list(widget.session);
+    Result<List<User>> result_users = await api_regular.user_list(widget.session);
+    if (result_users is! Success) return;
+
     User? user;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: users, onPick: (e) => user = e),
+      builder: (context) => PickerDialog(items: result_users.unwrap(), onPick: (e) => user = e),
     );
 
     if (user == null) return;

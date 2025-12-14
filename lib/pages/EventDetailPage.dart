@@ -128,8 +128,9 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _updateCredential() async {
-    Credential? credential = await api_admin.event_credential(widget.session, widget.eventID);
-    setState(() => _credential = credential);
+    Result<Credential> result_credential = await api_admin.event_credential(widget.session, widget.eventID);
+    if (result_credential is! Success) return;
+    setState(() => _credential = result_credential.unwrap());
   }
 
   Future<void> _handleExport() async {
@@ -151,7 +152,7 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _handleDelete() async {
-    Result<()>? result;
+    Result? result;
     if (_adminship_read) {
       result = await api_admin.event_delete(widget.session, _event!);
     } else if (_ownership) {
@@ -165,7 +166,7 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   void _handleEvent() async {
-    Result<()>? result;
+    Result? result;
     if (_adminship_write) {
       result = await api_admin.event_edit(widget.session, _event!);
     } else if (_ownership) {
@@ -180,9 +181,9 @@ class EventDetailPageState extends State<EventDetailPage> {
 
   Future<void> _handleOwners() async {
     callAvailable() => api_regular.user_list(widget.session);
-    Future<List<User>> Function()? callSelected;
-    Future<bool> Function(User)? callAdd;
-    Future<bool> Function(User)? callRemove;
+    Future<Result<List<User>>> Function()? callSelected;
+    Future<Result> Function(User)? callAdd;
+    Future<Result> Function(User)? callRemove;
 
     if (_adminship_read) {
       callSelected = () => api_admin.event_owner_list(widget.session, _event!);
@@ -273,10 +274,10 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _handleAttendancePresences(String role, heading) async {
-    Future<List<User>> Function()? callAvailable;
-    Future<List<User>> Function()? callSelected;
-    Future<bool> Function(User)? callAdd;
-    Future<bool> Function(User)? callRemove;
+    Future<Result<List<User>>> Function()? callAvailable;
+    Future<Result<List<User>>> Function()? callSelected;
+    Future<Result> Function(User)? callAdd;
+    Future<Result> Function(User)? callRemove;
 
     if (_adminship_read) {
       callAvailable = () => api_admin.event_attendance_presence_pool(widget.session, _event!, role);
@@ -315,10 +316,10 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _handleAttendanceFilters(String role, String heading) async {
-    Future<List<User>> Function()? callAvailable;
-    Future<List<(User, bool)>> Function()? callSelected;
-    Future<bool> Function(User, bool)? callEdit;
-    Future<bool> Function(User)? callRemove;
+    Future<Result<List<User>>> Function()? callAvailable;
+    Future<Result<List<(User, bool)>>> Function()? callSelected;
+    Future<Result> Function(User, bool)? callEdit;
+    Future<Result> Function(User)? callRemove;
 
     if (_adminship_read) {
       callAvailable = () => api_regular.user_list(widget.session);
@@ -360,7 +361,7 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _handleAttendanceRegistrations(String role, String heading) async {
-    Future<List<User>> Function()? callList;
+    Future<Result<List<User>>> Function()? callList;
 
     if (_adminship_read) {
       callList = () => api_admin.event_attendance_registration_list(widget.session, _event!, role);
@@ -392,13 +393,14 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _handleStatisticOrganisation() async {
-    List<Organisation> organisations = await api_anon.organisation_list();
-    Organisation? organisation;
+    Result<List<Organisation>> result_organisations = await api_anon.organisation_list();
+    if (result_organisations is! Success) return;
 
+    Organisation? organisation;
     await showDialog(
       context: context,
       builder: (context) => PickerDialog(
-        items: organisations,
+        items: result_organisations.unwrap(),
         onPick: (item) => organisation = item,
       ),
     );
@@ -418,32 +420,34 @@ class EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _updateBookmark() async {
-    bool? bookmarked = await api_regular.event_bookmark_true(widget.session, widget.eventID);
-    if (bookmarked == null) return;
+    var result = await api_regular.event_bookmark_true(widget.session, widget.eventID);
+    if (result is! Success) return;
 
     setState(() {
-      _bookmarked = bookmarked;
+      _bookmarked = result.unwrap();
     });
   }
 
   Future<void> _updateAttendanceRegistration(String role) async {
-    Confirmation? registration = await api_regular.event_attendance_registration_info(
+    Result<Confirmation?> result_registration = await api_regular.event_attendance_registration_info(
       widget.session,
       widget.eventID,
       role,
     );
-    if (registration == null) return;
+    if (result_registration is! Success) return;
 
-    setState(() => _attendanceRegistration[role] = registration);
+    setState(() => _attendanceRegistration[role] = result_registration.unwrap());
   }
 
   Future<void> _updateAttendancePresence(String role) async {
-    Valence? presence = Valence.fromBool(
-      await api_regular.event_attendance_presence_true(widget.session, widget.eventID, role),
+    Result<Valence?> result_presence = await api_regular.event_attendance_presence_true(
+      widget.session,
+      widget.eventID,
+      role,
     );
-    if (presence == null) return;
+    if (result_presence is! Success) return;
 
-    setState(() => _attendancePresence[role] = presence);
+    setState(() => _attendancePresence[role] = result_presence.unwrap());
   }
 
   void _handleAttendanceRegistration(String role, Confirmation? confirmation) async {
@@ -717,11 +721,12 @@ class EventDetailPageState extends State<EventDetailPage> {
                       IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () async {
-                          var items = await api_anon.location_list();
+                          var result_items = await api_anon.location_list();
+                          if (result_items is! Success) return;
                           showDialog(
                             context: context,
                             builder: (context) => MultiChoiceEdit<Location>(
-                              items: items,
+                              items: result_items.unwrap(),
                               value: _event!.location!,
                               builder: (event) => event.buildTile(context),
                               onConfirm: (Location? location) {
@@ -738,9 +743,9 @@ class EventDetailPageState extends State<EventDetailPage> {
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventPublic,
-                child: ChoiceDisplay(
-                  value: Valence.fromBool(_event!.public),
-                  trailing: IconButton(
+                child: ChoiceDisplay(value: Valence.fromBool(_event!.public)),
+                actions: [
+                  IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
@@ -753,13 +758,13 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventScrutable,
-                child: ChoiceDisplay(
-                  value: Valence.fromBool(_event!.scrutable),
-                  trailing: IconButton(
+                child: ChoiceDisplay(value: Valence.fromBool(_event!.scrutable)),
+                actions: [
+                  IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
@@ -772,7 +777,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),

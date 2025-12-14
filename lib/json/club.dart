@@ -12,6 +12,7 @@ class Club extends FieldInterface implements Comparable {
   String? description;
   String? disciplines;
   String? image_url;
+  String? banner_url;
   String? chairman;
 
   Club(this.id, this.key, this.name, this.description);
@@ -25,6 +26,7 @@ class Club extends FieldInterface implements Comparable {
       description = json['description'],
       disciplines = json['disciplines'],
       image_url = json['image_url'],
+      banner_url = json['banner_url'],
       chairman = json['chairman'];
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +36,7 @@ class Club extends FieldInterface implements Comparable {
     'description': description,
     'disciplines': disciplines,
     'image_url': image_url,
+    'banner_url': banner_url,
     'chairman': chairman,
   };
 
@@ -68,7 +71,6 @@ class Club extends FieldInterface implements Comparable {
       leading: Tooltip(child: Icon(Icons.group_work), message: "[$id] $key"),
       trailing: trailing,
       child: Text(name),
-      child2: Text(chairman ?? ''),
       onTap: onTap,
     );
   }

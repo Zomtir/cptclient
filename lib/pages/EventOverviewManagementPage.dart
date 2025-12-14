@@ -53,7 +53,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   }
 
   Future<void> _update() async {
-    List<Event> events = await api_admin.event_list(
+    Result<List<Event>> result_events = await api_admin.event_list(
       widget.session,
       begin: _ctrlDateBegin.getDate(),
       end: _ctrlDateEnd.getDate(),
@@ -63,27 +63,30 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
       courseTrue: false,
       ownerID: _ctrlOwner.value?.id,
     );
+    if (result_events is! Success) return;
 
     setState(() {
-      _events = events;
+      _events = result_events.unwrap();
     });
   }
 
   Future<void> _requestLocations() async {
-    List<Location> locations = await api_anon.location_list();
-    locations.sort();
+    Result<List<Location>> result_locations = await api_anon.location_list();
+    if (result_locations is! Success) return;
 
     setState(() {
-      _ctrlLocation.items = locations;
+      _ctrlLocation.items = result_locations.unwrap();
+      _ctrlLocation.items.sort();
     });
   }
 
   Future<void> _requestOwners() async {
-    List<User> users = await api_regular.user_list(widget.session);
-    users.sort();
+    Result<List<User>> result_users = await api_regular.user_list(widget.session);
+    if (result_users is! Success) return;
 
     setState(() {
-      _ctrlOwner.items = users;
+      _ctrlOwner.items = result_users.unwrap();
+      _ctrlOwner.items.sort();
     });
   }
 

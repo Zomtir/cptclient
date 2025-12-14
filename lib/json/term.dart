@@ -17,7 +17,7 @@ class Term extends FieldInterface implements Comparable {
   DateTime? begin;
   DateTime? end;
 
-  Term(this.id, this.user, this.club, this.begin, this.end);
+  Term({this.id = 0, this.user, this.club, this.begin, this.end});
 
   Term.fromVoid()
       : id = 0,

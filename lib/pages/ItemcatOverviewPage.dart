@@ -4,7 +4,9 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/ItemcatEditPage.dart';
+import 'package:cptclient/pages/ItemcatCreatePage.dart';
+import 'package:cptclient/pages/ItemcatDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class ItemcatOverviewPage extends StatefulWidget {
@@ -26,18 +28,18 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<ItemCategory> itemcats = await api_admin.itemcat_list(widget.session);
-    searchPanelKey.currentState?.populate(itemcats);
+    Result<List<ItemCategory>> result_itemcats = await api_admin.itemcat_list(widget.session);
+    if (result_itemcats is! Success) return;
+    searchPanelKey.currentState?.populate(result_itemcats.unwrap());
   }
 
   void _handleSelect(ItemCategory category) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ItemcatEditPage(
+        builder: (context) => ItemcatDetailPage(
           session: widget.session,
           category: category,
-          isDraft: false,
         ),
       ),
     );
@@ -49,10 +51,8 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ItemcatEditPage(
+        builder: (context) => ItemcatCreatePage(
           session: widget.session,
-          category: ItemCategory.fromVoid(),
-          isDraft: true,
         ),
       ),
     );

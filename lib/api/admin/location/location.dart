@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Location>> location_list(UserSession session) async {
+Future<Result<List<Location>>> location_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/location_list'),
     headers: {
@@ -14,13 +16,14 @@ Future<List<Location>> location_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Location>.from(l.map((model) => Location.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Location>.from(it.map((model) => Location.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> location_create(UserSession session, Location location) async {
+Future<Result> location_create(UserSession session, Location location) async {
   final response = await client.post(
     uri('/admin/location_create'),
     headers: {
@@ -30,10 +33,11 @@ Future<bool> location_create(UserSession session, Location location) async {
     body: json.encode(location),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> location_edit(UserSession session, Location location) async {
+Future<Result> location_edit(UserSession session, Location location) async {
   final response = await client.post(
     uri('/admin/location_edit', {
       'location_id': location.id.toString(),
@@ -45,10 +49,11 @@ Future<bool> location_edit(UserSession session, Location location) async {
     body: json.encode(location),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> location_delete(UserSession session, Location location) async {
+Future<Result> location_delete(UserSession session, Location location) async {
   final response = await client.head(
     uri('/admin/location_delete', {
       'location_id': location.id.toString(),
@@ -58,5 +63,6 @@ Future<bool> location_delete(UserSession session, Location location) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

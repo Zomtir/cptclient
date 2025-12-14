@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Organisation>> organisation_list(UserSession session) async {
+Future<Result<List<Organisation>>> organisation_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/organisation_list'),
     headers: {
@@ -14,13 +16,14 @@ Future<List<Organisation>> organisation_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Organisation>.from(l.map((model) => Organisation.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Organisation>.from(it.map((model) => Organisation.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> organisation_create(UserSession session, Organisation organisation) async {
+Future<Result> organisation_create(UserSession session, Organisation organisation) async {
   final response = await client.post(
     uri('/admin/organisation_create'),
     headers: {
@@ -30,10 +33,11 @@ Future<bool> organisation_create(UserSession session, Organisation organisation)
     body: json.encode(organisation),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> organisation_edit(UserSession session, Organisation organisation) async {
+Future<Result> organisation_edit(UserSession session, Organisation organisation) async {
   final response = await client.post(
     uri('/admin/organisation_edit'),
     headers: {
@@ -43,10 +47,11 @@ Future<bool> organisation_edit(UserSession session, Organisation organisation) a
     body: json.encode(organisation),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> organisation_delete(UserSession session, Organisation organisation) async {
+Future<Result> organisation_delete(UserSession session, Organisation organisation) async {
   final response = await client.head(
     uri('/admin/organisation_delete', {'organisation': organisation.id.toString()}),
     headers: {
@@ -54,5 +59,6 @@ Future<bool> organisation_delete(UserSession session, Organisation organisation)
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

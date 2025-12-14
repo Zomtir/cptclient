@@ -7,8 +7,10 @@ import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Affiliation>> affiliation_list(UserSession session, User? user, Organisation? organisation) async {
+Future<Result<List<Affiliation>>> affiliation_list(UserSession session, User? user, Organisation? organisation) async {
   final response = await client.get(
     uri('/admin/affiliation_list', {
       'user_id': user?.id.toString(),
@@ -19,13 +21,14 @@ Future<List<Affiliation>> affiliation_list(UserSession session, User? user, Orga
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable body = json.decode(utf8.decode(response.bodyBytes));
-  return List<Affiliation>.from(body.map((model) => Affiliation.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Affiliation>.from(it.map((model) => Affiliation.fromJson(model)));
+  return Success(list);
 }
 
-Future<Affiliation?> affiliation_info(UserSession session, int user_id, int organisation_id) async {
+Future<Result<Affiliation>> affiliation_info(UserSession session, int user_id, int organisation_id) async {
   final response = await client.get(
     uri('/admin/affiliation_info', {
       'user_id': user_id.toString(),
@@ -36,13 +39,13 @@ Future<Affiliation?> affiliation_info(UserSession session, int user_id, int orga
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
   var body = json.decode(utf8.decode(response.bodyBytes));
-  return Affiliation.fromJson(body);
+  return Success(Affiliation.fromJson(body));
 }
 
-Future<bool> affiliation_create(UserSession session, User user, Organisation organisation) async {
+Future<Result> affiliation_create(UserSession session, User user, Organisation organisation) async {
   final response = await client.head(
     uri('/admin/affiliation_create', {
       'user_id': user.id.toString(),
@@ -53,10 +56,11 @@ Future<bool> affiliation_create(UserSession session, User user, Organisation org
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> affiliation_edit(UserSession session, Affiliation affiliation) async {
+Future<Result> affiliation_edit(UserSession session, Affiliation affiliation) async {
   final response = await client.post(
     uri('/admin/affiliation_edit', {
       'user_id': affiliation.user?.id.toString(),
@@ -69,10 +73,11 @@ Future<bool> affiliation_edit(UserSession session, Affiliation affiliation) asyn
     body: json.encode(affiliation),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> affiliation_delete(UserSession session, Affiliation affiliation) async {
+Future<Result> affiliation_delete(UserSession session, Affiliation affiliation) async {
   final response = await client.head(
     uri('/admin/affiliation_delete', {
       'user_id': affiliation.user?.id.toString(),
@@ -83,5 +88,6 @@ Future<bool> affiliation_delete(UserSession session, Affiliation affiliation) as
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

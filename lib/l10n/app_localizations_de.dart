@@ -586,6 +586,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get clubImageURL => 'Bild-Pfad';
 
   @override
+  String get clubBannerURL => 'Banner-Pfad';
+
+  @override
   String get clubChairman => 'Vorsitzende(r)';
 
   @override

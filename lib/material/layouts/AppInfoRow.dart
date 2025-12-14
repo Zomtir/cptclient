@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 class AppInfoRow extends StatelessWidget {
   final String info;
   final Widget child;
+  final List<Widget>? actions;
 
-  const AppInfoRow({
-    super.key,
-    required this.info,
-    required this.child,
-  });
+  const AppInfoRow({super.key, required this.info, required this.child, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +19,20 @@ class AppInfoRow extends StatelessWidget {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(4.0),
             ),
-            child: child,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: DefaultTextStyle.merge(
+                      style: Theme.of(context).textTheme.bodyLarge!,
+                      child: child,
+                    ),
+                  ),
+                ),
+                ...?actions,
+              ],
+            ),
           ),
         ),
         Positioned(

@@ -6,8 +6,10 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<Event?> event_info(EventSession session) async {
+Future<Result<Event>> event_info(EventSession session) async {
   final response = await client.get(
     uri('/service/event_info'),
     headers: {
@@ -16,12 +18,13 @@ Future<Event?> event_info(EventSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return Event.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  var event = Event.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  return Success(event);
 }
 
-Future<bool?> event_note_edit(EventSession session, String note) async {
+Future<Result> event_note_edit(EventSession session, String note) async {
   final response = await client.post(
     uri('/service/event_note_edit'),
     headers: {
@@ -31,10 +34,12 @@ Future<bool?> event_note_edit(EventSession session, String note) async {
     body: utf8.encode(note),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
-Future<List<User>> event_attendance_presence_pool(EventSession session, String role) async {
+Future<Result<List<User>>> event_attendance_presence_pool(EventSession session, String role) async {
   final response = await client.get(
     uri('/service/event_attendance_presence_pool', {
       'role': role,
@@ -44,13 +49,14 @@ Future<List<User>> event_attendance_presence_pool(EventSession session, String r
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<User>.from(it.map((model) => User.fromJson(model)));
+  return Success(list);
 }
 
-Future<List<User>> event_attendance_presence_list(EventSession session, String role) async {
+Future<Result<List<User>>> event_attendance_presence_list(EventSession session, String role) async {
   final response = await client.get(
     uri('/service/event_attendance_presence_list', {
       'role': role,
@@ -60,13 +66,14 @@ Future<List<User>> event_attendance_presence_list(EventSession session, String r
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<User>.from(it.map((model) => User.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> event_attendance_presence_add(EventSession session, User user, String role) async {
+Future<Result> event_attendance_presence_add(EventSession session, User user, String role) async {
   final response = await client.head(
     uri('/service/event_attendance_presence_add', {
       'user_id': user.id.toString(),
@@ -77,10 +84,12 @@ Future<bool> event_attendance_presence_add(EventSession session, User user, Stri
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
-Future<bool> event_attendance_presence_remove(EventSession session, User user, String role) async {
+Future<Result> event_attendance_presence_remove(EventSession session, User user, String role) async {
   final response = await client.head(
     uri('/service/event_attendance_presence_remove', {
       'user_id': user.id.toString(),
@@ -91,5 +100,7 @@ Future<bool> event_attendance_presence_remove(EventSession session, User user, S
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }

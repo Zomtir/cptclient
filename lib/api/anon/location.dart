@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Location>> location_list() async {
+Future<Result<List<Location>>> location_list() async {
   final response = await client.get(
     uri('/anon/location_list'),
     headers: {
@@ -13,8 +15,9 @@ Future<List<Location>> location_list() async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Location>.from(l.map((model) => Location.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Location>.from(it.map((model) => Location.fromJson(model)));
+  return Success(list);
 }

@@ -6,6 +6,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/CourseStatisticPresence1Page.dart';
 import 'package:cptclient/utils/export.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class CourseStatisticPresencePage extends StatefulWidget {
@@ -13,8 +14,8 @@ class CourseStatisticPresencePage extends StatefulWidget {
   final Course course;
   final String role;
   final String title;
-  final Future<List<(User, int)>> Function() presence;
-  final Future<List<Event>> Function(int) presence1;
+  final Future<Result<List<(User, int)>>> Function() presence;
+  final Future<Result<List<Event>>> Function(int) presence1;
 
   CourseStatisticPresencePage({
     super.key,
@@ -42,9 +43,13 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
   }
 
   void _update() async {
-    List<(User, int)> stats = await widget.presence();
-    stats.sort((a, b) => a.$2.compareTo(b.$2));
-    setState(() => this.stats = stats);
+    Result<List<(User, int)>> result_stats = await widget.presence();
+    if (result_stats is! Success) return;
+
+    setState(() {
+      stats = result_stats.unwrap();
+      stats.sort((a, b) => a.$2.compareTo(b.$2));
+    });
   }
 
   Future<void> _handleUser(int userID) async {

@@ -191,6 +191,7 @@
   "clubDescription": "Beschreibung",
   "clubDisciplines": "Sportarten",
   "clubImageURL": "Bild-Pfad",
+  "clubBannerURL": "Banner-Pfad",
   "clubChairman": "Vorsitzende(r)",
   "clubDivision": "Abteilung",
   "clubDivisions": "Abteilungen",

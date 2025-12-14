@@ -4,8 +4,9 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/TeamDetailManagementPage.dart';
+import 'package:cptclient/pages/TeamDetailPage.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TeamOverviewPage extends StatefulWidget {
@@ -27,9 +28,9 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Team>? teams = await api_admin.team_list(widget.session);
-    if (teams == null) return;
-    searchPanelKey.currentState?.populate(teams);
+    Result<List<Team>> result = await api_admin.team_list(widget.session);
+    if (result is! Success) return;
+    searchPanelKey.currentState?.populate(result.unwrap());
   }
 
   Future<void> _handleCreate() async {
@@ -48,15 +49,15 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
   }
 
   Future<void> _handleSelect(Team team) async {
-    Team? teamInfo = await api_admin.team_info(widget.session, team.id);
-    if (teamInfo == null) return;
+    var result = await api_admin.team_info(widget.session, team.id);
+    if (result is! Success) return;
 
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeamDetailManagementPage(
+        builder: (context) => TeamDetailPage(
           session: widget.session,
-          team: teamInfo,
+          team: result.unwrap(),
         ),
       ),
     );

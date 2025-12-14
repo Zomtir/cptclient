@@ -6,13 +6,13 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class OrganisationCreatePage extends StatefulWidget {
   final UserSession session;
-  final Organisation organisation;
 
-  OrganisationCreatePage({super.key, required this.session, required this.organisation});
+  OrganisationCreatePage({super.key, required this.session});
 
   @override
   OrganisationCreatePageState createState() => OrganisationCreatePageState();
@@ -27,35 +27,31 @@ class OrganisationCreatePageState extends State<OrganisationCreatePage> {
   @override
   void initState() {
     super.initState();
-    _applyInfo();
-  }
-
-  void _applyInfo() {
-    _ctrlAbbreviation.text = widget.organisation.abbreviation;
-    _ctrlName.text = widget.organisation.name;
-  }
-
-  void _gatherInfo() {
-    widget.organisation.abbreviation = _ctrlAbbreviation.text;
-    widget.organisation.name = _ctrlName.text;
+    Organisation organisation = Organisation.fromVoid();
+    _ctrlAbbreviation.text = organisation.abbreviation;
+    _ctrlName.text = organisation.name;
   }
 
   void _handleSubmit() async {
-    _gatherInfo();
-
-    if (widget.organisation.abbreviation.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.statusIsInvalid}");
+    if (_ctrlAbbreviation.text.isEmpty) {
+      messageText(
+        "${AppLocalizations.of(context)!.organisationAbbreviation} ${AppLocalizations.of(context)!.statusIsInvalid}",
+      );
       return;
     }
 
-    if (widget.organisation.name.isEmpty) {
+    if (_ctrlName.text.isEmpty) {
       messageText("${AppLocalizations.of(context)!.organisationName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
-    bool success = await api_admin.organisation_create(widget.session, widget.organisation);
+    Organisation organisation = Organisation(
+      abbreviation: _ctrlAbbreviation.text,
+      name: _ctrlName.text,
+    );
 
-    if (!success) return;
+    var result = await api_admin.organisation_create(widget.session, organisation);
+    if (result is! Success) return;
 
     Navigator.pop(context);
   }

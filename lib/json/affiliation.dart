@@ -2,7 +2,6 @@
 
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/user.dart';
-import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/widgets/AppCard.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
@@ -60,24 +59,6 @@ class Affiliation extends FieldInterface {
     return [organisation!.name, organisation!.abbreviation, user!.firstname, user!.lastname, user?.nickname ?? ''];
   }
 
-  // TODO
-  static Widget buildListTile(BuildContext context, Affiliation? a, {List<Widget>? trailing, VoidCallback? onTap}) {
-    if (a == null) {
-      return ListTile(title: Text(AppLocalizations.of(context)!.labelMissing));
-    }
-    return Card(
-      child: ListTile(
-        leading: Icon(Icons.card_membership),
-        trailing: trailing == null ? null : Row(children: trailing, mainAxisSize: MainAxisSize.min),
-        title: Text("${a.organisation!.name} - ${a.user!.firstname} ${a.user!.lastname}"),
-        subtitle: Text(
-          "${AppLocalizations.of(context)!.affiliationMemberIdentifier} ${a.member_identifier ?? AppLocalizations.of(context)!.undefined}",
-        ),
-        onTap: onTap,
-      ),
-    );
-  }
-
   @override
   Widget buildEntry(BuildContext context) {
     // TODO: implement buildEntry
@@ -100,9 +81,9 @@ class Affiliation extends FieldInterface {
         children: [
           Text("${organisation!.name}"),
           Text("${user!.firstname} ${user!.lastname}"),
+          Text("$member_identifier"),
         ],
       ),
-      child2: Text("$member_identifier"),
       onTap: onTap,
     );
   }

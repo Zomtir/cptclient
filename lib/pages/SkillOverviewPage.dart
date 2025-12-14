@@ -4,7 +4,9 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
-import 'package:cptclient/pages/SkillEditPage.dart';
+import 'package:cptclient/pages/SkillCreatePage.dart';
+import 'package:cptclient/pages/SkillDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class SkillOverviewPage extends StatefulWidget {
@@ -26,18 +28,18 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<Skill> skills = await api_admin.skill_list(widget.session);
-    searchPanelKey.currentState?.populate(skills);
+    Result<List<Skill>> result = await api_admin.skill_list(widget.session);
+    if (result is! Success) return;
+    searchPanelKey.currentState?.populate(result.unwrap());
   }
 
   void _handleSelect(Skill skill) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SkillEditPage(
+        builder: (context) => SkillDetailPage(
           session: widget.session,
           skill: skill,
-          isDraft: false,
         ),
       ),
     );
@@ -49,10 +51,8 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SkillEditPage(
+        builder: (context) => SkillCreatePage(
           session: widget.session,
-          skill: Skill.fromVoid(),
-          isDraft: true,
         ),
       ),
     );

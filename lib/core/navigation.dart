@@ -10,6 +10,7 @@ import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/main.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -137,13 +138,13 @@ void applyServer() {
 Future<bool> loginUser(BuildContext context, UserSession uSession) async {
   if (uSession.token.isEmpty) return false;
 
-  User? user = await api_regular.user_info(uSession);
-  if (user == null) return false;
-  uSession.user = user;
+  Result<User> result_user = await api_regular.user_info(uSession);
+  if (result_user is! Success) return false;
+  uSession.user = result_user.unwrap();
 
-  Right? right = await api_regular.right_info(uSession);
-  if (right == null) return false;
-  uSession.right = right;
+  Result<Right> result_right = await api_regular.right_info(uSession);
+  if (result_right is! Success) return false;
+  uSession.right = result_right.unwrap();
 
   userSession = uSession;
   router.gotoRoute(context, '/user');
@@ -154,7 +155,7 @@ Future<void> logoutUser(BuildContext context) async {
   removeUserSession(userSession!);
   userSession = null;
 
-  if (await api.loadStatus()) {
+  if (await api.loadStatus() is Success) {
     router.gotoRoute(context, '/login');
   } else {
     router.gotoRoute(context, '/connect');
@@ -173,7 +174,7 @@ Future<void> logoutEvent(BuildContext context) async {
   removeEventSession(eventSession!);
   eventSession = null;
 
-  if (await api.loadStatus()) {
+  if (await api.loadStatus() is Success) {
     router.gotoRoute(context, '/login');
   } else {
     router.gotoRoute(context, '/connect');

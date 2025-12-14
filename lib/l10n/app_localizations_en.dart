@@ -585,6 +585,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clubImageURL => 'Image Filename';
 
   @override
+  String get clubBannerURL => 'Banner Filename';
+
+  @override
   String get clubChairman => 'Chairman';
 
   @override

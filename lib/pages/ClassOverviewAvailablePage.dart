@@ -6,6 +6,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppListView.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class ClassOverviewAvailablePage extends StatefulWidget {
@@ -37,11 +38,13 @@ class ClassOverviewAvailablePageState
   }
 
   Future<void> _getCourseEvents() async {
-    List<Event> events = await api_regular.event_list(
+    var result = await api_regular.event_list(
       widget.session,
       courseTrue: true,
       courseID: widget.course.id,
     );
+    if (result is! Success) return;
+    List<Event> events = result.unwrap();
     events.sort();
 
     setState(() {

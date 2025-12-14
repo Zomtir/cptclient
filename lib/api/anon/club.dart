@@ -22,7 +22,7 @@ Future<Result<List<Club>>> club_list() async {
   return Success(li);
 }
 
-Future<List<int>?> club_banner(int clubID) async {
+Future<Result<List<int>>> club_banner(int clubID) async {
   final response = await client.get(
     uri('/anon/club_banner', {
       'club_id': clubID.toString(),
@@ -32,7 +32,7 @@ Future<List<int>?> club_banner(int clubID) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return response.bodyBytes;
+  return Success(response.bodyBytes);
 }

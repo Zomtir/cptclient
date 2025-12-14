@@ -38,7 +38,7 @@ void trainer_accounting_pdf(
 
   final doc = pw.Document(theme: docTheme);
 
-  final clubBannerBytes = (await api_anon.club_banner(club.id))!;
+  final clubBannerBytes = (await api_anon.club_banner(club.id)).unwrap();
 
   final int fiscal_year = date_from.year;
   final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag());

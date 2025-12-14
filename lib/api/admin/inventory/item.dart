@@ -8,8 +8,10 @@ import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Item>> item_list(UserSession session) async {
+Future<Result<List<Item>>> item_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/item_list'),
     headers: {
@@ -17,13 +19,31 @@ Future<List<Item>> item_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Item>.from(l.map((model) => Item.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Item>.from(it.map((model) => Item.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> item_create(UserSession session, Item item) async {
+Future<Result<Item>> item_info(UserSession session, int itemID) async {
+  final response = await client.get(
+    uri('/admin/item_info', {
+      'item_id': itemID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (handleFailedResponse(response)) return Failure();
+
+  var body = json.decode(utf8.decode(response.bodyBytes));
+  var object = Item.fromJson(body);
+  return Success(object);
+}
+
+Future<Result> item_create(UserSession session, Item item) async {
   final response = await client.post(
     uri('/admin/item_create'),
     headers: {
@@ -33,13 +53,14 @@ Future<bool> item_create(UserSession session, Item item) async {
     body: json.encode(item),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> item_edit(UserSession session, Item item) async {
+Future<Result> item_edit(UserSession session, int itemID, Item item) async {
   final response = await client.post(
     uri('/admin/item_edit', {
-      'item_id': item.id.toString(),
+      'item_id': itemID.toString(),
     }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -48,23 +69,25 @@ Future<bool> item_edit(UserSession session, Item item) async {
     body: json.encode(item),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> item_delete(UserSession session, Item item) async {
+Future<Result> item_delete(UserSession session, int itemID) async {
   final response = await client.head(
     uri('/admin/item_delete', {
-      'item_id': item.id.toString(),
+      'item_id': itemID.toString(),
     }),
     headers: {
       'Token': session.token,
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> item_loan(UserSession session, Stock stock, User user) async {
+Future<Result> item_loan(UserSession session, Stock stock, User user) async {
   final response = await client.head(
     uri('/admin/item_loan', {
       'stock_id': stock.id.toString(),
@@ -75,10 +98,11 @@ Future<bool> item_loan(UserSession session, Stock stock, User user) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> item_return(UserSession session, Possession possession) async {
+Future<Result> item_return(UserSession session, Possession possession) async {
   final response = await client.head(
     uri('/admin/item_return', {
       'possession_id': possession.id.toString(),
@@ -88,10 +112,11 @@ Future<bool> item_return(UserSession session, Possession possession) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> item_handout(UserSession session, Possession possession) async {
+Future<Result> item_handout(UserSession session, Possession possession) async {
   final response = await client.head(
     uri('/admin/item_handout', {
       'possession_id': possession.id.toString(),
@@ -101,10 +126,11 @@ Future<bool> item_handout(UserSession session, Possession possession) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> item_restock(UserSession session, Possession possession, Stock stock) async {
+Future<Result> item_restock(UserSession session, Possession possession, Stock stock) async {
   final response = await client.head(
     uri('/admin/item_restock', {
       'possession_id': possession.id.toString(),
@@ -115,5 +141,6 @@ Future<bool> item_restock(UserSession session, Possession possession, Stock stoc
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

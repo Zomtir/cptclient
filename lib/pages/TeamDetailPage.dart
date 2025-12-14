@@ -12,11 +12,11 @@ import 'package:cptclient/pages/TeamRightPage.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class TeamDetailManagementPage extends StatelessWidget {
+class TeamDetailPage extends StatelessWidget {
   final UserSession session;
   final Team team;
 
-  TeamDetailManagementPage({super.key, required this.session, required this.team});
+  TeamDetailPage({super.key, required this.session, required this.team});
 
   Future<void> _handleMember(BuildContext context) async {
     await Navigator.push(
@@ -63,22 +63,23 @@ class TeamDetailManagementPage extends StatelessWidget {
 
     if (resultId is! Success) return;
 
-    List<User> members = await api_admin.team_member_list(session, team.id);
+    Result<List<User>> result_members = await api_admin.team_member_list(session, team.id);
+    if (result_members is! Success) return;
 
-    for (User member in members){
+    for (User member in result_members.unwrap()){
       api_admin.team_member_add(session, resultId.unwrap(), member.id);
     }
     Navigator.pop(context);
 
-    Team? newTeam = await api_admin.team_info(session, resultId.unwrap());
-    if (newTeam == null) return;
+    Result<Team> result_team = await api_admin.team_info(session, resultId.unwrap());
+    if (result_team is! Success) return;
 
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TeamEditPage(
           session: session,
-          team: newTeam,
+          team: result_team.unwrap(),
           isDraft: false,
         ),
       ),
@@ -86,8 +87,8 @@ class TeamDetailManagementPage extends StatelessWidget {
   }
 
   void _handleDelete(BuildContext context) async {
-    if (!await api_admin.team_delete(session, team)) return;
-
+    var result = await api_admin.team_delete(session, team);
+    if (result is! Success) return;
     Navigator.pop(context);
   }
 

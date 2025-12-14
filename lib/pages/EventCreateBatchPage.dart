@@ -12,6 +12,7 @@ import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EventCreateBatchPage extends StatefulWidget {
@@ -62,10 +63,11 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
   }
 
   Future<void> _receiveLocations() async {
-    List<Location> locations = await api_anon.location_list();
+    Result<List<Location>> result_locations = await api_anon.location_list();
+    if (result_locations is! Success) return;
 
     setState(() {
-      _ctrlLocation.items = locations;
+      _ctrlLocation.items = result_locations.unwrap();
     });
   }
 

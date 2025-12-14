@@ -9,8 +9,10 @@ import 'package:cptclient/json/possession.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Stock>> stock_list(UserSession session, Club? club, Item? item) async {
+Future<Result<List<Stock>>> stock_list(UserSession session, Club? club, Item? item) async {
   final response = await client.get(
     uri('/admin/stock_list', {
       'club_id': club?.id.toString(),
@@ -21,13 +23,14 @@ Future<List<Stock>> stock_list(UserSession session, Club? club, Item? item) asyn
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Stock>.from(l.map((model) => Stock.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Stock>.from(it.map((model) => Stock.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> stock_create(UserSession session, Stock stock) async {
+Future<Result> stock_create(UserSession session, Stock stock) async {
   final response = await client.post(
     uri('/admin/stock_create'),
     headers: {
@@ -37,10 +40,11 @@ Future<bool> stock_create(UserSession session, Stock stock) async {
     body: json.encode(stock),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> stock_edit(UserSession session, Stock stock) async {
+Future<Result> stock_edit(UserSession session, Stock stock) async {
   final response = await client.post(
     uri('/admin/stock_edit', {
       'stock_id': stock.id.toString(),
@@ -52,10 +56,11 @@ Future<bool> stock_edit(UserSession session, Stock stock) async {
     body: json.encode(stock),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> stock_delete(UserSession session, Stock stock) async {
+Future<Result> stock_delete(UserSession session, Stock stock) async {
   final response = await client.head(
     uri('/admin/stock_delete', {
       'stock_id': stock.id.toString(),
@@ -65,10 +70,11 @@ Future<bool> stock_delete(UserSession session, Stock stock) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<List<Possession>> possession_list(UserSession session, User? user, Item? item, bool? owned, Club? club) async {
+Future<Result<List<Possession>>> possession_list(UserSession session, User? user, Item? item, bool? owned, Club? club) async {
   final response = await client.get(
     uri('/admin/possession_list', {
       'user_id': user?.id.toString(),
@@ -81,13 +87,14 @@ Future<List<Possession>> possession_list(UserSession session, User? user, Item? 
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Possession>.from(l.map((model) => Possession.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Possession>.from(it.map((model) => Possession.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> possession_create(UserSession session, User user, Item item) async {
+Future<Result> possession_create(UserSession session, User user, Item item) async {
   final response = await client.head(
     uri('/admin/possession_create', {
       'user_id': user.id.toString(),
@@ -98,10 +105,11 @@ Future<bool> possession_create(UserSession session, User user, Item item) async 
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> possession_delete(UserSession session, Possession possession) async {
+Future<Result> possession_delete(UserSession session, Possession possession) async {
   final response = await client.head(
     uri('/admin/possession_delete', {
       'possession_id': possession.id.toString(),
@@ -111,5 +119,6 @@ Future<bool> possession_delete(UserSession session, Possession possession) async
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

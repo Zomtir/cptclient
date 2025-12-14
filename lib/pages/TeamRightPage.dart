@@ -5,6 +5,7 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TeamRightPage extends StatefulWidget {
@@ -43,9 +44,9 @@ class TeamRightPageState extends State<TeamRightPage> {
   void _handleSubmit() async {
     _gatherRight();
 
-    bool success = await server.team_right_edit(widget.session, widget.team);
+    var result = await server.team_right_edit(widget.session, widget.team);
+    if (result is! Success) return;
 
-    if (!success) return;
     Navigator.pop(context);
   }
 

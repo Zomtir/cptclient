@@ -13,21 +13,18 @@ class Item extends FieldInterface implements Comparable {
 
   Item(this.id, this.name, this.category);
 
-  Item.fromVoid()
-      : id = 0,
-        name = "";
+  Item.fromVoid() : id = 0, name = "";
 
   Item.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        category = json['category'] == null ? null : ItemCategory.fromJson(json['category']);
+    : id = json['id'],
+      name = json['name'],
+      category = json['category'] == null ? null : ItemCategory.fromJson(json['category']);
 
-  Map<String, dynamic> toJson() =>
-      {
-        'id': id,
-        'name': name,
-        'category': category?.toJson(),
-      };
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'category': category?.toJson(),
+  };
 
   @override
   bool operator ==(other) => other is Item && id == other.id;
@@ -64,8 +61,12 @@ class Item extends FieldInterface implements Comparable {
     return AppTile(
       leading: Icon(Icons.checkroom),
       trailing: trailing,
-      child: Text("$name"),
-      child2: Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
+      child: Column(
+        children: [
+          Text("$name"),
+          Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
+        ],
+      ),
       onTap: onTap,
     );
   }

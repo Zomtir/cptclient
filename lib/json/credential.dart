@@ -53,8 +53,12 @@ class Credential extends FieldInterface {
   Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppTile(
       leading: Icon(Icons.password),
-      child: Text(AppLocalizations.of(context)!.userPasswordSince),
-      child2: Text(since!.fmtDateTime(context)),
+      child: Column(
+        children: [
+          Text(AppLocalizations.of(context)!.userPasswordSince),
+          Text(since!.fmtDateTime(context)),
+        ],
+      ),
     );
   }
 

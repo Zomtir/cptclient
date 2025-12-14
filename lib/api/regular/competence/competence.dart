@@ -6,8 +6,10 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Competence>> competence_list(UserSession session) async {
+Future<Result<List<Competence>>> competence_list(UserSession session) async {
   final response = await client.get(
     uri('/regular/competence_list'),
     headers: {
@@ -15,13 +17,14 @@ Future<List<Competence>> competence_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Competence>.from(l.map((model) => Competence.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Competence>.from(it.map((model) => Competence.fromJson(model)));
+  return Success(list);
 }
 
-Future<List<(Skill, int)>> competence_summary(UserSession session) async {
+Future<Result<List<(Skill, int)>>> competence_summary(UserSession session) async {
   final response = await client.get(
     uri('/regular/competence_summary'),
     headers: {
@@ -29,12 +32,9 @@ Future<List<(Skill, int)>> competence_summary(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<(Skill, int)>.from(l.map((model) {
-    Skill skill = Skill.fromJson(model[0]);
-    int rank = model[1];
-    return (skill, rank);
-  }));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(Skill, int)>.from(it.map((model) => (Skill.fromJson(model[0]), model[1])));
+  return Success(list);
 }

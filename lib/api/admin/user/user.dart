@@ -10,7 +10,7 @@ import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
 
-Future<List<User>> user_list(UserSession session) async {
+Future<Result<List<User>>> user_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/user_list'),
     headers: {
@@ -19,13 +19,14 @@ Future<List<User>> user_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<User>.from(it.map((model) => User.fromJson(model)));
+  return Success(list);
 }
 
-Future<User?> user_detailed(UserSession session, int userID) async {
+Future<Result<User>> user_detailed(UserSession session, int userID) async {
   final response = await client.get(
     uri('/admin/user_detailed', {
       'user_id': userID.toString(),
@@ -36,12 +37,13 @@ Future<User?> user_detailed(UserSession session, int userID) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  var object = User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  return Success(object);
 }
 
-Future<Credential?> user_password_info(UserSession session, int userID) async {
+Future<Result<Credential>> user_password_info(UserSession session, int userID) async {
   final response = await client.get(
     uri('/admin/user_password_info', {
       'user_id': userID.toString(),
@@ -52,12 +54,13 @@ Future<Credential?> user_password_info(UserSession session, int userID) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return Credential.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  var object = Credential.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  return Success(object);
 }
 
-Future<bool> user_create(UserSession session, User user) async {
+Future<Result> user_create(UserSession session, User user) async {
   final response = await client.post(
     uri('/admin/user_create'),
     headers: {
@@ -67,7 +70,8 @@ Future<bool> user_create(UserSession session, User user) async {
     body: json.encode(user),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
 Future<Result> user_edit(UserSession session, User user) async {
@@ -83,11 +87,10 @@ Future<Result> user_edit(UserSession session, User user) async {
   );
 
   if (handleFailedResponse(response)) return Failure();
-
   return Success(());
 }
 
-Future<bool> user_delete(UserSession session, User user) async {
+Future<Result> user_delete(UserSession session, User user) async {
   final response = await client.head(
     uri('/admin/user_delete', {
       'user_id': user.id.toString(),
@@ -97,10 +100,11 @@ Future<bool> user_delete(UserSession session, User user) async {
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<()?> user_password_create(UserSession session, User user, String password, String salt) async {
+Future<Result> user_password_create(UserSession session, User user, String password, String salt) async {
   Credential credential = Credential(login: user.key.toString(), password: crypto.hashPassword(password, salt), salt: salt);
 
   final response = await client.post(
@@ -114,12 +118,11 @@ Future<()?> user_password_create(UserSession session, User user, String password
     body: json.encode(credential),
   );
 
-  if (response.statusCode != 200) return null;
-
-  return ();
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<()?> user_password_edit(UserSession session, User user, String password, String salt) async {
+Future<Result> user_password_edit(UserSession session, User user, String password, String salt) async {
   Credential credential = Credential(login: user.key.toString(), password: crypto.hashPassword(password, salt), salt: salt);
 
   final response = await client.post(
@@ -133,12 +136,11 @@ Future<()?> user_password_edit(UserSession session, User user, String password, 
     body: json.encode(credential),
   );
 
-  if (response.statusCode != 200) return null;
-
-  return ();
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<()?> user_password_delete(UserSession session, User user) async {
+Future<Result> user_password_delete(UserSession session, User user) async {
   final response = await client.head(
     uri('/admin/user_password_delete', {
       'user_id': user.id.toString(),
@@ -148,7 +150,6 @@ Future<()?> user_password_delete(UserSession session, User user) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
-
-  return ();
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

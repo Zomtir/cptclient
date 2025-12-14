@@ -34,8 +34,9 @@ class LoginCoursePageState extends State<LoginCoursePage> {
   }
 
   void _loginCourse() async {
-    EventSession? session = await server.loginCourse(_ctrlLogin.text);
-    if (session == null) return;
+    Result<EventSession> result_session = await server.loginCourse(_ctrlLogin.text);
+    if (result_session is! Success) return;
+    var session = result_session.unwrap();
     navi.addEventSession(session);
     navi.loginEvent(context, session);
   }

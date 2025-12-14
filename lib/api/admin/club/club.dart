@@ -11,8 +11,10 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Club>> club_list(UserSession session) async {
+Future<Result<List<Club>>> club_list(UserSession session) async {
   final response = await client.get(
     uri('/admin/club_list'),
     headers: {
@@ -20,29 +22,30 @@ Future<List<Club>> club_list(UserSession session) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Club>.from(l.map((model) => Club.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Club>.from(it.map((model) => Club.fromJson(model)));
+  return Success(list);
 }
 
-Future<Club?> club_info(UserSession session, Club club) async {
+Future<Result<Club>> club_info(UserSession session, int clubID) async {
   final response = await client.get(
     uri('/admin/club_info', {
-      'club_id': club.id.toString(),
+      'club_id': clubID.toString(),
     }),
     headers: {
       'Token': session.token,
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  var content = json.decode(utf8.decode(response.bodyBytes));
-  return Club.fromJson(content);
+  var club_info = Club.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  return Success(club_info);
 }
 
-Future<bool> club_create(UserSession session, Club club) async {
+Future<Result> club_create(UserSession session, Club club) async {
   final response = await client.post(
     uri('/admin/club_create'),
     headers: {
@@ -52,10 +55,11 @@ Future<bool> club_create(UserSession session, Club club) async {
     body: json.encode(club),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> club_edit(UserSession session, Club club) async {
+Future<Result> club_edit(UserSession session, Club club) async {
   final response = await client.post(
     uri('/admin/club_edit', {
       'club_id': club.id.toString(),
@@ -67,23 +71,25 @@ Future<bool> club_edit(UserSession session, Club club) async {
     body: json.encode(club),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> club_delete(UserSession session, Club club) async {
+Future<Result> club_delete(UserSession session, int clubID) async {
   final response = await client.head(
     uri('/admin/club_delete', {
-      'club_id': club.id.toString(),
+      'club_id': clubID.toString(),
     }),
     headers: {
       'Token': session.token,
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<List<(User, int)>> club_statistic_members(UserSession session, Club club, DateTime point_in_time) async {
+Future<Result<List<(User, int)>>> club_statistic_members(UserSession session, Club club, DateTime point_in_time) async {
   final response = await client.get(
     uri('/admin/club_statistic_members', {
       'club_id': club.id.toString(),
@@ -94,13 +100,19 @@ Future<List<(User, int)>> club_statistic_members(UserSession session, Club club,
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<(User, int)>.from(l.map((model) => (User.fromJson(model[0]), model[1])));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(User, int)>.from(it.map((model) => (User.fromJson(model[0]), model[1])));
+  return Success(list);
 }
 
-Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime point_in_time, Team team) async {
+Future<Result<List<User>>> club_statistic_team(
+  UserSession session,
+  Club club,
+  DateTime point_in_time,
+  Team team,
+) async {
   final response = await client.get(
     uri('/admin/club_statistic_team', {
       'club_id': club.id.toString(),
@@ -112,14 +124,19 @@ Future<List<User>> club_statistic_team(UserSession session, Club club, DateTime 
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(l.map((model) => User.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<User>.from(it.map((model) => User.fromJson(model)));
+  return Success(list);
 }
 
-Future<List<Affiliation>?> club_statistic_organisation(
-    UserSession session, Club club, Organisation organisation, DateTime point_in_time) async {
+Future<Result<List<Affiliation>>> club_statistic_organisation(
+  UserSession session,
+  Club club,
+  Organisation organisation,
+  DateTime point_in_time,
+) async {
   final response = await client.get(
     uri('/admin/club_statistic_organisation', {
       'club_id': club.id.toString(),
@@ -131,13 +148,14 @@ Future<List<Affiliation>?> club_statistic_organisation(
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Affiliation>.from(l.map((model) => Affiliation.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Affiliation>.from(it.map((model) => Affiliation.fromJson(model)));
+  return Success(list);
 }
 
-Future<List<Event>?> club_statistic_presence(
+Future<Result<List<Event>>> club_statistic_presence(
   UserSession session,
   int clubID,
   int userID,
@@ -159,10 +177,9 @@ Future<List<Event>?> club_statistic_presence(
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Event>.from(
-    list.map((model) => Event.fromJson(model)),
-  );
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Event>.from(it.map((model) => Event.fromJson(model)));
+  return Success(list);
 }

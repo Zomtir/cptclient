@@ -4,6 +4,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class PossessionPersonalPage extends StatefulWidget {
@@ -26,11 +27,12 @@ class PossessionPersonalPageState extends State<PossessionPersonalPage> {
   }
 
   Future<void> _update() async {
-    List<Possession> possessions = await api_regular.possession_list(widget.session, null, null);
-    possessions.sort();
+    Result<List<Possession>> result = await api_regular.possession_list(widget.session, null, null);
+    if (result is! Success) return;
 
     setState(() {
-      _possessions = possessions;
+      _possessions = result.unwrap();
+      _possessions.sort();
     });
   }
 

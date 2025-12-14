@@ -88,8 +88,8 @@ Future<Result<List<Requirement>>> course_requirement_list(UserSession session, C
 
   if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  var list = List<Requirement>.from(l.map((model) => Requirement.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Requirement>.from(it.map((model) => Requirement.fromJson(model)));
   return Success(list);
 }
 
@@ -155,7 +155,7 @@ Future<Result> course_club_edit(UserSession session, Course course, Club? club) 
   return Success(());
 }
 
-Future<List<(Event, int, int, int, int)>> course_statistic_class(UserSession session, int courseID) async {
+Future<Result<List<(Event, int, int, int, int)>>> course_statistic_class(UserSession session, int courseID) async {
   final response = await client.get(
     uri('/admin/course_statistic_class', {
       'course_id': courseID.toString(),
@@ -166,23 +166,24 @@ Future<List<(Event, int, int, int, int)>> course_statistic_class(UserSession ses
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(Event, int, int, int, int)>.from(
-    list.map((model) {
-      return (
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(Event, int, int, int, int)>.from(
+    it.map(
+      (model) => (
         Event.fromJson(model[0]),
         model[1],
         model[2],
         model[3],
         model[4],
-      );
-    }),
+      ),
+    ),
   );
+  return Success(list);
 }
 
-Future<List<(User, int)>> course_statistic_attendance(UserSession session, int courseID, String role) async {
+Future<Result<List<(User, int)>>> course_statistic_attendance(UserSession session, int courseID, String role) async {
   final response = await client.get(
     uri('/admin/course_statistic_attendance', {
       'course_id': courseID.toString(),
@@ -194,21 +195,19 @@ Future<List<(User, int)>> course_statistic_attendance(UserSession session, int c
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(User, int)>.from(
-    list.map((model) {
-      return (
-        User.fromJson(model[0]),
-        model[1],
-      );
-    }),
-  );
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(User, int)>.from(it.map((model) => (User.fromJson(model[0]), model[1])));
+  return Success(list);
 }
 
-Future<List<Event>> course_statistic_attendance1(
-    UserSession session, int courseID, int userID, String role) async {
+Future<Result<List<Event>>> course_statistic_attendance1(
+  UserSession session,
+  int courseID,
+  int userID,
+  String role,
+) async {
   final response = await client.get(
     uri('/admin/course_statistic_attendance1', {
       'course_id': courseID.toString(),
@@ -221,10 +220,9 @@ Future<List<Event>> course_statistic_attendance1(
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<Event>.from(
-    list.map((model) => Event.fromJson(model)),
-  );
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Event>.from(it.map((model) => Event.fromJson(model)));
+  return Success(list);
 }

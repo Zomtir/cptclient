@@ -16,6 +16,7 @@ import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/EventCreatePage.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EventOverviewAvailablePage extends StatefulWidget {
@@ -45,9 +46,10 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
   }
 
   Future<void> _update() async {
-    List<Location> locations = await api_anon.location_list();
+    Result<List<Location>> result_locations = await api_anon.location_list();
+    if (result_locations is! Success) return;
 
-    List<Event> events = await api_regular.event_list(
+    Result<List<Event>> result_events = await api_regular.event_list(
       widget.session,
       begin: _ctrlDateBegin.getDate(),
       end: _ctrlDateEnd.getDate(),
@@ -56,10 +58,12 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
       acceptance: _ctrlAcceptance.value,
       courseTrue: false,
     );
+    if (result_events is! Success) return;
 
     setState(() {
-      _ctrlLocation.items = locations;
-      _events = events;
+      _ctrlLocation.items = result_locations.unwrap();
+      _ctrlLocation.items.sort();
+      _events = result_events.unwrap();
     });
   }
 

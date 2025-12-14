@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<User>> course_moderator_list(UserSession session, int courseID) async {
+Future<Result<List<User>>> course_moderator_list(UserSession session, int courseID) async {
   final response = await client.get(
     uri('/admin/course_moderator_list', {'course_id': courseID.toString()}),
     headers: {
@@ -15,13 +17,14 @@ Future<List<User>> course_moderator_list(UserSession session, int courseID) asyn
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<User>.from(list.map((model) => User.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var li = List<User>.from(it.map((model) => User.fromJson(model)));
+  return Success(li);
 }
 
-Future<bool> course_moderator_add(UserSession session, int courseID, int userID) async {
+Future<Result> course_moderator_add(UserSession session, int courseID, int userID) async {
   final response = await client.head(
     uri('/admin/course_moderator_add', {
       'course_id': courseID.toString(),
@@ -32,10 +35,12 @@ Future<bool> course_moderator_add(UserSession session, int courseID, int userID)
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }
 
-Future<bool> course_moderator_remove(UserSession session, int courseID, int userID) async {
+Future<Result> course_moderator_remove(UserSession session, int courseID, int userID) async {
   final response = await client.head(
     uri('/admin/course_moderator_remove', {
       'course_id': courseID.toString(),
@@ -46,5 +51,7 @@ Future<bool> course_moderator_remove(UserSession session, int courseID, int user
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(());
 }

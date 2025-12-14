@@ -5,6 +5,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -28,12 +29,6 @@ class CalendarDayPageState extends State<CalendarDayPage> {
   void initState() {
     super.initState();
     _setDay(widget.initialDate);
-    _update();
-  }
-
-  void _update() async {
-    _eventsAll = await api_regular.event_list(widget.session, begin: _dayFirst, end: _dayLast);
-    _filterEvents();
   }
 
   void _setDay(DateTime dt) {
@@ -44,6 +39,13 @@ class CalendarDayPageState extends State<CalendarDayPage> {
     });
 
     _update();
+  }
+
+  void _update() async {
+    var result = await api_regular.event_list(widget.session, begin: _dayFirst, end: _dayLast);
+    if (result is! Success) return;
+    _eventsAll = result.unwrap();
+    _filterEvents();
   }
 
   void _filterEvents() {
@@ -78,7 +80,9 @@ class CalendarDayPageState extends State<CalendarDayPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () => _setDay(_dayFirst.subtract(Duration(days: 1))), icon: Icon(Icons.chevron_left)),
+                onPressed: () => _setDay(_dayFirst.subtract(Duration(days: 1))),
+                icon: Icon(Icons.chevron_left),
+              ),
               IconButton(onPressed: () => _setDay(DateUtils.dateOnly(DateTime.now())), icon: Icon(Icons.home)),
               Text(DateFormat("yyyy-MM-dd").format(_dayFirst)),
               IconButton(onPressed: () => _setDay(_dayFirst.add(Duration(days: 1))), icon: Icon(Icons.chevron_right)),
@@ -97,9 +101,10 @@ class CalendarDayPageState extends State<CalendarDayPage> {
           title: Text(
             _eventsFiltered[index].title,
             style: TextStyle(
-                decoration: _eventsFiltered[index].occurrence == Occurrence.canceled
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none),
+              decoration: _eventsFiltered[index].occurrence == Occurrence.canceled
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
+            ),
           ),
           onTap: () => _handleSelectEvent(_eventsFiltered[index]),
         ),

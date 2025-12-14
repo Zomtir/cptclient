@@ -11,6 +11,7 @@ import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class PossessionUserManagementPage extends StatefulWidget {
@@ -35,11 +36,13 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   }
 
   Future<void> _prepare() async {
-    List<User> users = await api_regular.user_list(widget.session);
+    Result<List<User>> result_users = await api_regular.user_list(widget.session);
+    if (result_users is! Success) return;
+
     User? user;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: users, onPick: (item) => user = item),
+      builder: (context) => PickerDialog(items: result_users.unwrap(), onPick: (item) => user = item),
     );
 
     if (user == null) {
@@ -49,15 +52,16 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
 
     setState(() => _user = user);
     await _update();
-    _locked = false;
   }
 
   Future<void> _update() async {
-    List<Possession> possessions = await api_admin.possession_list(widget.session, _user!, null, null, null);
-    possessions.sort();
+    Result<List<Possession>> result = await api_admin.possession_list(widget.session, _user!, null, null, null);
+    if (result is! Success) return;
 
     setState(() {
-      _possessions = possessions;
+      _possessions = result.unwrap();
+      _possessions.sort();
+      _locked = false;
     });
   }
 
@@ -67,11 +71,13 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   }
 
   void _handleRestock(Possession possession) async {
-    List<Stock> stocks = await api_admin.stock_list(widget.session, null, possession.item);
+    Result<List<Stock>> result_stocks = await api_admin.stock_list(widget.session, null, possession.item);
+    if (result_stocks is! Success) return;
+
     Stock? stock;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: stocks, onPick: (item) => stock = item),
+      builder: (context) => PickerDialog(items: result_stocks.unwrap(), onPick: (item) => stock = item),
     );
 
     if (stock == null) return;
@@ -86,11 +92,13 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
   }
 
   void _handleCreate() async {
-    List<Item> items = await api_admin.item_list(widget.session);
+    Result<List<Item>> result_items = await api_admin.item_list(widget.session);
+    if (result_items is! Success) return;
+
     Item? item;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: items, onPick: (e) => item = e),
+      builder: (context) => PickerDialog(items: result_items.unwrap(), onPick: (e) => item = e),
     );
 
     if (item == null) return;
@@ -106,9 +114,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) {
-      return LoadingWidget();
-    }
+    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pagePossessionUser),

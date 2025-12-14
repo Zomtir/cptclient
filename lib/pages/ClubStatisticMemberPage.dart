@@ -34,7 +34,8 @@ class ClubStatisticMemberPageState extends State<ClubStatisticMemberPage> {
   }
 
   void _update() async {
-    List<(User, int)> stats = await api_admin.club_statistic_members(widget.session, widget.club, _ctrlDate.getDate());
+    // TODO lock during update
+    List<(User, int)> stats = (await api_admin.club_statistic_members(widget.session, widget.club, _ctrlDate.getDate())).unwrap();
     stats.sort((a, b) => a.$2.compareTo(b.$2));
     setState(() => this.stats = stats);
   }

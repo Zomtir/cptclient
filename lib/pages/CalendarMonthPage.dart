@@ -7,6 +7,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/utils/datetime.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -32,11 +33,6 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
     _setMonth(DateUtils.dateOnly(DateTime.now()));
   }
 
-  void _update() async {
-    _eventsAll = await api_regular.event_list(widget.session, begin: _monthFirst, end: _monthLast);
-    _filterEvents();
-  }
-
   void _setMonth(DateTime dt) {
     setState(() {
       _monthFirst = DateTime(dt.year, dt.month, 1);
@@ -46,6 +42,13 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
     });
 
     _update();
+  }
+
+  void _update() async {
+    var result = await api_regular.event_list(widget.session, begin: _monthFirst, end: _monthLast);
+    if (result is! Success) return;
+    _eventsAll = result.unwrap();
+    _filterEvents();
   }
 
   void _filterEvents() {

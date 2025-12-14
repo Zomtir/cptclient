@@ -8,10 +8,8 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
 
-export 'leader.dart';
+export 'attendance.dart';
 export 'moderator.dart';
-export 'participant.dart';
-export 'supporter.dart';
 
 Future<Result<List<Course>>> course_responsibility(UserSession session, bool? active, bool? public) async {
   final response = await client.get(

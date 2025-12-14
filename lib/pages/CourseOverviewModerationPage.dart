@@ -40,13 +40,13 @@ class CourseOverviewModerationPageState extends State<CourseOverviewModerationPa
   }
 
   void _update() async {
-    List<Skill> skills = await api_anon.skill_list();
+    Result<List<Skill>> result_skills = await api_anon.skill_list();
     Result<List<Course>> result_courses = await api_moderator.course_responsibility(widget.session, _isActive, _isPublic);
 
-    if (result_courses is! Success) return;
+    if (result_skills is! Success || result_courses is! Success) return;
 
     setState(() {
-      _ctrlDropdownSkill.items = skills;
+      _ctrlDropdownSkill.items = result_skills.unwrap();
       _courses = result_courses.unwrap();
     });
   }

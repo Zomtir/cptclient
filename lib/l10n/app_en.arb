@@ -191,6 +191,7 @@
   "clubDescription": "Description",
   "clubDisciplines": "Disciplines",
   "clubImageURL": "Image Filename",
+  "clubBannerURL": "Banner Filename",
   "clubChairman": "Chairman",
   "clubDivision": "Division",
   "clubDivisions": "Divisions",

@@ -5,7 +5,8 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/UserCreatePage.dart';
-import 'package:cptclient/pages/UserInfoPage.dart';
+import 'package:cptclient/pages/UserDetailPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class UserOverviewPage extends StatefulWidget {
@@ -27,15 +28,16 @@ class UserOverviewPageState extends State<UserOverviewPage> {
   }
 
   Future<void> _update() async {
-    List<User> users = await api_admin.user_list(widget.session);
-    searchPanelKey.currentState?.populate(users);
+    Result<List<User>> result_users = await api_admin.user_list(widget.session);
+    if (result_users is! Success) return;
+    searchPanelKey.currentState?.populate(result_users.unwrap());
   }
 
   void _handleSelect(User user) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserInfoPage(
+        builder: (context) => UserDetailPage(
           session: widget.session,
           userID: user.id,
         ),

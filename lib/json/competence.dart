@@ -17,7 +17,7 @@ class Competence extends FieldInterface implements Comparable {
   DateTime date;
   User? judge;
 
-  Competence(this.id, this.user, this.skill, this.rank, this.date, this.judge);
+  Competence({this.id = 0, required this.user, required  this.skill, required this.rank, required this.date, required this.judge});
 
   Competence.fromVoid()
     : id = 0,

@@ -43,9 +43,17 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
 
     if (_ctrlTeam.value == null) return;
 
-    List<User> stats = await api_admin.club_statistic_team(widget.session, widget.club, _ctrlDate.getDate(), _ctrlTeam.value!);
-    stats.sort();
-    setState(() => this.stats = stats);
+    var result_stats = await api_admin.club_statistic_team(
+      widget.session,
+      widget.club,
+      _ctrlDate.getDate(),
+      _ctrlTeam.value!,
+    );
+
+    setState(() {
+      stats = result_stats.unwrap();
+      stats.sort();
+    });
   }
 
   @override
@@ -73,8 +81,7 @@ class ClubStatisticTeamPageState extends State<ClubStatisticTeamPage> {
                 info: AppLocalizations.of(context)!.team,
                 child: AppField<Team>(
                   controller: _ctrlTeam,
-                  onChanged: (Team? team) =>
-                      setState(() => _ctrlTeam.value = team),
+                  onChanged: (Team? team) => setState(() => _ctrlTeam.value = team),
                 ),
               ),
             ],

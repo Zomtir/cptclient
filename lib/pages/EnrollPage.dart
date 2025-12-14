@@ -7,6 +7,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/MenuSection.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class EnrollPage extends StatefulWidget {
@@ -32,12 +33,12 @@ class EnrollPageState extends State<EnrollPage> {
   }
 
   void _update() async {
-    Event? event = await api_service.event_info(widget.session);
-    if (event == null) return;
+    Result<Event> result_event = await api_service.event_info(widget.session);
+    if (result_event is! Success) return;
 
     setState(() {
-      _event = event;
-      _ctrlNote.text = event.note!;
+      _event = result_event.unwrap();
+      _ctrlNote.text = _event!.note!;
     });
   }
 

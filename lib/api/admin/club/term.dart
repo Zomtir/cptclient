@@ -6,8 +6,10 @@ import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<Term>> term_list(UserSession session, Club? club) async {
+Future<Result<List<Term>>> term_list(UserSession session, Club? club) async {
   final response = await client.get(
     uri('/admin/term_list', {
       'club_id': club?.id.toString(),
@@ -18,13 +20,31 @@ Future<List<Term>> term_list(UserSession session, Club? club) async {
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable l = json.decode(utf8.decode(response.bodyBytes));
-  return List<Term>.from(l.map((model) => Term.fromJson(model)));
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<Term>.from(it.map((model) => Term.fromJson(model)));
+  return Success(list);
 }
 
-Future<bool> term_create(UserSession session, Term term) async {
+Future<Result<Term>> term_info(UserSession session, int termID) async {
+  final response = await client.get(
+    uri('/admin/term_info', {
+      'term_id': termID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+    },
+  );
+
+  if (handleFailedResponse(response)) return Failure();
+
+  var body = json.decode(utf8.decode(response.bodyBytes));
+  var object = Term.fromJson(body);
+  return Success(object);
+}
+
+Future<Result> term_create(UserSession session, Term term) async {
   final response = await client.post(
     uri('/admin/term_create'),
     headers: {
@@ -34,10 +54,11 @@ Future<bool> term_create(UserSession session, Term term) async {
     body: json.encode(term),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> term_edit(UserSession session, Term term) async {
+Future<Result> term_edit(UserSession session, Term term) async {
   final response = await client.post(
     uri('/admin/term_edit', {
       'term_id': term.id.toString(),
@@ -49,18 +70,20 @@ Future<bool> term_edit(UserSession session, Term term) async {
     body: json.encode(term),
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> term_delete(UserSession session, Term term) async {
+Future<Result> term_delete(UserSession session, int termID) async {
   final response = await client.head(
     uri('/admin/term_delete', {
-      'term_id': term.id.toString(),
+      'term_id': termID.toString(),
     }),
     headers: {
       'Token': session.token,
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

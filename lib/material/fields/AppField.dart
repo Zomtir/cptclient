@@ -2,6 +2,7 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
+import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class AppField<T extends FieldInterface> extends StatelessWidget {
@@ -15,11 +16,13 @@ class AppField<T extends FieldInterface> extends StatelessWidget {
   });
 
   void _handleSearch(BuildContext context) async {
-    List<T>? items = await controller.callItems?.call() ?? []; // TODO Result
+    Result<List<T>>? items = await controller.callItems?.call();
+    if (items == null || items is! Success) return;
+
     await showDialog(
       context: context,
       builder: (context) => PickerDialog(
-        items: items,
+        items: items.unwrap(),
         onPick: (item) => onChanged.call(item),
       ),
     );

@@ -51,10 +51,11 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
   }
 
   Future<void> _receiveLocations() async {
-    List<Location> locations = await api_anon.location_list();
+    Result<List<Location>> result_locations = await api_anon.location_list();
+    if (result_locations is! Success) return;
 
     setState(() {
-      _ctrlLocation.items = locations;
+      _ctrlLocation.items = result_locations.unwrap();
     });
   }
 

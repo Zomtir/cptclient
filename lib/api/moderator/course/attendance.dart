@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<List<(Team, bool)>> course_attendance_sieve_list(UserSession session, int courseID, String role) async {
+Future<Result<List<(Team, bool)>>> course_attendance_sieve_list(UserSession session, int courseID, String role) async {
   final response = await client.get(
     uri('/mod/course_attendance_sieve_list', {
       'course_id': courseID.toString(),
@@ -18,17 +20,22 @@ Future<List<(Team, bool)>> course_attendance_sieve_list(UserSession session, int
     },
   );
 
-  if (response.statusCode != 200) return [];
+  if (handleFailedResponse(response)) return Failure();
 
-  Iterable list = json.decode(utf8.decode(response.bodyBytes));
-  return List<(Team, bool)>.from(
-    list.map((model) {
-      return (Team.fromJson(model[0]), model[1]);
-    }),
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(Team, bool)>.from(
+    it.map((model) => (Team.fromJson(model[0]), model[1])),
   );
+  return Success(list);
 }
 
-Future<bool> course_attendance_sieve_edit(UserSession session, int courseID, int teamID, String role, bool access) async {
+Future<Result> course_attendance_sieve_edit(
+  UserSession session,
+  int courseID,
+  int teamID,
+  String role,
+  bool access,
+) async {
   final response = await client.head(
     uri('/mod/course_attendance_sieve_edit', {
       'course_id': courseID.toString(),
@@ -41,10 +48,11 @@ Future<bool> course_attendance_sieve_edit(UserSession session, int courseID, int
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }
 
-Future<bool> course_attendance_sieve_remove(UserSession session, int courseID, int teamID, String role) async {
+Future<Result> course_attendance_sieve_remove(UserSession session, int courseID, int teamID, String role) async {
   final response = await client.head(
     uri('/mod/course_attendance_sieve_remove', {
       'course_id': courseID.toString(),
@@ -56,5 +64,6 @@ Future<bool> course_attendance_sieve_remove(UserSession session, int courseID, i
     },
   );
 
-  return (response.statusCode == 200);
+  if (handleFailedResponse(response)) return Failure();
+  return Success(());
 }

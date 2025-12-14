@@ -3,8 +3,10 @@
 import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
+import 'package:cptclient/utils/message.dart';
+import 'package:cptclient/utils/result.dart';
 
-Future<String?> user_salt(String key) async {
+Future<Result<String>> user_salt(String key) async {
   final response = await client.get(
     uri('/anon/user_salt', {
       'user_key': key,
@@ -14,7 +16,7 @@ Future<String?> user_salt(String key) async {
     },
   );
 
-  if (response.statusCode != 200) return null;
+  if (handleFailedResponse(response)) return Failure();
 
-  return utf8.decode(response.bodyBytes);
+  return Success(utf8.decode(response.bodyBytes));
 }

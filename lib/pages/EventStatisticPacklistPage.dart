@@ -46,11 +46,12 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
   }
 
   void _handleCategories(int index) async {
-    List<ItemCategory> categories = await api_regular.itemcat_list(widget.session);
+    Result<List<ItemCategory>> result_categories = await api_regular.itemcat_list(widget.session);
+    if (result_categories is! Success) return;
     ItemCategory? category;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: categories, onPick: (item) => category = item),
+      builder: (context) => PickerDialog(items: result_categories.unwrap(), onPick: (item) => category = item),
     );
     setState(() => _ctrlCategories[index] = category);
     _update();
