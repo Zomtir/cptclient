@@ -218,7 +218,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
             children: [
               ListTile(
                 title: Text(AppLocalizations.of(context)!.eventParticipant),
-                onTap: () => _handleAttendanceSieves('PARTICIPANTS'),
+                onTap: () => _handleAttendanceSieves('PARTICIPANT'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.eventLeader),
