@@ -15,8 +15,14 @@ bool handleFailedResponse(http.Response response) {
   BuildContext? context = navi.naviKey.currentState?.overlay?.context;
   if (context == null) return true;
 
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${AppLocalizations.of(context)!.actionRequest} "
-  "${AppLocalizations.of(context)!.statusHasFailed}"
-    "(Error ${AppLocalizations.of(context)!.actionSubmission} ${response.statusCode}")));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        "${AppLocalizations.of(context)!.actionRequest} "
+        "${AppLocalizations.of(context)!.statusHasFailed} "
+        "(Error ${AppLocalizations.of(context)!.actionSubmission} ${response.statusCode})",
+      ),
+    ),
+  );
   return true;
 }
