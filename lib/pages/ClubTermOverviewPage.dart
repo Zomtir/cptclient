@@ -26,10 +26,10 @@ class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
   @override
   void initState() {
     super.initState();
-    _update();
+    update();
   }
 
-  Future<void> _update() async {
+  Future<void> update() async {
     var result_terms = await api_admin.term_list(widget.session, widget.club);
     if (result_terms is! Success) return;
     searchPanelKey.currentState?.populate(result_terms.unwrap());
@@ -46,11 +46,11 @@ class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
       ),
     );
 
-    _update();
+    update();
   }
 
   void _handleCreate() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TermCreatePage(
@@ -60,7 +60,7 @@ class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
       ),
     );
 
-    _update();
+    update();
   }
 
   @override
