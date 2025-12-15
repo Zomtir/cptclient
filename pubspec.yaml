@@ -25,16 +25,16 @@ dependencies:
   diacritic: 0.1.6
 
   # Fetch data from the internet
-  http: 1.5.0
+  http: 1.6.0
 
   # Hash the password
-  crypto: 3.0.6
+  crypto: 3.0.7
 
   # Date & Time
   intl: 0.20.2
 
   # Local storage
-  shared_preferences: 2.5.3
+  shared_preferences: 2.5.4
 
   # Global storage (yaml)
   yaml: 3.1.3
@@ -43,14 +43,14 @@ dependencies:
   cupertino_icons: 1.0.8
 
   # Dynamic routes
-  go_router: 16.2.1
+  go_router: 17.0.1
 
   # QR codes
   qr_flutter: 4.1.0
   screenshot: 3.0.0
 
   # Save dialog
-  file_selector: 1.0.3
+  file_selector: 1.1.0
 
   # Clickable URL
   url_launcher: 6.3.2
