@@ -19,34 +19,29 @@ class Team extends FieldInterface implements Comparable {
 
   Team(this.id, this.key, this.name, this.description);
 
-  Team.fromVoid()
-      : id = 0,
-        key = assembleKey([2,2,2]),
-        name = "",
-        description = "",
-        right = Right();
+  Team.fromVoid() : id = 0, key = assembleKey([2, 2, 2]), name = "", description = "", right = Right();
 
   Team.fromTeam(Team team)
-      : id = 0,
-        key = assembleKey([2,2,2]),
-        name = "${team.name.substring(0, min(team.name.length, 29))}*",
-        description = team.description,
-        right = null;
+    : id = 0,
+      key = assembleKey([2, 2, 2]),
+      name = "${team.name.substring(0, min(team.name.length, 29))}*",
+      description = team.description,
+      right = null;
 
   Team.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        key = json['key'],
-        name = json['name'],
-        description = json['description'],
-        right = (json['right'] == null) ? null : Right.fromJson(json['right']);
+    : id = json['id'],
+      key = json['key'],
+      name = json['name'],
+      description = json['description'],
+      right = (json['right'] == null) ? null : Right.fromJson(json['right']);
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'key' : key,
-        'name': name,
-        'description': description,
-        'right': right?.toJson(),
-      };
+    'id': id,
+    'key': key,
+    'name': name,
+    'description': description,
+    'right': right?.toJson(),
+  };
 
   @override
   bool operator ==(other) => other is Team && id == other.id;
@@ -72,8 +67,12 @@ class Team extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      children: [
+        Text(name),
+        Text(description),
+      ],
+    );
   }
 
   @override
