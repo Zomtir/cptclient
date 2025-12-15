@@ -19,18 +19,24 @@ class OrganisationOverviewPage extends StatefulWidget {
 }
 
 class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
+  bool _locked = true;
   List<Organisation> _organisations = [];
 
   @override
   void initState() {
     super.initState();
-    _update();
+    update();
   }
 
-  Future<void> _update() async {
+  Future<void> update() async {
+    setState(() => _locked = true);
     Result<List<Organisation>> result_organisations = await api_admin.organisation_list(widget.session);
     if (result_organisations is! Success) return;
-    _organisations = result_organisations.unwrap();
+    if (!mounted) return;
+    setState(() {
+      _organisations = result_organisations.unwrap();
+      _locked = false;
+    });
   }
 
   void _handleSelect(Organisation organisation) async {
@@ -44,7 +50,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
       ),
     );
 
-    _update();
+    update();
   }
 
   void _handleCreate() async {
@@ -57,7 +63,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
       ),
     );
 
-    _update();
+    update();
   }
 
   @override
@@ -73,6 +79,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
         ],
       ),
       body: AppBody(
+        locked: _locked,
         children: <Widget>[
           SearchablePanel(
             items: _organisations,

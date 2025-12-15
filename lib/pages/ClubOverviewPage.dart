@@ -31,8 +31,10 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
     setState(() => _locked = true);
     var result = await api_admin.club_list(widget.session);
     if (!mounted) return;
-    setState(() => _clubs = result.unwrap());
-    setState(() => _locked = false);
+    setState(() {
+      _clubs = result.unwrap();
+      _locked = false;
+    });
   }
 
   void _handleSelect(Club club) async {
