@@ -60,6 +60,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelDateFormat => 'Datumsformat';
 
   @override
+  String get labelServer => 'Server';
+
+  @override
   String get labelServerScheme => 'Server-Protokoll';
 
   @override
@@ -67,6 +70,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelServerPort => 'Server-Port';
+
+  @override
+  String get labelClient => 'Client';
 
   @override
   String get labelClientScheme => 'Client-Protokoll';

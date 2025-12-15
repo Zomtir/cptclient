@@ -102,7 +102,7 @@ class ConnectionPageState extends State<ConnectionPage> {
       body: AppBody(
         children: [
           ListTile(
-            title: Text("Server"),
+            title: Text(AppLocalizations.of(context)!.labelServer),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelServerScheme,
@@ -142,7 +142,7 @@ class ConnectionPageState extends State<ConnectionPage> {
             leading: Icon(Icons.link),
           ),
           ListTile(
-            title: Text("Client"),
+            title: Text(AppLocalizations.of(context)!.labelClient),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelClientScheme,

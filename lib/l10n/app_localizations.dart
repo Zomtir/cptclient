@@ -200,6 +200,12 @@ abstract class AppLocalizations {
   /// **'Date Format'**
   String get labelDateFormat;
 
+  /// No description provided for @labelServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get labelServer;
+
   /// No description provided for @labelServerScheme.
   ///
   /// In en, this message translates to:
@@ -217,6 +223,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Server Port'**
   String get labelServerPort;
+
+  /// No description provided for @labelClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Client'**
+  String get labelClient;
 
   /// No description provided for @labelClientScheme.
   ///
