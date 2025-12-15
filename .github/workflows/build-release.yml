@@ -28,6 +28,10 @@ jobs:
       SERVER_SCHEME: https
       SERVER_HOST: cptserver.oberhauser.dev
       SERVER_PORT: 443
+      ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
     
     strategy:
       fail-fast: false
@@ -80,33 +84,31 @@ jobs:
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
           sudo apt-get install -y libunwind-dev
       - name: Install current bash on macOS
+        shell: bash
         if: runner.os == 'macOS'
         run: |
           brew install bash
           bash --version
-        shell: bash
       - name: Build App
-        id: build
+        shell: bash
         run: |
-          echo "ARTIFACT_PATH=build/${{ matrix.platform }}/${{ matrix.build-type }}" >> $GITHUB_ENV
-          echo "ARTIFACT_NAME=${APP_NAME}-${{ github.ref_name }}-${{ matrix.platform }}.${{ matrix.suffix }}" >> $GITHUB_ENV
-          mkdir -p "$ARTIFACT_PATH"
-          dart pub global run flutter_release build ${{ matrix.build-type }} \
-            --app-version="${{ github.ref_name }}" \
+          ARTIFACT_PATH="build/${{ matrix.platform }}/${{ matrix.build-type }}"
+          ARTIFACT_NAME="${APP_NAME}-${{ github.ref_name }}-${{ matrix.platform }}.${{ matrix.suffix }}"
+          flutter build ${{ matrix.build-type }} \
             --dart-define=SERVER_SCHEME=$SERVER_SCHEME \
             --dart-define=SERVER_HOST=$SERVER_HOST \
             --dart-define=SERVER_PORT=$SERVER_PORT \
-            ${{ matrix.platform == 'web' && '--wasm' || '' }} \
-            ${{ matrix.platform == 'android' && '--keystore-file-base64=${{ secrets.ANDROID_KEYSTORE }} --keystore-password=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} --key-alias=${{ secrets.ANDROID_KEY_ALIAS }} --key-password=${{ secrets.ANDROID_KEY_PASSWORD }}' || '' }} \
-            --output="$ARTIFACT_PATH"
+            ${{ matrix.platform == 'web' && '--wasm' || '' }}
+          echo "ARTIFACT_PATH=$ARTIFACT_PATH" >> "$GITHUB_ENV"
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
       - name: Upload artifacts to pages
-        if: inputs.upload-pages-artifact && matrix.platform == 'web'
+        if: inputs.upload_pages_artifact && matrix.platform == 'web'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./build/web
       - name: Upload artifacts to release
         # Only upload to GitHub if in build mode.
-        if: inputs.upload-release-artifact == 'true'
+        if: inputs.upload_release_artifact == 'true'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
@@ -115,7 +117,7 @@ jobs:
           tag: ${{ github.ref }}
 
   deploy-github-pages:
-    if: inputs.upload-pages-artifact
+    if: inputs.upload_pages_artifact
     needs:
       - build-artifacts
     permissions:
@@ -127,5 +129,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
