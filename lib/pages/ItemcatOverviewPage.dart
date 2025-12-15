@@ -19,7 +19,7 @@ class ItemcatOverviewPage extends StatefulWidget {
 }
 
 class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
-  GlobalKey<SearchablePanelState<ItemCategory>> searchPanelKey = GlobalKey();
+  List<ItemCategory> _itemcats = [];
 
   @override
   void initState() {
@@ -30,7 +30,9 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
   Future<void> _update() async {
     Result<List<ItemCategory>> result_itemcats = await api_admin.itemcat_list(widget.session);
     if (result_itemcats is! Success) return;
-    searchPanelKey.currentState?.populate(result_itemcats.unwrap());
+    setState(() {
+      _itemcats = result_itemcats.unwrap();
+    });
   }
 
   void _handleSelect(ItemCategory category) async {
@@ -76,7 +78,7 @@ class ItemcatOverviewPageState extends State<ItemcatOverviewPage> {
       body: AppBody(
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _itemcats,
             onTap: _handleSelect,
           )
         ],

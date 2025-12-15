@@ -23,7 +23,7 @@ class OrganisationAffiliationPage extends StatefulWidget {
 }
 
 class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage> {
-  GlobalKey<SearchablePanelState<Affiliation>> searchPanelKey = GlobalKey();
+  List<Affiliation> _affiliations = [];
 
   OrganisationAffiliationPageState();
 
@@ -36,7 +36,9 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
   Future<void> _update() async {
     Result<List<Affiliation>> result_affiliations = await api_admin.affiliation_list(widget.session, null, widget.organisation);
     if (result_affiliations is! Success) return;
-    searchPanelKey.currentState?.populate(result_affiliations.unwrap());
+    setState(() {
+      _affiliations = result_affiliations.unwrap();
+    });
   }
 
   Future<void> _handleSelect(Affiliation affiliation) async {
@@ -93,7 +95,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
       body: AppBody(
         children: <Widget>[
           SearchablePanel<Affiliation>(
-            key: searchPanelKey,
+            items: _affiliations,
             onTap: _handleSelect,
           ),
         ],

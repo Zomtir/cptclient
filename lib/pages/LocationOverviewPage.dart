@@ -19,7 +19,7 @@ class LocationOverviewPage extends StatefulWidget {
 }
 
 class LocationOverviewPageState extends State<LocationOverviewPage> {
-  GlobalKey<SearchablePanelState<Location>> searchPanelKey = GlobalKey();
+  List<Location> _locations = [];
 
   @override
   void initState() {
@@ -30,7 +30,9 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
   Future<void> _update() async {
     Result<List<Location>> result_locations = await api_admin.location_list(widget.session);
     if (result_locations is! Success) return;
-    searchPanelKey.currentState?.populate(result_locations.unwrap());
+    setState(() {
+      _locations = result_locations.unwrap();
+    });
   }
 
   void _handleSelect(Location location) async {
@@ -76,7 +78,7 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
       body: AppBody(
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _locations,
             onTap: _handleSelect,
           )
         ],

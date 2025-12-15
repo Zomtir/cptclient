@@ -19,7 +19,7 @@ class OrganisationOverviewPage extends StatefulWidget {
 }
 
 class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
-  GlobalKey<SearchablePanelState<Organisation>> searchPanelKey = GlobalKey();
+  List<Organisation> _organisations = [];
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
   Future<void> _update() async {
     Result<List<Organisation>> result_organisations = await api_admin.organisation_list(widget.session);
     if (result_organisations is! Success) return;
-    searchPanelKey.currentState?.populate(result_organisations.unwrap());
+    _organisations = result_organisations.unwrap();
   }
 
   void _handleSelect(Organisation organisation) async {
@@ -75,7 +75,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
       body: AppBody(
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _organisations,
             onTap: _handleSelect,
           ),
         ],

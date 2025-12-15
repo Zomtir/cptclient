@@ -20,7 +20,7 @@ class TeamOverviewPage extends StatefulWidget {
 
 class TeamOverviewPageState extends State<TeamOverviewPage> {
   bool _locked = true;
-  GlobalKey<SearchablePanelState<Team>> searchPanelKey = GlobalKey();
+  List<Team> _teams = [];
 
   @override
   void initState() {
@@ -32,8 +32,10 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
     setState(() => _locked = true);
     Result<List<Team>> result = await api_admin.team_list(widget.session);
     if (result is! Success) return;
-    searchPanelKey.currentState?.populate(result.unwrap());
-    setState(() => _locked = false);
+    setState(() {
+      _teams = result.unwrap();
+      _locked = false;
+    });
   }
 
   Future<void> _handleCreate() async {
@@ -84,7 +86,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
         locked: _locked,
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _teams,
             onTap: _handleSelect,
           ),
         ],

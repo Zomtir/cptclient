@@ -19,7 +19,7 @@ class SkillOverviewPage extends StatefulWidget {
 }
 
 class SkillOverviewPageState extends State<SkillOverviewPage> {
-  GlobalKey<SearchablePanelState<Skill>> searchPanelKey = GlobalKey();
+  List<Skill> _skills = [];
 
   @override
   void initState() {
@@ -30,7 +30,9 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
   Future<void> _update() async {
     Result<List<Skill>> result = await api_admin.skill_list(widget.session);
     if (result is! Success) return;
-    searchPanelKey.currentState?.populate(result.unwrap());
+    setState(() {
+      _skills = result.unwrap();
+    });
   }
 
   void _handleSelect(Skill skill) async {
@@ -76,7 +78,7 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
       body: AppBody(
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _skills,
             onTap: _handleSelect,
           )
         ],

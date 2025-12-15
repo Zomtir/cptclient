@@ -27,7 +27,7 @@ class CompetenceOverviewPage extends StatefulWidget {
 }
 
 class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
-  GlobalKey<SearchablePanelState<Competence>> searchPanelKey = GlobalKey();
+  List<Competence> _competences = [];
 
   final FieldController<User> _ctrlUser = FieldController();
 
@@ -57,7 +57,9 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
     );
     if (result_competences is! Success) return;
 
-    searchPanelKey.currentState?.populate(result_competences.unwrap());
+    setState(() {
+      _competences = result_competences.unwrap();
+    });
   }
 
   Future<void> _handleSelect(Competence competence) async {
@@ -139,7 +141,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
             ],
           ),
           SearchablePanel<Competence>(
-            key: searchPanelKey,
+            items: _competences,
             onTap: (Competence competence) => _handleSelect(competence),
           ),
         ],

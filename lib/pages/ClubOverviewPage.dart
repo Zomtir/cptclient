@@ -19,7 +19,7 @@ class ClubOverviewPage extends StatefulWidget {
 
 class ClubOverviewPageState extends State<ClubOverviewPage> {
   bool _locked = true;
-  GlobalKey<SearchablePanelState<Club>> searchPanelKey = GlobalKey();
+  List<Club> _clubs = [];
 
   @override
   void initState() {
@@ -31,8 +31,8 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
     setState(() => _locked = true);
     var result = await api_admin.club_list(widget.session);
     if (!mounted) return;
+    setState(() => _clubs = result.unwrap());
     setState(() => _locked = false);
-    searchPanelKey.currentState?.populate(result.unwrap());
   }
 
   void _handleSelect(Club club) async {
@@ -75,7 +75,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
         locked: _locked,
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _clubs,
             onTap: _handleSelect,
           ),
         ],

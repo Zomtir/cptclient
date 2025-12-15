@@ -19,7 +19,7 @@ class UserOverviewPage extends StatefulWidget {
 }
 
 class UserOverviewPageState extends State<UserOverviewPage> {
-  GlobalKey<SearchablePanelState<User>> searchPanelKey = GlobalKey();
+  List<User> _users = [];
 
   @override
   void initState() {
@@ -30,7 +30,9 @@ class UserOverviewPageState extends State<UserOverviewPage> {
   Future<void> _update() async {
     Result<List<User>> result_users = await api_admin.user_list(widget.session);
     if (result_users is! Success) return;
-    searchPanelKey.currentState?.populate(result_users.unwrap());
+    setState(() {
+      _users = result_users.unwrap();
+    });
   }
 
   void _handleSelect(User user) async {
@@ -75,7 +77,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
       body: AppBody(
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _users,
             onTap: _handleSelect,
           ),
         ],

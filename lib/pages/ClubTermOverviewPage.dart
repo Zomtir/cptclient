@@ -21,7 +21,7 @@ class ClubTermOverviewPage extends StatefulWidget {
 }
 
 class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
-  GlobalKey<SearchablePanelState<Term>> searchPanelKey = GlobalKey();
+  List<Term> _terms = [];
 
   @override
   void initState() {
@@ -32,7 +32,9 @@ class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
   Future<void> update() async {
     var result_terms = await api_admin.term_list(widget.session, widget.club);
     if (result_terms is! Success) return;
-    searchPanelKey.currentState?.populate(result_terms.unwrap());
+    setState(() {
+      _terms = result_terms.unwrap();
+    });
   }
 
   void _handleSelect(Term term) async {
@@ -79,7 +81,7 @@ class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
       body: AppBody(
         children: <Widget>[
           SearchablePanel(
-            key: searchPanelKey,
+            items: _terms,
             onTap: _handleSelect,
           )
         ],

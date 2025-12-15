@@ -9,45 +9,45 @@ class SearchablePanel<T extends FieldInterface> extends StatefulWidget {
   final void Function(T)? onTap;
   final List<Widget> Function(BuildContext, T)? actionBuilder;
 
-  SearchablePanel({super.key, this.items = const [], this.onTap, this.actionBuilder});
+  SearchablePanel({super.key, required this.items, this.onTap, this.actionBuilder});
 
   @override
   SearchablePanelState createState() => SearchablePanelState<T>();
 }
 
 class SearchablePanelState<T extends FieldInterface> extends State<SearchablePanel<T>> {
-  List<T> _all = [];
   List<T> _visible = [];
   final TextEditingController _ctrlFilter = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    populate(widget.items);
+    filter();
   }
 
-  void populate(List<T> items) {
-    _all = List.of(items)..sort();
-    update();
-  }
-
-  void update() {
+  void filter() {
     if (_ctrlFilter.text.isEmpty) {
-      setState(() => _visible = _all);
-      return;
+      _visible = widget.items;
+    } else {
+      _visible = widget.items.where((T item) => item.filter(_ctrlFilter.text)).toList();
     }
 
-    List<T> visible = _all.where((T item) => item.filter(_ctrlFilter.text)).toList();
-    visible.sort();
+    setState(() => _visible.sort());
+  }
 
-    setState(() => _visible = visible);
+  @override
+  void didUpdateWidget(covariant SearchablePanel<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.items, widget.items)) {
+      filter();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppSearchField(controller: _ctrlFilter, onChanged: update),
+        AppSearchField(controller: _ctrlFilter, onChanged: filter),
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
