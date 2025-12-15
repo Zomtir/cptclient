@@ -1,5 +1,89 @@
 # CHANGELOG
 
+## Release v1.5.0 (15th Dec 2025)
+
+- feat: Minimum page width with horizontal scrolling #66
+- feat: Dedicated presence accounting page #68
+- feat: Clipboard utility function
+- feat: Use card tiles for organisations and events
+- feat: New AppTile widget
+- feat: Use didUpdateWidget for SelectionPanel to allow locking during load
+- feat: Move content locking during load to AppBody
+- feat: Added buildInfo function for Team
+- feat: Locking club overview during update
+- feat: Result for API calls and dedicated create/detail pages
+- feat: Added cleanSplit string parser function
+- feat: New NumberSliderDialog widget
+- feat: New NumberRangeDialog widget
+- feat: New CategoryEditDialog widget
+- feat: New CategoryDisplay widget
+- feat: Download course statistic as CSV #81
+- feat: Streamline TilePicker into PickerDialog
+- feat: Improve layout of user possession administration
+- feat: Reworked dialogs including Filter and Selection
+- feat: Improved text input of date and time #73
+- feat: Rework AppTile and AppCard
+- feat: Layout improvements for filter pages
+- feat: Improved scrollbar paddings for AppDialog
+- refactor: Move affiliation management into organisation management
+- refactor: Make old AppTile to AppCard
+- refactor: Improve buildTile()
+- refactor: Streamlined Bankaccount and License builders
+- refactor: Streamline status string and request messages
+- refactor: showDialog with default SafeArea
+- cleanup: Removed AppClubTile
+- cleanup: Remove AppUserTile
+- cleanup: Removed AppTeamTile
+- cleanup: Removed AppCourseTile
+- cleanup: Use the same icons for event and user logins
+- cleanup: Restructure builders in Field elements
+- fix: Self management of event owners
+- fix: Searchable variables were dynamic
+- fix: Inactive courses were visible by default #67
+- fix: Event course was not nullable #69
+- fix: Event statistic API call used session user instead of input user #70
+- fix: Unable to change user in presence statistic #70
+- fix: Attendance compensation used incomplete user details
+- fix: Explicit returns and RadioGroup
+- fix: Declare a safe are for app content #76
+- fix: Add safe area to AppDialog for mobile
+- fix: Prevent overflow in user tiles
+- fix: Spacer inside Expanded causes warnings
+- fix: Improve empty and near-empty text inputs on dialog inputs
+- fix: Implement widgets for affiliation
+- fix: Increased user note string length from 20 to 500 #78
+- fix: Reduced gaps in SelectionDialog actions #80
+- fix: Plural on participant role calls
+- fix: Missing spaces and brackets of failed API response messages
+- fix: Apply date to old datetime rather than overwriting #77
+- fix: Overview pages were not keeping the filter on page pop #79
+- fix: Handle unset club disciplines
+- fix: Wait for Term creation to be finished before update
+- fix: Sort items in searchable panels #74
+- fix: Handle Confirmation with NULL string
+- fix: Date (only) should not convert between UTC/Local #71
+- fix: Incorrect API parameters for location edit/delete
+- fix: Faulty state management of Organisation overview
+- locale: Added translations to all login pages #52
+- locale: Full localization of ConnectionPage #82
+- chore: Minor locale formatting
+- chore: Update Flutter to 3.35.3
+- chore: Package upgrades
+- chore: Gradle upgrade
+- chore: Update gradle android plugins
+- chore: Update flutter packages
+- chore: Perserve trailing commas in auto-format
+- chore: Mark competence filters as TODO
+- chore: Update readme with possible build targets
+- chore: Adapt devtools_options.yaml
+- chore: Move gradle to Kotlin and update build targets
+- chore: Change Linux window title
+- chore: Reworked github workflows
+  - Fixes Linux build
+  - Removes dependency on flutter-release-action
+  - Streamlined workflow namings (on-x for triggers)
+- chore: Fix Github CI workflows for release
+
 ## Release v1.4.0 (25th Jul 2025)
 
 - feat: Unified user info page
