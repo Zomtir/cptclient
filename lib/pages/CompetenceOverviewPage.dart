@@ -120,7 +120,8 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
                   onChanged: (Skill? skill) => setState(() => _ctrlSkill.value = skill),
                 ),
               ),
-              /*AppInfoRow(
+              /* TODO
+              AppInfoRow(
                 info: Text("Thresholds"),
                 child: RangeSlider(
                   values: _ctrlSkillRange,
