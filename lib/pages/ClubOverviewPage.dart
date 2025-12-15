@@ -3,7 +3,6 @@ import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/ClubCreatePage.dart';
 import 'package:cptclient/pages/ClubDetailPage.dart';
@@ -29,10 +28,11 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
   }
 
   Future<void> update() async {
-    _locked = true;
+    setState(() => _locked = true);
     var result = await api_admin.club_list(widget.session);
+    if (!mounted) return;
+    setState(() => _locked = false);
     searchPanelKey.currentState?.populate(result.unwrap());
-    _locked = false;
   }
 
   void _handleSelect(Club club) async {
@@ -64,7 +64,6 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageClubManagement),
@@ -73,6 +72,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
         ],
       ),
       body: AppBody(
+        locked: _locked,
         children: <Widget>[
           SearchablePanel(
             key: searchPanelKey,

@@ -10,7 +10,6 @@ import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
-import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/pages/CompetenceCreatePage.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
@@ -75,7 +74,6 @@ class CompetenceDetailPageState extends State<CompetenceDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageCompetenceEdit),
@@ -91,6 +89,7 @@ class CompetenceDetailPageState extends State<CompetenceDetailPage> {
         ],
       ),
       body: AppBody(
+        locked: _locked,
         children: [
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceUser,

@@ -6,7 +6,6 @@ import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
-import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -60,7 +59,6 @@ class TermDetailPageState extends State<TermDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageTermEdit),
@@ -72,6 +70,7 @@ class TermDetailPageState extends State<TermDetailPage> {
         ],
       ),
       body: AppBody(
+        locked: _locked,
         children: [
           AppInfoRow(
             info: AppLocalizations.of(context)!.termUser,

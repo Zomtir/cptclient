@@ -9,7 +9,6 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +113,6 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pagePossessionUser),
@@ -127,6 +125,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
         ],
       ),
       body: AppBody(
+        locked: _locked,
         maxWidth: 1000,
         minWidth: 1000,
         children: <Widget>[

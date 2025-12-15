@@ -20,7 +20,6 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/layouts/InfoSection.dart';
 import 'package:cptclient/material/widgets/ChoiceDisplay.dart';
-import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -47,23 +46,26 @@ class UserDetailPageState extends State<UserDetailPage> {
   @override
   void initState() {
     super.initState();
-    _update();
+    update();
   }
 
-  Future<void> _submit() async {
+  Future<void> submit() async {
     await api_admin.user_edit(widget.session, user_info!);
-    _update();
+    update();
   }
 
-  Future<void> _update() async {
+  Future<void> update() async {
     setState(() => _locked = true);
     Result<User> result_user = await api_admin.user_detailed(widget.session, widget.userID);
     if (result_user is! Success) return;
-    setState(() => user_info = result_user.unwrap());
-    setState(() => _locked = false);
+    if (!mounted) return;
+    setState(() {
+      user_info = result_user.unwrap();
+      _locked = false;
+    });
   }
 
-  void _delete() async {
+  void delete() async {
     var result = await api_admin.user_delete(widget.session, user_info!);
     if (result is! Success) return;
     Navigator.pop(context);
@@ -71,18 +73,18 @@ class UserDetailPageState extends State<UserDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageUserDetails),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: _delete,
+            onPressed: delete,
           ),
         ],
       ),
       body: AppBody(
+        locked: _locked,
         children: [
           InfoSection(
             title: AppLocalizations.of(context)!.labelAccount,
@@ -105,7 +107,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 20,
                     onConfirm: (String t) {
                       setState(() => user_info!.key = t);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -124,7 +126,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     value: Valence.fromBool(user_info!.enabled!),
                     onConfirm: (Valence? v) {
                       setState(() => user_info!.enabled = v?.toBool());
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -143,7 +145,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     value: Valence.fromBool(user_info!.active!),
                     onConfirm: (Valence? v) {
                       setState(() => user_info!.active = v?.toBool());
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -172,7 +174,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                       } else if (user_info!.credential != null && cr != null) {
                         await api_admin.user_password_edit(widget.session, user_info!, cr.password!, cr.salt!);
                       }
-                      _update();
+                      update();
                     },
                   ),
                 ),
@@ -200,7 +202,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 20,
                     onConfirm: (String t) {
                       setState(() => user_info!.firstname = t);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -225,7 +227,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 20,
                     onConfirm: (String t) {
                       setState(() => user_info!.lastname = t);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -250,11 +252,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 20,
                     onReset: () {
                       setState(() => user_info!.nickname = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       setState(() => user_info!.nickname = (t.isEmpty ? null : t));
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -282,11 +284,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 60,
                     onReset: () {
                       setState(() => user_info!.address = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       setState(() => user_info!.address = (t.isEmpty ? null : t));
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -311,11 +313,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 40,
                     onReset: () {
                       setState(() => user_info!.email = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       setState(() => user_info!.email = (t.isEmpty ? null : t.trim()));
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -340,11 +342,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 20,
                     onReset: () {
                       setState(() => user_info!.phone = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String text) {
                       setState(() => user_info!.phone = text);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -370,11 +372,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     initialDate: user_info!.birth_date,
                     onConfirm: (DateTime dt) {
                       setState(() => user_info!.birth_date = dt);
-                      _submit();
+                      submit();
                     },
                     onReset: () {
                       setState(() => user_info!.birth_date = null);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -399,11 +401,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 60,
                     onReset: () {
                       setState(() => user_info!.birth_location = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       setState(() => user_info!.birth_location = (t.isEmpty ? null : t));
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -428,11 +430,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 40,
                     onReset: () {
                       setState(() => user_info!.nationality = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       setState(() => user_info!.nationality = t);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -460,11 +462,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     builder: (gender) => gender.buildTile(context),
                     onReset: () {
                       setState(() => user_info!.gender = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (Gender? g) {
                       setState(() => user_info!.gender = g);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -489,7 +491,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 3,
                     onReset: () {
                       setState(() => user_info!.height = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       int? height = int.tryParse(t);
@@ -498,7 +500,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                         return;
                       }
                       setState(() => user_info!.height = height);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -523,7 +525,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 3,
                     onReset: () {
                       setState(() => user_info!.weight = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       int? weight = int.tryParse(t);
@@ -532,7 +534,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                         return;
                       }
                       setState(() => user_info!.weight = weight);
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -560,11 +562,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                     maxLength: 500,
                     onReset: () {
                       setState(() => user_info!.note = null);
-                      _submit();
+                      submit();
                     },
                     onConfirm: (String t) {
                       setState(() => user_info!.note = (t.isEmpty ? null : t));
-                      _submit();
+                      submit();
                     },
                   ),
                 ),
@@ -586,7 +588,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                       initialValue: BankAccount.fromVoid(),
                       onConfirm: (BankAccount ba) async {
                         await api_admin.user_bank_account_create(widget.session, user_info!, ba);
-                        _update();
+                        update();
                       },
                     ),
                   ),
@@ -605,11 +607,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                       initialValue: user_info!.bank_account!,
                       onDelete: () async {
                         await api_admin.user_bank_account_delete(widget.session, user_info!);
-                        _update();
+                        update();
                       },
                       onConfirm: (BankAccount ba) async {
                         await api_admin.user_bank_account_edit(widget.session, user_info!, ba);
-                        _update();
+                        update();
                       },
                     ),
                   ),
@@ -629,7 +631,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                           initialValue: License.fromVoid(),
                           onConfirm: (License lic) async {
                             await api_admin.user_license_main_create(widget.session, user_info!, lic);
-                            _update();
+                            update();
                           },
                         ),
                       ),
@@ -652,11 +654,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                               initialValue: user_info!.license_main!,
                               onDelete: () async {
                                 await api_admin.user_license_main_delete(widget.session, user_info!);
-                                _update();
+                                update();
                               },
                               onConfirm: (License lic) async {
                                 await api_admin.user_license_main_edit(widget.session, user_info!, lic);
-                                _update();
+                                update();
                               },
                             ),
                           ),
@@ -678,7 +680,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                           initialValue: License.fromVoid(),
                           onConfirm: (License lic) async {
                             await api_admin.user_license_extra_create(widget.session, user_info!, lic);
-                            _update();
+                            update();
                           },
                         ),
                       ),
@@ -701,11 +703,11 @@ class UserDetailPageState extends State<UserDetailPage> {
                               initialValue: user_info!.license_extra!,
                               onDelete: () async {
                                 await api_admin.user_license_extra_delete(widget.session, user_info!);
-                                _update();
+                                update();
                               },
                               onConfirm: (License lic) async {
                                 await api_admin.user_license_extra_edit(widget.session, user_info!, lic);
-                                _update();
+                                update();
                               },
                             ),
                           ),

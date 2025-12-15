@@ -9,7 +9,6 @@ import 'package:cptclient/material/dialogs/TextEditDialog.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
-import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
@@ -66,7 +65,6 @@ class ItemDetailPageState extends State<ItemDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_locked) return LoadingWidget();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageItemEdit),
@@ -78,6 +76,7 @@ class ItemDetailPageState extends State<ItemDetailPage> {
         ],
       ),
       body: AppBody(
+        locked: _locked,
         children: [
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemName,
