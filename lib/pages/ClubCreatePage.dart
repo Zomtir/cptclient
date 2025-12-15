@@ -44,7 +44,7 @@ class ClubCreatePageState extends State<ClubCreatePage> {
     club.key = _ctrlKey.text;
     club.name = _ctrlName.text;
     club.description = _ctrlDescription.text.isNotEmpty ? _ctrlDescription.text : null;
-    club.disciplines = _ctrlDisciplines!.isNotEmpty ? _ctrlDisciplines! : null;
+    club.disciplines = (_ctrlDisciplines?.isNotEmpty ?? false) ? _ctrlDisciplines : null;
     club.image_url = _ctrlImageURL.text.isNotEmpty ? _ctrlImageURL.text : null;
     club.chairman = _ctrlChairman.text.isNotEmpty ? _ctrlChairman.text : null;
 
@@ -87,7 +87,7 @@ class ClubCreatePageState extends State<ClubCreatePage> {
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubDisciplines,
             child: CategoryEdit(
-              text: _ctrlDisciplines!,
+              text: _ctrlDisciplines ?? '',
               onChanged: (text) => _ctrlDisciplines = text,
             ),
           ),
