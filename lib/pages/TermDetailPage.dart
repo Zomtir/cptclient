@@ -83,7 +83,7 @@ class TermDetailPageState extends State<TermDetailPage> {
           AppInfoRow(
             info: AppLocalizations.of(context)!.termBegin,
             child: AppTile(
-              child: Text(term!.begin!.fmtDate(context)),
+              child: Text(term!.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown),
               trailing: [
                 IconButton(
                   onPressed: () => clipText(formatIsoDate(term!.begin) ?? ''),
@@ -108,7 +108,7 @@ class TermDetailPageState extends State<TermDetailPage> {
           AppInfoRow(
             info: AppLocalizations.of(context)!.termEnd,
             child: AppTile(
-              child: Text(term!.end!.fmtDate(context)),
+              child: Text(term!.end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing),
               trailing: [
                 IconButton(
                   onPressed: () => clipText(formatIsoDate(term!.end) ?? ''),

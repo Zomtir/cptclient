@@ -21,6 +21,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelUnknown => 'Unbekannt';
 
   @override
+  String get labelOngoing => 'Fortlaufend';
+
+  @override
   String get labelFormat => 'Formattierung';
 
   @override
