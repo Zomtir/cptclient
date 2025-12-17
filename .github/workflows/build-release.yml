@@ -90,6 +90,7 @@ jobs:
           brew install bash
           bash --version
       - name: Build App
+        id: build
         shell: bash
         run: |
           ARTIFACT_PATH="build/${{ matrix.platform }}/${{ matrix.build-type }}"
@@ -108,7 +109,7 @@ jobs:
           path: ./build/web
       - name: Upload artifacts to release
         # Only upload to GitHub if in build mode.
-        if: inputs.upload_release_artifact == 'true'
+        if: inputs.upload_release_artifact
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
