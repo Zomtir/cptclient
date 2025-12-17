@@ -270,16 +270,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dateYear => 'Year';
 
   @override
+  String get dateYears => 'Year(s)';
+
+  @override
   String get dateMonth => 'Month';
 
   @override
+  String get dateMonths => 'Month(s)';
+
+  @override
   String get dateWeek => 'Week';
+
+  @override
+  String get dateWeeks => 'Week(s)';
 
   @override
   String get dateWeekday => 'Weekday';
 
   @override
   String get dateDay => 'Day';
+
+  @override
+  String get dateDays => 'Day(s)';
 
   @override
   String get dateDate => 'Date';

@@ -63,15 +63,13 @@ class ClubStatisticMemberPageState extends State<ClubStatisticMemberPage> {
             ],
           ),
           DataTable(
-            columns: const [
-              DataColumn(label: Text('ID')),
-              DataColumn(label: Text('Member')),
-              DataColumn(label: Text('Years')),
+            columns: [
+              DataColumn(label: Text(AppLocalizations.of(context)!.user)),
+              DataColumn(label: Text(AppLocalizations.of(context)!.dateYears)),
             ],
             rows: List<DataRow>.generate(stats.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("${stats[index].$1.id}")),
                   DataCell(Text("${stats[index].$1.firstname} ${stats[index].$1.lastname}")),
                   DataCell(Text((stats[index].$2/365).toStringAsPrecision(2))),
                 ],
