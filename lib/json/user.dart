@@ -118,9 +118,10 @@ class User extends FieldInterface implements Comparable {
   @override
   Widget buildInfo(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("$firstname $lastname"),
-        if (nickname != null) Text(nickname!),
+        if (nickname != null) Text(nickname!, style: TextStyle(fontStyle: FontStyle.italic)),
       ],
     );
   }

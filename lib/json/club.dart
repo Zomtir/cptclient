@@ -1,3 +1,4 @@
+import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/widgets/AppCard.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
@@ -62,9 +63,10 @@ class Club extends FieldInterface implements Comparable {
   @override
   Widget buildInfo(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(name),
-        Text(chairman ?? ''),
+        Text("${AppLocalizations.of(context)!.clubChairman}: ${chairman ?? AppLocalizations.of(context)!.undefined}"),
       ],
     );
   }

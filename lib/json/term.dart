@@ -19,27 +19,22 @@ class Term extends FieldInterface implements Comparable {
 
   Term({this.id = 0, this.user, this.club, this.begin, this.end});
 
-  Term.fromVoid()
-      : id = 0,
-        user = null,
-        club = null,
-        begin = null,
-        end = null;
+  Term.fromVoid() : id = 0, user = null, club = null, begin = null, end = null;
 
   Term.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        user = User.fromJson(json['user']),
-        club = Club.fromJson(json['club']),
-        begin = parseIsoDate(json['begin']),
-        end = parseIsoDate(json['end']);
+    : id = json['id'],
+      user = User.fromJson(json['user']),
+      club = Club.fromJson(json['club']),
+      begin = parseIsoDate(json['begin']),
+      end = parseIsoDate(json['end']);
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'user': user?.toJson(),
-        'club': club?.toJson(),
-        'begin': formatIsoDate(begin),
-        'end': formatIsoDate(end),
-      };
+    'id': id,
+    'user': user?.toJson(),
+    'club': club?.toJson(),
+    'begin': formatIsoDate(begin),
+    'end': formatIsoDate(end),
+  };
 
   @override
   bool operator ==(other) => other is Term && id == other.id;
@@ -75,8 +70,17 @@ class Term extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${club!.name}"),
+        Text(
+          "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - "
+          "${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}",
+        ),
+      ],
+    );
   }
 
   @override
@@ -87,11 +91,12 @@ class Term extends FieldInterface implements Comparable {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("${user!.firstname} ${user!.lastname}",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
           Text("${club!.name}"),
           Text(
-              "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}"),
+            "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - "
+            "${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}",
+          ),
         ],
       ),
       onTap: onTap,
@@ -104,11 +109,12 @@ class Term extends FieldInterface implements Comparable {
       leading: Tooltip(message: "[$id]", child: Icon(Icons.card_membership)),
       trailing: trailing,
       children: [
-        Text("${user!.firstname} ${user!.lastname}",
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
         Text("${club!.name}"),
         Text(
-            "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}"),
+          "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - "
+          "${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}",
+        ),
       ],
     );
   }

@@ -5,7 +5,6 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/DatePicker.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -82,53 +81,49 @@ class TermDetailPageState extends State<TermDetailPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.termBegin,
-            child: AppTile(
-              child: Text(term!.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown),
-              trailing: [
-                IconButton(
-                  onPressed: () => clipText(formatIsoDate(term!.begin) ?? ''),
-                  icon: Icon(Icons.copy),
-                ),
-                IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (context) => DatePicker(
-                      initialDate: term!.begin,
-                      onConfirm: (DateTime dt) {
-                        setState(() => term!.begin = dt);
-                        submit();
-                      },
-                    ),
+            child: Text(term!.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(formatIsoDate(term!.begin) ?? ''),
+                icon: Icon(Icons.copy),
+              ),
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DatePicker(
+                    initialDate: term!.begin,
+                    onConfirm: (DateTime dt) {
+                      setState(() => term!.begin = dt);
+                      submit();
+                    },
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.termEnd,
-            child: AppTile(
-              child: Text(term!.end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing),
-              trailing: [
-                IconButton(
-                  onPressed: () => clipText(formatIsoDate(term!.end) ?? ''),
-                  icon: Icon(Icons.copy),
-                ),
-                IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (context) => DatePicker(
-                      initialDate: term!.end,
-                      onConfirm: (DateTime dt) {
-                        setState(() => term!.end = dt);
-                        submit();
-                      },
-                    ),
+            child: Text(term!.end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(formatIsoDate(term!.end) ?? ''),
+                icon: Icon(Icons.copy),
+              ),
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DatePicker(
+                    initialDate: term!.end,
+                    onConfirm: (DateTime dt) {
+                      setState(() => term!.end = dt);
+                      submit();
+                    },
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
