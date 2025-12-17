@@ -270,16 +270,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dateYear => 'Jahr';
 
   @override
+  String get dateYears => 'Jahr(e)';
+
+  @override
   String get dateMonth => 'Monat';
 
   @override
+  String get dateMonths => 'Monat(e)';
+
+  @override
   String get dateWeek => 'Woche';
+
+  @override
+  String get dateWeeks => 'Woche(n)';
 
   @override
   String get dateWeekday => 'Wochentag';
 
   @override
   String get dateDay => 'Tag';
+
+  @override
+  String get dateDays => 'Tag(e)';
 
   @override
   String get dateDate => 'Datum';

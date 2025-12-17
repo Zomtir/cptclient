@@ -620,17 +620,35 @@ abstract class AppLocalizations {
   /// **'Year'**
   String get dateYear;
 
+  /// No description provided for @dateYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Year(s)'**
+  String get dateYears;
+
   /// No description provided for @dateMonth.
   ///
   /// In en, this message translates to:
   /// **'Month'**
   String get dateMonth;
 
+  /// No description provided for @dateMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'Month(s)'**
+  String get dateMonths;
+
   /// No description provided for @dateWeek.
   ///
   /// In en, this message translates to:
   /// **'Week'**
   String get dateWeek;
+
+  /// No description provided for @dateWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'Week(s)'**
+  String get dateWeeks;
 
   /// No description provided for @dateWeekday.
   ///
@@ -643,6 +661,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Day'**
   String get dateDay;
+
+  /// No description provided for @dateDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Day(s)'**
+  String get dateDays;
 
   /// No description provided for @dateDate.
   ///
