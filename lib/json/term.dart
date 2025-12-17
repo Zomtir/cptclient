@@ -91,7 +91,7 @@ class Term extends FieldInterface implements Comparable {
               style: TextStyle(fontWeight: FontWeight.bold)),
           Text("${club!.name}"),
           Text(
-              "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
+              "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}"),
         ],
       ),
       onTap: onTap,
@@ -108,7 +108,7 @@ class Term extends FieldInterface implements Comparable {
             style: TextStyle(fontWeight: FontWeight.bold)),
         Text("${club!.name}"),
         Text(
-            "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.undefined}"),
+            "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - ${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}"),
       ],
     );
   }

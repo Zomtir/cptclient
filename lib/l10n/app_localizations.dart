@@ -122,6 +122,12 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get labelUnknown;
 
+  /// No description provided for @labelOngoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing'**
+  String get labelOngoing;
+
   /// No description provided for @labelFormat.
   ///
   /// In en, this message translates to:
