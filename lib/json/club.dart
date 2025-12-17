@@ -61,8 +61,12 @@ class Club extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      children: [
+        Text(name),
+        Text(chairman ?? ''),
+      ],
+    );
   }
 
   @override
@@ -80,7 +84,10 @@ class Club extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(child: Icon(Icons.group_work), message: "[$id] $key"),
       trailing: trailing,
-      children: [Text(name), Text(chairman ?? '')],
+      children: [
+        Text(name),
+        Text(chairman ?? ''),
+      ],
     );
   }
 }
