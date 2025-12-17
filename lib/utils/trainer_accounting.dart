@@ -21,6 +21,7 @@ void trainer_accounting_pdf(
   DateTime date_until,
   List<Event> event_list, {
   required String discipline,
+  required String role,
   required double unit_duration,
   required double compensation_rate,
   required double compensation_hours,
@@ -41,7 +42,7 @@ void trainer_accounting_pdf(
   final clubBannerBytes = (await api_anon.club_banner(club.id)).unwrap();
 
   final int fiscal_year = date_from.year;
-  final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag());
+  final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag())..turnOffGrouping();
 
   pw.TextStyle styleBold = pw.TextStyle(fontWeight: pw.FontWeight.bold);
 
@@ -83,7 +84,7 @@ void trainer_accounting_pdf(
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.end,
               children: [
-                pw.Text("$discipline"),
+                pw.Text("$discipline / $role"),
                 pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
                 pw.Text("${user.firstname} ${user.lastname}"),
               ],
@@ -123,6 +124,12 @@ void trainer_accounting_pdf(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.dateFrame),
                   pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  pw.Text(AppLocalizations.of(context)!.eventRole),
+                  pw.Text("$role}"),
                 ],
               ),
               pw.TableRow(
@@ -243,15 +250,15 @@ void trainer_accounting_pdf(
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDisbursement}"),
-                  pw.Text("${nf.format(disbursement_sum)} Euro"),
+                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDontation}"),
+                  pw.Text("${nf.format(donation_sum)} Euro"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDontation}"),
-                  pw.Text("${nf.format(donation_sum)} Euro"),
+                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDisbursement}"),
+                  pw.Text("${nf.format(disbursement_sum)} Euro"),
                 ],
               ),
             ],
@@ -326,7 +333,11 @@ void trainer_accounting_pdf(
               style: styleBold,
             ),
             pw.Text(
-              "$partial_minutes min \n${partial_minutes / 60} h",
+              "$partial_minutes min",
+              textAlign: pw.TextAlign.right,
+            ),
+            pw.Text(
+              "${nf.format(partial_minutes / 60)} h",
               textAlign: pw.TextAlign.right,
             ),
             pw.SizedBox(height: 5),
