@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Miscellaneous'**
   String get labelMiscellaneous;
 
+  /// No description provided for @labelSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get labelSummary;
+
   /// No description provided for @labelMoreDetails.
   ///
   /// In en, this message translates to:

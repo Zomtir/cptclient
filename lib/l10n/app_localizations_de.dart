@@ -48,6 +48,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelMiscellaneous => 'Verschiedenes';
 
   @override
+  String get labelSummary => 'Zusammenfassung';
+
+  @override
   String get labelMoreDetails => 'Mehr Details';
 
   @override
