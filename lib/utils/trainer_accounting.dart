@@ -122,14 +122,14 @@ void trainer_accounting_pdf(
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.dateFrame),
-                  pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
+                  pw.Text(AppLocalizations.of(context)!.eventRole),
+                  pw.Text("$role"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.eventRole),
-                  pw.Text("$role"),
+                  pw.Text(AppLocalizations.of(context)!.dateFrame),
+                  pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
                 ],
               ),
               pw.TableRow(
