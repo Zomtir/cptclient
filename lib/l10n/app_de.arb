@@ -48,6 +48,7 @@
   "labelPersonalBackground": "Persönlicher Hintergrund",
   "labelPhysicalCharacteristics": "Körperliche Merkmale",
   "labelLoginsRemembered": "Gemerkte Logins",
+  "labelSignature": "Unterschrift",
   "actionSelect": "Auswählen",
   "actionEdit": "Bearbeiten",
   "actionSave": "Speichern",
@@ -340,7 +341,7 @@
   "competenceSkillRange": "Fähigk.-Bereich",
   "competenceDate": "Datum",
   "trainer": "Übungsleiter",
-  "trainerAccounting": "Übungsleiterabrechnung",
+  "trainerBilling": "Übungsleiterabrechnung",
   "trainerTimeStatement": "Ich versichere, dass ich die Übungsstunden entsprechend der Stundenaufstellung für den Verein {club_name} abgehalten habe.",
   "trainerTimeTotal": "Übungsstunden",
   "trainerUnitDuration": "Dauer pro Einheit",
@@ -364,8 +365,10 @@
   "trainerTaxAssignmentShared": "Neben meiner Tätigkeit für den Verein werden weitere Übungsleitertätigkeit(en) für nachfolgende Einrichtung(en) ausgeübt. Hierfür wird dort bereits vom persönlichen Steuerfreibetrag nach § 3 Nr. 26 EStG ein anteiliger Betrag für die dortigen Vergütungen genutzt.",
   "trainerLicenseDeclaration": "Einreichung von Lizenzen für die Vereinspauschale",
   "trainerLicenseUsageStatement": "Für das Jahr {fiscal_year} sollen diese Lizenzen vom Verein {club_name} für die Vereinspauschale nach den Sportförderrichtlinien eingereicht werden.",
+  "trainerLicenseUsageExplanation": "Eine Lizenz kann zwischen maximal zwei Vereinen geteilt werden.",
   "trainerLicenseUsageFull": "Die Lizenz soll voll für den Verein verwendet werden.",
   "trainerLicenseUsageSplit": "Die Lizenz soll mit dem Verein geteilt werden.",
+  "trainerLicenseUsageNone": "Die Lizenz soll nicht für den Verein verwendet werden.",
   "signatureWithDateAndPlace": "Ort/Datum/Unterschrift",
   "signatureWithDate": "Datum/Unterschrift"
 }

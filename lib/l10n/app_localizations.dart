@@ -392,6 +392,12 @@ abstract class AppLocalizations {
   /// **'Remembered Logins'**
   String get labelLoginsRemembered;
 
+  /// No description provided for @labelSignature.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature'**
+  String get labelSignature;
+
   /// No description provided for @actionSelect.
   ///
   /// In en, this message translates to:
@@ -2141,14 +2147,14 @@ abstract class AppLocalizations {
   /// No description provided for @trainer.
   ///
   /// In en, this message translates to:
-  /// **'Coach'**
+  /// **'Instructor'**
   String get trainer;
 
-  /// No description provided for @trainerAccounting.
+  /// No description provided for @trainerBilling.
   ///
   /// In en, this message translates to:
-  /// **'Coach accounting'**
-  String get trainerAccounting;
+  /// **'Instructor Billing'**
+  String get trainerBilling;
 
   /// No description provided for @trainerTimeStatement.
   ///
@@ -2288,6 +2294,12 @@ abstract class AppLocalizations {
   /// **'For the year {fiscal_year}, these licenses should be submitted by the club {club_name} for the club allowance according to sports funding guidelines.'**
   String trainerLicenseUsageStatement(Object club_name, Object fiscal_year);
 
+  /// No description provided for @trainerLicenseUsageExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A license can be shared between two clubs at maximum.'**
+  String get trainerLicenseUsageExplanation;
+
   /// No description provided for @trainerLicenseUsageFull.
   ///
   /// In en, this message translates to:
@@ -2299,6 +2311,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The license should be shared with the club.'**
   String get trainerLicenseUsageSplit;
+
+  /// No description provided for @trainerLicenseUsageNone.
+  ///
+  /// In en, this message translates to:
+  /// **'The license should not be used for the club.'**
+  String get trainerLicenseUsageNone;
 
   /// No description provided for @signatureWithDateAndPlace.
   ///

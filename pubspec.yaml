@@ -61,6 +61,9 @@ dependencies:
   # PDF export
   pdf: 3.11.3
 
+  # Signature
+  hand_signature: 3.1.0
+
 dev_dependencies:
   flutter_launcher_icons: 0.14.4
   flutter_lints: 6.0.0

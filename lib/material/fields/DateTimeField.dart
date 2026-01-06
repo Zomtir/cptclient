@@ -83,30 +83,25 @@ class _DateTimeFieldState extends State<DateTimeField> {
           child: Column(
             children: [
               if (widget.showDate && !widget.controller.isNull())
-                Container(
-                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: Row(
-                    //mainAxisSize: MainAxisSize.min,
-                    //
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: dateController,
-                          maxLines: 1,
-                          onChanged: (String text) {
-                            setState(() {
-                              widget.controller.tryParseDate(text);
-                            });
-                          },
-                          decoration: AppInputDecoration(),
-                        ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: dateController,
+                        maxLines: 1,
+                        onChanged: (String text) {
+                          setState(() {
+                            widget.controller.tryParseDate(text);
+                          });
+                        },
+                        decoration: AppInputDecoration(),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.calendar_month),
-                        onPressed: () => _handleDateChange(context),
-                      ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.calendar_month),
+                      onPressed: () => _handleDateChange(context),
+                    ),
+                  ],
                 ),
               if (widget.showTime && !widget.controller.isNull())
                 Container(

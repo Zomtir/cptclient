@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-void trainer_accounting_pdf(
+void billing_instructor_pdf(
   BuildContext context,
   Club club,
   User user,
@@ -29,6 +29,14 @@ void trainer_accounting_pdf(
   required double compensation_sum,
   required double disbursement_sum,
   required double donation_sum,
+  required String comment,
+  required String job_priority,
+  required String job_allowance,
+  required String job_institutions,
+  required String job_licence_usage,
+  required String signature_location,
+  required DateTime signature_date,
+  Uint8List? signature_stroke,
 }) async {
   var docTheme = pw.ThemeData.withFont(
     base: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.regular.ttf")),
@@ -42,7 +50,8 @@ void trainer_accounting_pdf(
   final clubBannerBytes = (await api_anon.club_banner(club.id)).unwrap();
 
   final int fiscal_year = date_from.year;
-  final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag())..turnOffGrouping();
+  final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag())
+    ..turnOffGrouping();
 
   pw.TextStyle styleBold = pw.TextStyle(fontWeight: pw.FontWeight.bold);
 
@@ -96,6 +105,43 @@ void trainer_accounting_pdf(
     );
   }
 
+  pw.Stack buildSignature(String title) {
+    return pw.Stack(
+      children: [
+        pw.Text(
+          title,
+          style: styleTinyBold,
+        ),
+
+        // Location and date floating from the bottom left
+        if (signature_stroke != null)
+          pw.Positioned(
+            bottom: 0,
+            left: 0,
+            child: pw.Text(
+              "$signature_location, ${signature_date.fmtDate(context)}",
+              style: styleTiny,
+            ),
+          ),
+
+        // Signature floating from the right
+        if (signature_stroke != null)
+          pw.Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Image(
+                pw.MemoryImage(Uint8List.fromList(signature_stroke)),
+                height: 40,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
   doc.addPage(
     pw.Page(
       build: (pw.Context pc) => pw.Column(
@@ -103,7 +149,7 @@ void trainer_accounting_pdf(
         children: [
           buildHeader(),
           pw.Text(
-            AppLocalizations.of(context)!.trainerAccounting,
+            AppLocalizations.of(context)!.trainerBilling,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
@@ -265,12 +311,23 @@ void trainer_accounting_pdf(
           ),
           pw.Spacer(),
           pw.Container(
-            height: 50,
+            height: 40,
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
-            child: pw.Text(
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(AppLocalizations.of(context)!.labelComment, style: styleTinyBold),
+                pw.Text(comment),
+              ],
+            ),
+          ),
+          pw.Container(
+            height: 40,
+            padding: const pw.EdgeInsets.all(5),
+            decoration: boxInputDecoration,
+            child: buildSignature(
               "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
-              style: styleTinyBold,
             ),
           ),
         ],
@@ -341,12 +398,6 @@ void trainer_accounting_pdf(
               textAlign: pw.TextAlign.right,
             ),
             pw.SizedBox(height: 5),
-            pw.Container(
-              height: 40,
-              padding: const pw.EdgeInsets.all(5),
-              decoration: boxInputDecoration,
-              child: pw.Text(AppLocalizations.of(context)!.labelComment, style: styleTinyBold),
-            ),
             pw.Row(
               children: [
                 pw.Expanded(
@@ -354,9 +405,8 @@ void trainer_accounting_pdf(
                     height: 40,
                     padding: const pw.EdgeInsets.all(5),
                     decoration: boxInputDecoration,
-                    child: pw.Text(
+                    child: buildSignature(
                       "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.trainer}",
-                      style: styleTinyBold,
                     ),
                   ),
                 ),
@@ -406,10 +456,10 @@ void trainer_accounting_pdf(
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("☐ "),
+              pw.Text(job_priority == "SUPPLEMENTARY" ? "☑ " : "☐ "),
               pw.Text(AppLocalizations.of(context)!.labelYes),
               pw.SizedBox(width: 50),
-              pw.Text("☐ "),
+              pw.Text(job_priority == "INCIDENTAL" ? "☑ " : "☐ "),
               pw.Text(AppLocalizations.of(context)!.labelNo),
             ],
           ),
@@ -419,7 +469,7 @@ void trainer_accounting_pdf(
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("☐ "),
+              pw.Text(job_allowance == "EXCLUSIVE" ? "☑ " : "☐ "),
               pw.Expanded(
                 child: pw.Column(
                   children: [
@@ -436,7 +486,7 @@ void trainer_accounting_pdf(
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("☐ "),
+              pw.Text(job_allowance == "NON-EXCLUSIVE" ? "☑ " : "☐ "),
               pw.Expanded(
                 child: pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.stretch,
@@ -447,40 +497,35 @@ void trainer_accounting_pdf(
                     ),
                     pw.SizedBox(height: 5),
                     pw.Container(
+                      height: 80,
                       decoration: boxInputDecoration,
-                      child: pw.Table(
-                        border: pw.TableBorder.all(color: PdfColors.grey),
-                        columnWidths: {
-                          0: const pw.FlexColumnWidth(100),
-                          1: const pw.FlexColumnWidth(100),
-                          2: const pw.FixedColumnWidth(50),
-                        },
-                        children: [
-                          pw.TableRow(
-                            children: [
-                              pw.Text(AppLocalizations.of(context)!.clubName, style: styleTinyBold),
-                              pw.Text(AppLocalizations.of(context)!.clubAddress, style: styleTinyBold),
-                              pw.Text(AppLocalizations.of(context)!.labelAmount, style: styleTinyBold),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [pw.SizedBox(height: 15)],
-                          ),
-                          pw.TableRow(
-                            children: [pw.SizedBox(height: 15)],
-                          ),
-                          pw.TableRow(
-                            children: [pw.SizedBox(height: 15)],
-                          ),
-                        ],
-                      ),
+                      child: pw.Text(job_institutions),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          pw.SizedBox(height: 10),
+          pw.Spacer(),
+          pw.Container(
+            height: 40,
+            padding: const pw.EdgeInsets.all(5),
+            decoration: boxInputDecoration,
+            child: buildSignature(
+              "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  doc.addPage(
+    pw.Page(
+      build: (pw.Context pwcontext) => pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+        children: [
+          buildHeader(),
           pw.Text(
             AppLocalizations.of(context)!.trainerLicenseDeclaration,
             textAlign: pw.TextAlign.center,
@@ -513,11 +558,17 @@ void trainer_accounting_pdf(
           ),
           pw.SizedBox(height: 10),
           pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageStatement(club.name, fiscal_year.toString())),
+          pw.SizedBox(height: 10),
+          pw.Text(
+            AppLocalizations.of(context)!.trainerLicenseUsageExplanation,
+            textAlign: pw.TextAlign.justify,
+            style: styleTiny,
+          ),
           pw.SizedBox(height: 5),
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("☐ "),
+              pw.Text(job_licence_usage == "FULL" ? "☑ " : "☐ "),
               pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageFull),
             ],
           ),
@@ -525,24 +576,31 @@ void trainer_accounting_pdf(
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text("☐ "),
+              pw.Text(job_licence_usage == "SPLIT" ? "☑ " : "☐ "),
               pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageSplit),
+            ],
+          ),
+          pw.SizedBox(height: 5),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(job_licence_usage == "NONE" ? "☑ " : "☐ "),
+              pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageNone),
             ],
           ),
           pw.Spacer(),
           pw.Container(
-            height: 50,
+            height: 40,
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
-            child: pw.Text(
+            child: buildSignature(
               "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
-              style: styleTinyBold,
             ),
           ),
         ],
       ),
     ),
   );
-  // TODO fix name
-  exportPDF('trainer_accounting', await doc.save());
+
+  exportPDF('billing_instructor_${user.id}', await doc.save());
 }

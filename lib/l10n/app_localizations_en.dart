@@ -156,6 +156,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelLoginsRemembered => 'Remembered Logins';
 
   @override
+  String get labelSignature => 'Signature';
+
+  @override
   String get actionSelect => 'Select';
 
   @override
@@ -1034,10 +1037,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get competenceDate => 'Date';
 
   @override
-  String get trainer => 'Coach';
+  String get trainer => 'Instructor';
 
   @override
-  String get trainerAccounting => 'Coach accounting';
+  String get trainerBilling => 'Instructor Billing';
 
   @override
   String trainerTimeStatement(Object club_name) {
@@ -1125,12 +1128,20 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get trainerLicenseUsageExplanation =>
+      'A license can be shared between two clubs at maximum.';
+
+  @override
   String get trainerLicenseUsageFull =>
       'The license should be used in full for the club.';
 
   @override
   String get trainerLicenseUsageSplit =>
       'The license should be shared with the club.';
+
+  @override
+  String get trainerLicenseUsageNone =>
+      'The license should not be used for the club.';
 
   @override
   String get signatureWithDateAndPlace => 'Place/Date/Signature';

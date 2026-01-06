@@ -156,6 +156,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelLoginsRemembered => 'Gemerkte Logins';
 
   @override
+  String get labelSignature => 'Unterschrift';
+
+  @override
   String get actionSelect => 'Auswählen';
 
   @override
@@ -1038,7 +1041,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trainer => 'Übungsleiter';
 
   @override
-  String get trainerAccounting => 'Übungsleiterabrechnung';
+  String get trainerBilling => 'Übungsleiterabrechnung';
 
   @override
   String trainerTimeStatement(Object club_name) {
@@ -1126,12 +1129,20 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get trainerLicenseUsageExplanation =>
+      'Eine Lizenz kann zwischen maximal zwei Vereinen geteilt werden.';
+
+  @override
   String get trainerLicenseUsageFull =>
       'Die Lizenz soll voll für den Verein verwendet werden.';
 
   @override
   String get trainerLicenseUsageSplit =>
       'Die Lizenz soll mit dem Verein geteilt werden.';
+
+  @override
+  String get trainerLicenseUsageNone =>
+      'Die Lizenz soll nicht für den Verein verwendet werden.';
 
   @override
   String get signatureWithDateAndPlace => 'Ort/Datum/Unterschrift';

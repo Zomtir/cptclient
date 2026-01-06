@@ -23,7 +23,7 @@ class AppInfoRow extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
                     child: DefaultTextStyle.merge(
                       style: Theme.of(context).textTheme.bodyLarge!,
                       child: child,

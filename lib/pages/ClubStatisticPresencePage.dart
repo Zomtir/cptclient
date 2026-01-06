@@ -12,7 +12,7 @@ import 'package:cptclient/material/layouts/AppBody.dart';
 import 'package:cptclient/material/layouts/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
-import 'package:cptclient/pages/PresenceAccountingPage.dart';
+import 'package:cptclient/pages/PresenceBillingPage.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/format.dart';
@@ -94,7 +94,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PresenceAccountingPage(
+        builder: (context) => PresenceBillingPage(
           session: widget.session,
           club: widget.club,
           user: result_user_detailed.unwrap(),
