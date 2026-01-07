@@ -346,7 +346,7 @@
   "competenceSkillRange": "Skill Range",
   "competenceDate": "Date",
   "instructor": "Instructor",
-  "instructorTimeTableComment": "Additional comments for the time table?",
+  "instructorAllowanceComment": "Additional comments for the allowance?",
   "instructorJobPriority": "Employment type at the club?",
   "instructorJobPrioritySupplementary": "Supplementary Employment",
   "instructorJobPriorityIncidental": "Incidental Employment",

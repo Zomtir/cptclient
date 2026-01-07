@@ -489,7 +489,6 @@ void billing_instructor_pdf(
                     padding: const pw.EdgeInsets.all(5),
                     decoration: boxInputDecoration,
                     child: pw.Text(
-                      "${AppLocalizations.of(context)!.labelPlace}/"
                       "${AppLocalizations.of(context)!.labelDate}/"
                       "${AppLocalizations.of(context)!.labelSignature} "
                       "${AppLocalizations.of(context)!.clubDivisionHead}",

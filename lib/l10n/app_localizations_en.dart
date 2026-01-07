@@ -1055,8 +1055,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instructor => 'Instructor';
 
   @override
-  String get instructorTimeTableComment =>
-      'Additional comments for the time table?';
+  String get instructorAllowanceComment =>
+      'Additional comments for the allowance?';
 
   @override
   String get instructorJobPriority => 'Employment type at the club?';

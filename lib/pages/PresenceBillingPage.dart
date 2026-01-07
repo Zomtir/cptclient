@@ -295,7 +295,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             title: AppLocalizations.of(context)!.labelMoreDetails,
             children: [
               AppInfoRow(
-                info: AppLocalizations.of(context)!.instructorTimeTableComment,
+                info: AppLocalizations.of(context)!.instructorAllowanceComment,
                 child: TextFormField(
                   controller: _ctrlComment,
                   maxLines: 3,

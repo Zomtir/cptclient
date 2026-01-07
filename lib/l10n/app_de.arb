@@ -346,7 +346,7 @@
   "competenceSkillRange": "Fähigk.-Bereich",
   "competenceDate": "Datum",
   "instructor": "Übungsleiter",
-  "instructorTimeTableComment": "Zusätzliche Kommentare zur Stundenaufstellung?",
+  "instructorAllowanceComment": "Zusätzliche Kommentare zur Abrechnung?",
   "instructorJobPriority": "Angestelltenverhältnis beim Verein?",
   "instructorJobPrioritySupplementary": "Nebenberuflich",
   "instructorJobPriorityIncidental": "Hauptberuflich",

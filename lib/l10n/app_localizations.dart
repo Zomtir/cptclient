@@ -2180,11 +2180,11 @@ abstract class AppLocalizations {
   /// **'Instructor'**
   String get instructor;
 
-  /// No description provided for @instructorTimeTableComment.
+  /// No description provided for @instructorAllowanceComment.
   ///
   /// In en, this message translates to:
-  /// **'Additional comments for the time table?'**
-  String get instructorTimeTableComment;
+  /// **'Additional comments for the allowance?'**
+  String get instructorAllowanceComment;
 
   /// No description provided for @instructorJobPriority.
   ///
