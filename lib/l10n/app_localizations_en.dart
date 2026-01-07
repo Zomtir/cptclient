@@ -24,6 +24,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelOngoing => 'Ongoing';
 
   @override
+  String get labelRequired => 'Required';
+
+  @override
+  String get labelFull => 'Full';
+
+  @override
+  String get labelSplit => 'Split';
+
+  @override
+  String get labelNone => 'None';
+
+  @override
   String get labelFormat => 'Format';
 
   @override
@@ -34,9 +46,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelStatistics => 'Statistics';
-
-  @override
-  String get labelRequired => 'Required';
 
   @override
   String get labelPermission => 'Permission';
@@ -157,6 +166,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelSignature => 'Signature';
+
+  @override
+  String get labelPlace => 'Place';
+
+  @override
+  String get labelDate => 'Date';
 
   @override
   String get actionSelect => 'Select';
@@ -1037,115 +1052,137 @@ class AppLocalizationsEn extends AppLocalizations {
   String get competenceDate => 'Date';
 
   @override
-  String get trainer => 'Instructor';
+  String get instructor => 'Instructor';
 
   @override
-  String get trainerBilling => 'Instructor Billing';
+  String get instructorTimeTableComment =>
+      'Additional comments for the time table?';
 
   @override
-  String trainerTimeStatement(Object club_name) {
+  String get instructorJobPriority => 'Employment type at the club?';
+
+  @override
+  String get instructorJobPrioritySupplementary => 'Supplementary Employment';
+
+  @override
+  String get instructorJobPriorityIncidental => 'Incidental Employment';
+
+  @override
+  String get instructorJobAllowance =>
+      'Additional activities with allowances eligible for tax relief?';
+
+  @override
+  String get instructorJobAllowanceExclusive =>
+      'No other activities outside of this club';
+
+  @override
+  String get instructorJobAllowanceOther =>
+      'Name/Address/Allowance (€) of other institution(s)';
+
+  @override
+  String get instructorLicenseUsage => 'Use licence for the club?';
+
+  @override
+  String get instructorBilling => 'Instructor Billing';
+
+  @override
+  String instructorTimeStatement(Object club_name) {
     return 'I state that I have conducted the training hours according to the schedule for the club $club_name.';
   }
 
   @override
-  String get trainerTimeTotal => 'Training hours';
+  String get instructorTimeTotal => 'Training hours';
 
   @override
-  String get trainerUnitDuration => 'Duration per unit';
+  String get instructorUnitDuration => 'Duration per unit';
 
   @override
-  String get trainerUnitTotal => 'Units';
+  String get instructorUnitTotal => 'Units';
 
   @override
-  String get trainerCompensationPerUnit => 'Compensation per unit';
+  String get instructorCompensationPerUnit => 'Compensation per unit';
 
   @override
-  String get trainerCompensationTotal => 'Total compensation amount';
+  String get instructorCompensationTotal => 'Total compensation amount';
 
   @override
-  String get trainerCompensationDisbursement => 'Amount to be disbursed';
+  String get instructorCompensationDisbursement => 'Amount to be disbursed';
 
   @override
-  String get trainerCompensationDontation => 'Amount to be donated';
+  String get instructorCompensationDontation => 'Amount to be donated';
 
   @override
-  String get trainerTimeTable => 'Time table';
+  String get instructorTimeTable => 'Time table';
 
   @override
-  String get trainerEventActivity => 'Activity';
+  String get instructorEventActivity => 'Activity';
 
   @override
-  String get trainerEventLocation => 'Training location';
+  String get instructorEventLocation => 'Training location';
 
   @override
-  String get trainerWaiverStatement => 'Waiver statement';
+  String get instructorWaiverStatement => 'Waiver statement';
 
   @override
-  String trainerWaiverDonationClause(Object club_name) {
+  String instructorWaiverDonationClause(Object club_name) {
     return 'I request that the portion of my compensation not disbursed be donated to the club $club_name and ask for a corresponding donation receipt.';
   }
 
   @override
-  String get trainerWaiverTaxExemptionClause =>
+  String get instructorWaiverTaxExemptionClause =>
       'I hereby state that the tax exemption under § 3 No. 26a EStG has not already been applied to other voluntary activities.';
 
   @override
-  String get trainerTaxExemptionStatement => 'Tax exemption declaration';
+  String get instructorTaxExemptionStatement => 'Tax exemption declaration';
 
   @override
-  String trainerTaxExemptionClause(Object club_chairman, Object club_name) {
-    return 'Declaration for compensation accounting using the trainer tax exemption under § 3 No. 26 EstG between the club $club_name, represented by the chairman $club_chairman, and the coach.';
+  String instructorTaxExemptionClause(Object club_chairman, Object club_name) {
+    return 'Declaration for compensation accounting using the instructor tax exemption under § 3 No. 26 EstG between the club $club_name, represented by the chairman $club_chairman, and the coach.';
   }
 
   @override
-  String get trainerTaxExemptionExplanation =>
+  String get instructorTaxExemptionExplanation =>
       'It is possible to use the applicable tax exemption amount for compensation accounting, currently up to €3,000 per year. Provided the other requirements for this tax-benefited secondary employment are met, it represents a personal tax exemption that can be applied to compensation arrangements with clubs, associations, and other nonprofit organizations. Eligible training activities are largely exempt from tax and social security contributions.';
 
   @override
-  String get trainerTaxPartTime =>
+  String get instructorTaxPartTime =>
       'I am employed by the club as a coach only on a secondary basis.';
 
   @override
-  String trainerTaxAssignmentDeclaration(Object fiscal_year) {
+  String instructorTaxAssignmentDeclaration(Object fiscal_year) {
     return 'For the application of my personal tax exemption in the year $fiscal_year, I declare:';
   }
 
   @override
-  String get trainerTaxAssignmentExclusive =>
+  String get instructorTaxAssignmentExclusive =>
       'I state that, apart from my coaching activities for the club, I do not engage in other eligible activities under § 3 No. 26 EStG. My personal tax exemption has not been partially or fully claimed elsewhere.';
 
   @override
-  String get trainerTaxAssignmentShared =>
+  String get instructorTaxAssignmentShared =>
       'In addition to my activity for the club, I engage in other coaching activities for the following organization(s). A portion of my personal tax exemption under § 3 No. 26 EStG is already claimed there for compensation.';
 
   @override
-  String get trainerLicenseDeclaration =>
+  String get instructorLicenseDeclaration =>
       'Submission of licenses for the club allowance';
 
   @override
-  String trainerLicenseUsageStatement(Object club_name, Object fiscal_year) {
+  String instructorLicenseUsageStatement(Object club_name, Object fiscal_year) {
     return 'For the year $fiscal_year, these licenses should be submitted by the club $club_name for the club allowance according to sports funding guidelines.';
   }
 
   @override
-  String get trainerLicenseUsageExplanation =>
+  String get instructorLicenseUsageExplanation =>
       'A license can be shared between two clubs at maximum.';
 
   @override
-  String get trainerLicenseUsageFull =>
+  String get instructorLicenseUsageFull =>
       'The license should be used in full for the club.';
 
   @override
-  String get trainerLicenseUsageSplit =>
+  String get instructorLicenseUsageSplit =>
       'The license should be shared with the club.';
 
   @override
-  String get trainerLicenseUsageNone =>
+  String get instructorLicenseUsageNone =>
       'The license should not be used for the club.';
-
-  @override
-  String get signatureWithDateAndPlace => 'Place/Date/Signature';
-
-  @override
-  String get signatureWithDate => 'Date/Signature';
 }

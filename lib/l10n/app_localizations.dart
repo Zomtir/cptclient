@@ -128,6 +128,30 @@ abstract class AppLocalizations {
   /// **'Ongoing'**
   String get labelOngoing;
 
+  /// No description provided for @labelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get labelRequired;
+
+  /// No description provided for @labelFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get labelFull;
+
+  /// No description provided for @labelSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'Split'**
+  String get labelSplit;
+
+  /// No description provided for @labelNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get labelNone;
+
   /// No description provided for @labelFormat.
   ///
   /// In en, this message translates to:
@@ -151,12 +175,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Statistics'**
   String get labelStatistics;
-
-  /// No description provided for @labelRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Required'**
-  String get labelRequired;
 
   /// No description provided for @labelPermission.
   ///
@@ -397,6 +415,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signature'**
   String get labelSignature;
+
+  /// No description provided for @labelPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get labelPlace;
+
+  /// No description provided for @labelDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get labelDate;
 
   /// No description provided for @actionSelect.
   ///
@@ -2144,191 +2174,227 @@ abstract class AppLocalizations {
   /// **'Date'**
   String get competenceDate;
 
-  /// No description provided for @trainer.
+  /// No description provided for @instructor.
   ///
   /// In en, this message translates to:
   /// **'Instructor'**
-  String get trainer;
+  String get instructor;
 
-  /// No description provided for @trainerBilling.
+  /// No description provided for @instructorTimeTableComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional comments for the time table?'**
+  String get instructorTimeTableComment;
+
+  /// No description provided for @instructorJobPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment type at the club?'**
+  String get instructorJobPriority;
+
+  /// No description provided for @instructorJobPrioritySupplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplementary Employment'**
+  String get instructorJobPrioritySupplementary;
+
+  /// No description provided for @instructorJobPriorityIncidental.
+  ///
+  /// In en, this message translates to:
+  /// **'Incidental Employment'**
+  String get instructorJobPriorityIncidental;
+
+  /// No description provided for @instructorJobAllowance.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional activities with allowances eligible for tax relief?'**
+  String get instructorJobAllowance;
+
+  /// No description provided for @instructorJobAllowanceExclusive.
+  ///
+  /// In en, this message translates to:
+  /// **'No other activities outside of this club'**
+  String get instructorJobAllowanceExclusive;
+
+  /// No description provided for @instructorJobAllowanceOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Name/Address/Allowance (€) of other institution(s)'**
+  String get instructorJobAllowanceOther;
+
+  /// No description provided for @instructorLicenseUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Use licence for the club?'**
+  String get instructorLicenseUsage;
+
+  /// No description provided for @instructorBilling.
   ///
   /// In en, this message translates to:
   /// **'Instructor Billing'**
-  String get trainerBilling;
+  String get instructorBilling;
 
-  /// No description provided for @trainerTimeStatement.
+  /// No description provided for @instructorTimeStatement.
   ///
   /// In en, this message translates to:
   /// **'I state that I have conducted the training hours according to the schedule for the club {club_name}.'**
-  String trainerTimeStatement(Object club_name);
+  String instructorTimeStatement(Object club_name);
 
-  /// No description provided for @trainerTimeTotal.
+  /// No description provided for @instructorTimeTotal.
   ///
   /// In en, this message translates to:
   /// **'Training hours'**
-  String get trainerTimeTotal;
+  String get instructorTimeTotal;
 
-  /// No description provided for @trainerUnitDuration.
+  /// No description provided for @instructorUnitDuration.
   ///
   /// In en, this message translates to:
   /// **'Duration per unit'**
-  String get trainerUnitDuration;
+  String get instructorUnitDuration;
 
-  /// No description provided for @trainerUnitTotal.
+  /// No description provided for @instructorUnitTotal.
   ///
   /// In en, this message translates to:
   /// **'Units'**
-  String get trainerUnitTotal;
+  String get instructorUnitTotal;
 
-  /// No description provided for @trainerCompensationPerUnit.
+  /// No description provided for @instructorCompensationPerUnit.
   ///
   /// In en, this message translates to:
   /// **'Compensation per unit'**
-  String get trainerCompensationPerUnit;
+  String get instructorCompensationPerUnit;
 
-  /// No description provided for @trainerCompensationTotal.
+  /// No description provided for @instructorCompensationTotal.
   ///
   /// In en, this message translates to:
   /// **'Total compensation amount'**
-  String get trainerCompensationTotal;
+  String get instructorCompensationTotal;
 
-  /// No description provided for @trainerCompensationDisbursement.
+  /// No description provided for @instructorCompensationDisbursement.
   ///
   /// In en, this message translates to:
   /// **'Amount to be disbursed'**
-  String get trainerCompensationDisbursement;
+  String get instructorCompensationDisbursement;
 
-  /// No description provided for @trainerCompensationDontation.
+  /// No description provided for @instructorCompensationDontation.
   ///
   /// In en, this message translates to:
   /// **'Amount to be donated'**
-  String get trainerCompensationDontation;
+  String get instructorCompensationDontation;
 
-  /// No description provided for @trainerTimeTable.
+  /// No description provided for @instructorTimeTable.
   ///
   /// In en, this message translates to:
   /// **'Time table'**
-  String get trainerTimeTable;
+  String get instructorTimeTable;
 
-  /// No description provided for @trainerEventActivity.
+  /// No description provided for @instructorEventActivity.
   ///
   /// In en, this message translates to:
   /// **'Activity'**
-  String get trainerEventActivity;
+  String get instructorEventActivity;
 
-  /// No description provided for @trainerEventLocation.
+  /// No description provided for @instructorEventLocation.
   ///
   /// In en, this message translates to:
   /// **'Training location'**
-  String get trainerEventLocation;
+  String get instructorEventLocation;
 
-  /// No description provided for @trainerWaiverStatement.
+  /// No description provided for @instructorWaiverStatement.
   ///
   /// In en, this message translates to:
   /// **'Waiver statement'**
-  String get trainerWaiverStatement;
+  String get instructorWaiverStatement;
 
-  /// No description provided for @trainerWaiverDonationClause.
+  /// No description provided for @instructorWaiverDonationClause.
   ///
   /// In en, this message translates to:
   /// **'I request that the portion of my compensation not disbursed be donated to the club {club_name} and ask for a corresponding donation receipt.'**
-  String trainerWaiverDonationClause(Object club_name);
+  String instructorWaiverDonationClause(Object club_name);
 
-  /// No description provided for @trainerWaiverTaxExemptionClause.
+  /// No description provided for @instructorWaiverTaxExemptionClause.
   ///
   /// In en, this message translates to:
   /// **'I hereby state that the tax exemption under § 3 No. 26a EStG has not already been applied to other voluntary activities.'**
-  String get trainerWaiverTaxExemptionClause;
+  String get instructorWaiverTaxExemptionClause;
 
-  /// No description provided for @trainerTaxExemptionStatement.
+  /// No description provided for @instructorTaxExemptionStatement.
   ///
   /// In en, this message translates to:
   /// **'Tax exemption declaration'**
-  String get trainerTaxExemptionStatement;
+  String get instructorTaxExemptionStatement;
 
-  /// No description provided for @trainerTaxExemptionClause.
+  /// No description provided for @instructorTaxExemptionClause.
   ///
   /// In en, this message translates to:
-  /// **'Declaration for compensation accounting using the trainer tax exemption under § 3 No. 26 EstG between the club {club_name}, represented by the chairman {club_chairman}, and the coach.'**
-  String trainerTaxExemptionClause(Object club_chairman, Object club_name);
+  /// **'Declaration for compensation accounting using the instructor tax exemption under § 3 No. 26 EstG between the club {club_name}, represented by the chairman {club_chairman}, and the coach.'**
+  String instructorTaxExemptionClause(Object club_chairman, Object club_name);
 
-  /// No description provided for @trainerTaxExemptionExplanation.
+  /// No description provided for @instructorTaxExemptionExplanation.
   ///
   /// In en, this message translates to:
   /// **'It is possible to use the applicable tax exemption amount for compensation accounting, currently up to €3,000 per year. Provided the other requirements for this tax-benefited secondary employment are met, it represents a personal tax exemption that can be applied to compensation arrangements with clubs, associations, and other nonprofit organizations. Eligible training activities are largely exempt from tax and social security contributions.'**
-  String get trainerTaxExemptionExplanation;
+  String get instructorTaxExemptionExplanation;
 
-  /// No description provided for @trainerTaxPartTime.
+  /// No description provided for @instructorTaxPartTime.
   ///
   /// In en, this message translates to:
   /// **'I am employed by the club as a coach only on a secondary basis.'**
-  String get trainerTaxPartTime;
+  String get instructorTaxPartTime;
 
-  /// No description provided for @trainerTaxAssignmentDeclaration.
+  /// No description provided for @instructorTaxAssignmentDeclaration.
   ///
   /// In en, this message translates to:
   /// **'For the application of my personal tax exemption in the year {fiscal_year}, I declare:'**
-  String trainerTaxAssignmentDeclaration(Object fiscal_year);
+  String instructorTaxAssignmentDeclaration(Object fiscal_year);
 
-  /// No description provided for @trainerTaxAssignmentExclusive.
+  /// No description provided for @instructorTaxAssignmentExclusive.
   ///
   /// In en, this message translates to:
   /// **'I state that, apart from my coaching activities for the club, I do not engage in other eligible activities under § 3 No. 26 EStG. My personal tax exemption has not been partially or fully claimed elsewhere.'**
-  String get trainerTaxAssignmentExclusive;
+  String get instructorTaxAssignmentExclusive;
 
-  /// No description provided for @trainerTaxAssignmentShared.
+  /// No description provided for @instructorTaxAssignmentShared.
   ///
   /// In en, this message translates to:
   /// **'In addition to my activity for the club, I engage in other coaching activities for the following organization(s). A portion of my personal tax exemption under § 3 No. 26 EStG is already claimed there for compensation.'**
-  String get trainerTaxAssignmentShared;
+  String get instructorTaxAssignmentShared;
 
-  /// No description provided for @trainerLicenseDeclaration.
+  /// No description provided for @instructorLicenseDeclaration.
   ///
   /// In en, this message translates to:
   /// **'Submission of licenses for the club allowance'**
-  String get trainerLicenseDeclaration;
+  String get instructorLicenseDeclaration;
 
-  /// No description provided for @trainerLicenseUsageStatement.
+  /// No description provided for @instructorLicenseUsageStatement.
   ///
   /// In en, this message translates to:
   /// **'For the year {fiscal_year}, these licenses should be submitted by the club {club_name} for the club allowance according to sports funding guidelines.'**
-  String trainerLicenseUsageStatement(Object club_name, Object fiscal_year);
+  String instructorLicenseUsageStatement(Object club_name, Object fiscal_year);
 
-  /// No description provided for @trainerLicenseUsageExplanation.
+  /// No description provided for @instructorLicenseUsageExplanation.
   ///
   /// In en, this message translates to:
   /// **'A license can be shared between two clubs at maximum.'**
-  String get trainerLicenseUsageExplanation;
+  String get instructorLicenseUsageExplanation;
 
-  /// No description provided for @trainerLicenseUsageFull.
+  /// No description provided for @instructorLicenseUsageFull.
   ///
   /// In en, this message translates to:
   /// **'The license should be used in full for the club.'**
-  String get trainerLicenseUsageFull;
+  String get instructorLicenseUsageFull;
 
-  /// No description provided for @trainerLicenseUsageSplit.
+  /// No description provided for @instructorLicenseUsageSplit.
   ///
   /// In en, this message translates to:
   /// **'The license should be shared with the club.'**
-  String get trainerLicenseUsageSplit;
+  String get instructorLicenseUsageSplit;
 
-  /// No description provided for @trainerLicenseUsageNone.
+  /// No description provided for @instructorLicenseUsageNone.
   ///
   /// In en, this message translates to:
   /// **'The license should not be used for the club.'**
-  String get trainerLicenseUsageNone;
-
-  /// No description provided for @signatureWithDateAndPlace.
-  ///
-  /// In en, this message translates to:
-  /// **'Place/Date/Signature'**
-  String get signatureWithDateAndPlace;
-
-  /// No description provided for @signatureWithDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Date/Signature'**
-  String get signatureWithDate;
+  String get instructorLicenseUsageNone;
 }
 
 class _AppLocalizationsDelegate

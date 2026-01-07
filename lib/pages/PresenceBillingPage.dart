@@ -57,11 +57,14 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
   String _ctrlLicenseUsage = "FULL";
 
   final TextEditingController _ctrlLocation = TextEditingController();
-  final DateTimeController _ctrlDate = DateTimeController(dateTime: DateTime.now());
+  final DateTimeController _ctrlDate = DateTimeController(
+    dateTime: DateTime.now(),
+  );
   final HandSignatureControl _ctrlStroke = HandSignatureControl();
 
-  late final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag())
-    ..turnOffGrouping();
+  late final NumberFormat nf = NumberFormat.decimalPattern(
+    Localizations.localeOf(context).toLanguageTag(),
+  )..turnOffGrouping();
 
   double? unit_duration;
   double? compensation_rate;
@@ -85,7 +88,12 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
   void _recalculate() {
     setState(() {
       compensation_hours =
-          widget.events.fold(0, (total, event) => total + event.end.difference(event.begin).inMinutes) / 60;
+          widget.events.fold(
+            0,
+            (total, event) =>
+                total + event.end.difference(event.begin).inMinutes,
+          ) /
+          60;
 
       unit_duration = nf.tryParse(_ctrlUnitDuration.text)?.toDouble();
       compensation_rate = nf.tryParse(_ctrlCompensation.text)?.toDouble();
@@ -99,13 +107,15 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
     if (unit_duration == null) return;
 
     setState(() {
-      compensation_units = ((compensation_hours / unit_duration!) * 100).round() / 100;
+      compensation_units =
+          ((compensation_hours / unit_duration!) * 100).round() / 100;
     });
 
     if (compensation_rate == null) return;
 
     setState(() {
-      compensation_sum = ((compensation_rate! * compensation_units!) * 100).round() / 100;
+      compensation_sum =
+          ((compensation_rate! * compensation_units!) * 100).round() / 100;
     });
 
     if (donation_sum == null) return;
@@ -118,7 +128,11 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
   void _handleSubmission() async {
     _recalculate();
 
-    final ByteData? signatureData = await _ctrlStroke.toImage(fit: true, width: 600, height: 200);
+    final ByteData? signatureData = await _ctrlStroke.toImage(
+      fit: true,
+      width: 600,
+      height: 200,
+    );
     final Uint8List? signatureBytes = signatureData?.buffer.asUint8List();
 
     billing_instructor_pdf(
@@ -152,7 +166,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.trainerBilling),
+        title: Text(AppLocalizations.of(context)!.instructorBilling),
       ),
       body: AppBody(
         maxWidth: 1000,
@@ -172,7 +186,8 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             ),
           ),
           AppInfoRow(
-            info: "${AppLocalizations.of(context)!.trainerUnitDuration} (${AppLocalizations.of(context)!.dateHour})",
+            info:
+                "${AppLocalizations.of(context)!.instructorUnitDuration} (${AppLocalizations.of(context)!.dateHour})",
             child: TextFormField(
               controller: _ctrlUnitDuration,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -180,7 +195,8 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             ),
           ),
           AppInfoRow(
-            info: "${AppLocalizations.of(context)!.trainerCompensationPerUnit} (Euro)",
+            info:
+                "${AppLocalizations.of(context)!.instructorCompensationPerUnit} (Euro)",
             child: TextFormField(
               controller: _ctrlCompensation,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -188,7 +204,8 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             ),
           ),
           AppInfoRow(
-            info: "${AppLocalizations.of(context)!.trainerCompensationDontation} (Euro)",
+            info:
+                "${AppLocalizations.of(context)!.instructorCompensationDontation} (Euro)",
             child: TextFormField(
               controller: _ctrlDonation,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -209,49 +226,63 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
               children: [
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerUnitDuration),
+                    Text(AppLocalizations.of(context)!.instructorUnitDuration),
                     Text("${nf.format(unit_duration)} h"),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerCompensationPerUnit),
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.instructorCompensationPerUnit,
+                    ),
                     Text("${nf.format(compensation_rate)} €"),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerTimeTotal),
+                    Text(AppLocalizations.of(context)!.instructorTimeTotal),
                     Text("${nf.format(compensation_hours)} h"),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerUnitTotal),
+                    Text(AppLocalizations.of(context)!.instructorUnitTotal),
                     Text(nf.format(compensation_units)),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerCompensationTotal),
+                    Text(
+                      AppLocalizations.of(context)!.instructorCompensationTotal,
+                    ),
                     Text("${nf.format(compensation_sum)} €"),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerCompensationDontation),
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.instructorCompensationDontation,
+                    ),
                     Text("${nf.format(donation_sum)} €"),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(AppLocalizations.of(context)!.trainerCompensationDisbursement),
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.instructorCompensationDisbursement,
+                    ),
                     Text(
                       switch (disbursement_sum) {
                         null => AppLocalizations.of(context)!.undefined,
                         < 0 =>
-                          "${AppLocalizations.of(context)!.trainerCompensationDontation} "
-                              "> ${AppLocalizations.of(context)!.trainerCompensationTotal}",
+                          "${AppLocalizations.of(context)!.instructorCompensationDontation} "
+                              "> ${AppLocalizations.of(context)!.instructorCompensationTotal}",
                         _ => "${nf.format(disbursement_sum)} €",
                       },
                     ),
@@ -264,14 +295,14 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             title: AppLocalizations.of(context)!.labelMoreDetails,
             children: [
               AppInfoRow(
-                info: "Additional comments for the time table?",
+                info: AppLocalizations.of(context)!.instructorTimeTableComment,
                 child: TextFormField(
                   controller: _ctrlComment,
                   maxLines: 3,
                 ),
               ),
               AppInfoRow(
-                info: "Employment type at the club?",
+                info: AppLocalizations.of(context)!.instructorJobPriority,
                 child: RadioGroup<String>(
                   groupValue: _ctrlJobPriority,
                   onChanged: (String? value) {
@@ -279,14 +310,22 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
                       _ctrlJobPriority = value!;
                     });
                   },
-                  child: const Column(
+                  child: Column(
                     children: <Widget>[
                       ListTile(
-                        title: Text("Supplementary Employment"),
+                        title: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.instructorJobPrioritySupplementary,
+                        ),
                         leading: Radio<String>(value: "SUPPLEMENTARY"),
                       ),
                       ListTile(
-                        title: Text("Incidental Employment"),
+                        title: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.instructorJobPriorityIncidental,
+                        ),
                         leading: Radio<String>(value: "INCIDENTAL"),
                       ),
                     ],
@@ -294,20 +333,31 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
                 ),
               ),
               AppInfoRow(
-                info: "Additional activities with allowances eligible for tax relief?",
+                info: AppLocalizations.of(context)!.instructorJobAllowance,
                 child: RadioGroup<String>(
                   groupValue: _ctrlJobAllowance,
-                  onChanged: (String? value) => setState(() => _ctrlJobAllowance = value!),
+                  onChanged: (String? value) =>
+                      setState(() => _ctrlJobAllowance = value!),
                   child: Column(
                     children: <Widget>[
-                      const ListTile(
-                        title: Text('No other activities outside of this club'),
+                      ListTile(
+                        title: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.instructorJobAllowanceExclusive,
+                        ),
                         leading: Radio<String>(value: "EXCLUSIVE"),
                       ),
                       ListTile(
                         title: TextFormField(
                           controller: _ctrlJobInstitutions,
-                          decoration: InputDecoration(hint: Text("Name/Address/Allowance (€) of other institution(s)")),
+                          decoration: InputDecoration(
+                            hint: Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.instructorJobAllowanceOther,
+                            ),
+                          ),
                           maxLines: 3,
                         ),
                         leading: const Radio<String>(value: "NON-EXCLUSIVE"),
@@ -317,22 +367,23 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
                 ),
               ),
               AppInfoRow(
-                info: "Use licence for the club?",
+                info: AppLocalizations.of(context)!.instructorLicenseUsage,
                 child: RadioGroup<String>(
                   groupValue: _ctrlLicenseUsage,
-                  onChanged: (String? value) => setState(() => _ctrlLicenseUsage = value!),
+                  onChanged: (String? value) =>
+                      setState(() => _ctrlLicenseUsage = value!),
                   child: Column(
-                    children: <Widget>[
-                      const ListTile(
-                        title: Text('Full'),
+                    children: [
+                      ListTile(
+                        title: Text(AppLocalizations.of(context)!.labelFull),
                         leading: Radio<String>(value: "FULL"),
                       ),
-                      const ListTile(
-                        title: Text('Split'),
+                      ListTile(
+                        title: Text(AppLocalizations.of(context)!.labelSplit),
                         leading: Radio<String>(value: "SPLIT"),
                       ),
-                      const ListTile(
-                        title: Text('None'),
+                      ListTile(
+                        title: Text(AppLocalizations.of(context)!.labelNone),
                         leading: Radio<String>(value: "NONE"),
                       ),
                     ],
@@ -348,7 +399,11 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.dateDate,
-            child: DateTimeField(controller: _ctrlDate, showTime: false, nullable: false),
+            child: DateTimeField(
+              controller: _ctrlDate,
+              showTime: false,
+              nullable: false,
+            ),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelSignature,
@@ -356,7 +411,9 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionDownload,
-            onPressed: (disbursement_sum != null && disbursement_sum! >= 0) ? _handleSubmission : null,
+            onPressed: (disbursement_sum != null && disbursement_sum! >= 0)
+                ? _handleSubmission
+                : null,
           ),
         ],
       ),

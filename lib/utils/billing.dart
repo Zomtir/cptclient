@@ -39,10 +39,26 @@ void billing_instructor_pdf(
   Uint8List? signature_stroke,
 }) async {
   var docTheme = pw.ThemeData.withFont(
-    base: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.regular.ttf")),
-    bold: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.bold.ttf")),
-    italic: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.italic.ttf")),
-    boldItalic: pw.Font.ttf(await rootBundle.load("assets/fonts/SourceSansPro/source-sans-pro.bold-italic.ttf")),
+    base: pw.Font.ttf(
+      await rootBundle.load(
+        "assets/fonts/SourceSansPro/source-sans-pro.regular.ttf",
+      ),
+    ),
+    bold: pw.Font.ttf(
+      await rootBundle.load(
+        "assets/fonts/SourceSansPro/source-sans-pro.bold.ttf",
+      ),
+    ),
+    italic: pw.Font.ttf(
+      await rootBundle.load(
+        "assets/fonts/SourceSansPro/source-sans-pro.italic.ttf",
+      ),
+    ),
+    boldItalic: pw.Font.ttf(
+      await rootBundle.load(
+        "assets/fonts/SourceSansPro/source-sans-pro.bold-italic.ttf",
+      ),
+    ),
   );
 
   final doc = pw.Document(theme: docTheme);
@@ -50,8 +66,9 @@ void billing_instructor_pdf(
   final clubBannerBytes = (await api_anon.club_banner(club.id)).unwrap();
 
   final int fiscal_year = date_from.year;
-  final NumberFormat nf = NumberFormat.decimalPattern(Localizations.localeOf(context).toLanguageTag())
-    ..turnOffGrouping();
+  final NumberFormat nf = NumberFormat.decimalPattern(
+    Localizations.localeOf(context).toLanguageTag(),
+  )..turnOffGrouping();
 
   pw.TextStyle styleBold = pw.TextStyle(fontWeight: pw.FontWeight.bold);
 
@@ -71,7 +88,10 @@ void billing_instructor_pdf(
 
   pw.Border borderGrey = pw.Border.all(color: PdfColors.grey700, width: 1);
 
-  pw.BoxDecoration boxInputDecoration = pw.BoxDecoration(color: PdfColors.grey50, border: borderGrey);
+  pw.BoxDecoration boxInputDecoration = pw.BoxDecoration(
+    color: PdfColors.grey50,
+    border: borderGrey,
+  );
 
   pw.Widget buildHeader() {
     return pw.Column(
@@ -89,12 +109,17 @@ void billing_instructor_pdf(
         pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
-            pw.Image(pw.MemoryImage(Uint8List.fromList(clubBannerBytes)), width: 200),
+            pw.Image(
+              pw.MemoryImage(Uint8List.fromList(clubBannerBytes)),
+              width: 200,
+            ),
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.end,
               children: [
                 pw.Text("$discipline / $role"),
-                pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
+                pw.Text(
+                  "${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}",
+                ),
                 pw.Text("${user.firstname} ${user.lastname}"),
               ],
             ),
@@ -149,7 +174,7 @@ void billing_instructor_pdf(
         children: [
           buildHeader(),
           pw.Text(
-            AppLocalizations.of(context)!.trainerBilling,
+            AppLocalizations.of(context)!.instructorBilling,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
@@ -175,7 +200,9 @@ void billing_instructor_pdf(
               pw.TableRow(
                 children: [
                   pw.Text(AppLocalizations.of(context)!.dateFrame),
-                  pw.Text("${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}"),
+                  pw.Text(
+                    "${date_from.fmtDate(context)} - ${date_until.fmtDate(context)}",
+                  ),
                 ],
               ),
               pw.TableRow(
@@ -229,7 +256,9 @@ void billing_instructor_pdf(
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!.trainerTimeStatement(club.name)),
+          pw.Text(
+            AppLocalizations.of(context)!.instructorTimeStatement(club.name),
+          ),
           pw.SizedBox(height: 10),
           pw.Table(
             columnWidths: {
@@ -239,31 +268,35 @@ void billing_instructor_pdf(
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerTimeTotal),
+                  pw.Text(AppLocalizations.of(context)!.instructorTimeTotal),
                   pw.Text("${nf.format(compensation_hours)} h"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerUnitDuration),
+                  pw.Text(AppLocalizations.of(context)!.instructorUnitDuration),
                   pw.Text("${nf.format(unit_duration)} h"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerUnitTotal),
+                  pw.Text(AppLocalizations.of(context)!.instructorUnitTotal),
                   pw.Text("${nf.format(compensation_units)}"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerCompensationPerUnit),
+                  pw.Text(
+                    AppLocalizations.of(context)!.instructorCompensationPerUnit,
+                  ),
                   pw.Text("${nf.format(compensation_rate)} Euro"),
                 ],
               ),
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerCompensationTotal),
+                  pw.Text(
+                    AppLocalizations.of(context)!.instructorCompensationTotal,
+                  ),
                   pw.Text("${nf.format(compensation_sum)} Euro"),
                 ],
               ),
@@ -271,14 +304,20 @@ void billing_instructor_pdf(
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            AppLocalizations.of(context)!.trainerWaiverStatement,
+            AppLocalizations.of(context)!.instructorWaiverStatement,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!.trainerWaiverDonationClause(club.name)),
+          pw.Text(
+            AppLocalizations.of(
+              context,
+            )!.instructorWaiverDonationClause(club.name),
+          ),
           pw.SizedBox(height: 5),
-          pw.Text(AppLocalizations.of(context)!.trainerWaiverTaxExemptionClause),
+          pw.Text(
+            AppLocalizations.of(context)!.instructorWaiverTaxExemptionClause,
+          ),
           pw.SizedBox(height: 10),
           pw.Table(
             tableWidth: pw.TableWidth.min,
@@ -289,21 +328,27 @@ void billing_instructor_pdf(
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text(AppLocalizations.of(context)!.trainerCompensationTotal),
+                  pw.Text(
+                    AppLocalizations.of(context)!.instructorCompensationTotal,
+                  ),
                   pw.Text("${nf.format(compensation_sum)} Euro"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDontation}"),
+                  pw.Text(
+                    "→ ${AppLocalizations.of(context)!.instructorCompensationDontation}",
+                  ),
                   pw.Text("${nf.format(donation_sum)} Euro"),
                 ],
               ),
               pw.TableRow(children: [pw.SizedBox(height: 10)]),
               pw.TableRow(
                 children: [
-                  pw.Text("→ ${AppLocalizations.of(context)!.trainerCompensationDisbursement}"),
+                  pw.Text(
+                    "→ ${AppLocalizations.of(context)!.instructorCompensationDisbursement}",
+                  ),
                   pw.Text("${nf.format(disbursement_sum)} Euro"),
                 ],
               ),
@@ -317,7 +362,10 @@ void billing_instructor_pdf(
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Text(AppLocalizations.of(context)!.labelComment, style: styleTinyBold),
+                pw.Text(
+                  AppLocalizations.of(context)!.labelComment,
+                  style: styleTinyBold,
+                ),
                 pw.Text(comment),
               ],
             ),
@@ -327,7 +375,10 @@ void billing_instructor_pdf(
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
             child: buildSignature(
-              "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
+              "${AppLocalizations.of(context)!.labelPlace}/"
+              "${AppLocalizations.of(context)!.labelDate}/"
+              "${AppLocalizations.of(context)!.labelSignature} "
+              "${AppLocalizations.of(context)!.instructor}",
             ),
           ),
         ],
@@ -341,7 +392,9 @@ void billing_instructor_pdf(
         pw.Text(event.begin.fmtDate(context)),
         pw.Text(event.title),
         pw.Text(event.location?.name ?? ''),
-        pw.Text("${event.begin.fmtTime(context)}-${event.end.fmtTime(context)}"),
+        pw.Text(
+          "${event.begin.fmtTime(context)}-${event.end.fmtTime(context)}",
+        ),
         pw.Text("${event.end.difference(event.begin).inMinutes} min"),
       ],
     );
@@ -354,7 +407,10 @@ void billing_instructor_pdf(
     int startIndex = page * eventsPerPage;
     int endIndex = min(startIndex + eventsPerPage, event_list.length);
     List<Event> partial_events = event_list.sublist(startIndex, endIndex);
-    int partial_minutes = partial_events.fold(0, (total, event) => total + event.end.difference(event.begin).inMinutes);
+    int partial_minutes = partial_events.fold(
+      0,
+      (total, event) => total + event.end.difference(event.begin).inMinutes,
+    );
 
     doc.addPage(
       pw.Page(
@@ -363,7 +419,7 @@ void billing_instructor_pdf(
           children: [
             buildHeader(),
             pw.Text(
-              "${AppLocalizations.of(context)!.trainerTimeTable} - ${AppLocalizations.of(context)!.labelPage} ${page + 1}",
+              "${AppLocalizations.of(context)!.instructorTimeTable} - ${AppLocalizations.of(context)!.labelPage} ${page + 1}",
               textAlign: pw.TextAlign.center,
               style: styleHeading,
             ),
@@ -373,11 +429,26 @@ void billing_instructor_pdf(
               children: [
                 pw.TableRow(
                   children: [
-                    pw.Text(AppLocalizations.of(context)!.dateDate, style: styleBold),
-                    pw.Text(AppLocalizations.of(context)!.trainerEventActivity, style: styleBold),
-                    pw.Text(AppLocalizations.of(context)!.trainerEventLocation, style: styleBold),
-                    pw.Text(AppLocalizations.of(context)!.dateTime, style: styleBold),
-                    pw.Text(AppLocalizations.of(context)!.dateDuration, style: styleBold),
+                    pw.Text(
+                      AppLocalizations.of(context)!.dateDate,
+                      style: styleBold,
+                    ),
+                    pw.Text(
+                      AppLocalizations.of(context)!.instructorEventActivity,
+                      style: styleBold,
+                    ),
+                    pw.Text(
+                      AppLocalizations.of(context)!.instructorEventLocation,
+                      style: styleBold,
+                    ),
+                    pw.Text(
+                      AppLocalizations.of(context)!.dateTime,
+                      style: styleBold,
+                    ),
+                    pw.Text(
+                      AppLocalizations.of(context)!.dateDuration,
+                      style: styleBold,
+                    ),
                   ],
                 ),
                 ...partial_events.map((event) => buildUnitRow(event)),
@@ -406,7 +477,9 @@ void billing_instructor_pdf(
                     padding: const pw.EdgeInsets.all(5),
                     decoration: boxInputDecoration,
                     child: buildSignature(
-                      "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.trainer}",
+                      "${AppLocalizations.of(context)!.labelDate}/"
+                      "${AppLocalizations.of(context)!.labelSignature} "
+                      "${AppLocalizations.of(context)!.instructor}",
                     ),
                   ),
                 ),
@@ -416,7 +489,10 @@ void billing_instructor_pdf(
                     padding: const pw.EdgeInsets.all(5),
                     decoration: boxInputDecoration,
                     child: pw.Text(
-                      "${AppLocalizations.of(context)!.signatureWithDate} ${AppLocalizations.of(context)!.clubDivisionHead}",
+                      "${AppLocalizations.of(context)!.labelPlace}/"
+                      "${AppLocalizations.of(context)!.labelDate}/"
+                      "${AppLocalizations.of(context)!.labelSignature} "
+                      "${AppLocalizations.of(context)!.clubDivisionHead}",
                       style: styleTinyBold,
                     ),
                   ),
@@ -436,22 +512,25 @@ void billing_instructor_pdf(
         children: [
           buildHeader(),
           pw.Text(
-            AppLocalizations.of(context)!.trainerTaxExemptionStatement,
+            AppLocalizations.of(context)!.instructorTaxExemptionStatement,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            AppLocalizations.of(context)!.trainerTaxExemptionClause(club.name, club.chairman ?? '\t\t\t'),
+            AppLocalizations.of(context)!.instructorTaxExemptionClause(
+              club.name,
+              club.chairman ?? '\t\t\t',
+            ),
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            AppLocalizations.of(context)!.trainerTaxExemptionExplanation,
+            AppLocalizations.of(context)!.instructorTaxExemptionExplanation,
             textAlign: pw.TextAlign.justify,
             style: styleTiny,
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!.trainerTaxPartTime),
+          pw.Text(AppLocalizations.of(context)!.instructorTaxPartTime),
           pw.SizedBox(height: 5),
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -464,7 +543,11 @@ void billing_instructor_pdf(
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!.trainerTaxAssignmentDeclaration(fiscal_year.toString())),
+          pw.Text(
+            AppLocalizations.of(
+              context,
+            )!.instructorTaxAssignmentDeclaration(fiscal_year.toString()),
+          ),
           pw.SizedBox(height: 5),
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -474,7 +557,9 @@ void billing_instructor_pdf(
                 child: pw.Column(
                   children: [
                     pw.Text(
-                      AppLocalizations.of(context)!.trainerTaxAssignmentExclusive,
+                      AppLocalizations.of(
+                        context,
+                      )!.instructorTaxAssignmentExclusive,
                       textAlign: pw.TextAlign.justify,
                     ),
                   ],
@@ -492,7 +577,9 @@ void billing_instructor_pdf(
                   crossAxisAlignment: pw.CrossAxisAlignment.stretch,
                   children: [
                     pw.Text(
-                      AppLocalizations.of(context)!.trainerTaxAssignmentShared,
+                      AppLocalizations.of(
+                        context,
+                      )!.instructorTaxAssignmentShared,
                       textAlign: pw.TextAlign.justify,
                     ),
                     pw.SizedBox(height: 5),
@@ -512,7 +599,10 @@ void billing_instructor_pdf(
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
             child: buildSignature(
-              "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
+              "${AppLocalizations.of(context)!.labelPlace}/"
+              "${AppLocalizations.of(context)!.labelDate}/"
+              "${AppLocalizations.of(context)!.labelSignature} "
+              "${AppLocalizations.of(context)!.instructor}",
             ),
           ),
         ],
@@ -527,7 +617,7 @@ void billing_instructor_pdf(
         children: [
           buildHeader(),
           pw.Text(
-            AppLocalizations.of(context)!.trainerLicenseDeclaration,
+            AppLocalizations.of(context)!.instructorLicenseDeclaration,
             textAlign: pw.TextAlign.center,
             style: styleHeading,
           ),
@@ -542,7 +632,9 @@ void billing_instructor_pdf(
                 children: [
                   pw.Text("${AppLocalizations.of(context)!.userLicenseMain}:"),
                   pw.Text(
-                    user.license_main == null ? "-" : "${user.license_main!.name} (${user.license_main!.number})",
+                    user.license_main == null
+                        ? "-"
+                        : "${user.license_main!.name} (${user.license_main!.number})",
                   ),
                 ],
               ),
@@ -550,17 +642,24 @@ void billing_instructor_pdf(
                 children: [
                   pw.Text("${AppLocalizations.of(context)!.userLicenseExtra}:"),
                   pw.Text(
-                    user.license_extra == null ? "-" : "${user.license_extra!.name} (${user.license_extra!.number})",
+                    user.license_extra == null
+                        ? "-"
+                        : "${user.license_extra!.name} (${user.license_extra!.number})",
                   ),
                 ],
               ),
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageStatement(club.name, fiscal_year.toString())),
+          pw.Text(
+            AppLocalizations.of(context)!.instructorLicenseUsageStatement(
+              club.name,
+              fiscal_year.toString(),
+            ),
+          ),
           pw.SizedBox(height: 10),
           pw.Text(
-            AppLocalizations.of(context)!.trainerLicenseUsageExplanation,
+            AppLocalizations.of(context)!.instructorLicenseUsageExplanation,
             textAlign: pw.TextAlign.justify,
             style: styleTiny,
           ),
@@ -569,7 +668,7 @@ void billing_instructor_pdf(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(job_licence_usage == "FULL" ? "☑ " : "☐ "),
-              pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageFull),
+              pw.Text(AppLocalizations.of(context)!.instructorLicenseUsageFull),
             ],
           ),
           pw.SizedBox(height: 5),
@@ -577,7 +676,9 @@ void billing_instructor_pdf(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(job_licence_usage == "SPLIT" ? "☑ " : "☐ "),
-              pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageSplit),
+              pw.Text(
+                AppLocalizations.of(context)!.instructorLicenseUsageSplit,
+              ),
             ],
           ),
           pw.SizedBox(height: 5),
@@ -585,7 +686,7 @@ void billing_instructor_pdf(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(job_licence_usage == "NONE" ? "☑ " : "☐ "),
-              pw.Text(AppLocalizations.of(context)!.trainerLicenseUsageNone),
+              pw.Text(AppLocalizations.of(context)!.instructorLicenseUsageNone),
             ],
           ),
           pw.Spacer(),
@@ -594,7 +695,10 @@ void billing_instructor_pdf(
             padding: const pw.EdgeInsets.all(5),
             decoration: boxInputDecoration,
             child: buildSignature(
-              "${AppLocalizations.of(context)!.signatureWithDateAndPlace} ${AppLocalizations.of(context)!.trainer}",
+              "${AppLocalizations.of(context)!.labelPlace}/"
+              "${AppLocalizations.of(context)!.labelDate}/"
+              "${AppLocalizations.of(context)!.labelSignature} "
+              "${AppLocalizations.of(context)!.instructor}",
             ),
           ),
         ],

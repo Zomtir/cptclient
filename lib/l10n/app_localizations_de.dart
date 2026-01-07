@@ -24,6 +24,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelOngoing => 'Fortlaufend';
 
   @override
+  String get labelRequired => 'Benötigt';
+
+  @override
+  String get labelFull => 'Voll';
+
+  @override
+  String get labelSplit => 'Geteilt';
+
+  @override
+  String get labelNone => 'Nicht';
+
+  @override
   String get labelFormat => 'Formattierung';
 
   @override
@@ -34,9 +46,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelStatistics => 'Übersichten';
-
-  @override
-  String get labelRequired => 'Benötigt';
 
   @override
   String get labelPermission => 'Berechtigung';
@@ -157,6 +166,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelSignature => 'Unterschrift';
+
+  @override
+  String get labelPlace => 'Ort';
+
+  @override
+  String get labelDate => 'Datum';
 
   @override
   String get actionSelect => 'Auswählen';
@@ -1038,115 +1053,138 @@ class AppLocalizationsDe extends AppLocalizations {
   String get competenceDate => 'Datum';
 
   @override
-  String get trainer => 'Übungsleiter';
+  String get instructor => 'Übungsleiter';
 
   @override
-  String get trainerBilling => 'Übungsleiterabrechnung';
+  String get instructorTimeTableComment =>
+      'Zusätzliche Kommentare zur Stundenaufstellung?';
 
   @override
-  String trainerTimeStatement(Object club_name) {
+  String get instructorJobPriority => 'Angestelltenverhältnis beim Verein?';
+
+  @override
+  String get instructorJobPrioritySupplementary => 'Nebenberuflich';
+
+  @override
+  String get instructorJobPriorityIncidental => 'Hauptberuflich';
+
+  @override
+  String get instructorJobAllowance =>
+      'Weitere Tätigkeiten mit Anrechnung an Freibeträge?';
+
+  @override
+  String get instructorJobAllowanceExclusive =>
+      'Keine weiteren Tätigkeiten außer diesem Verein';
+
+  @override
+  String get instructorJobAllowanceOther =>
+      'Name/Adresse/Freibeträge (€) der anderen Einrichtungen';
+
+  @override
+  String get instructorLicenseUsage =>
+      'Verwendung der Lizenzen für den Verein?';
+
+  @override
+  String get instructorBilling => 'Übungsleiterabrechnung';
+
+  @override
+  String instructorTimeStatement(Object club_name) {
     return 'Ich versichere, dass ich die Übungsstunden entsprechend der Stundenaufstellung für den Verein $club_name abgehalten habe.';
   }
 
   @override
-  String get trainerTimeTotal => 'Übungsstunden';
+  String get instructorTimeTotal => 'Übungsstunden';
 
   @override
-  String get trainerUnitDuration => 'Dauer pro Einheit';
+  String get instructorUnitDuration => 'Dauer pro Einheit';
 
   @override
-  String get trainerUnitTotal => 'Einheiten';
+  String get instructorUnitTotal => 'Einheiten';
 
   @override
-  String get trainerCompensationPerUnit => 'Vergütung pro Einheit';
+  String get instructorCompensationPerUnit => 'Vergütung pro Einheit';
 
   @override
-  String get trainerCompensationTotal => 'Vergütungsbetrag';
+  String get instructorCompensationTotal => 'Vergütungsbetrag';
 
   @override
-  String get trainerCompensationDisbursement => 'Auszahlungsbetrag';
+  String get instructorCompensationDisbursement => 'Auszahlungsbetrag';
 
   @override
-  String get trainerCompensationDontation => 'Zuwendungsspende';
+  String get instructorCompensationDontation => 'Zuwendungsspende';
 
   @override
-  String get trainerTimeTable => 'Stundenaufstellung';
+  String get instructorTimeTable => 'Stundenaufstellung';
 
   @override
-  String get trainerEventActivity => 'Tätigkeit';
+  String get instructorEventActivity => 'Tätigkeit';
 
   @override
-  String get trainerEventLocation => 'Trainingsstätte';
+  String get instructorEventLocation => 'Trainingsstätte';
 
   @override
-  String get trainerWaiverStatement => 'Verzichtserklärung';
+  String get instructorWaiverStatement => 'Verzichtserklärung';
 
   @override
-  String trainerWaiverDonationClause(Object club_name) {
+  String instructorWaiverDonationClause(Object club_name) {
     return 'Die mir zustehende Vergütung aus gemeinnütziger Tätigkeit soll nur in dem angegebenen Anteil ausgezahlt werden. Den nicht ausgezahlten Betrag wende ich dem Verein $club_name als Spende zu und bitte um Erteilung einer entsprechenden Zuwendungsbestätigung.';
   }
 
   @override
-  String get trainerWaiverTaxExemptionClause =>
+  String get instructorWaiverTaxExemptionClause =>
       'Gleichzeitig versichere ich hiermit, dass die Steuerbefreiung nach § 3 Nr. 26a EStG nicht bereits für eine andere ehrenamtliche Tätigkeit berücksichtigt wurde.';
 
   @override
-  String get trainerTaxExemptionStatement => 'Freibetragserklärung';
+  String get instructorTaxExemptionStatement => 'Freibetragserklärung';
 
   @override
-  String trainerTaxExemptionClause(Object club_chairman, Object club_name) {
+  String instructorTaxExemptionClause(Object club_chairman, Object club_name) {
     return 'Erklärung zur Vergütungsabrechnung bei Nutzung der Übungsleiterfreibetragsregelung nach § 3 Nr. 26 EstG zwischen dem Verein $club_name, vertreten durch den 1. Vorsitzenden $club_chairman, und dem/der Übungsleiter/in.';
   }
 
   @override
-  String get trainerTaxExemptionExplanation =>
+  String get instructorTaxExemptionExplanation =>
       'Es besteht die Möglichkeit zur Nutzung des jeweiligen Freibetragsvolumens durch den Verein bis zum höchstmöglichen Freibetrag von derzeit 3.000 Euro pro Jahr. Bei Beachtung der sonstigen Vorgaben für diese steuerbegünstigte nebenberufliche Tätigkeit handelt es sich um einen persönlichen Steuerfreibetrag, den der nebenberuflich Beschäftigte personenbezogen bei der Zusammenarbeit mit Vereinen/Verbänden und sonstigen gemeinnützigen Organisationen für Vergütungsabrechnungen nutzen kann. Dadurch sind begünstigte Übungsleitertätigkeiten weitgehend von steuer- und sozialversicherungsrechtlichen Abgaben befreit.';
 
   @override
-  String get trainerTaxPartTime =>
+  String get instructorTaxPartTime =>
       'Ich bin als Übungsleiter/in für den Verein nur nebenberuflich tätig.';
 
   @override
-  String trainerTaxAssignmentDeclaration(Object fiscal_year) {
+  String instructorTaxAssignmentDeclaration(Object fiscal_year) {
     return 'Für die Inanspruchnahme meines persönlichen Steuerfreibetrages im Jahr $fiscal_year gebe ich an:';
   }
 
   @override
-  String get trainerTaxAssignmentExclusive =>
+  String get instructorTaxAssignmentExclusive =>
       'Ich versichere, dass ich neben meiner Übungsleitertätigkeit beim Verein keine weiteren begünstigten Tätigkeiten nach § 3 Nr. 26 EStG ausübe bzw. ausgeübt habe. Eine auch teilweise Inanspruchnahme meines persönlichen Steuerfreibetrags bei anderen Dritten ist somit nicht erfolgt.';
 
   @override
-  String get trainerTaxAssignmentShared =>
+  String get instructorTaxAssignmentShared =>
       'Neben meiner Tätigkeit für den Verein werden weitere Übungsleitertätigkeit(en) für nachfolgende Einrichtung(en) ausgeübt. Hierfür wird dort bereits vom persönlichen Steuerfreibetrag nach § 3 Nr. 26 EStG ein anteiliger Betrag für die dortigen Vergütungen genutzt.';
 
   @override
-  String get trainerLicenseDeclaration =>
+  String get instructorLicenseDeclaration =>
       'Einreichung von Lizenzen für die Vereinspauschale';
 
   @override
-  String trainerLicenseUsageStatement(Object club_name, Object fiscal_year) {
+  String instructorLicenseUsageStatement(Object club_name, Object fiscal_year) {
     return 'Für das Jahr $fiscal_year sollen diese Lizenzen vom Verein $club_name für die Vereinspauschale nach den Sportförderrichtlinien eingereicht werden.';
   }
 
   @override
-  String get trainerLicenseUsageExplanation =>
+  String get instructorLicenseUsageExplanation =>
       'Eine Lizenz kann zwischen maximal zwei Vereinen geteilt werden.';
 
   @override
-  String get trainerLicenseUsageFull =>
+  String get instructorLicenseUsageFull =>
       'Die Lizenz soll voll für den Verein verwendet werden.';
 
   @override
-  String get trainerLicenseUsageSplit =>
+  String get instructorLicenseUsageSplit =>
       'Die Lizenz soll mit dem Verein geteilt werden.';
 
   @override
-  String get trainerLicenseUsageNone =>
+  String get instructorLicenseUsageNone =>
       'Die Lizenz soll nicht für den Verein verwendet werden.';
-
-  @override
-  String get signatureWithDateAndPlace => 'Ort/Datum/Unterschrift';
-
-  @override
-  String get signatureWithDate => 'Datum/Unterschrift';
 }
