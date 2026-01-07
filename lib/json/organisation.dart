@@ -50,8 +50,7 @@ class Organisation extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Text("$name ($abbreviation)");
   }
 
   @override
