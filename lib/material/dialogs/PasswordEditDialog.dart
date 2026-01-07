@@ -21,7 +21,6 @@ class PasswordEditDialog extends StatefulWidget {
 }
 
 class PasswordEditDialogState extends State<PasswordEditDialog> {
-  late Credential currentValue;
   final TextEditingController _ctrlSalt = TextEditingController();
   final TextEditingController _ctrlPassword = TextEditingController();
 
@@ -30,7 +29,7 @@ class PasswordEditDialogState extends State<PasswordEditDialog> {
   @override
   void initState() {
     super.initState();
-    currentValue = widget.initialValue ?? Credential(password: '', salt: crypto.generateHex(16));
+    Credential currentValue = widget.initialValue ?? Credential(password: '', salt: crypto.generateHex(16));
     _ctrlSalt.text = currentValue.salt!;
     _ctrlPassword.text = currentValue.password!;
   }
@@ -49,7 +48,6 @@ class PasswordEditDialogState extends State<PasswordEditDialog> {
                 suffixIcon: IconButton(
                   onPressed: () => setState(() {
                     _ctrlSalt.text = crypto.generateHex(16);
-                    currentValue.salt = _ctrlSalt.text;
                   }),
                   icon: Icon(Icons.refresh),
                 ),
@@ -96,18 +94,19 @@ class PasswordEditDialogState extends State<PasswordEditDialog> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () {
-              if ((currentValue.salt?.length ?? 0) != 32) {
+              if (_ctrlSalt.text.length != 32) {
                 messageText("${AppLocalizations.of(context)!.userSalt} ${AppLocalizations.of(context)!.statusIsInvalid}: x != 32");
                 return;
               }
-              if ((currentValue.password?.length ?? 0) < widget.minLength) {
+              if (_ctrlPassword.text.length < widget.minLength) {
                 messageText("${AppLocalizations.of(context)!.userPassword} ${AppLocalizations.of(context)!.statusIsInvalid}: x < ${widget.minLength}");
                 return;
               }
-              if ((currentValue.password?.length ?? 0) > widget.maxLength) {
+              if (_ctrlPassword.text.length > widget.maxLength) {
                 messageText("${AppLocalizations.of(context)!.userPassword} ${AppLocalizations.of(context)!.statusIsInvalid}: x > ${widget.maxLength}");
                 return;
               }
+              Credential currentValue = Credential(password: _ctrlPassword.text, salt: _ctrlSalt.text);
               widget.onConfirm?.call(currentValue);
               Navigator.pop(context);
             },

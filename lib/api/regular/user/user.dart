@@ -73,8 +73,6 @@ Future<Result<Credential>> user_password_info(UserSession session) async {
 }
 
 Future<Result> user_password_edit(UserSession session, String password, String salt) async {
-  if (password.length < 6 || password.length > 50) return Failure();
-
   Credential credential = Credential(login: session.user!.key.toString(), password: crypto.hashPassword(password, salt), salt: salt);
 
   final response = await client.post(
