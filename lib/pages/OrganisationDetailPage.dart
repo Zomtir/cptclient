@@ -78,63 +78,53 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
         children: [
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.organisationAbbreviation}",
-            child: ListTile(
-              title: Text(widget.organisation.abbreviation),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(widget.organisation.abbreviation),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => TextEditDialog(
-                        initialValue: widget.organisation.abbreviation,
-                        minLength: 1,
-                        maxLength: 10,
-                        onConfirm: (String text) {
-                          setState(() => widget.organisation.abbreviation = text);
-                          _handleSubmit();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(widget.organisation.abbreviation),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(widget.organisation.abbreviation),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => TextEditDialog(
+                    initialValue: widget.organisation.abbreviation,
+                    minLength: 1,
+                    maxLength: 10,
+                    onConfirm: (String text) {
+                      setState(() => widget.organisation.abbreviation = text);
+                      _handleSubmit();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.organisationName}",
-            child: ListTile(
-              title: Text(widget.organisation.name),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(widget.organisation.name),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => TextEditDialog(
-                        initialValue: widget.organisation.name,
-                        minLength: 1,
-                        maxLength: 30,
-                        onConfirm: (String text) {
-                          setState(() => widget.organisation.name = text);
-                          _handleSubmit();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(widget.organisation.name),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(widget.organisation.name),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => TextEditDialog(
+                    initialValue: widget.organisation.name,
+                    minLength: 1,
+                    maxLength: 30,
+                    onConfirm: (String text) {
+                      setState(() => widget.organisation.name = text);
+                      _handleSubmit();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           Divider(),
           MenuSection(
