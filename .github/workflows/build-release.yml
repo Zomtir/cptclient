@@ -98,6 +98,7 @@ jobs:
         shell: bash
         run: ./release.sh ${{ matrix.build-type }} ${{ matrix.build-type }}
       - name: Upload build artifact to the GH action
+        if: inputs.upload_action_artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.asset }}
@@ -106,7 +107,7 @@ jobs:
         if: inputs.upload_pages_artifact && matrix.platform == 'web'
         uses: actions/upload-pages-artifact@v3
         with:
-          output: ./build/web
+          path: ./build/web
       - name: Upload artifacts to GH release
         if: inputs.upload_release_artifact
         uses: svenstaro/upload-release-action@v2
