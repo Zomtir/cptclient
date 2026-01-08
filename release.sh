@@ -24,7 +24,7 @@ fi
 # LINUX
 if [[ "$ARCH" == "linux" ]]; then
     flutter build linux "${DART_DEFINES[@]}"
-    tar -czf release/cptclient-linux.tar.gz -C build/linux/x64/release/bundle .
+    tar -czf release/cptclient-linux-amd64.tar.gz -C build/linux/x64/release/bundle .
 fi
 
 # ANDROID

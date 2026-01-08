@@ -49,7 +49,7 @@ jobs:
           - os: ubuntu-latest
             platform: linux
             build-type: linux
-            asset: linux.tar.gz
+            asset: linux-amd64.tar.gz
           - os: ubuntu-latest
             platform: android
             build-type: apk

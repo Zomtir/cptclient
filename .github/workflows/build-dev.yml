@@ -38,27 +38,21 @@ jobs:
           - os: ubuntu-latest
             platform: android
             build-type: apk
-            suffix: apk
           - os: windows-latest
             platform: windows
             build-type: windows
-            suffix: zip
           - os: ubuntu-latest
             platform: linux
             build-type: linux
-            suffix: deb
           - os: ubuntu-latest
             platform: web
             build-type: web
-            suffix: tar.gz
           - os: macos-14
             platform: macos
             build-type: macos
-            suffix: zip
 #          - os: macos-14
 #            platform: ios
 #            build-type: ipa
-#            suffix: ???
 
     steps:
       - uses: actions/checkout@v4
