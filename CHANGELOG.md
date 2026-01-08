@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## Release v1.5.1 (8th Jan 2026)
+
+- feat: Allowance preview for instructor billing
+- feat: Signature and pre-filling fields for instructor billing
+- feat: Customizable time frame and role for instructor billing
+- fix: Missing organisation implementation info
+- fix: Removed temporary credentials for password validity check #86
+- fix: Redefine instructor billing comment
+- fix: Column alignment in various buildInfo
+- fix: Missing labels for undefined term begin and end
+- fix: Implement club buildInfo
+- locale: Instructor billing
+- locale: Plural of common durations and club member table headings
+- chore: Script to build release artifacts
+- chore: Upload artifacts for GH action and GH release
+
 ## Release v1.5.0 (15th Dec 2025)
 
 - feat: Minimum page width with horizontal scrolling #66
