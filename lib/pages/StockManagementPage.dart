@@ -10,7 +10,7 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/dialogs/StockEditDialog.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
 import 'package:cptclient/utils/result.dart';

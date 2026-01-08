@@ -8,7 +8,7 @@ import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';

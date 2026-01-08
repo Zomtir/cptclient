@@ -17,20 +17,20 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
-import 'package:cptclient/material/dialogs/DatePicker.dart';
-import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
+import 'package:cptclient/material/dialogs/ChoiceEditDialog.dart';
+import 'package:cptclient/material/dialogs/DateEditDialog.dart';
+import 'package:cptclient/material/dialogs/MultiChoiceDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/dialogs/TextEditDialog.dart';
-import 'package:cptclient/material/dialogs/TimePicker.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/InfoSection.dart';
-import 'package:cptclient/material/layouts/MenuSection.dart';
+import 'package:cptclient/material/dialogs/TimeEditDialog.dart';
 import 'package:cptclient/material/pages/FilterPage.dart';
 import 'package:cptclient/material/pages/ListPage.dart';
 import 'package:cptclient/material/pages/SelectionPage.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/ChoiceDisplay.dart';
+import 'package:cptclient/material/widgets/InfoSection.dart';
+import 'package:cptclient/material/widgets/MenuSection.dart';
 import 'package:cptclient/material/widgets/SectionToggle.dart';
 import 'package:cptclient/pages/EventExportPage.dart';
 import 'package:cptclient/pages/EventStatisticOrganisationPage.dart';
@@ -263,7 +263,7 @@ class EventDetailPageState extends State<EventDetailPage> {
 
     showDialog(
       context: context,
-      builder: (context) => MultiChoiceEdit<Course>(
+      builder: (context) => MultiChoiceDialog<Course>(
         items: resultItems.unwrap(),
         value: resultValue.unwrap(),
         builder: (course) => course.buildTile(context),
@@ -640,7 +640,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                         icon: Icon(Icons.calendar_today),
                         onPressed: () => showDialog(
                           context: context,
-                          builder: (context) => DatePicker(
+                          builder: (context) => DateEditDialog(
                             initialDate: _event!.begin,
                             onConfirm: (DateTime dt) {
                               setState(() => _event!.begin = _event!.begin.withDate(dt));
@@ -653,7 +653,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                         icon: Icon(Icons.watch_later_outlined),
                         onPressed: () => showDialog(
                           context: context,
-                          builder: (context) => TimePicker(
+                          builder: (context) => TimeEditDialog(
                             initialTime: TimeOfDay.fromDateTime(_event!.begin),
                             onConfirm: (TimeOfDay tod) {
                               setState(() => _event!.begin = _event!.begin.withTime(tod));
@@ -681,7 +681,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                         icon: Icon(Icons.calendar_today),
                         onPressed: () => showDialog(
                           context: context,
-                          builder: (context) => DatePicker(
+                          builder: (context) => DateEditDialog(
                             initialDate: _event!.end,
                             onConfirm: (DateTime dt) {
                               setState(() => _event!.end = _event!.end.withDate(dt));
@@ -694,7 +694,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                         icon: Icon(Icons.watch_later_outlined),
                         onPressed: () => showDialog(
                           context: context,
-                          builder: (context) => TimePicker(
+                          builder: (context) => TimeEditDialog(
                             initialTime: TimeOfDay.fromDateTime(_event!.end),
                             onConfirm: (TimeOfDay tod) {
                               setState(() => _event!.end = _event!.end.withTime(tod));
@@ -725,7 +725,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                           if (result_items is! Success) return;
                           showDialog(
                             context: context,
-                            builder: (context) => MultiChoiceEdit<Location>(
+                            builder: (context) => MultiChoiceDialog<Location>(
                               items: result_items.unwrap(),
                               value: _event!.location!,
                               builder: (event) => event.buildTile(context),
@@ -749,7 +749,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ChoiceEdit(
+                      builder: (context) => ChoiceEditDialog(
                         value: Valence.fromBool(_event!.public),
                         onConfirm: (Valence v) {
                           setState(() => _event!.public = v.toBool());
@@ -768,7 +768,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ChoiceEdit(
+                      builder: (context) => ChoiceEditDialog(
                         value: Valence.fromBool(_event!.scrutable),
                         onConfirm: (Valence v) {
                           setState(() => _event!.scrutable = v.toBool());
@@ -837,7 +837,7 @@ class EventDetailPageState extends State<EventDetailPage> {
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ChoiceEdit(
+                      builder: (context) => ChoiceEditDialog(
                         value: Valence.fromBool(_ownership),
                         onConfirm: (Valence v) {
                           setState(() => _ownership = v.toBool()!);
@@ -892,7 +892,7 @@ class EventDetailPageState extends State<EventDetailPage> {
             icon: Icon(Icons.edit),
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => MultiChoiceEdit<Confirmation>(
+              builder: (context) => MultiChoiceDialog<Confirmation>(
                 items: Confirmation.values,
                 value: _attendanceRegistration[role],
                 builder: (confirmation) => confirmation.buildTile(context),
@@ -919,7 +919,7 @@ class EventDetailPageState extends State<EventDetailPage> {
             icon: Icon(Icons.edit),
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => ChoiceEdit(
+              builder: (context) => ChoiceEditDialog(
                 value: _attendancePresence[role],
                 onConfirm: (Valence v) {
                   setState(() => _attendancePresence[role] = v);

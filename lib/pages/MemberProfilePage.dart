@@ -4,9 +4,9 @@ import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/PasswordEditDialog.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/InfoSection.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/InfoSection.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 

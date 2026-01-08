@@ -1,7 +1,7 @@
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:flutter/material.dart';
 
-class MultiChoiceEdit<T> extends StatefulWidget {
+class MultiChoiceDialog<T> extends StatefulWidget {
   final List<T> items;
   final T? value;
   final Widget Function(T) builder;
@@ -9,7 +9,7 @@ class MultiChoiceEdit<T> extends StatefulWidget {
   final VoidCallback? onReset;
   final Function(T)? onConfirm;
 
-  MultiChoiceEdit({
+  MultiChoiceDialog({
     super.key,
     required this.items,
     required this.value,
@@ -20,10 +20,10 @@ class MultiChoiceEdit<T> extends StatefulWidget {
   });
 
   @override
-  State<MultiChoiceEdit<T>> createState() => MultiChoiceEditState<T>();
+  State<MultiChoiceDialog<T>> createState() => MultiChoiceDialogState<T>();
 }
 
-class MultiChoiceEditState<T> extends State<MultiChoiceEdit<T>> {
+class MultiChoiceDialogState<T> extends State<MultiChoiceDialog<T>> {
   late T value;
 
   @override

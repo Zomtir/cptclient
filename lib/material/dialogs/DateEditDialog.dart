@@ -7,7 +7,7 @@ import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
 import 'package:flutter/material.dart';
 
-class DatePicker extends StatefulWidget {
+class DateEditDialog extends StatefulWidget {
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
@@ -15,7 +15,7 @@ class DatePicker extends StatefulWidget {
   final VoidCallback? onReset;
   final Function(DateTime)? onConfirm;
 
-  DatePicker({
+  DateEditDialog({
     super.key,
     DateTime? initialDate,
     DateTime? firstDate,
@@ -41,10 +41,10 @@ class DatePicker extends StatefulWidget {
   }
 
   @override
-  State<DatePicker> createState() => _DatePickerState();
+  State<DateEditDialog> createState() => _DateEditDialogState();
 }
 
-class _DatePickerState extends State<DatePicker> {
+class _DateEditDialogState extends State<DateEditDialog> {
   late DateTime _selectedDate;
   int _monthlyDays = 0;
   int _firstDayOffset = 0;

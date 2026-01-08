@@ -1,9 +1,9 @@
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/FilterDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppListView.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/AppListView.dart';
 import 'package:cptclient/utils/extensions.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';

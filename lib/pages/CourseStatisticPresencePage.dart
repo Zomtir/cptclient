@@ -3,7 +3,7 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/pages/CourseStatisticPresence1Page.dart';
 import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/result.dart';

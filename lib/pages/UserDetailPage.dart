@@ -9,17 +9,17 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/BankAccountEdit.dart';
-import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
-import 'package:cptclient/material/dialogs/DatePicker.dart';
-import 'package:cptclient/material/dialogs/LicenseEdit.dart';
-import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
+import 'package:cptclient/material/dialogs/BankAccountEditDialog.dart';
+import 'package:cptclient/material/dialogs/ChoiceEditDialog.dart';
+import 'package:cptclient/material/dialogs/DateEditDialog.dart';
+import 'package:cptclient/material/dialogs/LicenseEditDialog.dart';
+import 'package:cptclient/material/dialogs/MultiChoiceDialog.dart';
 import 'package:cptclient/material/dialogs/PasswordEditDialog.dart';
 import 'package:cptclient/material/dialogs/TextEditDialog.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/InfoSection.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/ChoiceDisplay.dart';
+import 'package:cptclient/material/widgets/InfoSection.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -122,7 +122,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                 icon: Icon(Icons.edit),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => ChoiceEdit(
+                  builder: (context) => ChoiceEditDialog(
                     value: Valence.fromBool(user_info!.enabled!),
                     onConfirm: (Valence? v) {
                       setState(() => user_info!.enabled = v?.toBool());
@@ -141,7 +141,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                 icon: Icon(Icons.edit),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => ChoiceEdit(
+                  builder: (context) => ChoiceEditDialog(
                     value: Valence.fromBool(user_info!.active!),
                     onConfirm: (Valence? v) {
                       setState(() => user_info!.active = v?.toBool());
@@ -368,7 +368,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                 icon: Icon(Icons.calendar_today),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => DatePicker(
+                  builder: (context) => DateEditDialog(
                     initialDate: user_info!.birth_date,
                     onConfirm: (DateTime dt) {
                       setState(() => user_info!.birth_date = dt);
@@ -456,7 +456,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                 icon: Icon(Icons.edit),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => MultiChoiceEdit<Gender>(
+                  builder: (context) => MultiChoiceDialog<Gender>(
                     items: Gender.values,
                     value: user_info!.gender,
                     builder: (gender) => gender.buildTile(context),
@@ -584,7 +584,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                   icon: Icon(Icons.add),
                   onPressed: () => showDialog(
                     context: context,
-                    builder: (context) => BankAccountEdit(
+                    builder: (context) => BankAccountEditDialog(
                       initialValue: BankAccount.fromVoid(),
                       onConfirm: (BankAccount ba) async {
                         await api_admin.user_bank_account_create(widget.session, user_info!, ba);
@@ -603,7 +603,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                   icon: Icon(Icons.edit),
                   onPressed: () => showDialog(
                     context: context,
-                    builder: (context) => BankAccountEdit(
+                    builder: (context) => BankAccountEditDialog(
                       initialValue: user_info!.bank_account!,
                       onDelete: () async {
                         await api_admin.user_bank_account_delete(widget.session, user_info!);
@@ -627,7 +627,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                       icon: Icon(Icons.add),
                       onPressed: () => showDialog(
                         context: context,
-                        builder: (context) => LicenseEdit(
+                        builder: (context) => LicenseEditDialog(
                           initialValue: License.fromVoid(),
                           onConfirm: (License lic) async {
                             await api_admin.user_license_main_create(widget.session, user_info!, lic);
@@ -650,7 +650,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                           icon: Icon(Icons.edit),
                           onPressed: () => showDialog(
                             context: context,
-                            builder: (context) => LicenseEdit(
+                            builder: (context) => LicenseEditDialog(
                               initialValue: user_info!.license_main!,
                               onDelete: () async {
                                 await api_admin.user_license_main_delete(widget.session, user_info!);
@@ -676,7 +676,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                       icon: Icon(Icons.add),
                       onPressed: () => showDialog(
                         context: context,
-                        builder: (context) => LicenseEdit(
+                        builder: (context) => LicenseEditDialog(
                           initialValue: License.fromVoid(),
                           onConfirm: (License lic) async {
                             await api_admin.user_license_extra_create(widget.session, user_info!, lic);
@@ -699,7 +699,7 @@ class UserDetailPageState extends State<UserDetailPage> {
                           icon: Icon(Icons.edit),
                           onPressed: () => showDialog(
                             context: context,
-                            builder: (context) => LicenseEdit(
+                            builder: (context) => LicenseEditDialog(
                               initialValue: user_info!.license_extra!,
                               onDelete: () async {
                                 await api_admin.user_license_extra_delete(widget.session, user_info!);

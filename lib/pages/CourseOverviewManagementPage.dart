@@ -7,13 +7,13 @@ import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/json/valence.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/ChoiceEdit.dart';
+import 'package:cptclient/material/dialogs/ChoiceEditDialog.dart';
 import 'package:cptclient/material/fields/AppField.dart';
 import 'package:cptclient/material/fields/FieldController.dart';
 import 'package:cptclient/material/fields/SkillRangeField.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
-import 'package:cptclient/material/layouts/AppListView.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppListView.dart';
 import 'package:cptclient/material/widgets/ChoiceDisplay.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/CourseDetailMangementPage.dart';
@@ -124,7 +124,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ChoiceEdit(
+                      builder: (context) => ChoiceEditDialog(
                         value: _ctrlActive,
                         onReset: () => setState(() => _ctrlActive = null),
                         onConfirm: (Valence? v) => setState(() => _ctrlActive = v),
@@ -143,7 +143,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ChoiceEdit(
+                      builder: (context) => ChoiceEditDialog(
                         value: _ctrlPublic,
                         onReset: () => setState(() => _ctrlPublic = null),
                         onConfirm: (Valence? v) => setState(() => _ctrlPublic = v),

@@ -1,7 +1,7 @@
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';

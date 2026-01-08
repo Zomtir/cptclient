@@ -4,11 +4,11 @@ import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/DatePicker.dart';
+import 'package:cptclient/material/dialogs/DateEditDialog.dart';
 import 'package:cptclient/material/dialogs/NumberSliderDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/AppTile.dart';
 import 'package:cptclient/pages/CompetenceCreatePage.dart';
 import 'package:cptclient/utils/clipboard.dart';
@@ -206,7 +206,7 @@ class CompetenceDetailPageState extends State<CompetenceDetailPage> {
                   icon: Icon(Icons.calendar_today),
                   onPressed: () => showDialog(
                     context: context,
-                    builder: (context) => DatePicker(
+                    builder: (context) => DateEditDialog(
                       initialDate: competence!.date,
                       onConfirm: (DateTime dt) {
                         setState(() => competence!.date = dt);

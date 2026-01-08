@@ -2,7 +2,7 @@ import 'package:cptclient/api/admin/team/team.dart' as api_admin;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/TeamDetailPage.dart';
 import 'package:cptclient/pages/TeamEditPage.dart';

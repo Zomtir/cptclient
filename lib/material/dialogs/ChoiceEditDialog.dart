@@ -3,13 +3,13 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:flutter/material.dart';
 
-class ChoiceEdit extends StatefulWidget {
+class ChoiceEditDialog extends StatefulWidget {
   final Valence? value;
   final bool neutral;
   final VoidCallback? onReset;
   final Function(Valence)? onConfirm;
 
-  ChoiceEdit({
+  ChoiceEditDialog({
     super.key,
     required this.value,
     this.neutral = false,
@@ -18,10 +18,10 @@ class ChoiceEdit extends StatefulWidget {
   });
 
   @override
-  State<ChoiceEdit> createState() => ChoiceEditState();
+  State<ChoiceEditDialog> createState() => ChoiceEditDialogState();
 }
 
-class ChoiceEditState extends State<ChoiceEdit> {
+class ChoiceEditDialogState extends State<ChoiceEditDialog> {
   late Valence value;
 
   @override

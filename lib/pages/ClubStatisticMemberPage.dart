@@ -5,8 +5,8 @@ import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:flutter/material.dart';
 

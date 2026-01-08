@@ -1,5 +1,5 @@
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/layouts/CollapsibleSection.dart';
+import 'package:cptclient/material/widgets/CollapsibleSection.dart';
 import 'package:flutter/material.dart';
 
 class FilterToggle extends StatefulWidget {

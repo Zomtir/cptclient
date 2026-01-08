@@ -7,13 +7,13 @@ import 'package:cptclient/material/widgets/NumberSelector.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:flutter/material.dart';
 
-class TimePicker extends StatefulWidget {
+class TimeEditDialog extends StatefulWidget {
   final TimeOfDay initialTime;
   final VoidCallback? onDelete;
   final VoidCallback? onReset;
   final Function(TimeOfDay)? onConfirm;
 
-  TimePicker({
+  TimeEditDialog({
     super.key,
     TimeOfDay? initialTime,
     this.onDelete,
@@ -22,10 +22,10 @@ class TimePicker extends StatefulWidget {
   }) : initialTime = initialTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
   @override
-  State<TimePicker> createState() => _TimePickerState();
+  State<TimeEditDialog> createState() => _TimeEditDialogState();
 }
 
-class _TimePickerState extends State<TimePicker> {
+class _TimeEditDialogState extends State<TimeEditDialog> {
   late TimeOfDay _selectedTime;
 
   final TextEditingController _ctrlTime = TextEditingController();

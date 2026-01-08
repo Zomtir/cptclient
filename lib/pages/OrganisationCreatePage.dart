@@ -2,9 +2,9 @@ import 'package:cptclient/api/admin/organisation/organisation.dart' as api_admin
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';

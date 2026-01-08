@@ -1,28 +1,28 @@
 import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
-class BankAccountEdit extends StatefulWidget {
+class BankAccountEditDialog extends StatefulWidget {
   final BankAccount initialValue;
   final VoidCallback? onDelete;
   final Function(BankAccount)? onConfirm;
 
-  BankAccountEdit({super.key, required this.initialValue, this.onDelete, this.onConfirm});
+  BankAccountEditDialog({super.key, required this.initialValue, this.onDelete, this.onConfirm});
 
   @override
-  BankAccountEditState createState() => BankAccountEditState();
+  BankAccountEditDialogState createState() => BankAccountEditDialogState();
 }
 
-class BankAccountEditState extends State<BankAccountEdit> {
+class BankAccountEditDialogState extends State<BankAccountEditDialog> {
   late BankAccount currentValue;
   final TextEditingController _ctrlIban = TextEditingController();
   final TextEditingController _ctrlBic = TextEditingController();
   final TextEditingController _ctrlInstitute = TextEditingController();
 
-  BankAccountEditState();
+  BankAccountEditDialogState();
 
   @override
   void initState() {

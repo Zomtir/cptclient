@@ -1,8 +1,8 @@
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/MenuSection.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/MenuSection.dart';
 import 'package:cptclient/pages/CalendarDayPage.dart';
 import 'package:cptclient/pages/CalendarMonthPage.dart';
 import 'package:cptclient/pages/ClubOverviewPage.dart';

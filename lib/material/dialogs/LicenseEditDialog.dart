@@ -3,28 +3,28 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
-class LicenseEdit extends StatefulWidget {
+class LicenseEditDialog extends StatefulWidget {
   final License initialValue;
   final VoidCallback? onDelete;
   final Function(License)? onConfirm;
 
-  LicenseEdit({super.key, required this.initialValue, this.onDelete, this.onConfirm});
+  LicenseEditDialog({super.key, required this.initialValue, this.onDelete, this.onConfirm});
 
   @override
-  LicenseEditState createState() => LicenseEditState();
+  LicenseEditDialogState createState() => LicenseEditDialogState();
 }
 
-class LicenseEditState extends State<LicenseEdit> {
+class LicenseEditDialogState extends State<LicenseEditDialog> {
   late License currentValue;
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlNumber = TextEditingController();
   final DateTimeController _ctrlExpiration = DateTimeController();
 
-  LicenseEditState();
+  LicenseEditDialogState();
 
   @override
   void initState() {

@@ -2,11 +2,11 @@ import 'package:cptclient/api/admin/organisation/affiliation.dart' as api_admin;
 import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/DatePicker.dart';
+import 'package:cptclient/material/dialogs/DateEditDialog.dart';
 import 'package:cptclient/material/dialogs/TextEditDialog.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -106,7 +106,7 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
                     icon: Icon(Icons.calendar_today),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => DatePicker(
+                      builder: (context) => DateEditDialog(
                         initialDate: widget.affiliation.permission_solo_date,
                         onConfirm: (DateTime? dt) {
                           setState(() => widget.affiliation.permission_solo_date = dt);
@@ -134,7 +134,7 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
                     icon: Icon(Icons.calendar_today),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => DatePicker(
+                      builder: (context) => DateEditDialog(
                         initialDate: widget.affiliation.permission_team_date,
                         onConfirm: (DateTime? dt) {
                           setState(() => widget.affiliation.permission_team_date = dt);
@@ -162,7 +162,7 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
                     icon: Icon(Icons.calendar_today),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => DatePicker(
+                      builder: (context) => DateEditDialog(
                         initialDate: widget.affiliation.residency_move_date,
                         onConfirm: (DateTime? dt) {
                           setState(() => widget.affiliation.residency_move_date = dt);

@@ -2,7 +2,7 @@ import 'package:cptclient/api/admin/location/location.dart' as api_admin;
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
 import 'package:cptclient/pages/LocationCreatePage.dart';
 import 'package:cptclient/pages/LocationDetailPage.dart';

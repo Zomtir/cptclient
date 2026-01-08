@@ -5,12 +5,12 @@ import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
+import 'package:cptclient/material/dialogs/MultiChoiceDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
 import 'package:cptclient/pages/EventDetailPage.dart';
 import 'package:cptclient/pages/PresenceBillingPage.dart';
@@ -197,7 +197,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => MultiChoiceEdit<String>(
+                      builder: (context) => MultiChoiceDialog<String>(
                         items: ["leader", "supporter", "participant", "spectator"],
                         value: "leader",
                         builder: (role) => Text(role),

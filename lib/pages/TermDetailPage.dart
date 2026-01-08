@@ -2,9 +2,9 @@ import 'package:cptclient/api/admin/club/term.dart' as api_admin;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
-import 'package:cptclient/material/dialogs/DatePicker.dart';
-import 'package:cptclient/material/layouts/AppBody.dart';
-import 'package:cptclient/material/layouts/AppInfoRow.dart';
+import 'package:cptclient/material/dialogs/DateEditDialog.dart';
+import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -91,7 +91,7 @@ class TermDetailPageState extends State<TermDetailPage> {
                 icon: Icon(Icons.calendar_today),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => DatePicker(
+                  builder: (context) => DateEditDialog(
                     initialDate: term!.begin,
                     onConfirm: (DateTime dt) {
                       setState(() => term!.begin = dt);
@@ -114,7 +114,7 @@ class TermDetailPageState extends State<TermDetailPage> {
                 icon: Icon(Icons.calendar_today),
                 onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => DatePicker(
+                  builder: (context) => DateEditDialog(
                     initialDate: term!.end,
                     onConfirm: (DateTime dt) {
                       setState(() => term!.end = dt);
