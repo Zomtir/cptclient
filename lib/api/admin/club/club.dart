@@ -155,7 +155,7 @@ Future<Result<List<Affiliation>>> club_statistic_organisation(
   return Success(list);
 }
 
-Future<Result<List<Event>>> club_statistic_presence(
+Future<Result<List<Event>>> club_statistic_attendance(
   UserSession session,
   int clubID,
   int userID,

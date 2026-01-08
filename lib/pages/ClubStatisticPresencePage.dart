@@ -6,6 +6,7 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/MultiChoiceEdit.dart';
+import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/fields/DateTimeController.dart';
 import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/layouts/AppBody.dart';
@@ -59,7 +60,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
   }
 
   void _update() async {
-    Result<List<Event>> result = await api_admin.club_statistic_presence(
+    Result<List<Event>> result = await api_admin.club_statistic_attendance(
       widget.session,
       widget.club.id,
       _ctrlUser.id,
@@ -160,27 +161,25 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
             children: [
               AppInfoRow(
                 info: AppLocalizations.of(context)!.user,
-                child: ListTile(
-                  title: _ctrlUser.buildEntry(context),
-                  trailing: IconButton(
+                child: _ctrlUser.buildEntry(context),
+                actions: [
+                  IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () async {
                       var result = await api_admin.user_list(widget.session);
                       if (result is! Success) return;
                       var users = result.unwrap();
                       users.sort();
-                      showDialog(
+                      await showDialog(
                         context: context,
-                        builder: (context) => MultiChoiceEdit<User>(
+                        builder: (context) => PickerDialog(
                           items: users,
-                          value: _ctrlUser,
-                          builder: (user) => user.buildEntry(context),
-                          onConfirm: (User? user) => setState(() => _ctrlUser = user!),
+                          onPick: (user) => setState(() => _ctrlUser = user),
                         ),
                       );
                     },
                   ),
-                ),
+                ],
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventBegin,
@@ -192,9 +191,9 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventRole,
-                child: ListTile(
-                  title: Text(_ctrlRole),
-                  trailing: IconButton(
+                child: Text(_ctrlRole),
+                actions: [
+                  IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
@@ -206,7 +205,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
