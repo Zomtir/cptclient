@@ -1,4 +1,4 @@
-import 'package:cptclient/api/admin/team/team.dart' as server;
+import 'package:cptclient/api/admin/team/team.dart' as api_admin;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
@@ -9,27 +9,26 @@ import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
-class TeamEditPage extends StatefulWidget {
+class TeamCreatePage extends StatefulWidget {
   final UserSession session;
   final Team team;
-  final bool isDraft;
 
-  TeamEditPage(
+  TeamCreatePage(
       {super.key,
       required this.session,
       required this.team,
-      required this.isDraft});
+      });
 
   @override
-  TeamEditPageState createState() => TeamEditPageState();
+  TeamCreatePageState createState() => TeamCreatePageState();
 }
 
-class TeamEditPageState extends State<TeamEditPage> {
+class TeamCreatePageState extends State<TeamCreatePage> {
   final TextEditingController _ctrlKey = TextEditingController();
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlDescription = TextEditingController();
 
-  TeamEditPageState();
+  TeamCreatePageState();
 
   @override
   void initState() {
@@ -71,14 +70,10 @@ class TeamEditPageState extends State<TeamEditPage> {
 
     _gatherTeam();
 
-    Result result;
-    if (widget.isDraft) {
-      result = await server.team_create(widget.session, widget.team);
-    } else {
-      result = await server.team_edit(widget.session, widget.team);
-    }
+    Result result = await api_admin.team_create(widget.session, widget.team);
 
-    if (result is Success) Navigator.pop(context);
+    if (result is! Success) return;
+    Navigator.pop(context);
   }
 
   @override
@@ -89,8 +84,6 @@ class TeamEditPageState extends State<TeamEditPage> {
       ),
       body: AppBody(
         children: [
-          if (!widget.isDraft) widget.team.buildCard(context),
-          if (!widget.isDraft) Divider(),
           AppInfoRow(
             info: AppLocalizations.of(context)!.teamKey,
             child: TextField(

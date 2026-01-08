@@ -4,8 +4,8 @@ import 'package:cptclient/json/team.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/SearchablePanel.dart';
+import 'package:cptclient/pages/TeamCreatePage.dart';
 import 'package:cptclient/pages/TeamDetailPage.dart';
-import 'package:cptclient/pages/TeamEditPage.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
 
@@ -42,10 +42,9 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TeamEditPage(
+        builder: (context) => TeamCreatePage(
           session: widget.session,
           team: Team.fromVoid(),
-          isDraft: true,
         ),
       ),
     );
