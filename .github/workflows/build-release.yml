@@ -7,13 +7,18 @@ on:
         required: false
         default: '3.35.3'
         type: string
+      upload_action_artifact:
+        description: 'Upload build artifacts in the GH action'
+        required: false
+        default: true
+        type: boolean
       upload_pages_artifact:
-        description: 'Upload build artifact for GH pages'
+        description: 'Upload build artifact to GH pages'
         required: false
         default: false
         type: boolean
       upload_release_artifact:
-        description: 'Upload build artifact for GH release'
+        description: 'Upload build artifact to GH release'
         required: false
         default: false
         type: boolean
@@ -38,29 +43,25 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            platform: android
-            build-type: apk
-            suffix: apk
-          - os: windows-latest
-            platform: windows
-            build-type: windows
-            suffix: zip
+            platform: web
+            build-type: web
+            asset: web.tar.gz
           - os: ubuntu-latest
             platform: linux
             build-type: linux
-            suffix: deb
+            asset: linux.tar.gz
           - os: ubuntu-latest
-            platform: web
-            build-type: web
-            suffix: tar.gz
+            platform: android
+            build-type: apk
+            asset: android.apk
+          - os: windows-latest
+            platform: windows
+            build-type: windows
+            asset: windows-amd64.zip
           - os: macos-14
             platform: macos
             build-type: macos
-            suffix: zip
-#          - os: macos-14
-#            platform: ios
-#            build-type: ipa
-#            suffix: ???
+            asset: macos-arm64.tar.gz
 
     steps:
       - uses: actions/checkout@v4
@@ -85,35 +86,34 @@ jobs:
           sudo apt-get install -y libunwind-dev
       - name: Install current bash on macOS
         shell: bash
-        if: runner.os == 'macOS'
+        if: runner.os == 'macos'
         run: |
           brew install bash
           bash --version
+      - name: Install zip on windows
+        if: matrix.platform == 'windows'
+        run: choco install zip -y
       - name: Build App
+        id: build
         shell: bash
-        run: |
-          ARTIFACT_PATH="build/${{ matrix.platform }}/${{ matrix.build-type }}"
-          ARTIFACT_NAME="${APP_NAME}-${{ github.ref_name }}-${{ matrix.platform }}.${{ matrix.suffix }}"
-          flutter build ${{ matrix.build-type }} \
-            --dart-define=SERVER_SCHEME=$SERVER_SCHEME \
-            --dart-define=SERVER_HOST=$SERVER_HOST \
-            --dart-define=SERVER_PORT=$SERVER_PORT \
-            ${{ matrix.platform == 'web' && '--wasm' || '' }}
-          echo "ARTIFACT_PATH=$ARTIFACT_PATH" >> "$GITHUB_ENV"
-          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
-      - name: Upload artifacts to pages
+        run: ./release.sh ${{ matrix.build-type }} ${{ matrix.build-type }}
+      - name: Upload build artifact to the GH action
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.asset }}
+          path: release/${{ env.APP_NAME }}-${{ matrix.asset }}
+      - name: Upload artifacts to GH pages
         if: inputs.upload_pages_artifact && matrix.platform == 'web'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build/web
-      - name: Upload artifacts to release
-        # Only upload to GitHub if in build mode.
-        if: inputs.upload_release_artifact == 'true'
+          output: ./build/web
+      - name: Upload artifacts to GH release
+        if: inputs.upload_release_artifact
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
-          file: ${{ steps.build.outputs.artifact-path }}
-          asset_name: ${{ steps.build.outputs.artifact-name }}
+          file: release/${{ env.APP_NAME }}-${{ matrix.asset }}
+          asset_name: "${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.asset }}"
           tag: ${{ github.ref }}
 
   deploy-github-pages:
