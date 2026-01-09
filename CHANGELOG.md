@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## Release v1.5.2 (10th Jan 2026)
+
+- feat: Add search field to club event attendance statistic user filter #83
+- feat: Added a specialized AppInfoRow for Field types
+- feat: Implemented in-page editing for team details
+- cleanup: Reduce tile padding in organisation detail page
+- cleanup: Make widget and dialog namings more consistent
+- fix: Fallback for user tile in user possession management #88
+- fix: Improved event management owner filter #89
+- chore: Provide correct path to upload-pages-artifact
+- chore: Specify amd64 architecture for linux release
+
 ## Release v1.5.1 (8th Jan 2026)
 
 - feat: Allowance preview for instructor billing
