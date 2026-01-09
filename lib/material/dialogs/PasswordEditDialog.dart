@@ -30,8 +30,8 @@ class PasswordEditDialogState extends State<PasswordEditDialog> {
   void initState() {
     super.initState();
     Credential currentValue = widget.initialValue ?? Credential(password: '', salt: crypto.generateHex(16));
-    _ctrlSalt.text = currentValue.salt!;
-    _ctrlPassword.text = currentValue.password!;
+    _ctrlSalt.text = currentValue.salt ?? '';
+    _ctrlPassword.text = currentValue.password ?? '';
   }
 
   @override
