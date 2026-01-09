@@ -129,7 +129,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
         maxWidth: 1000,
         minWidth: 1000,
         children: <Widget>[
-          _user!.buildTile(
+          _user?.buildTile(
             context,
             trailing: [
               IconButton(
@@ -138,7 +138,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
                 tooltip: AppLocalizations.of(context)!.possessionUser,
               ),
             ],
-          ),
+          ) ?? Container(),
           Divider(),
           DataTable(
             columns: [
