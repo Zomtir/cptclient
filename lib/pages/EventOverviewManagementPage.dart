@@ -14,6 +14,7 @@ import 'package:cptclient/material/fields/DateTimeField.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppDropdown.dart';
 import 'package:cptclient/material/widgets/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/AppInfoRowField.dart';
 import 'package:cptclient/material/widgets/AppListView.dart';
 import 'package:cptclient/material/widgets/DropdownController.dart';
 import 'package:cptclient/material/widgets/FilterToggle.dart';
@@ -37,7 +38,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   final DropdownController<Location> _ctrlLocation = DropdownController<Location>(items: []);
   final DropdownController<Occurrence> _ctrlOccurrence = DropdownController<Occurrence>(items: Occurrence.values);
   final DropdownController<Acceptance> _ctrlAcceptance = DropdownController<Acceptance>(items: Acceptance.values);
-  final DropdownController<User> _ctrlOwner = DropdownController<User>(items: []);
+  User? _ctrlOwner;
 
   List<Event> _events = [];
   final _filterDaysMax = 366;
@@ -48,7 +49,6 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
   void initState() {
     super.initState();
     _requestLocations();
-    _requestOwners();
     _update();
   }
 
@@ -61,7 +61,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
       occurrence: _ctrlOccurrence.value,
       acceptance: _ctrlAcceptance.value,
       courseTrue: false,
-      ownerID: _ctrlOwner.value?.id,
+      ownerID: _ctrlOwner?.id,
     );
     if (result_events is! Success) return;
 
@@ -78,31 +78,6 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
       _ctrlLocation.items = result_locations.unwrap();
       _ctrlLocation.items.sort();
     });
-  }
-
-  Future<void> _requestOwners() async {
-    Result<List<User>> result_users = await api_regular.user_list(widget.session);
-    if (result_users is! Success) return;
-
-    setState(() {
-      _ctrlOwner.items = result_users.unwrap();
-      _ctrlOwner.items.sort();
-    });
-  }
-
-  // ignore: unused_element
-  Future<void> _selectEvent(Event event) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventDetailPage(
-          session: widget.session,
-          eventID: event.id,
-        ),
-      ),
-    );
-
-    _update();
   }
 
   void _acceptEvent(Event event) async {
@@ -172,6 +147,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     _update();
   }
 
+  // TODO
   // ignore: unused_element
   void _pickDateBegin(DateTime newDateBegin) {
     DateTime newDateEnd = _ctrlDateEnd.getDateTime()!;
@@ -188,6 +164,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
     });
   }
 
+  // TODO
   // ignore: unused_element
   void _pickDateEnd(DateTime newDateEnd) {
     DateTime newDateBegin = _ctrlDateBegin.getDateTime()!;
@@ -254,22 +231,14 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
                   onChanged: (Acceptance? acceptance) => setState(() => _ctrlAcceptance.value = acceptance),
                 ),
               ),
-              AppInfoRow(
+              AppInfoRowField<User>(
                 info: AppLocalizations.of(context)!.eventOwner,
-                child: ListTile(
-                  title: AppDropdown<User>(
-                    controller: _ctrlOwner,
-                    builder: (User user) {
-                      return Text("${user.firstname} ${user.lastname}");
-                    },
-                    onChanged: (User? user) => setState(() => _ctrlOwner.value = user),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () => setState(() => _ctrlOwner.value = null),
-                  ),
-                ),
+                element: _ctrlOwner,
+                callElements: () => api_regular.user_list(widget.session),
+                onChanged: (User? owner) => setState(() => _ctrlOwner = owner),
+                nullable: true,
               ),
+              // TODO
               AppInfoRow(
                 info: AppLocalizations.of(context)!.course,
                 child: Text("all/yes/no"),
