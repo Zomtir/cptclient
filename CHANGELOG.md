@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Release v1.5.3 (10th Jan 2026)
+
+- fix: Changing a user password no longer expects a pre-generated password
+
 ## Release v1.5.2 (10th Jan 2026)
 
 - feat: Add search field to club event attendance statistic user filter #83
