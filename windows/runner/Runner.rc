@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "cptclient" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "cptclient" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 link.zomtir. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 link.zomtir. All rights reserved." "\0"
             VALUE "OriginalFilename", "cptclient.exe" "\0"
             VALUE "ProductName", "cptclient" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
