@@ -64,14 +64,14 @@ jobs:
             asset: macos-arm64.tar.gz
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ inputs.flutter_version }}
           channel: 'stable'
       - name: Create Default Config File
         run: cp cptclient-template.yaml cptclient.yaml
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         if: matrix.platform == 'android'
         with:
           # AGP8 needs JDK 17
@@ -99,7 +99,7 @@ jobs:
         run: ./release.sh ${{ matrix.build-type }} ${{ matrix.build-type }}
       - name: Upload build artifact to the GH action
         if: inputs.upload_action_artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.asset }}
           path: release/${{ env.APP_NAME }}-${{ matrix.asset }}
