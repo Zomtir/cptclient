@@ -32,7 +32,7 @@ class SkillDetailPageState extends State<SkillDetailPage> {
     }
 
     if (widget.skill.name.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.statusIsInvalid}");
+      messageText("${AppLocalizations.of(context)!.skillName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
@@ -93,7 +93,7 @@ class SkillDetailPageState extends State<SkillDetailPage> {
             ),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.skillTitle,
+            info: AppLocalizations.of(context)!.skillName,
             child: AppTile(
               child: Text(widget.skill.name),
               trailing: [

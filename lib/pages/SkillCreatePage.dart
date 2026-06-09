@@ -42,7 +42,7 @@ class SkillCreatePageState extends State<SkillCreatePage> {
     }
 
     if (_ctrlTitle.text.isEmpty) {
-      messageText("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.statusIsInvalid}");
+      messageText("${AppLocalizations.of(context)!.skillName} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
 
@@ -71,7 +71,7 @@ class SkillCreatePageState extends State<SkillCreatePage> {
             child: TextField(maxLines: 1, controller: _ctrlKey),
           ),
           AppInfoRow(
-            info: AppLocalizations.of(context)!.skillTitle,
+            info: AppLocalizations.of(context)!.skillName,
             child: TextField(maxLines: 1, controller: _ctrlTitle),
           ),
           AppInfoRow(

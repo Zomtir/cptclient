@@ -1214,6 +1214,18 @@ abstract class AppLocalizations {
   /// **'Edit Skill'**
   String get pageSkillEdit;
 
+  /// No description provided for @pageDisciplineManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Disciplines'**
+  String get pageDisciplineManagement;
+
+  /// No description provided for @pageDisciplineEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Disciplines'**
+  String get pageDisciplineEdit;
+
   /// No description provided for @pageUserManagement.
   ///
   /// In en, this message translates to:
@@ -2108,11 +2120,11 @@ abstract class AppLocalizations {
   /// **'Key'**
   String get skillKey;
 
-  /// No description provided for @skillTitle.
+  /// No description provided for @skillName.
   ///
   /// In en, this message translates to:
   /// **'Title'**
-  String get skillTitle;
+  String get skillName;
 
   /// No description provided for @skillRange.
   ///
@@ -2131,6 +2143,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upper Bound'**
   String get skillRangeMax;
+
+  /// No description provided for @discipline.
+  ///
+  /// In en, this message translates to:
+  /// **'Sport Discipline'**
+  String get discipline;
+
+  /// No description provided for @disciplineName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get disciplineName;
 
   /// No description provided for @competence.
   ///

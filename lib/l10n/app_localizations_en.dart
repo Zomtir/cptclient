@@ -567,6 +567,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageSkillEdit => 'Edit Skill';
 
   @override
+  String get pageDisciplineManagement => 'Manage Disciplines';
+
+  @override
+  String get pageDisciplineEdit => 'Edit Disciplines';
+
+  @override
   String get pageUserManagement => 'Manage Users';
 
   @override
@@ -1019,7 +1025,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skillKey => 'Key';
 
   @override
-  String get skillTitle => 'Title';
+  String get skillName => 'Title';
 
   @override
   String get skillRange => 'Range';
@@ -1029,6 +1035,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skillRangeMax => 'Upper Bound';
+
+  @override
+  String get discipline => 'Sport Discipline';
+
+  @override
+  String get disciplineName => 'Name';
 
   @override
   String get competence => 'Competence';
