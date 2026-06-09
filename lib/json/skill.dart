@@ -10,22 +10,22 @@ import 'package:flutter/material.dart';
 class Skill extends FieldInterface implements Comparable {
   final int id;
   String key;
-  String title;
+  String name;
   int min;
   int max;
 
-  Skill(this.id, this.key, this.title, this.min, this.max);
+  Skill(this.id, this.key, this.name, this.min, this.max);
 
-  Skill.fromVoid() : id = 0, key = assembleKey([4]), title = "", min = 0, max = 1;
+  Skill.fromVoid() : id = 0, key = assembleKey([4]), name = "", min = 0, max = 1;
 
   Skill.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       key = json['key'],
-      title = json['title'],
+      name = json['name'],
       min = json['min'],
       max = json['max'];
 
-  Map<String, dynamic> toJson() => {'id': id, 'key': key, 'title': title, 'min': min, 'max': max};
+  Map<String, dynamic> toJson() => {'id': id, 'key': key, 'name': name, 'min': min, 'max': max};
 
   @override
   bool operator ==(other) => other is Skill && id == other.id;
@@ -35,22 +35,22 @@ class Skill extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    return removeDiacritics(title).compareTo(removeDiacritics(other.title));
+    return removeDiacritics(name).compareTo(removeDiacritics(other.name));
   }
 
   @override
   get searchable {
-    return [key, title];
+    return [key, name];
   }
 
   @override
   Widget buildEntry(BuildContext context) {
-    return Tooltip(message: "[$id] $key", child: Text("$title"));
+    return Tooltip(message: "[$id] $key", child: Text("$name"));
   }
 
   @override
   Widget buildInfo(BuildContext context) {
-    return Text("$title ($min - $max)");
+    return Text("$name ($min - $max)");
   }
 
   @override
@@ -60,7 +60,7 @@ class Skill extends FieldInterface implements Comparable {
       trailing: trailing,
       child: Column(
         children: [
-          Text("$title"),
+          Text("$name"),
           Text("$min - $max")
         ],
       ),
@@ -73,7 +73,7 @@ class Skill extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.fitness_center)),
       trailing: trailing,
-      children: [Text("$title"), Text("$min - $max")],
+      children: [Text("$name"), Text("$min - $max")],
     );
   }
 }

@@ -31,7 +31,7 @@ class SkillCreatePageState extends State<SkillCreatePage> {
 
     Skill skill = Skill.fromVoid();
     _ctrlKey.text = skill.key;
-    _ctrlTitle.text = skill.title;
+    _ctrlTitle.text = skill.name;
     _ctrlRange = RangeValues(skill.min as double, skill.max as double);
   }
 
@@ -48,7 +48,7 @@ class SkillCreatePageState extends State<SkillCreatePage> {
 
     Skill skill = Skill.fromVoid();
     skill.key = _ctrlKey.text;
-    skill.title = _ctrlTitle.text;
+    skill.name = _ctrlTitle.text;
     skill.min = _ctrlRange.start as int;
     skill.max = _ctrlRange.end as int;
 

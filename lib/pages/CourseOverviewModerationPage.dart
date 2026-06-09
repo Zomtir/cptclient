@@ -103,7 +103,7 @@ class CourseOverviewModerationPageState extends State<CourseOverviewModerationPa
                       title: AppDropdown<Skill>(
                         controller: _ctrlDropdownSkill,
                         builder: (Skill skill) {
-                          return Text(skill.title);
+                          return Text(skill.name);
                         },
                         onChanged: (Skill? skill) {
                           _ctrlDropdownSkill.value = skill;

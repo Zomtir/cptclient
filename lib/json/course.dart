@@ -52,7 +52,7 @@ class Course extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    return removeDiacritics(title).compareTo(removeDiacritics(other.title));
+    return removeDiacritics(title).compareTo(removeDiacritics(other.name));
   }
 
   @override

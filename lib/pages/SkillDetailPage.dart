@@ -31,7 +31,7 @@ class SkillDetailPageState extends State<SkillDetailPage> {
       return;
     }
 
-    if (widget.skill.title.isEmpty) {
+    if (widget.skill.name.isEmpty) {
       messageText("${AppLocalizations.of(context)!.skillTitle} ${AppLocalizations.of(context)!.statusIsInvalid}");
       return;
     }
@@ -95,10 +95,10 @@ class SkillDetailPageState extends State<SkillDetailPage> {
           AppInfoRow(
             info: AppLocalizations.of(context)!.skillTitle,
             child: AppTile(
-              child: Text(widget.skill.title),
+              child: Text(widget.skill.name),
               trailing: [
                 IconButton(
-                  onPressed: () => clipText(widget.skill.title),
+                  onPressed: () => clipText(widget.skill.name),
                   icon: Icon(Icons.copy),
                 ),
                 IconButton(
@@ -107,11 +107,11 @@ class SkillDetailPageState extends State<SkillDetailPage> {
                     showDialog(
                       context: context,
                       builder: (context) => TextEditDialog(
-                        initialValue: widget.skill.title,
+                        initialValue: widget.skill.name,
                         minLength: 1,
                         maxLength: 250,
                         onConfirm: (key) {
-                          widget.skill.title = key;
+                          widget.skill.name = key;
                           submit();
                         },
                       ),

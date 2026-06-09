@@ -66,14 +66,14 @@ class Requirement extends FieldInterface implements Comparable {
 
   @override
   get searchable {
-    return [course?.title, skill?.title, rank.toString()];
+    return [course?.title, skill?.name, rank.toString()];
   }
 
   @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
-      child: Text("${course!.title} - ${skill!.title} - $rank"),
+      child: Text("${course!.title} - ${skill!.name} - $rank"),
     );
   }
 
@@ -92,7 +92,7 @@ class Requirement extends FieldInterface implements Comparable {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("${skill!.title} $rank"),
+            Text("${skill!.name} $rank"),
           ]
       ),
       onTap: onTap,
@@ -106,7 +106,7 @@ class Requirement extends FieldInterface implements Comparable {
       trailing: trailing,
       children: [
         Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${skill!.title} $rank"),
+        Text("${skill!.name} $rank"),
       ],
     );
   }

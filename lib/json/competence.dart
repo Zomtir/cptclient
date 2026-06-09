@@ -74,14 +74,14 @@ class Competence extends FieldInterface implements Comparable {
 
   @override
   get searchable {
-    return [user?.firstname, user?.lastname, user?.nickname, skill?.title, judge?.firstname, judge?.lastname, judge?.nickname];
+    return [user?.firstname, user?.lastname, user?.nickname, skill?.name, judge?.firstname, judge?.lastname, judge?.nickname];
   }
 
   @override
   Widget buildEntry(BuildContext context) {
     return Tooltip(
       message: "[$id]",
-      child: Text("${user!.firstname} ${user!.lastname} - ${skill!.title} $rank"),
+      child: Text("${user!.firstname} ${user!.lastname} - ${skill!.name} $rank"),
     );
   }
 
@@ -100,7 +100,7 @@ class Competence extends FieldInterface implements Comparable {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("${skill!.title} $rank"),
+          Text("${skill!.name} $rank"),
           Text("${date.fmtDate(context)} ${judge!.firstname} ${judge!.lastname}", style: TextStyle(color: Colors.black54)),
         ]
       ),
@@ -115,7 +115,7 @@ class Competence extends FieldInterface implements Comparable {
       trailing: trailing,
       children: [
         Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${skill!.title} $rank"),
+        Text("${skill!.name} $rank"),
         Text(
             "${date.fmtDate(context)} ${judge!.firstname} ${judge!.lastname}", style: TextStyle(color: Colors.black54)),
       ],

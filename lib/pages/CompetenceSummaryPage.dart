@@ -60,7 +60,7 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
             rows: List<DataRow>.generate(_summary.length, (index) {
               return DataRow(
                 cells: <DataCell>[
-                  DataCell(Text("${_summary[index].$1.title}")),
+                  DataCell(Text("${_summary[index].$1.name}")),
                   DataCell(Text("${_summary[index].$1.min}")),
                   DataCell(Text("${_summary[index].$1.max}")),
                   DataCell(Text("${_summary[index].$2}")),
