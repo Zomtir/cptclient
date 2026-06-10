@@ -22,8 +22,8 @@ class Skill extends FieldInterface implements Comparable {
     : id = json['id'],
       key = json['key'],
       name = json['name'],
-      min = json['min'],
-      max = json['max'];
+      min = json['min'] ?? 0,
+      max = json['max'] ?? 0;
 
   Map<String, dynamic> toJson() => {'id': id, 'key': key, 'name': name, 'min': min, 'max': max};
 

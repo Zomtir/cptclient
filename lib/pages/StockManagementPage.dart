@@ -46,7 +46,8 @@ class StockManagementPageState extends State<StockManagementPage> {
     Club? club;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: result_clubs.unwrap(), onPick: (e) => club = e),
+      builder: (context) =>
+          PickerDialog(items: result_clubs.unwrap(), onPick: (e) => club = e),
     );
 
     if (club == null) {
@@ -59,7 +60,11 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   Future<void> _update() async {
-    Result<List<Stock>> result_stocks = await api_admin.stock_list(widget.session, _club, null);
+    Result<List<Stock>> result_stocks = await api_admin.stock_list(
+      widget.session,
+      _club,
+      null,
+    );
     if (result_stocks is! Success) return;
 
     setState(() {
@@ -75,18 +80,28 @@ class StockManagementPageState extends State<StockManagementPage> {
     Item? item;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: result_items.unwrap(), onPick: (e) => item = e),
+      builder: (context) =>
+          PickerDialog(items: result_items.unwrap(), onPick: (e) => item = e),
     );
 
     if (item == null) return;
 
-    Stock? stock = Stock(id: 0, club: _club!, item: item!, storage: "", owned: 1, loaned: 0);
+    Stock? stock = Stock(
+      id: 0,
+      club: _club!,
+      item: item!,
+      storage: "",
+      owned: 1,
+      loaned: 0,
+    );
 
     showDialog(
       context: context,
-      builder: (context) => StockEditDialog(
-        initialValue: stock,
-        onConfirm: (Stock stock) {
+      builder: (context) => CountEditDialog(
+        initialValue: stock.owned,
+        minValue: stock.loaned,
+        onConfirm: (int count) {
+          stock.owned = count;
           api_admin.stock_create(widget.session, stock);
           _update();
         },
@@ -97,10 +112,14 @@ class StockManagementPageState extends State<StockManagementPage> {
   void _handleEdit(Stock stock) async {
     await showDialog(
       context: context,
-      builder: (context) => StockEditDialog(
-        initialValue: stock,
+      builder: (context) => CountEditDialog(
+        initialValue: stock.owned,
+        minValue: stock.loaned,
         onDelete: () => api_admin.stock_delete(widget.session, stock),
-        onConfirm: (Stock stock) => api_admin.stock_edit(widget.session, stock),
+        onConfirm: (int count) {
+          stock.owned = count;
+          api_admin.stock_edit(widget.session, stock);
+        },
       ),
     );
 
@@ -122,13 +141,16 @@ class StockManagementPageState extends State<StockManagementPage> {
   }
 
   void _handleLoan(Stock stock) async {
-    Result<List<User>> result_users = await api_regular.user_list(widget.session);
+    Result<List<User>> result_users = await api_regular.user_list(
+      widget.session,
+    );
     if (result_users is! Success) return;
 
     User? user;
     await showDialog(
       context: context,
-      builder: (context) => PickerDialog(items: result_users.unwrap(), onPick: (e) => user = e),
+      builder: (context) =>
+          PickerDialog(items: result_users.unwrap(), onPick: (e) => user = e),
     );
 
     if (user == null) return;
@@ -168,7 +190,9 @@ class StockManagementPageState extends State<StockManagementPage> {
                 ),
               ),
               DataColumn(label: Text(AppLocalizations.of(context)!.stockOwned)),
-              DataColumn(label: Text(AppLocalizations.of(context)!.stockLoaned)),
+              DataColumn(
+                label: Text(AppLocalizations.of(context)!.stockLoaned),
+              ),
             ],
             rows: List<DataRow>.generate(_stocks.length, (index) {
               return DataRow(
@@ -183,8 +207,14 @@ class StockManagementPageState extends State<StockManagementPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_stocks[index].item.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text(_stocks[index].storage, style: Theme.of(context).textTheme.labelSmall),
+                            Text(
+                              _stocks[index].item.name,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              _stocks[index].storage,
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
                           ],
                         ),
                       ],

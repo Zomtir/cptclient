@@ -61,14 +61,6 @@ void billing_instructor_pdf(
     ),
   );
 
-  final doc = pw.Document(theme: docTheme);
-
-  final clubBannerBytes = (await api_anon.club_banner(club.id)).unwrap();
-
-  final int fiscal_year = date_from.year;
-  final NumberFormat nf = NumberFormat.decimalPattern(
-    Localizations.localeOf(context).toLanguageTag(),
-  )..turnOffGrouping();
 
   pw.TextStyle styleBold = pw.TextStyle(fontWeight: pw.FontWeight.bold);
 
@@ -92,6 +84,15 @@ void billing_instructor_pdf(
     color: PdfColors.grey50,
     border: borderGrey,
   );
+
+  final NumberFormat nf = NumberFormat.decimalPattern(
+    Localizations.localeOf(context).toLanguageTag(),
+  )..turnOffGrouping();
+
+  final doc = pw.Document(theme: docTheme);
+
+  final int fiscal_year = date_from.year;
+  final clubBannerBytes = (await api_anon.club_banner(club.id)).unwrap();
 
   pw.Widget buildHeader() {
     return pw.Column(

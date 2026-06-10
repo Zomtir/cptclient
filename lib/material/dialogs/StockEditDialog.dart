@@ -1,40 +1,42 @@
-import 'package:cptclient/json/stock.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:flutter/material.dart';
 
-class StockEditDialog extends StatefulWidget {
-  final Stock initialValue;
+class CountEditDialog extends StatefulWidget {
+  final int initialValue;
+  final int minValue;
   final VoidCallback? onDelete;
-  final Function(Stock)? onConfirm;
+  final Function(int)? onConfirm;
 
-  StockEditDialog({
+  CountEditDialog({
     super.key,
     required this.initialValue,
+    this.minValue = 0,
     this.onConfirm,
     this.onDelete,
   });
 
   @override
-  State<StockEditDialog> createState() => StockEditDialogState();
+  State<CountEditDialog> createState() => CountEditDialogState();
 }
 
-class StockEditDialogState extends State<StockEditDialog> {
-  late Stock currentValue;
-  final TextEditingController _ctrlStorage = TextEditingController();
+class CountEditDialogState extends State<CountEditDialog> {
+  late int currentValue;
+  final TextEditingController _ctrlCount = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     currentValue = widget.initialValue;
-    _ctrlStorage.text = currentValue.storage;
+    _ctrlCount.text = currentValue.toString();
   }
 
   void _handleChange(int delta) async {
-    int overhead = currentValue.owned - currentValue.loaned;
-    if (overhead + delta < 0) return;
-
-    setState(() => currentValue.owned = currentValue.owned + delta);
+    if (currentValue + delta < widget.minValue) return;
+    setState(() {
+      currentValue = currentValue + delta;
+      _ctrlCount.text = currentValue.toString();
+    });
   }
 
   @override
@@ -42,20 +44,13 @@ class StockEditDialogState extends State<StockEditDialog> {
     return AppDialog(
       child: Column(
         children: [
-          ListTile(
-            title: TextField(
-              controller: _ctrlStorage,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.stockStorage,
-              ),
-              onChanged: (String text) => currentValue.storage = text,
+          TextField(
+            controller: _ctrlCount,
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.labelAmount,
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                widget.onDelete?.call();
-                Navigator.pop(context);
-              },
+            onChanged: (String text) => setState(
+              () => currentValue = int.tryParse(text) ?? widget.initialValue,
             ),
           ),
           Row(
@@ -65,7 +60,7 @@ class StockEditDialogState extends State<StockEditDialog> {
                 icon: Icon(Icons.remove),
                 onPressed: () => _handleChange(-1),
               ),
-              Text("${currentValue.owned}"),
+              Text("$currentValue"),
               IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () => _handleChange(1),
@@ -75,11 +70,10 @@ class StockEditDialogState extends State<StockEditDialog> {
         ],
       ),
       actions: [
-        if (widget.onDelete != null)
+        if (widget.onDelete != null && widget.minValue <= 0)
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              if (currentValue.loaned > 0) return;
               widget.onDelete?.call();
               Navigator.pop(context);
             },

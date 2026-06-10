@@ -12,6 +12,7 @@ import 'package:cptclient/pages/CourseAvailablePage.dart';
 import 'package:cptclient/pages/CourseOverviewManagementPage.dart';
 import 'package:cptclient/pages/CourseOverviewModerationPage.dart';
 import 'package:cptclient/pages/DisciplineOverviewPage.dart';
+import 'package:cptclient/pages/EquipmentManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewAvailablePage.dart';
 import 'package:cptclient/pages/EventOverviewManagementPage.dart';
 import 'package:cptclient/pages/EventOverviewOwnershipPage.dart';
@@ -245,6 +246,12 @@ class MemberLandingPage extends StatelessWidget {
                   title: Text(AppLocalizations.of(context)!.pagePossessionUser),
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (context) => PossessionUserManagementPage(session: session))),
+                ),
+              if (session.right!.inventory.read)
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.pageEquipmentManagement),
+                  onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => EquipmentManagementPage(session: session))),
                 ),
               if (session.right!.inventory.read)
                 ListTile(

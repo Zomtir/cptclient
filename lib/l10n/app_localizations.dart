@@ -134,6 +134,18 @@ abstract class AppLocalizations {
   /// **'Required'**
   String get labelRequired;
 
+  /// No description provided for @labelOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get labelOwned;
+
+  /// No description provided for @labelNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Needed'**
+  String get labelNeeded;
+
   /// No description provided for @labelFull.
   ///
   /// In en, this message translates to:
@@ -151,6 +163,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'None'**
   String get labelNone;
+
+  /// No description provided for @labelIssuance.
+  ///
+  /// In en, this message translates to:
+  /// **'Issuance'**
+  String get labelIssuance;
+
+  /// No description provided for @labelReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Return'**
+  String get labelReturn;
 
   /// No description provided for @labelFormat.
   ///
@@ -427,6 +451,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date'**
   String get labelDate;
+
+  /// No description provided for @labelTransferProtocol.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer Protocol'**
+  String get labelTransferProtocol;
 
   /// No description provided for @actionSelect.
   ///
@@ -1009,6 +1039,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage Club Stocks'**
   String get pageStockManagement;
+
+  /// No description provided for @pageEquipmentManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage User Equipment'**
+  String get pageEquipmentManagement;
 
   /// No description provided for @pageItemOverview.
   ///
@@ -1819,6 +1855,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete the user item'**
   String get inventoryOwnershipFromUserDelete;
+
+  /// No description provided for @equipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get equipment;
 
   /// No description provided for @item.
   ///

@@ -27,6 +27,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelRequired => 'Required';
 
   @override
+  String get labelOwned => 'Owned';
+
+  @override
+  String get labelNeeded => 'Needed';
+
+  @override
   String get labelFull => 'Full';
 
   @override
@@ -34,6 +40,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelNone => 'None';
+
+  @override
+  String get labelIssuance => 'Issuance';
+
+  @override
+  String get labelReturn => 'Return';
 
   @override
   String get labelFormat => 'Format';
@@ -172,6 +184,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelDate => 'Date';
+
+  @override
+  String get labelTransferProtocol => 'Transfer Protocol';
 
   @override
   String get actionSelect => 'Select';
@@ -463,6 +478,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageStockManagement => 'Manage Club Stocks';
+
+  @override
+  String get pageEquipmentManagement => 'Manage User Equipment';
 
   @override
   String get pageItemOverview => 'Manage Items';
@@ -873,6 +891,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inventoryOwnershipFromUserDelete => 'Delete the user item';
+
+  @override
+  String get equipment => 'Equipment';
 
   @override
   String get item => 'Item';

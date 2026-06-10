@@ -8,7 +8,7 @@ import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
-import 'package:cptclient/json/itemcat.dart';
+import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/location.dart';
 import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/organisation.dart';
@@ -234,14 +234,12 @@ Future<Result<()>> event_withdraw(UserSession session, Event event) async {
   return Success(());
 }
 
-Future<Result<List<(User, int, int, int)>>> event_statistic_packlist(
-    UserSession session, Event event, List<ItemCategory?> categories) async {
+Future<Result<List<(User, Item, int, int, int)>>> event_statistic_packlist(
+    UserSession session, Event event, int skillID) async {
   final response = await client.get(
     uri('/admin/event_statistic_packlist', {
       'event_id': event.id.toString(),
-      'category1': categories[0]?.id.toString(),
-      'category2': categories[1]?.id.toString(),
-      'category3': categories[2]?.id.toString(),
+      'skill_id': skillID.toString(),
     }),
     headers: {
       'Token': session.token,
@@ -251,14 +249,15 @@ Future<Result<List<(User, int, int, int)>>> event_statistic_packlist(
 
   if (handleFailedResponse(response)) return Failure();
 
-  Iterable jlist = json.decode(utf8.decode(response.bodyBytes));
-  var list = List<(User, int, int, int)>.from(
-    jlist.map((model) {
+  Iterable it = json.decode(utf8.decode(response.bodyBytes));
+  var list = List<(User, Item, int, int, int)>.from(
+    it.map((model) {
       return (
         User.fromJson(model[0]),
-        model[1],
+        Item.fromJson(model[1]),
         model[2],
         model[3],
+        model[4],
       );
     }),
   );

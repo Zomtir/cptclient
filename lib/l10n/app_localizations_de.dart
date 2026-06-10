@@ -24,7 +24,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelOngoing => 'Fortlaufend';
 
   @override
-  String get labelRequired => 'Benötigt';
+  String get labelRequired => 'Erfordert';
+
+  @override
+  String get labelOwned => 'Im Besitz';
+
+  @override
+  String get labelNeeded => 'Benötigt';
 
   @override
   String get labelFull => 'Voll';
@@ -34,6 +40,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelNone => 'Nicht';
+
+  @override
+  String get labelIssuance => 'Ausgabe';
+
+  @override
+  String get labelReturn => 'Rückgabe';
 
   @override
   String get labelFormat => 'Formattierung';
@@ -172,6 +184,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelDate => 'Datum';
+
+  @override
+  String get labelTransferProtocol => 'Übergabeprotokoll';
 
   @override
   String get actionSelect => 'Auswählen';
@@ -464,6 +479,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pageStockManagement => 'Vereins-Vorräte verwalten';
+
+  @override
+  String get pageEquipmentManagement => 'Benutzer-Ausrüstung verwalten';
 
   @override
   String get pageItemOverview => 'Gegenstände verwalten';
@@ -874,6 +892,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get inventoryOwnershipFromUserDelete =>
       'Den Gegenstand vom Benutzer löschen';
+
+  @override
+  String get equipment => 'Ausrüstung';
 
   @override
   String get item => 'Gegenstand';

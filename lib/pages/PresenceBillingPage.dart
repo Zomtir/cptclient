@@ -13,7 +13,7 @@ import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/InfoSection.dart';
 import 'package:cptclient/material/widgets/SectionToggle.dart';
 import 'package:cptclient/material/widgets/Signature.dart';
-import 'package:cptclient/utils/billing.dart';
+import 'package:cptclient/utils/pdf_billing.dart';
 import 'package:flutter/material.dart';
 import 'package:hand_signature/signature.dart';
 import 'package:intl/intl.dart';
