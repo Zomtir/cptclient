@@ -62,7 +62,7 @@ class SkillDetailPageState extends State<SkillDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.skillKey,
             child: AppTile(

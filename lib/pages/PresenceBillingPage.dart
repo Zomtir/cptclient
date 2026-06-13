@@ -170,7 +170,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
       ),
       body: AppBody(
         maxWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.userDiscipline,
             child: TextField(

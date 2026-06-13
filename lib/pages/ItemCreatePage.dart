@@ -66,7 +66,7 @@ class ItemCreatePageState extends State<ItemCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageItemEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemName,
             child: TextField(

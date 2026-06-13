@@ -64,7 +64,7 @@ class CourseStatisticClassPageState extends State<CourseStatisticClassPage> {
       body: AppBody(
         maxWidth: 1200,
         minWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           widget.course.buildCard(context),
           DataTable(
             columns: [

@@ -49,7 +49,7 @@ class CompetenceSummaryPageState extends State<CompetenceSummaryPage> {
         title: Text(AppLocalizations.of(context)!.pageCompetencePersonal),
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.competenceSkill)),

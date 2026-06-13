@@ -101,7 +101,7 @@ class CalendarMonthPageState extends State<CalendarMonthPage> {
       body: AppBody(
         maxWidth: 720,
         minWidth: 720,
-        children: [
+        builder: (context) => [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

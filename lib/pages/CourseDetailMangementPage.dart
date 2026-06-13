@@ -194,7 +194,7 @@ class CourseDetailManagementPageState extends State<CourseDetailManagementPage> 
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           widget.course.buildCard(context),
           MenuSection(
             children: [

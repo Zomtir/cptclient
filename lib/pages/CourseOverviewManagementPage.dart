@@ -103,7 +103,7 @@ class CourseOverviewManagementPageState extends State<CourseOverviewManagementPa
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           FilterToggle(
             onApply: _update,
             children: [

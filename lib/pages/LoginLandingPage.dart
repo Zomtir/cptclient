@@ -61,73 +61,75 @@ class LoginLandingPageState extends State<LoginLandingPage> {
           ],
         ),
       ),
-      body: AppBody(children: [
-        if (userSessions.isNotEmpty)
+      body: AppBody(
+        builder: (context) => [
+          if (userSessions.isNotEmpty)
+            MenuSection(
+              title: AppLocalizations.of(context)!.sessionActiveUser,
+              children: userSessions.map((entry) => buildUserSession(entry)).toList(),
+            ),
+          if (eventSessions.isNotEmpty)
+            MenuSection(
+              title: AppLocalizations.of(context)!.sessionActiveEvent,
+              children: eventSessions.map((entry) => buildEventSession(entry)).toList(),
+            ),
           MenuSection(
-            title: AppLocalizations.of(context)!.sessionActiveUser,
-            children: userSessions.map((entry) => buildUserSession(entry)).toList(),
-          ),
-        if (eventSessions.isNotEmpty)
-          MenuSection(
-            title: AppLocalizations.of(context)!.sessionActiveEvent,
-            children: eventSessions.map((entry) => buildEventSession(entry)).toList(),
-          ),
-        MenuSection(
-          title: AppLocalizations.of(context)!.sessionNew,
-          children: [
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.loginUser),
-              leading: Icon(Icons.person),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginUserPage(),
+            title: AppLocalizations.of(context)!.sessionNew,
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.loginUser),
+                leading: Icon(Icons.person),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginUserPage(),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.loginEvent),
-              leading: Icon(Icons.event),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginEventPage(),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.loginEvent),
+                leading: Icon(Icons.event),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginEventPage(),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.loginCourse),
-              leading: Icon(Icons.sports_soccer),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.loginLocation),
-              leading: Icon(Icons.house),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
-            ),
-          ],
-        ),
-        MenuSection(
-          title: AppLocalizations.of(context)!.labelMiscellaneous,
-          children: [
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.pageSettings),
-              leading: Icon(Icons.settings),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.pageConnection),
-              leading: Icon(Icons.link_off),
-              onTap: () => router.gotoRoute(context, '/connect'),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.pageAbout),
-              leading: Icon(Icons.info),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
-            ),
-          ],
-        ),
-      ]),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.loginCourse),
+                leading: Icon(Icons.sports_soccer),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginCoursePage())),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.loginLocation),
+                leading: Icon(Icons.house),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginLocationPage())),
+              ),
+            ],
+          ),
+          MenuSection(
+            title: AppLocalizations.of(context)!.labelMiscellaneous,
+            children: [
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageSettings),
+                leading: Icon(Icons.settings),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageConnection),
+                leading: Icon(Icons.link_off),
+                onTap: () => router.gotoRoute(context, '/connect'),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.pageAbout),
+                leading: Icon(Icons.info),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreditPage())),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

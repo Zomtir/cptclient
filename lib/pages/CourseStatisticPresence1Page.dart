@@ -105,7 +105,7 @@ class CourseStatisticPresence1PageState extends State<CourseStatisticPresence1Pa
       ),
       body: AppBody(
         maxWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           widget.course.buildCard(context),
           DataTable(
             columns: [

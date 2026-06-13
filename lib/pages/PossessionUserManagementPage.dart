@@ -128,7 +128,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
         locked: _locked,
         maxWidth: 1000,
         minWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           _user?.buildTile(
             context,
             trailing: [

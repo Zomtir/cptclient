@@ -48,34 +48,36 @@ class LoginCoursePageState extends State<LoginCoursePage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginCourse),
       ),
-      body: AppBody(children: [
-        TextFormField(
-          autofocus: true,
-          maxLines: 1,
-          controller: _ctrlLogin,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.courseKey,
-            suffixIcon: IconButton(
-              focusNode: FocusNode(skipTraversal: true),
-              onPressed: () => _ctrlLogin.clear(),
-              icon: Icon(Icons.clear),
+      body: AppBody(
+        builder: (context) => [
+          TextFormField(
+            autofocus: true,
+            maxLines: 1,
+            controller: _ctrlLogin,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.courseKey,
+              suffixIcon: IconButton(
+                focusNode: FocusNode(skipTraversal: true),
+                onPressed: () => _ctrlLogin.clear(),
+                icon: Icon(Icons.clear),
+              ),
             ),
           ),
-        ),
-        AppListView(
-          items: _cache,
-          itemBuilder: (course) => ListTile(
-            title: Text(course.title),
-            onTap: () => _ctrlLogin.text = course.key,
+          AppListView(
+            items: _cache,
+            itemBuilder: (course) => ListTile(
+              title: Text(course.title),
+              onTap: () => _ctrlLogin.text = course.key,
+            ),
           ),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.actionLogin,
-          onPressed: _loginCourse,
-        ),
-      ]),
+          AppButton(
+            text: AppLocalizations.of(context)!.actionLogin,
+            onPressed: _loginCourse,
+          ),
+        ],
+      ),
     );
   }
 }

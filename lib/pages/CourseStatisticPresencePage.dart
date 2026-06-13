@@ -101,7 +101,7 @@ class CourseStatisticPresencePageState extends State<CourseStatisticPresencePage
       ),
       body: AppBody(
         maxWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.user)),

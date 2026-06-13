@@ -83,7 +83,7 @@ class TeamCreatePageState extends State<TeamCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageTeamEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.teamKey,
             child: TextField(

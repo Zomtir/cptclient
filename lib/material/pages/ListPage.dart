@@ -48,7 +48,7 @@ class ListPageState<T extends FieldInterface> extends State<ListPage<T>> {
         title: Text(widget.title),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           widget.tile,
           AppListView<T>(
             items: _list,

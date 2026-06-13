@@ -55,7 +55,7 @@ class EventStatisticOrganisationPageState extends State<EventStatisticOrganisati
       body: AppBody(
         maxWidth: 1500,
         minWidth: 1500,
-        children: <Widget>[
+        builder: (context) => [
           DataTable(
             columns: [
               DataColumn(

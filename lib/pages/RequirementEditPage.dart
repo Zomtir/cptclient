@@ -83,7 +83,7 @@ class RequirementEditPageState extends State<RequirementEditPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           if (!widget.isDraft) widget.requirement.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceSkill,

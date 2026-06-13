@@ -77,7 +77,7 @@ class ItemOverviewPageState extends State<ItemOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel<Item>(
             items: _items,
             onTap: _handleSelect,

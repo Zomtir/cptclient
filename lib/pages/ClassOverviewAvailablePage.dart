@@ -73,7 +73,7 @@ class ClassOverviewAvailablePageState
         title: Text(AppLocalizations.of(context)!.pageEventAvailable),
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           widget.course.buildCard(context),
           AppListView<Event>(
             items: _events,

@@ -56,7 +56,7 @@ class DisciplineDetailPageState extends State<DisciplineDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.disciplineName,
             child: AppTile(

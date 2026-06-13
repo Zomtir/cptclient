@@ -98,7 +98,7 @@ class CourseEditPageState extends State<CourseEditPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           if (!widget.isDraft) widget.course.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.courseKey,

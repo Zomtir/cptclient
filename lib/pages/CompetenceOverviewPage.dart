@@ -104,7 +104,7 @@ class CompetenceOverviewPageState extends State<CompetenceOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           FilterToggle(
             onApply: _update,
             children: [

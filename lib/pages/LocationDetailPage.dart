@@ -63,7 +63,7 @@ class LocationDetailPageState extends State<LocationDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.locationKey,
             child: TextField(maxLines: 1, controller: _ctrlKey),

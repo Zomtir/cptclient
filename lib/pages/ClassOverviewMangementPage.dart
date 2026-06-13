@@ -102,7 +102,7 @@ class ClassOverviewManagementPageState extends State<ClassOverviewManagementPage
         title: Text("Course Class Management"),
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           widget.course.buildCard(context),
           AppButton(
             leading: Icon(Icons.add),

@@ -57,7 +57,7 @@ class TeamRightPageState extends State<TeamRightPage> {
         title: Text(AppLocalizations.of(context)!.pageTeamRight),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           widget.team.buildCard(context),
           Divider(),
           DataTable(

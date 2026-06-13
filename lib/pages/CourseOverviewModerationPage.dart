@@ -72,7 +72,7 @@ class CourseOverviewModerationPageState extends State<CourseOverviewModerationPa
         title: Text(AppLocalizations.of(context)!.pageCourseResponsible),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

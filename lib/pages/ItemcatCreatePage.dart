@@ -46,7 +46,7 @@ class ItemcatCreatePageState extends State<ItemcatCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageItemcatEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemcatName,
             child: TextField(controller: _ctrlName, maxLines: 1, maxLength: 30),

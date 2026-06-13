@@ -93,7 +93,7 @@ class OrganisationAffiliationPageState extends State<OrganisationAffiliationPage
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel<Affiliation>(
             items: _affiliations,
             onTap: _handleSelect,

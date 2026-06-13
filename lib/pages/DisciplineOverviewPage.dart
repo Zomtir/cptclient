@@ -76,7 +76,7 @@ class DisciplineOverviewPageState extends State<DisciplineOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _disciplines,
             onTap: _handleSelect,

@@ -84,7 +84,7 @@ class TermCreatePageState extends State<TermCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageTermEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           if (widget.user == null)
             AppInfoRow(
               info: AppLocalizations.of(context)!.termUser,

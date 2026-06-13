@@ -59,60 +59,62 @@ class LoginUserPageState extends State<LoginUserPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginUser),
       ),
-      body: AppBody(children: [
-        ListTile(
-          title: TextField(
-            maxLines: 1,
-            controller: _ctrlLogin,
-            autofillHints: const <String>[AutofillHints.username],
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.userKey,
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlLogin.clear(),
-                icon: Icon(Icons.clear),
+      body: AppBody(
+        builder: (context) => [
+          ListTile(
+            title: TextField(
+              maxLines: 1,
+              controller: _ctrlLogin,
+              autofillHints: const <String>[AutofillHints.username],
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.userKey,
+                suffixIcon: IconButton(
+                  focusNode: FocusNode(skipTraversal: true),
+                  onPressed: () => _ctrlLogin.clear(),
+                  icon: Icon(Icons.clear),
+                ),
               ),
             ),
           ),
-        ),
-        ListTile(
-          title: TextField(
-            obscureText: true,
-            maxLines: 1,
-            controller: _ctrlPasswd,
-            autofillHints: const <String>[AutofillHints.password],
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.userPassword,
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlPasswd.clear(),
-                icon: Icon(Icons.clear),
+          ListTile(
+            title: TextField(
+              obscureText: true,
+              maxLines: 1,
+              controller: _ctrlPasswd,
+              autofillHints: const <String>[AutofillHints.password],
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.userPassword,
+                suffixIcon: IconButton(
+                  focusNode: FocusNode(skipTraversal: true),
+                  onPressed: () => _ctrlPasswd.clear(),
+                  icon: Icon(Icons.clear),
+                ),
               ),
             ),
           ),
-        ),
-        ListTile(
-          leading: Checkbox(
-            value: _ctrlRemember,
-            onChanged: (bool? remember) => setState(() => _ctrlRemember = remember!),
+          ListTile(
+            leading: Checkbox(
+              value: _ctrlRemember,
+              onChanged: (bool? remember) => setState(() => _ctrlRemember = remember!),
+            ),
+            title: Text(AppLocalizations.of(context)!.actionRemember),
           ),
-          title: Text(AppLocalizations.of(context)!.actionRemember),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.actionLogin,
-          onPressed: () => _loginUser(_ctrlLogin.text, _ctrlPasswd.text, _ctrlRemember),
-        ),
-        Divider(),
-        if (_credentials.isNotEmpty)
-          MenuSection(
-            title: AppLocalizations.of(context)!.labelLoginsRemembered,
-            children: _credentials.map((entry) => buildCredential(entry)).toList(),
+          AppButton(
+            text: AppLocalizations.of(context)!.actionLogin,
+            onPressed: () => _loginUser(_ctrlLogin.text, _ctrlPasswd.text, _ctrlRemember),
           ),
-      ]),
+          Divider(),
+          if (_credentials.isNotEmpty)
+            MenuSection(
+              title: AppLocalizations.of(context)!.labelLoginsRemembered,
+              children: _credentials.map((entry) => buildCredential(entry)).toList(),
+            ),
+        ],
+      ),
     );
   }
 

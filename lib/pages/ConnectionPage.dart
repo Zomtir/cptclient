@@ -100,7 +100,7 @@ class ConnectionPageState extends State<ConnectionPage> {
         title: Text(AppLocalizations.of(context)!.pageConnection),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           ListTile(
             title: Text(AppLocalizations.of(context)!.labelServer),
           ),

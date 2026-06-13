@@ -83,7 +83,7 @@ class TeamOverviewPageState extends State<TeamOverviewPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _teams,
             onTap: _handleSelect,

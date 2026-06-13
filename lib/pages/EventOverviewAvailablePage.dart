@@ -111,7 +111,7 @@ class EventOverviewAvailablePageState extends State<EventOverviewAvailablePage> 
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           FilterToggle(
             onApply: _update,
             children: [

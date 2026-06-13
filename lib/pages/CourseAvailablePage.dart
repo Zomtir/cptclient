@@ -54,7 +54,7 @@ class CourseAvailablePageState extends State<CourseAvailablePage> {
         title: Text(AppLocalizations.of(context)!.pageCourseAvailable),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppListView(
             items: _courses,
             itemBuilder: (Course course) {

@@ -81,7 +81,7 @@ class SelectionPageState<T extends FieldInterface> extends State<SelectionPage<T
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppListView<T>(
             items: _selected,
             itemBuilder: (T item) {

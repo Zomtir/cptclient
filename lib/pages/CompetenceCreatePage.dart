@@ -66,7 +66,7 @@ class CompetenceCreatePageState extends State<CompetenceCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageCompetenceEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceUser,
             child: AppField<User>(

@@ -63,7 +63,7 @@ class CourseClubEditPageState extends State<CourseClubEditPage> {
         title: Text(AppLocalizations.of(context)!.pageCourseClub),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           widget.course.buildCard(context),
           AppInfoRow(
             info: AppLocalizations.of(context)!.club,

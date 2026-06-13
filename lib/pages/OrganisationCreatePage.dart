@@ -63,7 +63,7 @@ class OrganisationCreatePageState extends State<OrganisationCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageOrganisationEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.organisationAbbreviation,
             child: TextField(

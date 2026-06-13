@@ -48,7 +48,7 @@ class MemberProfilePageState extends State<MemberProfilePage> {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.pageUserProfile)),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelName,
             child: ListTile(title: Text("${widget.session.user!.firstname} ${widget.session.user!.lastname}")),

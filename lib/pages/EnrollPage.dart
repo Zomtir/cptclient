@@ -75,7 +75,7 @@ class EnrollPageState extends State<EnrollPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           _event!.buildCard(context),
           MenuSection(
             title: AppLocalizations.of(context)!.pageEventAttendancePresences,

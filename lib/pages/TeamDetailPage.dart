@@ -119,7 +119,7 @@ class TeamDetailPageState extends State<TeamDetailPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.teamKey,
             child: Text(team.key),

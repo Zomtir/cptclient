@@ -154,7 +154,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       ),
       body: AppBody(
         maxWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           FilterToggle(
             hidden: false,
             onApply: _update,

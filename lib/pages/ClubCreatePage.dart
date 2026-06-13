@@ -62,7 +62,7 @@ class ClubCreatePageState extends State<ClubCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageClubEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.clubKey,
             child: TextField(

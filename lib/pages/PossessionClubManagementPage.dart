@@ -86,7 +86,7 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
       body: AppBody(
         maxWidth: 1000,
         minWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           if (widget.club == null)
             AppButton(
               text: AppLocalizations.of(context)!.possessionClub,

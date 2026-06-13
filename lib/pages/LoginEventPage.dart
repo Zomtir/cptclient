@@ -59,58 +59,60 @@ class LoginEventPageState extends State<LoginEventPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginEvent),
       ),
-      body: AppBody(children: [
-        ListTile(
-          title: TextFormField(
-            maxLines: 1,
-            controller: _ctrlLogin,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.eventKey,
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlLogin.clear(),
-                icon: Icon(Icons.clear),
+      body: AppBody(
+        builder: (context) => [
+          ListTile(
+            title: TextFormField(
+              maxLines: 1,
+              controller: _ctrlLogin,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.eventKey,
+                suffixIcon: IconButton(
+                  focusNode: FocusNode(skipTraversal: true),
+                  onPressed: () => _ctrlLogin.clear(),
+                  icon: Icon(Icons.clear),
+                ),
               ),
             ),
           ),
-        ),
-        ListTile(
-          title: TextField(
-            obscureText: true,
-            maxLines: 1,
-            controller: _ctrlPasswd,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.eventPassword,
-              suffixIcon: IconButton(
-                focusNode: FocusNode(skipTraversal: true),
-                onPressed: () => _ctrlPasswd.clear(),
-                icon: Icon(Icons.clear),
+          ListTile(
+            title: TextField(
+              obscureText: true,
+              maxLines: 1,
+              controller: _ctrlPasswd,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.eventPassword,
+                suffixIcon: IconButton(
+                  focusNode: FocusNode(skipTraversal: true),
+                  onPressed: () => _ctrlPasswd.clear(),
+                  icon: Icon(Icons.clear),
+                ),
               ),
             ),
           ),
-        ),
-        ListTile(
-          leading: Checkbox(
-            value: _ctrlRemember,
-            onChanged: (bool? remember) => setState(() => _ctrlRemember = remember!),
+          ListTile(
+            leading: Checkbox(
+              value: _ctrlRemember,
+              onChanged: (bool? remember) => setState(() => _ctrlRemember = remember!),
+            ),
+            title: Text(AppLocalizations.of(context)!.actionRemember),
           ),
-          title: Text(AppLocalizations.of(context)!.actionRemember),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.actionLogin,
-          onPressed: () => _loginEvent(_ctrlLogin.text, _ctrlPasswd.text, _ctrlRemember),
-        ),
-        Divider(),
-        if (_credentials.isNotEmpty)
-          MenuSection(
-            title: AppLocalizations.of(context)!.labelLoginsRemembered,
-            children: _credentials.map((entry) => buildCredential(entry)).toList(),
+          AppButton(
+            text: AppLocalizations.of(context)!.actionLogin,
+            onPressed: () => _loginEvent(_ctrlLogin.text, _ctrlPasswd.text, _ctrlRemember),
           ),
-      ]),
+          Divider(),
+          if (_credentials.isNotEmpty)
+            MenuSection(
+              title: AppLocalizations.of(context)!.labelLoginsRemembered,
+              children: _credentials.map((entry) => buildCredential(entry)).toList(),
+            ),
+        ],
+      ),
     );
   }
 

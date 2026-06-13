@@ -75,7 +75,7 @@ class CalendarDayPageState extends State<CalendarDayPage> {
         title: Text(AppLocalizations.of(context)!.pageCalendarDay),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

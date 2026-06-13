@@ -41,7 +41,7 @@ class SettingsPageState extends State<SettingsPage> {
         title: Text(AppLocalizations.of(context)!.pageSettings),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelLanguage,
             child: DropdownButton<Language>(

@@ -76,7 +76,7 @@ class LocationOverviewPageState extends State<LocationOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _locations,
             onTap: _handleSelect,

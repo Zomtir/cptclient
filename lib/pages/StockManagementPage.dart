@@ -174,7 +174,7 @@ class StockManagementPageState extends State<StockManagementPage> {
       ),
       body: AppBody(
         minWidth: 600,
-        children: <Widget>[
+        builder: (context) => [
           AppButton(
             text: AppLocalizations.of(context)!.stockClub,
             onPressed: _prepare,

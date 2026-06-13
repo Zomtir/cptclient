@@ -195,7 +195,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           FilterToggle(
             onApply: _update,
             children: [

@@ -56,7 +56,7 @@ class AffiliationCreatePageState extends State<AffiliationCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageAffiliationEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.affiliationMemberIdentifier}",
             child: TextField(

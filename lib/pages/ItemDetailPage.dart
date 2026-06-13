@@ -77,7 +77,7 @@ class ItemDetailPageState extends State<ItemDetailPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemName,
             child: AppTile(

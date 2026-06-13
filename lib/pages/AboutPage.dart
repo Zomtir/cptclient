@@ -17,76 +17,78 @@ class CreditPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageAbout),
       ),
-      body: AppBody(children: <Widget>[
-        Text(
-          AppLocalizations.of(context)!.labelRelease,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        ListTile(
-          leading: const Image(
-            width: 56,
-            height: 56,
-            image: AssetImage('assets/images/logo_cpt_256.png'),
-          ),
-          title: Text("${AppLocalizations.of(context)!.labelVersion} ${client.version}"),
-          subtitle: InkWell(
-            child: Text(
-              "https://github.com/Zomtir/cptclient/",
-            ),
-            onTap: () => launchUrlString("https://github.com/Zomtir/cptclient/"),
-          ),
-        ),
-        Text(
-          AppLocalizations.of(context)!.labelLicense,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        ListTile(
-          leading: const Image(
-            width: 56,
-            height: 56,
-            image: AssetImage('assets/images/logo_public_domain.png'),
-          ),
-          title: Text(
-            "Public Domain",
+      body: AppBody(
+        builder: (context) => [
+          Text(
+            AppLocalizations.of(context)!.labelRelease,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          subtitle: InkWell(
-            child: Text(
-              "https://unlicense.org/",
+          ListTile(
+            leading: const Image(
+              width: 56,
+              height: 56,
+              image: AssetImage('assets/images/logo_cpt_256.png'),
             ),
-            onTap: () => launchUrlString("https://unlicense.org/"),
-          ),
-        ),
-        Text(
-          AppLocalizations.of(context)!.labelAuthors,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        AppListView(
-          items: authors,
-          itemBuilder: (author) {
-            return ListTile(
-              leading: const Icon(Icons.brush, size: 56),
-              title: Text(author.$1),
-              subtitle: InkWell(
-                child: Text(author.$2),
-                onTap: () => launchUrlString(author.$2),
+            title: Text("${AppLocalizations.of(context)!.labelVersion} ${client.version}"),
+            subtitle: InkWell(
+              child: Text(
+                "https://github.com/Zomtir/cptclient/",
               ),
-            );
-          },
-        ),
-      ]),
+              onTap: () => launchUrlString("https://github.com/Zomtir/cptclient/"),
+            ),
+          ),
+          Text(
+            AppLocalizations.of(context)!.labelLicense,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          ListTile(
+            leading: const Image(
+              width: 56,
+              height: 56,
+              image: AssetImage('assets/images/logo_public_domain.png'),
+            ),
+            title: Text(
+              "Public Domain",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: InkWell(
+              child: Text(
+                "https://unlicense.org/",
+              ),
+              onTap: () => launchUrlString("https://unlicense.org/"),
+            ),
+          ),
+          Text(
+            AppLocalizations.of(context)!.labelAuthors,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          AppListView(
+            items: authors,
+            itemBuilder: (author) {
+              return ListTile(
+                leading: const Icon(Icons.brush, size: 56),
+                title: Text(author.$1),
+                subtitle: InkWell(
+                  child: Text(author.$2),
+                  onTap: () => launchUrlString(author.$2),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

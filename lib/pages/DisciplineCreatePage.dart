@@ -53,7 +53,7 @@ class DisciplineCreatePageState extends State<DisciplineCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageDisciplineEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.disciplineName,
             child: TextField(maxLines: 1, controller: _ctrlTitle),

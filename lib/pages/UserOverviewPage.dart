@@ -75,7 +75,7 @@ class UserOverviewPageState extends State<UserOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _users,
             onTap: _handleSelect,

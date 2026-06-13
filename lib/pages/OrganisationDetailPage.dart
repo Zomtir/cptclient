@@ -75,7 +75,7 @@ class OrganisationDetailPageState extends State<OrganisationDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.organisationAbbreviation}",
             child: Text(widget.organisation.abbreviation),

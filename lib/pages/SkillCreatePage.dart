@@ -65,7 +65,7 @@ class SkillCreatePageState extends State<SkillCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageSkillEdit),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.skillKey,
             child: TextField(maxLines: 1, controller: _ctrlKey),

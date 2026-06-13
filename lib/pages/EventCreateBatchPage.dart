@@ -156,7 +156,7 @@ class EventCreateBatchPageState extends State<EventCreateBatchPage> {
         title: Text(AppLocalizations.of(context)!.pageEventCreate),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventTitle,
             child: TextField(

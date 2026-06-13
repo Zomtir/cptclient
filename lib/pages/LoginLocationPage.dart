@@ -51,34 +51,36 @@ class LoginLocationPageState extends State<LoginLocationPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginLocation),
       ),
-      body: AppBody(children: [
-        TextFormField(
-          autofocus: true,
-          maxLines: 1,
-          controller: _ctrlLogin,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.locationKey,
-            suffixIcon: IconButton(
-              focusNode: FocusNode(skipTraversal: true),
-              onPressed: () => _ctrlLogin.clear(),
-              icon: Icon(Icons.clear),
+      body: AppBody(
+        builder: (context) => [
+          TextFormField(
+            autofocus: true,
+            maxLines: 1,
+            controller: _ctrlLogin,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.locationKey,
+              suffixIcon: IconButton(
+                focusNode: FocusNode(skipTraversal: true),
+                onPressed: () => _ctrlLogin.clear(),
+                icon: Icon(Icons.clear),
+              ),
             ),
           ),
-        ),
-        AppListView(
-          items: _locations,
-          itemBuilder: (location) => ListTile(
-            title: Text(location.name),
-            onTap: () => _ctrlLogin.text = location.key,
+          AppListView(
+            items: _locations,
+            itemBuilder: (location) => ListTile(
+              title: Text(location.name),
+              onTap: () => _ctrlLogin.text = location.key,
+            ),
           ),
-        ),
-        AppButton(
-          text: AppLocalizations.of(context)!.actionLogin,
-          onPressed: _loginLocation,
-        ),
-      ]),
+          AppButton(
+            text: AppLocalizations.of(context)!.actionLogin,
+            onPressed: _loginLocation,
+          ),
+        ],
+      ),
     );
   }
 }

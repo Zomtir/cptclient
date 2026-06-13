@@ -79,7 +79,7 @@ class ClubTermOverviewPageState extends State<ClubTermOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _terms,
             onTap: _handleSelect,

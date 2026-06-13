@@ -76,7 +76,7 @@ class UserCreatePageState extends State<UserCreatePage> {
         title: Text(AppLocalizations.of(context)!.pageUserCreate),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.userActive,
             child: Align(

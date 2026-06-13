@@ -77,7 +77,7 @@ class ItemcatDetailPageState extends State<ItemcatDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.itemcatName,
             child: AppTile(

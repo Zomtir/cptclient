@@ -62,7 +62,7 @@ class MemberLandingPage extends StatelessWidget {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           MenuSection(
             title: AppLocalizations.of(context)!.labelCalendar,
             icon: Image(

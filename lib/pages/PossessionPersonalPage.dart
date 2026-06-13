@@ -45,7 +45,7 @@ class PossessionPersonalPageState extends State<PossessionPersonalPage> {
       body: AppBody(
         maxWidth: 1000,
         minWidth: 1000,
-        children: <Widget>[
+        builder: (context) => [
           DataTable(
             columns: [
               DataColumn(label: Text(AppLocalizations.of(context)!.possessionItem)),

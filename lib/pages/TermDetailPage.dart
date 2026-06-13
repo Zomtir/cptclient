@@ -27,7 +27,7 @@ class TermDetailPage extends StatefulWidget {
 
 class TermDetailPageState extends State<TermDetailPage> {
   bool _locked = true;
-  Term? term;
+  Term? _term;
 
   TermDetailPageState();
 
@@ -38,15 +38,17 @@ class TermDetailPageState extends State<TermDetailPage> {
   }
 
   void update() async {
-    _locked = true;
+    setState(() => _locked = true);
     var result = await api_admin.term_info(widget.session, widget.termID);
     if (result is! Success) return;
-    setState(() => term = result.unwrap());
-    _locked = false;
+    setState(() {
+      _term = result.unwrap();
+      _locked = false;
+    });
   }
 
   void submit() async {
-    await api_admin.term_edit(widget.session, term!);
+    await api_admin.term_edit(widget.session, _term!);
     update();
   }
 
@@ -70,21 +72,21 @@ class TermDetailPageState extends State<TermDetailPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.termUser,
-            child: term!.user!.buildInfo(context),
+            child: _term!.user!.buildInfo(context),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.termClub,
-            child: term!.club!.buildInfo(context),
+            child: _term!.club!.buildInfo(context),
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.termBegin,
-            child: Text(term!.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown),
+            child: Text(_term!.begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown),
             actions: [
               IconButton(
-                onPressed: () => clipText(formatIsoDate(term!.begin) ?? ''),
+                onPressed: () => clipText(formatIsoDate(_term!.begin) ?? ''),
                 icon: Icon(Icons.copy),
               ),
               IconButton(
@@ -92,9 +94,9 @@ class TermDetailPageState extends State<TermDetailPage> {
                 onPressed: () => showDialog(
                   context: context,
                   builder: (context) => DateEditDialog(
-                    initialDate: term!.begin,
+                    initialDate: _term!.begin,
                     onConfirm: (DateTime dt) {
-                      setState(() => term!.begin = dt);
+                      setState(() => _term!.begin = dt);
                       submit();
                     },
                   ),
@@ -104,10 +106,10 @@ class TermDetailPageState extends State<TermDetailPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.termEnd,
-            child: Text(term!.end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing),
+            child: Text(_term!.end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing),
             actions: [
               IconButton(
-                onPressed: () => clipText(formatIsoDate(term!.end) ?? ''),
+                onPressed: () => clipText(formatIsoDate(_term!.end) ?? ''),
                 icon: Icon(Icons.copy),
               ),
               IconButton(
@@ -115,9 +117,9 @@ class TermDetailPageState extends State<TermDetailPage> {
                 onPressed: () => showDialog(
                   context: context,
                   builder: (context) => DateEditDialog(
-                    initialDate: term!.end,
+                    initialDate: _term!.end,
                     onConfirm: (DateTime dt) {
-                      setState(() => term!.end = dt);
+                      setState(() => _term!.end = dt);
                       submit();
                     },
                   ),

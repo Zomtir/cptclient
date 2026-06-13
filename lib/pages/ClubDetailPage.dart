@@ -155,7 +155,7 @@ class ClubDetailPageState extends State<ClubDetailPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SectionToggle(
           title: AppLocalizations.of(context)!.labelMoreDetails,
           children: [

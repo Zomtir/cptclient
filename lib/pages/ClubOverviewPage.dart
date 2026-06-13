@@ -75,7 +75,7 @@ class ClubOverviewPageState extends State<ClubOverviewPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _clubs,
             onTap: _handleSelect,

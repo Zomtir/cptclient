@@ -58,7 +58,7 @@ class EventExportPageState extends State<EventExportPage> {
         title: Text(AppLocalizations.of(context)!.pageEventDetails),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

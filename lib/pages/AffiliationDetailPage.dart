@@ -52,7 +52,7 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.organisation,
             child: widget.affiliation.organisation!.buildInfo(context),

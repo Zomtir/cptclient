@@ -90,7 +90,7 @@ class CompetenceDetailPageState extends State<CompetenceDetailPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.competenceUser,
             child: competence!.user!.buildInfo(context),

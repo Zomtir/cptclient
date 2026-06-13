@@ -182,7 +182,7 @@ class EventOverviewOwnershipPageState extends State<EventOverviewOwnershipPage> 
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           FilterToggle(
             onApply: _update,
             children: [

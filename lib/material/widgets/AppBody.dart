@@ -2,12 +2,12 @@ import 'package:cptclient/material/widgets/LoadingWidget.dart';
 import 'package:flutter/material.dart';
 
 class AppBody extends StatelessWidget {
-  final List<Widget> children;
+  final List<Widget> Function(BuildContext context) builder;
   final double minWidth;
   final double maxWidth;
   final bool locked;
 
-  const AppBody({required this.children, this.minWidth = 0, this.maxWidth = 600, this.locked = false});
+  const AppBody({required this.builder, this.minWidth = 0, this.maxWidth = 600, this.locked = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class AppBody extends StatelessWidget {
           final child = ListView(
             scrollDirection: Axis.vertical,
             padding: const EdgeInsets.all(8.0),
-            children: children,
+            children: builder(context),
           );
       
           if (screenWidth > minWidth) {

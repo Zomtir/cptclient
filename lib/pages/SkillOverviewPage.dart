@@ -76,7 +76,7 @@ class SkillOverviewPageState extends State<SkillOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _skills,
             onTap: _handleSelect,

@@ -80,7 +80,7 @@ class OrganisationOverviewPageState extends State<OrganisationOverviewPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: <Widget>[
+        builder: (context) => [
           SearchablePanel(
             items: _organisations,
             onTap: _handleSelect,

@@ -65,7 +65,7 @@ class RequirementOverviewPageState extends State<RequirementOverviewPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           widget.course.buildCard(context),
           AppListView<Requirement>(
             items: _requirements,

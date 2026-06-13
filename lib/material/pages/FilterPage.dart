@@ -71,7 +71,7 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
         title: Text(widget.title),
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppButton(
             text: AppLocalizations.of(context)!.actionAdd,
             onPressed: () => showDialog(

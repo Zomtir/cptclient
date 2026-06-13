@@ -85,7 +85,7 @@ class UserDetailPageState extends State<UserDetailPage> {
       ),
       body: AppBody(
         locked: _locked,
-        children: [
+        builder: (context) => [
           InfoSection(
             title: AppLocalizations.of(context)!.labelAccount,
           ),

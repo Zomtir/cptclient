@@ -489,7 +489,7 @@ class EventDetailPageState extends State<EventDetailPage> {
         ],
       ),
       body: AppBody(
-        children: [
+        builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventTitle,
             child: ListTile(
