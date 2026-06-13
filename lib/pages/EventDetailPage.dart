@@ -376,7 +376,6 @@ class EventDetailPageState extends State<EventDetailPage> {
       MaterialPageRoute(
         builder: (context) => ListPage<User>(
           title: "$heading ${AppLocalizations.of(context)!.pageEventAttendanceRegistrations}",
-          tile: _event!.buildCard(context),
           onCallList: callList!,
         ),
       ),

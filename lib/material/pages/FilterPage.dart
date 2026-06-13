@@ -1,8 +1,6 @@
-import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/FilterDialog.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppListView.dart';
 import 'package:cptclient/utils/extensions.dart';
 import 'package:cptclient/utils/result.dart';
@@ -69,11 +67,9 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-      ),
-      body: AppBody(
-        builder: (context) => [
-          AppButton(
-            text: AppLocalizations.of(context)!.actionAdd,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
               builder: (context) => FilterDialog(
@@ -91,6 +87,10 @@ class FilterPageState<T extends FieldInterface> extends State<FilterPage<T>> {
               ),
             ),
           ),
+        ],
+      ),
+      body: AppBody(
+        builder: (context) => [
           AppListView<(T, bool)>(
             items: _selected,
             itemBuilder: ((T, bool) item) {

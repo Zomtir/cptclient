@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 
 class ListPage<T extends FieldInterface> extends StatefulWidget {
   final String title;
-  final Widget tile;
+  final Widget? tile;
   final Future<Result<List<T>>> Function() onCallList;
 
   ListPage({
     super.key,
     required this.title,
-    required this.tile,
+    this.tile,
     required this.onCallList,
   });
 
@@ -49,7 +49,7 @@ class ListPageState<T extends FieldInterface> extends State<ListPage<T>> {
       ),
       body: AppBody(
         builder: (context) => [
-          widget.tile,
+          if (widget.tile != null) widget.tile!,
           AppListView<T>(
             items: _list,
             itemBuilder: (T item) => item.buildTile(context),
