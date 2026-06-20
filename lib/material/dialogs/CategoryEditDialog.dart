@@ -63,7 +63,7 @@ class CategoryEditDialogState extends State<CategoryEditDialog> {
             icon: const Icon(Icons.check),
             onPressed: () {
               if (currentValue.length > widget.maxLength) {
-                messageText("Too long");
+                messageText("Too long"); // TODO
                 return;
               }
 

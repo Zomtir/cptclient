@@ -164,6 +164,18 @@ abstract class AppLocalizations {
   /// **'None'**
   String get labelNone;
 
+  /// No description provided for @labelFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get labelFrom;
+
+  /// No description provided for @labelTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get labelTo;
+
   /// No description provided for @labelIssuance.
   ///
   /// In en, this message translates to:

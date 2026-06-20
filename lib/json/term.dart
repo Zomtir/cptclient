@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:cptclient/json/club.dart';
+import 'package:cptclient/json/term_discipline.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/fields/FieldInterface.dart';
@@ -16,6 +17,7 @@ class Term extends FieldInterface implements Comparable {
   Club? club;
   DateTime? begin;
   DateTime? end;
+  List<TermDiscipline>? disciplines;
 
   Term({this.id = 0, this.user, this.club, this.begin, this.end});
 
@@ -26,7 +28,8 @@ class Term extends FieldInterface implements Comparable {
       user = User.fromJson(json['user']),
       club = Club.fromJson(json['club']),
       begin = parseIsoDate(json['begin']),
-      end = parseIsoDate(json['end']);
+      end = parseIsoDate(json['end']),
+      disciplines = (json['disciplines'] as List?)?.map((td) => TermDiscipline.fromJson(td)).toList();
 
   Map<String, dynamic> toJson() => {
     'id': id,

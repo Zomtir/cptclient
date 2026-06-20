@@ -10,6 +10,8 @@
   "labelFull": "Voll",
   "labelSplit": "Geteilt",
   "labelNone": "Nicht",
+  "labelFrom": "Von",
+  "labelTo": "Bis",
   "labelIssuance": "Ausgabe",
   "labelReturn": "Rückgabe",
   "labelFormat": "Formattierung",

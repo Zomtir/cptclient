@@ -42,6 +42,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNone => 'None';
 
   @override
+  String get labelFrom => 'From';
+
+  @override
+  String get labelTo => 'To';
+
+  @override
   String get labelIssuance => 'Issuance';
 
   @override

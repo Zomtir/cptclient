@@ -62,7 +62,7 @@ class Competence extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    int criteria1 = user!.compareTo(other.user);
+    int criteria1 = user!.compareTo(other.term);
     if (criteria1 != 0) return criteria1;
 
     int criteria2 = skill!.compareTo(other.skill);

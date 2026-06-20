@@ -1,10 +1,14 @@
 import 'package:cptclient/api/admin/club/term.dart' as api_admin;
+import 'package:cptclient/api/admin/club/term_discipline.dart' as api_admin;
+import 'package:cptclient/api/admin/discipline/discipline.dart' as api_admin;
+import 'package:cptclient/json/discipline.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/DateEditDialog.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppInfoRow.dart';
+import 'package:cptclient/material/widgets/TermDisciplineList.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/format.dart';
@@ -28,6 +32,7 @@ class TermDetailPage extends StatefulWidget {
 class TermDetailPageState extends State<TermDetailPage> {
   bool _locked = true;
   Term? _term;
+  List<Discipline>? _disciplines;
 
   TermDetailPageState();
 
@@ -41,8 +46,14 @@ class TermDetailPageState extends State<TermDetailPage> {
     setState(() => _locked = true);
     var result = await api_admin.term_info(widget.session, widget.termID);
     if (result is! Success) return;
+
+    Result<List<Discipline>> result_discipline = await api_admin.discipline_list(widget.session);
+    if (result_discipline is! Success) return;
+
     setState(() {
+      _disciplines = result_discipline.unwrap();
       _term = result.unwrap();
+      _term!.disciplines?.sort();
       _locked = false;
     });
   }
@@ -126,6 +137,18 @@ class TermDetailPageState extends State<TermDetailPage> {
                 ),
               ),
             ],
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.discipline,
+            child: TermDisciplineList(
+              term: _term!,
+              disciplines: _disciplines ?? [],
+              termDisciplines: _term!.disciplines ?? [],
+              onChanged: update,
+              onCreate: (td) => api_admin.term_discipline_create(widget.session, _term!.id, td),
+              onEdit: (td) => api_admin.term_discipline_edit(widget.session, td),
+              onDelete: (td) => api_admin.term_discipline_delete(widget.session, td.id),
+            ),
           ),
         ],
       ),

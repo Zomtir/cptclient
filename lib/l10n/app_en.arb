@@ -10,6 +10,8 @@
   "labelFull": "Full",
   "labelSplit": "Split",
   "labelNone": "None",
+  "labelFrom": "From",
+  "labelTo": "To",
   "labelIssuance": "Issuance",
   "labelReturn": "Return",
   "labelFormat": "Format",
