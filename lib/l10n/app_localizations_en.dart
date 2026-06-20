@@ -828,6 +828,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get licenseNumber => 'License Number';
 
   @override
+  String get licenseIssued => 'Issue Date';
+
+  @override
   String get licenseExpiration => 'Date of Expiration';
 
   @override

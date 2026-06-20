@@ -271,6 +271,7 @@
   "genderOther": "Divers",
   "licenseName": "Lizenzbezeichnung",
   "licenseNumber": "Lizenznummer",
+  "licenseIssued": "Ausstellungsdatum",
   "licenseExpiration": "Ablaufdatum",
   "bankaccIban": "IBAN",
   "bankaccBic": "BIC",

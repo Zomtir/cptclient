@@ -22,6 +22,7 @@ class LicenseEditDialogState extends State<LicenseEditDialog> {
   late License currentValue;
   final TextEditingController _ctrlName = TextEditingController();
   final TextEditingController _ctrlNumber = TextEditingController();
+  final DateTimeController _ctrlIssued = DateTimeController();
   final DateTimeController _ctrlExpiration = DateTimeController();
 
   LicenseEditDialogState();
@@ -32,6 +33,7 @@ class LicenseEditDialogState extends State<LicenseEditDialog> {
     currentValue = widget.initialValue;
     _ctrlName.text = currentValue.name;
     _ctrlNumber.text = currentValue.number;
+    _ctrlIssued.setDateTime(currentValue.issued);
     _ctrlExpiration.setDateTime(currentValue.expiration);
   }
 
@@ -52,6 +54,14 @@ class LicenseEditDialogState extends State<LicenseEditDialog> {
               child: TextField(
                 maxLines: 1,
                 controller: _ctrlNumber,
+              ),
+            ),
+            AppInfoRow(
+              info: AppLocalizations.of(context)!.licenseIssued,
+              child: DateTimeField(
+                nullable: true,
+                showTime: false,
+                controller: _ctrlIssued,
               ),
             ),
             AppInfoRow(
@@ -94,6 +104,7 @@ class LicenseEditDialogState extends State<LicenseEditDialog> {
 
               currentValue.name = _ctrlName.text;
               currentValue.number = _ctrlNumber.text;
+              currentValue.issued = _ctrlIssued.getDateTime()!;
               currentValue.expiration = _ctrlExpiration.getDateTime()!;
 
               widget.onConfirm?.call(currentValue);

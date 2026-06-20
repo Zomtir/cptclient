@@ -271,6 +271,7 @@
   "genderOther": "Other",
   "licenseName": "License Name",
   "licenseNumber": "License Number",
+  "licenseIssued": "Issue Date",
   "licenseExpiration": "Date of Expiration",
   "bankaccIban": "IBAN",
   "bankaccBic": "BIC",

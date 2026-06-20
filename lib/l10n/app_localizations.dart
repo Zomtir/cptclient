@@ -1730,6 +1730,12 @@ abstract class AppLocalizations {
   /// **'License Number'**
   String get licenseNumber;
 
+  /// No description provided for @licenseIssued.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Date'**
+  String get licenseIssued;
+
   /// No description provided for @licenseExpiration.
   ///
   /// In en, this message translates to:

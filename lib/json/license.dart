@@ -11,28 +11,27 @@ class License extends FieldInterface implements Comparable {
   final int id;
   String number;
   String name;
+  DateTime? issued;
   DateTime expiration;
 
-  License(this.id, this.number, this.name, this.expiration);
+  License(this.id, this.number, this.name, this.issued, this.expiration);
 
-  License.fromVoid()
-      : id = 0,
-        number = "",
-        name = "",
-        expiration = DateTime.now();
+  License.fromVoid() : id = 0, number = "", name = "", issued = DateTime.now(), expiration = DateTime.now();
 
   License.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        number = json['number'],
-        name = json['name'],
-        expiration = parseIsoDate(json['expiration'])!;
+    : id = json['id'],
+      number = json['number'],
+      name = json['name'],
+      issued = parseIsoDate(json['issued']),
+      expiration = parseIsoDate(json['expiration'])!;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'number': number,
-        'name': name,
-        'expiration': formatIsoDate(expiration),
-      };
+    'id': id,
+    'number': number,
+    'name': name,
+    'issued': formatIsoDate(issued),
+    'expiration': formatIsoDate(expiration),
+  };
 
   @override
   bool operator ==(other) => other is License && id == other.id;
@@ -68,9 +67,12 @@ class License extends FieldInterface implements Comparable {
   Widget buildInfo(BuildContext context) {
     return Column(
       children: [
-        Text("${name.isEmpty ? AppLocalizations.of(context)!.undefined : name} "
-            "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})"),
-        Text("${expiration.fmtDate(context)}"),
+        Text(
+          "${name.isEmpty ? AppLocalizations.of(context)!.undefined : name} "
+          "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})",
+        ),
+        Text("${AppLocalizations.of(context)!.licenseIssued} ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
+        Text("${AppLocalizations.of(context)!.licenseExpiration} ${expiration.fmtDate(context)}"),
       ],
     );
   }
@@ -81,11 +83,15 @@ class License extends FieldInterface implements Comparable {
       leading: Tooltip(message: "$id", child: Icon(Icons.badge)),
       trailing: trailing,
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("${expiration.fmtDate(context)}"),
-          ]
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text("${AppLocalizations.of(context)!.licenseIssued} ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
+          Text("${AppLocalizations.of(context)!.licenseExpiration} ${expiration.fmtDate(context)}"),
+        ],
       ),
       onTap: onTap,
     );
@@ -97,8 +103,12 @@ class License extends FieldInterface implements Comparable {
       leading: Tooltip(message: "$id", child: Icon(Icons.badge)),
       trailing: trailing,
       children: [
-        Text("$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${expiration.fmtDate(context)}"),
+        Text(
+          "$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text("${AppLocalizations.of(context)!.licenseIssued} ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
+        Text("${AppLocalizations.of(context)!.licenseExpiration} ${expiration.fmtDate(context)}"),
       ],
     );
   }
