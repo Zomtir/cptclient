@@ -14,7 +14,6 @@ class Credential extends FieldInterface {
 
   Credential({this.login, this.password, this.salt, this.since});
 
-  @override
   Credential.fromJson(Map<String, dynamic> json)
       : login = json['login'],
         password = json['password'],

@@ -40,7 +40,7 @@ class CollapsibleSectionState extends State<CollapsibleSection> with SingleTicke
   @override
   Widget build(BuildContext context) {
     return SizeTransition(
-      axisAlignment: 1.0,
+      alignment: const Alignment(-1.0, 1.0),
       sizeFactor: _animation,
       child: Column(children: widget.children),
     );
