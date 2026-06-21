@@ -42,7 +42,7 @@ fi
 # MACOS
 if [[ "$ARCH" == "macos" ]]; then
     flutter build macos "${DART_DEFINES[@]}"
-    tar -czf release/cptclient-macos-arm64.tar.gz -C "build/macos/Build/Products/Release/Course Participation Tracker.app" .
+    tar -czf release/cptclient-macos-arm64.tar.gz -C "build/macos/Build/Products/Release/cptclient.app" .
 fi
 
 # IOS
