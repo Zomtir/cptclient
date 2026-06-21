@@ -5,7 +5,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.35.3'
+        default: '3.44.0'
         type: string
       upload_action_artifact:
         description: 'Upload build artifacts in the GH action'
@@ -54,7 +54,7 @@ jobs:
             platform: android
             build-type: apk
             asset: android.apk
-          - os: windows-2019
+          - os: windows-latest
             platform: windows
             build-type: windows
             asset: windows-amd64.zip
@@ -89,6 +89,7 @@ jobs:
         if: runner.os == 'macos'
         run: |
           brew untap aws/tap || true
+          brew uninstall bicep || true
           brew untap azure/bicep || true
           brew install bash
           bash --version

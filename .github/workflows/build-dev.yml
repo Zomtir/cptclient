@@ -6,17 +6,17 @@ on:
       flutter_version:
         description: 'Flutter Version'
         required: false
-        default: '3.35.3'
+        default: '3.44.0'
         type: choice
         options:
           - 'stable'
           - 'beta'
-          - '3.35.3'
+          - '3.44.0'
   workflow_call:
     inputs:
       flutter_version:
         required: false
-        default: '3.35.3'
+        default: '3.44.0'
         type: string
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
           - os: ubuntu-latest
             platform: android
             build-type: apk
-          - os: windows-2019
+          - os: windows-latest
             platform: windows
             build-type: windows
           - os: ubuntu-latest
