@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppInfoRow extends StatelessWidget {
-  final String info;
+  final String? info;
   final Widget child;
   final List<Widget>? actions;
 
-  const AppInfoRow({super.key, required this.info, required this.child, this.actions});
+  const AppInfoRow({super.key, this.info, required this.child, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +35,14 @@ class AppInfoRow extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
+        if (info != null) Positioned(
           left: 10.0,
           top: 0.0,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.0),
             color: Theme.of(context).scaffoldBackgroundColor,
             child: Text(
-              info,
+              info!,
               style: TextStyle(
                 fontSize: 12.0,
                 color: Colors.black87,

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
@@ -87,4 +88,20 @@ Future<Result> user_password_edit(UserSession session, String password, String s
   if (handleFailedResponse(response)) return Failure();
   
   return Success(());
+}
+
+Future<Result<Uint8List>> user_image(UserSession session, int userID) async {
+  final response = await client.get(
+    uri('/regular/user_image', {
+      'user_id': userID.toString(),
+    }),
+    headers: {
+      'Token': session.token,
+      'Accept': 'image/png;',
+    },
+  );
+
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(response.bodyBytes);
 }

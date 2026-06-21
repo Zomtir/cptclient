@@ -31,6 +31,7 @@ class User extends FieldInterface implements Comparable {
   Gender? gender;
   int? height;
   int? weight;
+  String? image_url;
   BankAccount? bank_account;
   License? license_main;
   License? license_extra;
@@ -60,6 +61,7 @@ class User extends FieldInterface implements Comparable {
       gender = Gender.fromNullString(json['gender']),
       height = json['height'],
       weight = json['weight'],
+      image_url = json['image_url'],
       bank_account = json['bank_account'] == null ? null : BankAccount.fromJson(json['bank_account']),
       license_main = json['license_main'] == null ? null : License.fromJson(json['license_main']),
       license_extra = json['license_extra'] == null ? null : License.fromJson(json['license_extra']),
@@ -83,6 +85,7 @@ class User extends FieldInterface implements Comparable {
     'gender': gender?.name,
     'height': height,
     'weight': weight,
+    'image_url': image_url,
     'bank_account': bank_account,
     'license_main': license_main,
     'license_extra': license_extra,

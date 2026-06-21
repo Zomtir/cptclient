@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:cptclient/api/admin/user/bankacc.dart' as api_admin;
 import 'package:cptclient/api/admin/user/license.dart' as api_admin;
 import 'package:cptclient/api/admin/user/user.dart' as api_admin;
+import 'package:cptclient/api/regular/user/user.dart' as api_regular;
 import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/gender.dart';
@@ -40,6 +43,7 @@ class UserDetailPage extends StatefulWidget {
 class UserDetailPageState extends State<UserDetailPage> {
   bool _locked = true;
   User? user_info;
+  Uint8List? user_image;
 
   UserDetailPageState();
 
@@ -58,9 +62,14 @@ class UserDetailPageState extends State<UserDetailPage> {
     setState(() => _locked = true);
     Result<User> result_user = await api_admin.user_detailed(widget.session, widget.userID);
     if (result_user is! Success) return;
+
+    Result<Uint8List> result_image = await api_regular.user_image(widget.session, widget.userID);
+    if (result_image is! Success) return;
+
     if (!mounted) return;
     setState(() {
       user_info = result_user.unwrap();
+      user_image = result_image.unwrap();
       _locked = false;
     });
   }
@@ -86,6 +95,29 @@ class UserDetailPageState extends State<UserDetailPage> {
       body: AppBody(
         locked: _locked,
         builder: (context) => [
+          AppInfoRow(
+            child: Image(
+              height: 150,
+              image: MemoryImage(user_image!),
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => TextEditDialog(
+                    initialValue: user_info!.image_url ?? '',
+                    minLength: 0,
+                    maxLength: 50,
+                    onConfirm: (String t) {
+                      setState(() => user_info!.image_url = t);
+                      submit();
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
           InfoSection(
             title: AppLocalizations.of(context)!.labelAccount,
           ),
