@@ -54,7 +54,7 @@ jobs:
             platform: android
             build-type: apk
             asset: android.apk
-          - os: windows-latest
+          - os: windows-2019
             platform: windows
             build-type: windows
             asset: windows-amd64.zip
@@ -88,6 +88,8 @@ jobs:
         shell: bash
         if: runner.os == 'macos'
         run: |
+          brew untap aws/tap || true
+          brew untap azure/bicep || true
           brew install bash
           bash --version
       - name: Install zip on windows
