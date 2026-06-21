@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## Release v1.6.0 (21st Jun 2026)
+
+- feat: Added discipline management
+- feat: Added user equipment for each discipline
+- feat: Reworked event pack list incl. PDF export
+- feat: Added user images #39
+- feat: Issue date for licenses #91
+- feat: Added sport discipline activity during club term
+- feat: Renamed skill title to skill name
+- locale: Remove language specific strings from event creation
+- fix: Course management failing due to incorrect attribute #92
+- fix: Use add action for event user suggestions #94
+- fix: Use builder for AppBody to prevent first frame null access
+- chore: Added editor config for consistent formatting
+- chore: Update actions that depend on node.js 20
+- chore: Reinitialize project due to gradle errors
+- chore: Regressions of GitHub runner for windows and macOS
+- chore: Flutter upgrade to 3.44
+- chore: Handled deprecation warnings of flutter analyze
+
 ## Release v1.5.3 (10th Jan 2026)
 
 - fix: Changing a user password no longer expects a pre-generated password
