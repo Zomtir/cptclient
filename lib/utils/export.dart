@@ -17,8 +17,7 @@ Future<void> exportPNG(String fileName, Uint8List image) async {
 }
 
 Future<void> exportCSV(String fileName, List<List<dynamic>> table) async {
-  const converter = ListToCsvConverter();
-  final content = converter.convert(table);
+  final String content = csv.encode(table);
   await saveSelector(
     content: content,
     fileExtension: 'csv',
