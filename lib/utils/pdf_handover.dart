@@ -67,12 +67,12 @@ void handover_protocol_pdf(BuildContext context, Event event, List<ItemBalance> 
         pw.Text("${balance.$2.name}", style: styleContent),
         pw.Text("${balance.$5}", textAlign: pw.TextAlign.center, style: styleContent),
         pw.Text(
-          "☐",
+          balance.$5 > 0 ? "☐" : "",
           textAlign: pw.TextAlign.center,
           style: styleContent,
         ),
         pw.Text(
-          "☐",
+          balance.$5 > 0 ? "☐" : "",
           textAlign: pw.TextAlign.center,
           style: styleContent,
         ),
