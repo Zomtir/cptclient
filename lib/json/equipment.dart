@@ -40,7 +40,7 @@ class Equipment implements Comparable {
 
   @override
   int compareTo(other) {
-    int criteria1 = user.compareTo(other.term);
+    int criteria1 = user.compareTo(other.user);
     if (criteria1 != 0) return criteria1;
     int criteria2 = skill.compareTo(other.skill);
     if (criteria2 != 0) return criteria2;
