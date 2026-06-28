@@ -252,7 +252,7 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
               onTap: () => _handleSelect(event),
               trailing: _buildTrailing(event),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -260,30 +260,47 @@ class EventOverviewManagementPageState extends State<EventOverviewManagementPage
 
   List<Widget> _buildTrailing(Event event) {
     return [
-      if (event.acceptance == Acceptance.pending)
-        IconButton(
-          icon: const Icon(Icons.drafts_outlined),
-          onPressed: () => _withdrawEvent(event),
-        ),
-      if (event.acceptance == Acceptance.draft ||
-          event.acceptance == Acceptance.accepted ||
-          event.acceptance == Acceptance.rejected)
-        IconButton(
-          icon: const Icon(Icons.hourglass_bottom),
-          onPressed: () => _suspendEvent(event),
-        ),
-      if (event.acceptance == Acceptance.pending ||
-          event.acceptance == Acceptance.pending ||
-          event.acceptance == Acceptance.accepted)
-        IconButton(
-          icon: const Icon(Icons.highlight_remove),
-          onPressed: () => _rejectEvent(event),
-        ),
-      if (event.acceptance == Acceptance.pending || event.acceptance == Acceptance.rejected)
-        IconButton(
-          icon: const Icon(Icons.check_circle_outline),
-          onPressed: () => _acceptEvent(event),
-        ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextButton.icon(
+            icon: (event.acceptance! == Acceptance.draft)
+                ? Icon(Icons.build_circle)
+                : Icon(Icons.build_circle_outlined),
+            label: Text(
+              AppLocalizations.of(context)!.acceptanceDraft,
+            ),
+            onPressed: (event.acceptance! == Acceptance.draft) ? null : () => _withdrawEvent(event),
+          ),
+          TextButton.icon(
+            icon: (event.acceptance! == Acceptance.pending)
+                ? Icon(Icons.pause_circle)
+                : Icon(Icons.pause_circle_outlined),
+            label: Text(
+              AppLocalizations.of(context)!.acceptancePending,
+            ),
+            onPressed: (event.acceptance! == Acceptance.pending) ? null : () => _suspendEvent(event),
+          ),
+          TextButton.icon(
+            icon: (event.acceptance! == Acceptance.rejected)
+                ? Icon(Icons.cancel)
+                : Icon(Icons.cancel_outlined),
+            label: Text(
+              AppLocalizations.of(context)!.acceptanceRejected,
+            ),
+            onPressed: (event.acceptance! == Acceptance.rejected) ? null : () => _rejectEvent(event),
+          ),
+          TextButton.icon(
+            icon: (event.acceptance! == Acceptance.accepted)
+                ? Icon(Icons.check_circle)
+                : Icon(Icons.check_circle_outlined),
+            label: Text(
+              AppLocalizations.of(context)!.acceptanceAccepted,
+            ),
+            onPressed: (event.acceptance! == Acceptance.accepted) ? null : () => _acceptEvent(event),
+          ),
+        ],
+      ),
       PopupMenuButton<VoidCallback>(
         onSelected: (fn) => fn(),
         itemBuilder: (context) => [

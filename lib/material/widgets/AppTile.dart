@@ -1,3 +1,4 @@
+import 'package:cptclient/material/widgets/RoundTile.dart';
 import 'package:flutter/material.dart';
 
 class AppTile extends StatelessWidget {
@@ -10,20 +11,27 @@ class AppTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 2),
-      child: Material(
-        elevation: 1,
-        borderRadius: BorderRadius.circular(8),
-        clipBehavior: Clip.antiAlias,
-        child: ListTile(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: child,
-          leading: leading,
-          trailing: trailing == null ? null : Row(mainAxisSize: MainAxisSize.min, children: trailing!),
-          onTap: onTap,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.0),
+      child: InkWell(
+        child: RoundTile(
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: leading,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [child],
+                ),
+              ),
+              ...?trailing,
+            ],
+          ),
         ),
+        onTap: onTap,
       ),
     );
   }

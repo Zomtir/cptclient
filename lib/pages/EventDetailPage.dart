@@ -12,6 +12,7 @@ import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';
+import 'package:cptclient/json/occurrence.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
@@ -491,254 +492,240 @@ class EventDetailPageState extends State<EventDetailPage> {
         builder: (context) => [
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventTitle,
-            child: ListTile(
-              title: Text(_event!.title),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(_event!.title),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => TextEditDialog(
-                        initialValue: _event!.title,
-                        minLength: 6,
-                        maxLength: 100,
-                        onConfirm: (String t) {
-                          setState(() => _event!.title = t);
-                          _handleEvent();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(_event!.title),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(_event!.title),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => TextEditDialog(
+                    initialValue: _event!.title,
+                    minLength: 6,
+                    maxLength: 100,
+                    onConfirm: (String t) {
+                      setState(() => _event!.title = t);
+                      _handleEvent();
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          AppInfoRow(
+            info: AppLocalizations.of(context)!.eventOccurrence,
+            child: Text(_event!.occurrence!.localizedName(context)),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => MultiChoiceDialog(
+                    items: Occurrence.values,
+                    value: _event!.occurrence!,
+                    builder: (occurrence) => Text(occurrence.localizedName(context)),
+                    onConfirm: (Occurrence o) {
+                      setState(() => _event!.occurrence = o);
+                      _handleEvent();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.eventNote,
-            child: ListTile(
-              title: Text(_event!.note ?? ''),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.copy),
-                    onPressed: () => clipText(_event!.note ?? ''),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => TextEditDialog(
-                        initialValue: _event!.note ?? '',
-                        minLength: 0,
-                        maxLength: 500,
-                        maxLines: 20,
-                        onConfirm: (note) {
-                          setState(() => _event!.note = (note.isEmpty ? null : note));
-                          _handleEvent();
-                        },
-                        onReset: () {
-                          setState(() => _event!.note = null);
-                          _handleEvent();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(_event!.note ?? ''),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.copy),
+                onPressed: () => clipText(_event!.note ?? ''),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => TextEditDialog(
+                    initialValue: _event!.note ?? '',
+                    minLength: 0,
+                    maxLength: 500,
+                    maxLines: 20,
+                    onConfirm: (note) {
+                      setState(() => _event!.note = (note.isEmpty ? null : note));
+                      _handleEvent();
+                    },
+                    onReset: () {
+                      setState(() => _event!.note = null);
+                      _handleEvent();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           SectionToggle(
             title: AppLocalizations.of(context)!.labelMoreDetails,
             children: [
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventKey,
-                child: ListTile(
-                  title: Text(_event!.key),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => clipText(_event!.key),
-                        icon: Icon(Icons.copy),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => TextEditDialog(
-                            initialValue: _event!.key,
-                            minLength: 1,
-                            maxLength: 12,
-                            onConfirm: (String key) {
-                              setState(() => _event!.key = key);
-                              _handleEvent();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                child: Text(_event!.key),
+                actions: [
+                  IconButton(
+                    onPressed: () => clipText(_event!.key),
+                    icon: Icon(Icons.copy),
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => TextEditDialog(
+                        initialValue: _event!.key,
+                        minLength: 1,
+                        maxLength: 12,
+                        onConfirm: (String key) {
+                          setState(() => _event!.key = key);
+                          _handleEvent();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
               if (_credential != null)
                 AppInfoRow(
                   info: AppLocalizations.of(context)!.eventPassword,
-                  child: ListTile(
-                    title: _credentialCleartext
-                        ? Text(_credential!.password!)
-                        : Text('•' * _credential!.password!.length),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(_credentialCleartext ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
-                          onPressed: () => setState(() => _credentialCleartext = !_credentialCleartext),
-                        ),
-                        IconButton(
-                          onPressed: () => clipText(_credential!.password!),
-                          icon: Icon(Icons.copy),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => TextEditDialog(
-                              initialValue: _credential!.password!,
-                              minLength: 5,
-                              maxLength: 20,
-                              onConfirm: (String pw) async {
-                                api_admin.event_password_edit(widget.session, _event!, pw);
-                                _updateCredential();
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
+                  child: _credentialCleartext
+                      ? Text(_credential!.password!)
+                      : Text('•' * _credential!.password!.length),
+                  actions: [
+                    IconButton(
+                      icon: Icon(_credentialCleartext ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
+                      onPressed: () => setState(() => _credentialCleartext = !_credentialCleartext),
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () => clipText(_credential!.password!),
+                      icon: Icon(Icons.copy),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => TextEditDialog(
+                          initialValue: _credential!.password!,
+                          minLength: 5,
+                          maxLength: 20,
+                          onConfirm: (String pw) async {
+                            api_admin.event_password_edit(widget.session, _event!, pw);
+                            _updateCredential();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventBegin,
-                child: ListTile(
-                  title: Text(_event!.begin.fmtDateTime(context)),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => clipText(formatIsoDateTime(_event!.begin) ?? ''),
-                        icon: Icon(Icons.copy),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.calendar_today),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => DateEditDialog(
-                            initialDate: _event!.begin,
-                            onConfirm: (DateTime dt) {
-                              setState(() => _event!.begin = _event!.begin.withDate(dt));
-                              _handleEvent();
-                            },
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.watch_later_outlined),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => TimeEditDialog(
-                            initialTime: TimeOfDay.fromDateTime(_event!.begin),
-                            onConfirm: (TimeOfDay tod) {
-                              setState(() => _event!.begin = _event!.begin.withTime(tod));
-                              _handleEvent();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                child: Text(_event!.begin.fmtDateTime(context)),
+                actions: [
+                  IconButton(
+                    onPressed: () => clipText(formatIsoDateTime(_event!.begin) ?? ''),
+                    icon: Icon(Icons.copy),
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => DateEditDialog(
+                        initialDate: _event!.begin,
+                        onConfirm: (DateTime dt) {
+                          setState(() => _event!.begin = _event!.begin.withDate(dt));
+                          _handleEvent();
+                        },
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.watch_later_outlined),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => TimeEditDialog(
+                        initialTime: TimeOfDay.fromDateTime(_event!.begin),
+                        onConfirm: (TimeOfDay tod) {
+                          setState(() => _event!.begin = _event!.begin.withTime(tod));
+                          _handleEvent();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventEnd,
-                child: ListTile(
-                  title: Text(_event!.end.fmtDateTime(context)),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => clipText(formatIsoDateTime(_event!.end) ?? ''),
-                        icon: Icon(Icons.copy),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.calendar_today),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => DateEditDialog(
-                            initialDate: _event!.end,
-                            onConfirm: (DateTime dt) {
-                              setState(() => _event!.end = _event!.end.withDate(dt));
-                              _handleEvent();
-                            },
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.watch_later_outlined),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => TimeEditDialog(
-                            initialTime: TimeOfDay.fromDateTime(_event!.end),
-                            onConfirm: (TimeOfDay tod) {
-                              setState(() => _event!.end = _event!.end.withTime(tod));
-                              _handleEvent();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                child: Text(_event!.end.fmtDateTime(context)),
+                actions: [
+                  IconButton(
+                    onPressed: () => clipText(formatIsoDateTime(_event!.end) ?? ''),
+                    icon: Icon(Icons.copy),
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => DateEditDialog(
+                        initialDate: _event!.end,
+                        onConfirm: (DateTime dt) {
+                          setState(() => _event!.end = _event!.end.withDate(dt));
+                          _handleEvent();
+                        },
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.watch_later_outlined),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => TimeEditDialog(
+                        initialTime: TimeOfDay.fromDateTime(_event!.end),
+                        onConfirm: (TimeOfDay tod) {
+                          setState(() => _event!.end = _event!.end.withTime(tod));
+                          _handleEvent();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventLocation,
-                child: ListTile(
-                  title: Text(_event!.location!.name),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => clipText(_event!.location!.name),
-                        icon: Icon(Icons.copy),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () async {
-                          var result_items = await api_anon.location_list();
-                          if (result_items is! Success) return;
-                          showDialog(
-                            context: context,
-                            builder: (context) => MultiChoiceDialog<Location>(
-                              items: result_items.unwrap(),
-                              value: _event!.location!,
-                              builder: (event) => event.buildTile(context),
-                              onConfirm: (Location? location) {
-                                setState(() => _event!.location = location);
-                                _handleEvent();
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                child: Text(_event!.location!.name),
+                actions: [
+                  IconButton(
+                    onPressed: () => clipText(_event!.location!.name),
+                    icon: Icon(Icons.copy),
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async {
+                      var result_items = await api_anon.location_list();
+                      if (result_items is! Success) return;
+                      showDialog(
+                        context: context,
+                        builder: (context) => MultiChoiceDialog<Location>(
+                          items: result_items.unwrap(),
+                          value: _event!.location!,
+                          builder: (location) => location.buildTile(context),
+                          onConfirm: (Location? location) {
+                            setState(() => _event!.location = location);
+                            _handleEvent();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventPublic,

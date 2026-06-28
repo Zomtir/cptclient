@@ -40,79 +40,79 @@ class Event extends FieldInterface implements Comparable {
   });
 
   Event.fromEvent(Event event)
-      : id = 0,
-        key = assembleKey([3,3,3]),
-        title = event.title,
-        begin = event.begin,
-        end = event.end,
-        location = event.location,
-        occurrence = event.occurrence,
-        acceptance = event.acceptance,
-        public = event.public,
-        scrutable = event.scrutable;
+    : id = 0,
+      key = assembleKey([3, 3, 3]),
+      title = event.title,
+      begin = event.begin,
+      end = event.end,
+      location = event.location,
+      occurrence = event.occurrence,
+      acceptance = event.acceptance,
+      public = event.public,
+      scrutable = event.scrutable;
 
   Event.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        key = json['key'],
-        title = json['title'],
-        begin = parseIsoDateTime(json['begin'])!.toLocal(),
-        end = parseIsoDateTime(json['end'])!.toLocal(),
-        location = json['location'] == null ? null : Location.fromJson(json['location']),
-        occurrence = Occurrence.fromNullString(json['occurrence']),
-        acceptance = Acceptance.fromNullString(json['acceptance']),
-        public = json['public'],
-        scrutable = json['scrutable'],
-        note = json['note'];
+    : id = json['id'],
+      key = json['key'],
+      title = json['title'],
+      begin = parseIsoDateTime(json['begin'])!.toLocal(),
+      end = parseIsoDateTime(json['end'])!.toLocal(),
+      location = json['location'] == null ? null : Location.fromJson(json['location']),
+      occurrence = Occurrence.fromNullString(json['occurrence']),
+      acceptance = Acceptance.fromNullString(json['acceptance']),
+      public = json['public'],
+      scrutable = json['scrutable'],
+      note = json['note'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'key': key,
-        'title': title,
-        'begin': formatIsoDateTime(begin.toUtc()),
-        'end': formatIsoDateTime(end.toUtc()),
-        'location': location?.toJson(),
-        'occurrence': occurrence?.name,
-        'acceptance': acceptance?.name,
-        'public': public,
-        'scrutable': scrutable,
-        'note': note,
-      };
+    'id': id,
+    'key': key,
+    'title': title,
+    'begin': formatIsoDateTime(begin.toUtc()),
+    'end': formatIsoDateTime(end.toUtc()),
+    'location': location?.toJson(),
+    'occurrence': occurrence?.name,
+    'acceptance': acceptance?.name,
+    'public': public,
+    'scrutable': scrutable,
+    'note': note,
+  };
 
   Event.fromVoid()
-      : id = 0,
-        key = assembleKey([3,3,3]),
-        title = "${formatIsoDateTime(DateTime.now())}",
-        begin = DateTime.now(),
-        end = DateTime.now().add(Duration(hours: 1)),
-        location = null,
-        occurrence = null,
-        acceptance = Acceptance.draft,
-        public = false,
-        scrutable = false;
+    : id = 0,
+      key = assembleKey([3, 3, 3]),
+      title = "${formatIsoDateTime(DateTime.now())}",
+      begin = DateTime.now(),
+      end = DateTime.now().add(Duration(hours: 1)),
+      location = null,
+      occurrence = null,
+      acceptance = Acceptance.draft,
+      public = false,
+      scrutable = false;
 
   Event.fromCourse(Course course)
-      : id = 0,
-        key = assembleKey([3,3,3]),
-        title = course.title,
-        begin = DateTime.now(),
-        end = DateTime.now().add(Duration(hours: 1)),
-        location = null,
-        occurrence = null,
-        acceptance = null,
-        public = true,
-        scrutable = true;
+    : id = 0,
+      key = assembleKey([3, 3, 3]),
+      title = course.title,
+      begin = DateTime.now(),
+      end = DateTime.now().add(Duration(hours: 1)),
+      location = null,
+      occurrence = null,
+      acceptance = null,
+      public = true,
+      scrutable = true;
 
   Event.fromUser(User user)
-      : id = 0,
-        key = assembleKey([3,3,3]),
-        title = "${formatIsoDateTime(DateTime.now())}",
-        begin = DateTime.now(),
-        end = DateTime.now().add(Duration(hours: 1)),
-        location = null,
-        occurrence = null,
-        acceptance = null,
-        public = false,
-        scrutable = true;
+    : id = 0,
+      key = assembleKey([3, 3, 3]),
+      title = "${formatIsoDateTime(DateTime.now())}",
+      begin = DateTime.now(),
+      end = DateTime.now().add(Duration(hours: 1)),
+      location = null,
+      occurrence = null,
+      acceptance = null,
+      public = false,
+      scrutable = true;
 
   @override
   int compareTo(other) {
@@ -134,8 +134,20 @@ class Event extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("$title", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(compressDate(context, begin, end)),
+        Text("${location!.name}", style: TextStyle(color: Colors.black54)),
+        Text("${occurrence!.localizedName(context)}", style: TextStyle(color: Colors.black54)),
+        Text(
+          "${acceptance!.localizedName(context)}",
+          textScaler: TextScaler.linear(1.3),
+          style: TextStyle(color: Colors.black54),
+        ),
+      ],
+    );
   }
 
   @override
@@ -143,16 +155,7 @@ class Event extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.event)),
       trailing: trailing,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("$title", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(compressDate(context, begin, end)),
-            Text("${location!.name}", style: TextStyle(color: Colors.black54)),
-            Text("${occurrence!.localizedName(context)}", textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
-            Text("${acceptance!.localizedName(context)}", textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
-          ]
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -162,13 +165,7 @@ class Event extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.event)),
       trailing: trailing,
-      children: [
-        Text("$title", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text(compressDate(context, begin, end)),
-        Text("${location!.name}", style: TextStyle(color: Colors.black54)),
-        Text("${occurrence!.localizedName(context)}", textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
-        Text("${acceptance!.localizedName(context)}", textScaler: TextScaler.linear(1.3), style: TextStyle(color: Colors.black54)),
-      ],
+      children: [buildInfo(context)],
     );
   }
 }
