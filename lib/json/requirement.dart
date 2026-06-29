@@ -15,16 +15,9 @@ class Requirement extends FieldInterface implements Comparable {
 
   Requirement(this.id, this.course, this.skill, this.rank);
 
-  Requirement.create()
-    : id = 0,
-      course = null,
-      skill = null,
-      rank = 0;
+  Requirement.create() : id = 0, course = null, skill = null, rank = 0;
 
-  Requirement.fromCourse(Course this.course)
-      : id = 0,
-        skill = null,
-        rank = 0;
+  Requirement.fromCourse(Course this.course) : id = 0, skill = null, rank = 0;
 
   Requirement.fromJson(Map<String, dynamic> json)
     : id = json['id'],
@@ -32,19 +25,18 @@ class Requirement extends FieldInterface implements Comparable {
       skill = Skill.fromJson(json['skill']),
       rank = json['rank'];
 
-  Map<String, dynamic> toJson() =>
-    {
-      'id': id,
-      'user': course?.toJson(),
-      'skill': skill?.toJson(),
-      'rank': rank,
-    };
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'user': course?.toJson(),
+    'skill': skill?.toJson(),
+    'rank': rank,
+  };
 
-    Requirement.fromCompetence(Requirement competence)
-      : id = 0,
-        course = competence.course,
-        skill = competence.skill,
-        rank = competence.rank;
+  Requirement.fromCompetence(Requirement competence)
+    : id = 0,
+      course = competence.course,
+      skill = competence.skill,
+      rank = competence.rank;
 
   @override
   bool operator ==(other) => other is Requirement && id == other.id;
@@ -79,8 +71,13 @@ class Requirement extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${skill!.name} $rank"),
+      ],
+    );
   }
 
   @override
@@ -88,13 +85,7 @@ class Requirement extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "$id", child: Icon(Icons.verified)),
       trailing: trailing,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("${skill!.name} $rank"),
-          ]
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -104,10 +95,7 @@ class Requirement extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "$id", child: Icon(Icons.verified)),
       trailing: trailing,
-      children: [
-        Text("${course!.title}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${skill!.name} $rank"),
-      ],
+      child: buildInfo(context),
     );
   }
 }

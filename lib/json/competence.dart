@@ -87,8 +87,14 @@ class Competence extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${skill!.name} $rank"),
+          Text("${date.fmtDate(context)} ${judge!.firstname} ${judge!.lastname}", style: TextStyle(color: Colors.black54)),
+        ]
+    );
   }
 
   @override
@@ -96,14 +102,7 @@ class Competence extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "$id", child: Icon(Icons.military_tech)),
       trailing: trailing,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("${skill!.name} $rank"),
-          Text("${date.fmtDate(context)} ${judge!.firstname} ${judge!.lastname}", style: TextStyle(color: Colors.black54)),
-        ]
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -113,12 +112,7 @@ class Competence extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "$id", child: Icon(Icons.military_tech)),
       trailing: trailing,
-      children: [
-        Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${skill!.name} $rank"),
-        Text(
-            "${date.fmtDate(context)} ${judge!.firstname} ${judge!.lastname}", style: TextStyle(color: Colors.black54)),
-      ],
+      child: buildInfo(context),
     );
   }
 }

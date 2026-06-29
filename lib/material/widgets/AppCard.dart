@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class AppCard extends StatelessWidget {
   final Widget leading;
-  final List<Widget> children;
+  final Widget child;
   final List<Widget>? trailing;
 
   const AppCard({
     super.key,
     required this.leading,
-    required this.children,
+    required this.child,
     this.trailing,
   });
 
@@ -23,10 +23,7 @@ class AppCard extends StatelessWidget {
             child: leading,
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+            child: child,
           ),
           ...?trailing,
         ],

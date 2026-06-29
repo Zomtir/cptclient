@@ -58,7 +58,7 @@ class Organisation extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(child: Icon(Icons.domain), message: "[$id]"),
       trailing: trailing,
-      child: Text("$abbreviation: $name"),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -68,10 +68,7 @@ class Organisation extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(child: Icon(Icons.domain), message: "[$id]"),
       trailing: trailing,
-      children: [
-        Text("$abbreviation"),
-        Text("$name"),
-      ],
+      child: buildInfo(context),
     );
   }
 }

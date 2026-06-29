@@ -68,6 +68,7 @@ class Team extends FieldInterface implements Comparable {
   @override
   Widget buildInfo(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(name),
         Text(description),
@@ -79,7 +80,7 @@ class Team extends FieldInterface implements Comparable {
   Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppTile(
       leading: Icon(Icons.group),
-      child: Text(name),
+      child: buildInfo(context),
       trailing: trailing,
       onTap: onTap,
     );
@@ -90,10 +91,7 @@ class Team extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(child: Icon(Icons.group), message: "$key"),
       trailing: trailing,
-      children: [
-        Text(name),
-        Text(description),
-      ],
+      child: buildInfo(context),
     );
   }
 }

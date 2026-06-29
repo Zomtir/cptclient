@@ -13,25 +13,20 @@ class Location extends FieldInterface implements Comparable {
 
   Location(this.id, this.key, this.name, this.description);
 
-  Location.fromVoid()
-      : id = 0,
-        key = assembleKey([4]),
-        name = "",
-        description = "";
+  Location.fromVoid() : id = 0, key = assembleKey([4]), name = "", description = "";
 
   Location.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        key = json['key'],
-        name = json['name'],
-        description = json['description'];
+    : id = json['id'],
+      key = json['key'],
+      name = json['name'],
+      description = json['description'];
 
-  Map<String, dynamic> toJson() =>
-      {
-        'id': id,
-        'key': key,
-        'name': name,
-        'description': description,
-      };
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'key': key,
+    'name': name,
+    'description': description,
+  };
 
   @override
   bool operator ==(other) => other is Location && id == other.id;
@@ -59,8 +54,13 @@ class Location extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("$name", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("$description"),
+      ],
+    );
   }
 
   @override
@@ -71,7 +71,7 @@ class Location extends FieldInterface implements Comparable {
         child: Icon(Icons.house),
       ),
       trailing: trailing,
-      child: Text("$name"),
+      child: buildEntry(context),
       onTap: onTap,
     );
   }
@@ -84,10 +84,7 @@ class Location extends FieldInterface implements Comparable {
         child: Icon(Icons.house),
       ),
       trailing: trailing,
-      children: [
-        Text("$name", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("$description"),
-      ],
+      child: buildEntry(context),
     );
   }
 }

@@ -158,10 +158,7 @@ class User extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(child: Icon(Icons.person), message: "$key"),
       trailing: trailing,
-      children: [
-        Text("$firstname $lastname"),
-        if (nickname != null) Text(nickname!),
-      ],
+      child: buildInfo(context),
     );
   }
 }

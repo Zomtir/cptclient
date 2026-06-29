@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class RoundTile extends StatelessWidget {
   final Widget child;
+  final VoidCallback? onTap;
 
   const RoundTile({
     super.key,
     required this.child,
+    this.onTap,
   });
 
   @override
@@ -14,7 +16,10 @@ class RoundTile extends StatelessWidget {
       elevation: 1,
       borderRadius: BorderRadius.circular(8),
       clipBehavior: Clip.antiAlias,
-      child: child,
+      child: InkWell(
+        onTap: onTap,
+        child: child,
+      ),
     );
   }
 }

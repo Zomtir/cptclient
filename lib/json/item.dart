@@ -52,8 +52,12 @@ class Item extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      children: [
+        Text("$name"),
+        Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
+      ],
+    );
   }
 
   @override
@@ -61,12 +65,7 @@ class Item extends FieldInterface implements Comparable {
     return AppTile(
       leading: Icon(Icons.checkroom),
       trailing: trailing,
-      child: Column(
-        children: [
-          Text("$name"),
-          Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
-        ],
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -76,10 +75,7 @@ class Item extends FieldInterface implements Comparable {
     return AppCard(
       leading: Icon(Icons.checkroom),
       trailing: trailing,
-      children: [
-        Text("$name"),
-        Text("${category?.name ?? AppLocalizations.of(context)!.undefined}"),
-      ],
+      child: buildInfo(context),
     );
   }
 }

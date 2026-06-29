@@ -91,17 +91,7 @@ class Term extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.card_membership)),
       trailing: trailing,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("${club!.name}"),
-          Text(
-            "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - "
-            "${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}",
-          ),
-        ],
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -111,14 +101,7 @@ class Term extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.card_membership)),
       trailing: trailing,
-      children: [
-        Text("${user!.firstname} ${user!.lastname}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${club!.name}"),
-        Text(
-          "${begin?.fmtDate(context) ?? AppLocalizations.of(context)!.labelUnknown} - "
-          "${end?.fmtDate(context) ?? AppLocalizations.of(context)!.labelOngoing}",
-        ),
-      ],
+      child: buildInfo(context),
     );
   }
 }

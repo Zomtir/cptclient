@@ -39,8 +39,7 @@ class ItemCategory extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Text("$name");
   }
 
   @override
@@ -48,7 +47,7 @@ class ItemCategory extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.inventory)),
       trailing: trailing,
-      child: Text("$name"),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -58,7 +57,7 @@ class ItemCategory extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.inventory)),
       trailing: trailing,
-      children: [Text("$name")],
+      child: buildInfo(context),
     );
   }
 }

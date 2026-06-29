@@ -50,7 +50,13 @@ class Skill extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    return Text("$name ($min - $max)");
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("$name"),
+        Text("$min - $max")
+      ],
+    );
   }
 
   @override
@@ -58,12 +64,7 @@ class Skill extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.fitness_center)),
       trailing: trailing,
-      child: Column(
-        children: [
-          Text("$name"),
-          Text("$min - $max")
-        ],
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -73,7 +74,7 @@ class Skill extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.fitness_center)),
       trailing: trailing,
-      children: [Text("$name"), Text("$min - $max")],
+      child: buildInfo(context),
     );
   }
 }

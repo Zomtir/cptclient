@@ -86,10 +86,7 @@ class Club extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(child: Icon(Icons.group_work), message: "[$id] $key"),
       trailing: trailing,
-      children: [
-        Text(name),
-        Text(chairman ?? ''),
-      ],
+      child: buildInfo(context),
     );
   }
 }

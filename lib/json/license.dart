@@ -82,17 +82,7 @@ class License extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "$id", child: Icon(Icons.badge)),
       trailing: trailing,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text("${AppLocalizations.of(context)!.licenseIssued} ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
-          Text("${AppLocalizations.of(context)!.licenseExpiration} ${expiration.fmtDate(context)}"),
-        ],
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -102,14 +92,7 @@ class License extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "$id", child: Icon(Icons.badge)),
       trailing: trailing,
-      children: [
-        Text(
-          "$name (${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text("${AppLocalizations.of(context)!.licenseIssued} ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
-        Text("${AppLocalizations.of(context)!.licenseExpiration} ${expiration.fmtDate(context)}"),
-      ],
+      child: buildInfo(context),
     );
   }
 }

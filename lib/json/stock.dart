@@ -67,8 +67,14 @@ class Stock extends FieldInterface implements Comparable {
 
   @override
   Widget buildInfo(BuildContext context) {
-    // TODO: implement buildEntry
-    throw UnimplementedError();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("${club.name}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("${item.name}", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("$storage", style: TextStyle(fontWeight: FontWeight.normal)),
+      ],
+    );
   }
 
   @override
@@ -76,14 +82,7 @@ class Stock extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.shelves)),
       trailing: trailing,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("${club.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("${item.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("$storage", style: TextStyle(fontWeight: FontWeight.normal)),
-        ],
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -93,11 +92,7 @@ class Stock extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.shelves)),
       trailing: trailing,
-      children: [
-        Text("${club.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${item.name}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("$storage", style: TextStyle(fontWeight: FontWeight.normal)),
-      ],
+      child: buildInfo(context),
     );
   }
 }

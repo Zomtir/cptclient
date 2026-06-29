@@ -165,7 +165,7 @@ class Event extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id] $key", child: Icon(Icons.event)),
       trailing: trailing,
-      children: [buildInfo(context)],
+      child: buildInfo(context),
     );
   }
 }

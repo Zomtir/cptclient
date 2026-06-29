@@ -64,8 +64,9 @@ class BankAccount extends FieldInterface implements Comparable {
   @override
   Widget buildInfo(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}"),
+        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}", style: TextStyle(fontWeight: FontWeight.bold)),
         Text("${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute} (${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})"),
       ],
     );
@@ -78,10 +79,7 @@ class BankAccount extends FieldInterface implements Comparable {
         message: "[$id]",
         child: Icon(Icons.account_balance),
       ),
-      children: [
-        Text("${iban.isEmpty ? AppLocalizations.of(context)!.undefined : iban}", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text("${institute.isEmpty ? AppLocalizations.of(context)!.undefined : institute} (${bic.isEmpty ? AppLocalizations.of(context)!.undefined : bic})"),
-      ],
+      child: buildInfo(context),
     );
   }
 

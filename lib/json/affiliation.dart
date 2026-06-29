@@ -93,11 +93,14 @@ class Affiliation extends FieldInterface {
     return AppCard(
       leading: Icon(Icons.foundation),
       trailing: trailing,
-      children: [
-        Text("${organisation!.name}"),
-        Text("${user!.firstname} ${user!.lastname}"),
-        Text("$member_identifier"),
-      ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${organisation!.name}"),
+          Text("${user!.firstname} ${user!.lastname}"),
+          Text("$member_identifier"),
+        ],
+      ),
     );
   }
 }

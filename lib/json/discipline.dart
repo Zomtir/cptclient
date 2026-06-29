@@ -51,11 +51,7 @@ class Discipline extends FieldInterface implements Comparable {
     return AppTile(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.sports_football)),
       trailing: trailing,
-      child: Column(
-        children: [
-          Text("$name"),
-        ],
-      ),
+      child: buildInfo(context),
       onTap: onTap,
     );
   }
@@ -65,7 +61,7 @@ class Discipline extends FieldInterface implements Comparable {
     return AppCard(
       leading: Tooltip(message: "[$id]", child: Icon(Icons.sports_football)),
       trailing: trailing,
-      children: [Text("$name")],
+      child: buildInfo(context),
     );
   }
 }

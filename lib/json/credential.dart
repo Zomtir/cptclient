@@ -45,19 +45,20 @@ class Credential extends FieldInterface {
 
   @override
   Widget buildInfo(BuildContext context) {
-    return Text("${AppLocalizations.of(context)!.userPasswordSince} ${since?.fmtDateTime(context) ?? AppLocalizations.of(context)!.undefined}");
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(AppLocalizations.of(context)!.userPasswordSince),
+        Text(since!.fmtDateTime(context)),
+      ],
+    );
   }
 
   @override
   Widget buildTile(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppTile(
       leading: Icon(Icons.password),
-      child: Column(
-        children: [
-          Text(AppLocalizations.of(context)!.userPasswordSince),
-          Text(since!.fmtDateTime(context)),
-        ],
-      ),
+      child: buildInfo(context),
     );
   }
 
@@ -65,12 +66,7 @@ class Credential extends FieldInterface {
   Widget buildCard(BuildContext context, {List<Widget>? trailing, VoidCallback? onTap}) {
     return AppCard(
       leading: Icon(Icons.password),
-      children: [
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.userPasswordSince),
-          subtitle: Text(since!.fmtDateTime(context)),
-        ),
-      ],
+      child: buildInfo(context),
     );
   }
 }

@@ -13,23 +13,18 @@ class AppTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.0),
-      child: InkWell(
-        child: RoundTile(
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: leading,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [child],
-                ),
-              ),
-              ...?trailing,
-            ],
-          ),
+      child: RoundTile(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: leading,
+            ),
+            Expanded(
+              child: child,
+            ),
+            ...?trailing,
+          ],
         ),
         onTap: onTap,
       ),
