@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Release v1.6.1 (30th Jun 2026)
+
+- feat: Improve event display incl acceptance status #90
+- refactor: Homogenize AppCard and AppTile widgets
+- fix: Hide checkboxes in pack list PDF if count is 0 #96
+- fix: Equipment sorted against a wrong attribute #95
+- chore: Flutter package updates
+- chore: Automatic flags by Flutter migrator
+- chore: Adapted macos binary (app) name
+
 ## Release v1.6.0 (21st Jun 2026)
 
 - feat: Added discipline management
