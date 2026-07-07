@@ -29,7 +29,6 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
   void _submit() async {
     final result = await api_admin.affiliation_edit(widget.session, widget.affiliation);
     if (result is! Success) return;
-    Navigator.pop(context);
   }
 
   void _handleDelete() async {
