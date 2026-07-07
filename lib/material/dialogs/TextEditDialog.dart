@@ -3,6 +3,7 @@ import 'package:cptclient/utils/message.dart';
 import 'package:flutter/material.dart';
 
 class TextEditDialog extends StatefulWidget {
+  final Widget? title;
   final String initialValue;
   final int minLength;
   final int maxLength;
@@ -13,6 +14,7 @@ class TextEditDialog extends StatefulWidget {
 
   TextEditDialog({
     super.key,
+    this.title,
     required this.initialValue,
     required this.minLength,
     required this.maxLength,
@@ -45,6 +47,7 @@ class TextEditDialogState extends State<TextEditDialog> {
   @override
   Widget build(BuildContext context) {
     return AppDialog(
+      title: widget.title,
       child: ListTile(
         title: TextField(
           maxLines: widget.maxLines,

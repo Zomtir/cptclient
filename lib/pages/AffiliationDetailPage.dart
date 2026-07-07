@@ -73,6 +73,7 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
                 onPressed: () => showDialog(
                   context: context,
                   builder: (context) => TextEditDialog(
+                    title: Text("${AppLocalizations.of(context)!.affiliationMemberIdentifier}"),
                     initialValue: widget.affiliation.member_identifier ?? '',
                     minLength: 1,
                     maxLength: 10,
