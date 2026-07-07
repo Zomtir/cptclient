@@ -24,7 +24,6 @@ class AffiliationDetailPage extends StatefulWidget {
 }
 
 class AffiliationDetailPageState extends State<AffiliationDetailPage> {
-
   AffiliationDetailPageState();
 
   void _submit() async {
@@ -63,117 +62,109 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
           ),
           AppInfoRow(
             info: "${AppLocalizations.of(context)!.affiliationMemberIdentifier}",
-            child: ListTile(
-              title: Text(widget.affiliation.member_identifier ?? ''),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(widget.affiliation.member_identifier ?? ''),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => TextEditDialog(
-                        initialValue: widget.affiliation.member_identifier ?? '',
-                        minLength: 1,
-                        maxLength: 10,
-                        onConfirm: (String text) {
-                          setState(() => widget.affiliation.member_identifier = text);
-                          _submit();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(widget.affiliation.member_identifier ?? ''),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(widget.affiliation.member_identifier ?? ''),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => TextEditDialog(
+                    initialValue: widget.affiliation.member_identifier ?? '',
+                    minLength: 1,
+                    maxLength: 10,
+                    onConfirm: (String text) {
+                      setState(() => widget.affiliation.member_identifier = text);
+                      _submit();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.affiliationPermissionSoloDate,
-            child: ListTile(
-              title: Text(widget.affiliation.permission_solo_date?.fmtDate(context) ?? ''),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(formatIsoDate(widget.affiliation.permission_solo_date) ?? ''),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => DateEditDialog(
-                        initialDate: widget.affiliation.permission_solo_date,
-                        onConfirm: (DateTime? dt) {
-                          setState(() => widget.affiliation.permission_solo_date = dt);
-                          _submit();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(widget.affiliation.permission_solo_date?.fmtDate(context) ?? ''),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(formatIsoDate(widget.affiliation.permission_solo_date) ?? ''),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DateEditDialog(
+                    initialDate: widget.affiliation.permission_solo_date,
+                    onConfirm: (DateTime? dt) {
+                      setState(() => widget.affiliation.permission_solo_date = dt);
+                      _submit();
+                    },
+                    onReset: () {
+                      setState(() => widget.affiliation.permission_solo_date = null);
+                      _submit();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.affiliationPermissionTeamDate,
-            child: ListTile(
-              title: Text(widget.affiliation.permission_team_date?.fmtDate(context) ?? ''),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(formatIsoDate(widget.affiliation.permission_team_date) ?? ''),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => DateEditDialog(
-                        initialDate: widget.affiliation.permission_team_date,
-                        onConfirm: (DateTime? dt) {
-                          setState(() => widget.affiliation.permission_team_date = dt);
-                          _submit();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(widget.affiliation.permission_team_date?.fmtDate(context) ?? ''),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(formatIsoDate(widget.affiliation.permission_team_date) ?? ''),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DateEditDialog(
+                    initialDate: widget.affiliation.permission_team_date,
+                    onConfirm: (DateTime? dt) {
+                      setState(() => widget.affiliation.permission_team_date = dt);
+                      _submit();
+                    },
+                    onReset: () {
+                      setState(() => widget.affiliation.permission_team_date = null);
+                      _submit();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.affiliationResidencyMoveDate,
-            child: ListTile(
-              title: Text(widget.affiliation.residency_move_date?.fmtDate(context) ?? ''),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () => clipText(formatIsoDate(widget.affiliation.residency_move_date) ?? ''),
-                    icon: Icon(Icons.copy),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => DateEditDialog(
-                        initialDate: widget.affiliation.residency_move_date,
-                        onConfirm: (DateTime? dt) {
-                          setState(() => widget.affiliation.residency_move_date = dt);
-                          _submit();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+            child: Text(widget.affiliation.residency_move_date?.fmtDate(context) ?? ''),
+            actions: [
+              IconButton(
+                onPressed: () => clipText(formatIsoDate(widget.affiliation.residency_move_date) ?? ''),
+                icon: Icon(Icons.copy),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DateEditDialog(
+                    initialDate: widget.affiliation.residency_move_date,
+                    onConfirm: (DateTime? dt) {
+                      setState(() => widget.affiliation.residency_move_date = dt);
+                      _submit();
+                    },
+                    onReset: () {
+                      setState(() => widget.affiliation.residency_move_date = null);
+                      _submit();
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionSave,
