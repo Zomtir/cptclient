@@ -134,7 +134,7 @@ class PossessionUserManagementPageState extends State<PossessionUserManagementPa
             trailing: [
               IconButton(
                 onPressed: _prepare,
-                icon: Icon(Icons.refresh),
+                icon: Icon(Icons.change_circle_outlined),
                 tooltip: AppLocalizations.of(context)!.possessionUser,
               ),
             ],

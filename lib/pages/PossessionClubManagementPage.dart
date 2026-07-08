@@ -58,7 +58,13 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
   }
 
   Future<void> _update() async {
-    Result<List<Possession>> result_possessions = await api_admin.possession_list(widget.session, null, widget.item, false, _club!);
+    Result<List<Possession>> result_possessions = await api_admin.possession_list(
+      widget.session,
+      null,
+      widget.item,
+      false,
+      _club!,
+    );
     if (result_possessions is! Success) return;
 
     setState(() {
@@ -87,11 +93,12 @@ class PossessionClubManagementPageState extends State<PossessionClubManagementPa
         maxWidth: 1000,
         minWidth: 1000,
         builder: (context) => [
-          if (widget.club == null)
-            AppButton(
-              text: AppLocalizations.of(context)!.possessionClub,
-              onPressed: _prepare,
-              leading: Icon(Icons.refresh),
+          if (_club != null)
+            _club!.buildCard(
+              context,
+              trailing: [
+                IconButton(onPressed: _prepare, icon: Icon(Icons.change_circle_outlined)),
+              ],
             ),
           Divider(),
           DataTable(
