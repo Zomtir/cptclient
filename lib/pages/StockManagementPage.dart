@@ -12,6 +12,7 @@ import 'package:cptclient/material/dialogs/CountEditDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
+import 'package:cptclient/material/widgets/AppCard.dart';
 import 'package:cptclient/pages/PossessionClubManagementPage.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,7 @@ class StockManagementPageState extends State<StockManagementPage> {
     Club? club;
     await showDialog(
       context: context,
-      builder: (context) =>
-          PickerDialog(items: result_clubs.unwrap(), onPick: (e) => club = e),
+      builder: (context) => PickerDialog(items: result_clubs.unwrap(), onPick: (e) => club = e),
     );
 
     if (club == null) {
@@ -81,8 +81,7 @@ class StockManagementPageState extends State<StockManagementPage> {
     Item? item;
     await showDialog(
       context: context,
-      builder: (context) =>
-          PickerDialog(items: result_items.unwrap(), onPick: (e) => item = e),
+      builder: (context) => PickerDialog(items: result_items.unwrap(), onPick: (e) => item = e),
     );
 
     if (item == null) return;
@@ -150,8 +149,7 @@ class StockManagementPageState extends State<StockManagementPage> {
     User? user;
     await showDialog(
       context: context,
-      builder: (context) =>
-          PickerDialog(items: result_users.unwrap(), onPick: (e) => user = e),
+      builder: (context) => PickerDialog(items: result_users.unwrap(), onPick: (e) => user = e),
     );
 
     if (user == null) return;
@@ -176,11 +174,13 @@ class StockManagementPageState extends State<StockManagementPage> {
       body: AppBody(
         minWidth: 600,
         builder: (context) => [
-          AppButton(
-            text: AppLocalizations.of(context)!.stockClub,
-            onPressed: _prepare,
-            leading: Icon(Icons.refresh),
-          ),
+          if (_club != null)
+            _club!.buildCard(
+              context,
+              trailing: [
+                IconButton(onPressed: _prepare, icon: Icon(Icons.change_circle_outlined)),
+              ],
+            ),
           Divider(),
           DataTable(
             columnSpacing: 0,
