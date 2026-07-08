@@ -71,6 +71,7 @@ class StockManagementPageState extends State<StockManagementPage> {
       _stocks = result_stocks.unwrap();
       _stocks.sort();
     });
+    print(_stocks);
   }
 
   void _handleCreate() async {

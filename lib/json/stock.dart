@@ -47,9 +47,10 @@ class Stock extends FieldInterface implements Comparable {
 
   @override
   int compareTo(other) {
-    int criteria1 = club.compareTo(other.discipline);
+    int criteria1 = club.compareTo(other.club);
     if (criteria1 != 0) return criteria1;
-    return item.compareTo(other.item);
+    int criteria2 = item.compareTo(other.item);
+    return criteria2;
   }
 
   @override
