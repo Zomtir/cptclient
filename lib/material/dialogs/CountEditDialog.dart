@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class CountEditDialog extends StatefulWidget {
   final int initialValue;
   final int minValue;
-  final VoidCallback? onDelete;
-  final Function(int)? onConfirm;
+  final Future<void> Function()? onDelete;
+  final Future<void> Function(int)? onConfirm;
 
   CountEditDialog({
     super.key,
@@ -73,16 +73,16 @@ class CountEditDialogState extends State<CountEditDialog> {
         if (widget.onDelete != null && widget.minValue <= 0)
           IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: () {
-              widget.onDelete?.call();
+            onPressed: () async {
+              await widget.onDelete?.call();
               Navigator.pop(context);
             },
           ),
         if (widget.onConfirm != null)
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: () {
-              widget.onConfirm?.call(currentValue);
+            onPressed: () async {
+              await widget.onConfirm?.call(currentValue);
               Navigator.pop(context);
             },
           ),

@@ -101,9 +101,9 @@ class StockManagementPageState extends State<StockManagementPage> {
       builder: (context) => CountEditDialog(
         initialValue: stock.owned,
         minValue: stock.loaned,
-        onConfirm: (int count) {
+        onConfirm: (int count) async {
           stock.owned = count;
-          api_admin.stock_create(widget.session, stock);
+          await api_admin.stock_create(widget.session, stock);
           _update();
         },
       ),
@@ -116,10 +116,10 @@ class StockManagementPageState extends State<StockManagementPage> {
       builder: (context) => CountEditDialog(
         initialValue: stock.owned,
         minValue: stock.loaned,
-        onDelete: () => api_admin.stock_delete(widget.session, stock),
-        onConfirm: (int count) {
+        onDelete: () async => await api_admin.stock_delete(widget.session, stock),
+        onConfirm: (int count) async {
           stock.owned = count;
-          api_admin.stock_edit(widget.session, stock);
+          await api_admin.stock_edit(widget.session, stock);
         },
       ),
     );

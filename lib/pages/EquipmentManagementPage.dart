@@ -170,7 +170,7 @@ class EquipmentManagementPageState extends State<EquipmentManagementPage> {
                                 );
                                 _update();
                               },
-                              onDelete: () => _handleDelete(_equipments[index]),
+                              onDelete: () async => _handleDelete(_equipments[index]),
                             ),
                           ),
                         ),
