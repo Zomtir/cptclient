@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## Release v1.6.2 (9th Jul 2026)
+
+- feat: Title for TextEditDialog
+- fix: Remove club president from basic info because it is not available
+- fix: Replace refresh icon by change icon for switching entities on preselection
+- fix: Visual update of stock management club selection
+- fix: CountEditDialog was not waiting for server update
+- fix: Invalid discipline comparison for stocks
+- fix: Wrong source file name of CountEditDialog
+- fix: Organisation affiliation editing was returning to overview on any edit
+- fix: Make optional affiliation fields nullable
+- chore: Handle MacOS build warnings
+- chore: Update deploy pages Github action to v5
+
 ## Release v1.6.1 (30th Jun 2026)
 
 - feat: Improve event display incl acceptance status #90
