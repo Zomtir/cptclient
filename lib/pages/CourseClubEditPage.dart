@@ -13,7 +13,7 @@ class CourseClubEditPage extends StatefulWidget {
   final UserSession session;
   final Course course;
   final Future<Result<List<Club>>> Function() callList;
-  final Future<Result<int>> Function() callInfo;
+  final Future<Result<int?>> Function() callInfo;
   final Future<void> Function(Club?) callEdit;
 
   CourseClubEditPage(
@@ -41,13 +41,16 @@ class CourseClubEditPageState extends State<CourseClubEditPage> {
 
   Future<void> _update() async {
     Result<List<Club>> result_courses = await widget.callList();
-    Result<int> result_course_id = await widget.callInfo();
+    Result<int?> result_course_id = await widget.callInfo();
 
     if (result_courses is! Success || result_course_id is! Success) return;
 
+    final clubs = result_courses.unwrap();
+    final matches = clubs.where((club) => club.id == result_course_id.unwrap());
+
     setState(() {
-      _ctrlClub.items = result_courses.unwrap();
-      _ctrlClub.value = result_courses.unwrap().firstWhere((club) => club.id == result_course_id.unwrap());
+      _ctrlClub.items = clubs;
+      _ctrlClub.value = matches.isEmpty ? null : matches.first;
     });
   }
 

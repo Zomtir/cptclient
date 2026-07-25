@@ -123,7 +123,7 @@ Future<Result> course_requirement_remove(UserSession session, Requirement requir
   return Success(());
 }
 
-Future<Result<int>> course_club_info(UserSession session, Course course) async {
+Future<Result<int?>> course_club_info(UserSession session, Course course) async {
   final response = await client.get(
     uri('/admin/course_club_info', {
       'course_id': course.id.toString(),
@@ -136,7 +136,7 @@ Future<Result<int>> course_club_info(UserSession session, Course course) async {
 
   if (handleFailedResponse(response)) return Failure();
 
-  int club_id = json.decode(utf8.decode(response.bodyBytes));
+  int? club_id = json.decode(utf8.decode(response.bodyBytes));
   return Success(club_id);
 }
 
