@@ -2,6 +2,7 @@ import 'package:cptclient/api/admin/club/club.dart' as api_admin;
 import 'package:cptclient/api/admin/user/user.dart' as api_admin;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/event.dart';
+import 'package:cptclient/json/role.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
@@ -46,7 +47,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
     dateTime: DateUtils.dateOnly(DateTime.now()).copyWith(month: 12, day: 31),
   );
   late User _ctrlUser;
-  String _ctrlRole = 'leader';
+  Role _ctrlRole = Role.leader;
 
   List<Event> _eventList = [];
 
@@ -66,7 +67,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
       _ctrlUser.id,
       _ctrlBegin.getDate().copyWith(hour: 0),
       _ctrlEnd.getDate().copyWith(hour: 24),
-      _ctrlRole,
+      _ctrlRole.name,
     );
     if (result is! Success) return;
 
@@ -99,7 +100,7 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
           session: widget.session,
           club: widget.club,
           user: result_user_detailed.unwrap(),
-          role: _ctrlRole,
+          role: _ctrlRole.name,
           dateBegin: _ctrlBegin.getDateTime()!,
           dateEnd: _ctrlEnd.getDateTime()!,
           events: _eventList,
@@ -191,17 +192,18 @@ class ClubStatisticPresencePageState extends State<ClubStatisticPresencePage> {
               ),
               AppInfoRow(
                 info: AppLocalizations.of(context)!.eventRole,
-                child: Text(_ctrlRole),
+                child: Text(_ctrlRole.localizedName(context)),
                 actions: [
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => MultiChoiceDialog<String>(
-                        items: ["leader", "supporter", "participant", "spectator"],
-                        value: "leader",
-                        builder: (role) => Text(role),
-                        onConfirm: (String? role) => setState(() => _ctrlRole = role ?? 'leader'),
+                      builder: (context) => MultiChoiceDialog<Role>(
+                        title: AppLocalizations.of(context)!.eventRole,
+                        items: Role.values,
+                        value: Role.leader,
+                        builder: (role) => Text(role.localizedName(context)),
+                        onConfirm: (Role? role) => setState(() => _ctrlRole = role ?? Role.leader),
                       ),
                     ),
                   ),
