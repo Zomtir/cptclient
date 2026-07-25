@@ -2,6 +2,7 @@ import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:flutter/material.dart';
 
 class MultiChoiceDialog<T> extends StatefulWidget {
+  final String? title;
   final List<T> items;
   final T? value;
   final Widget Function(T) builder;
@@ -11,6 +12,7 @@ class MultiChoiceDialog<T> extends StatefulWidget {
 
   MultiChoiceDialog({
     super.key,
+    this.title,
     required this.items,
     required this.value,
     required this.builder,
@@ -52,6 +54,7 @@ class MultiChoiceDialogState<T> extends State<MultiChoiceDialog<T>> {
     );
 
     return AppDialog(
+      title: Text(widget.title ?? '', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
       child: radioGroup,
       actions: [
         if (widget.onDelete != null)
