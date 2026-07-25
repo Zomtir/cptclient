@@ -51,8 +51,8 @@ class License extends FieldInterface implements Comparable {
 
   String clip(BuildContext context) {
     return "${name.isEmpty ? AppLocalizations.of(context)!.undefined : name},"
-        "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})"
-        "${formatIsoDate(expiration)}";
+        "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number}),"
+        "${formatIsoDate(issued)},${formatIsoDate(expiration)}";
   }
 
   @override
