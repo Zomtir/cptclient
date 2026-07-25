@@ -650,12 +650,12 @@ class UserDetailPageState extends State<UserDetailPage> {
                 ),
             ],
           ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userLicenseMain,
-            child: user_info!.license_main == null
-                ? ListTile(
-                    title: Text(AppLocalizations.of(context)!.labelMissing),
-                    trailing: IconButton(
+          user_info!.license_main == null
+              ? AppInfoRow(
+                  info: AppLocalizations.of(context)!.userLicenseMain,
+                  child: Text(AppLocalizations.of(context)!.labelMissing),
+                  actions: [
+                    IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () => showDialog(
                         context: context,
@@ -668,43 +668,41 @@ class UserDetailPageState extends State<UserDetailPage> {
                         ),
                       ),
                     ),
-                  )
-                : ListTile(
-                    title: user_info!.license_main!.buildInfo(context),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.copy),
-                          onPressed: () => clipText(user_info!.license_main!.clip(context)),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => LicenseEditDialog(
-                              initialValue: user_info!.license_main!,
-                              onDelete: () async {
-                                await api_admin.user_license_main_delete(widget.session, user_info!);
-                                update();
-                              },
-                              onConfirm: (License lic) async {
-                                await api_admin.user_license_main_edit(widget.session, user_info!, lic);
-                                update();
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
+                  ],
+                )
+              : AppInfoRow(
+                  info: AppLocalizations.of(context)!.userLicenseMain,
+                  child: user_info!.license_main!.buildInfo(context),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.copy),
+                      onPressed: () => clipText(user_info!.license_main!.clip(context)),
                     ),
-                  ),
-          ),
-          AppInfoRow(
-            info: AppLocalizations.of(context)!.userLicenseExtra,
-            child: user_info!.license_extra == null
-                ? ListTile(
-                    title: Text(AppLocalizations.of(context)!.labelMissing),
-                    trailing: IconButton(
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => LicenseEditDialog(
+                          initialValue: user_info!.license_main!,
+                          onDelete: () async {
+                            await api_admin.user_license_main_delete(widget.session, user_info!);
+                            update();
+                          },
+                          onConfirm: (License lic) async {
+                            await api_admin.user_license_main_edit(widget.session, user_info!, lic);
+                            update();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+          user_info!.license_extra == null
+              ? AppInfoRow(
+                  info: AppLocalizations.of(context)!.userLicenseExtra,
+                  child: Text(AppLocalizations.of(context)!.labelMissing),
+                  actions: [
+                    IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () => showDialog(
                         context: context,
@@ -717,37 +715,35 @@ class UserDetailPageState extends State<UserDetailPage> {
                         ),
                       ),
                     ),
-                  )
-                : ListTile(
-                    title: user_info!.license_extra!.buildInfo(context),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.copy),
-                          onPressed: () => clipText(user_info!.license_extra!.clip(context)),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => LicenseEditDialog(
-                              initialValue: user_info!.license_extra!,
-                              onDelete: () async {
-                                await api_admin.user_license_extra_delete(widget.session, user_info!);
-                                update();
-                              },
-                              onConfirm: (License lic) async {
-                                await api_admin.user_license_extra_edit(widget.session, user_info!, lic);
-                                update();
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
+                  ],
+                )
+              : AppInfoRow(
+                  info: AppLocalizations.of(context)!.userLicenseExtra,
+                  child: user_info!.license_extra!.buildInfo(context),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.copy),
+                      onPressed: () => clipText(user_info!.license_extra!.clip(context)),
                     ),
-                  ),
-          ),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => LicenseEditDialog(
+                          initialValue: user_info!.license_extra!,
+                          onDelete: () async {
+                            await api_admin.user_license_extra_delete(widget.session, user_info!);
+                            update();
+                          },
+                          onConfirm: (License lic) async {
+                            await api_admin.user_license_extra_edit(widget.session, user_info!, lic);
+                            update();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ],
       ),
     );

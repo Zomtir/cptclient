@@ -66,13 +66,14 @@ class License extends FieldInterface implements Comparable {
   @override
   Widget buildInfo(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "${name.isEmpty ? AppLocalizations.of(context)!.undefined : name} "
           "(${number.isEmpty ? AppLocalizations.of(context)!.undefined : number})",
         ),
-        Text("${AppLocalizations.of(context)!.licenseIssued} ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
-        Text("${AppLocalizations.of(context)!.licenseExpiration} ${expiration.fmtDate(context)}"),
+        Text("${AppLocalizations.of(context)!.licenseIssued}: ${issued?.fmtDate(context) ?? AppLocalizations.of(context)!.unknown}"),
+        Text("${AppLocalizations.of(context)!.licenseExpiration}: ${expiration.fmtDate(context)}"),
       ],
     );
   }
