@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Release v1.6.3 (28th Jul 2026)
+
+- feat: Added title for MultiChoiceDialog
+- locale: Added role class to enable translation of role names #98
+- fix: Missed issue date in licence copy
+- fix: Left-aligned user licenses and reduced padding #100
+- fix: Club assignment was not nullable #101
+
 ## Release v1.6.2 (9th Jul 2026)
 
 - feat: Title for TextEditDialog
