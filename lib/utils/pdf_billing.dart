@@ -160,7 +160,8 @@ void billing_instructor_pdf(
               alignment: pw.Alignment.centerRight,
               child: pw.Image(
                 pw.MemoryImage(Uint8List.fromList(signature_stroke)),
-                height: 40,
+                width: 120,
+                height: 30,
               ),
             ),
           ),

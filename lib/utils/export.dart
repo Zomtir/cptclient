@@ -76,3 +76,17 @@ Future<void> saveSelector<T>({
     }
   }
 }
+
+Future<Uint8List?> loadSelector({
+  List<XTypeGroup> acceptedTypeGroups = const [],
+}) async {
+  final XFile? file = await openFile(
+    acceptedTypeGroups: acceptedTypeGroups,
+  );
+
+  if (file == null) {
+    return null;
+  }
+
+  return file.readAsBytes();
+}

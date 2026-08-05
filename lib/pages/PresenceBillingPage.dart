@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/session.dart';
@@ -13,8 +11,11 @@ import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/material/widgets/InfoSection.dart';
 import 'package:cptclient/material/widgets/SectionToggle.dart';
 import 'package:cptclient/material/widgets/Signature.dart';
+import 'package:cptclient/utils/export.dart';
 import 'package:cptclient/utils/pdf_billing.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hand_signature/signature.dart';
 import 'package:intl/intl.dart';
 
@@ -61,6 +62,12 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
     dateTime: DateTime.now(),
   );
   final HandSignatureControl _ctrlStroke = HandSignatureControl();
+  Uint8List? signatureBytes;
+  final XTypeGroup signatureTypes = XTypeGroup(
+    label: 'images',
+    extensions: <String>['jpg', 'png'],
+    uniformTypeIdentifiers: <String>['public.jpeg', 'public.png'],
+  );
 
   late final NumberFormat nf = NumberFormat.decimalPattern(
     Localizations.localeOf(context).toLanguageTag(),
@@ -90,8 +97,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
       compensation_hours =
           widget.events.fold(
             0,
-            (total, event) =>
-                total + event.end.difference(event.begin).inMinutes,
+            (total, event) => total + event.end.difference(event.begin).inMinutes,
           ) /
           60;
 
@@ -107,15 +113,13 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
     if (unit_duration == null) return;
 
     setState(() {
-      compensation_units =
-          ((compensation_hours / unit_duration!) * 100).round() / 100;
+      compensation_units = ((compensation_hours / unit_duration!) * 100).round() / 100;
     });
 
     if (compensation_rate == null) return;
 
     setState(() {
-      compensation_sum =
-          ((compensation_rate! * compensation_units!) * 100).round() / 100;
+      compensation_sum = ((compensation_rate! * compensation_units!) * 100).round() / 100;
     });
 
     if (donation_sum == null) return;
@@ -128,12 +132,14 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
   void _handleSubmission() async {
     _recalculate();
 
-    final ByteData? signatureData = await _ctrlStroke.toImage(
-      fit: true,
-      width: 600,
-      height: 200,
-    );
-    final Uint8List? signatureBytes = signatureData?.buffer.asUint8List();
+    if (signatureBytes == null) {
+      final ByteData? signatureData = await _ctrlStroke.toImage(
+        fit: true,
+        width: 600,
+        height: 150,
+      );
+      signatureBytes = signatureData?.buffer.asUint8List();
+    }
 
     billing_instructor_pdf(
       context,
@@ -186,8 +192,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             ),
           ),
           AppInfoRow(
-            info:
-                "${AppLocalizations.of(context)!.instructorUnitDuration} (${AppLocalizations.of(context)!.dateHour})",
+            info: "${AppLocalizations.of(context)!.instructorUnitDuration} (${AppLocalizations.of(context)!.dateHour})",
             child: TextFormField(
               controller: _ctrlUnitDuration,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -195,8 +200,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             ),
           ),
           AppInfoRow(
-            info:
-                "${AppLocalizations.of(context)!.instructorCompensationPerUnit} (Euro)",
+            info: "${AppLocalizations.of(context)!.instructorCompensationPerUnit} (Euro)",
             child: TextFormField(
               controller: _ctrlCompensation,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -204,8 +208,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
             ),
           ),
           AppInfoRow(
-            info:
-                "${AppLocalizations.of(context)!.instructorCompensationDontation} (Euro)",
+            info: "${AppLocalizations.of(context)!.instructorCompensationDontation} (Euro)",
             child: TextFormField(
               controller: _ctrlDonation,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -336,8 +339,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
                 info: AppLocalizations.of(context)!.instructorJobAllowance,
                 child: RadioGroup<String>(
                   groupValue: _ctrlJobAllowance,
-                  onChanged: (String? value) =>
-                      setState(() => _ctrlJobAllowance = value!),
+                  onChanged: (String? value) => setState(() => _ctrlJobAllowance = value!),
                   child: Column(
                     children: <Widget>[
                       ListTile(
@@ -370,8 +372,7 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
                 info: AppLocalizations.of(context)!.instructorLicenseUsage,
                 child: RadioGroup<String>(
                   groupValue: _ctrlLicenseUsage,
-                  onChanged: (String? value) =>
-                      setState(() => _ctrlLicenseUsage = value!),
+                  onChanged: (String? value) => setState(() => _ctrlLicenseUsage = value!),
                   child: Column(
                     children: [
                       ListTile(
@@ -407,13 +408,48 @@ class PresenceBillingPageState extends State<PresenceBillingPage> {
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelSignature,
-            child: Signature(control: _ctrlStroke, width: 950, height: 150),
+            child: (signatureBytes == null)
+                ? Signature(control: _ctrlStroke, width: 950, height: 150)
+                : Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: Image.memory(
+                      signatureBytes!,
+                      height: 150,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+            actions: [
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.file_upload),
+                    onPressed: () async {
+                      Uint8List? bytes = await loadSelector(
+                        acceptedTypeGroups: [signatureTypes],
+                      );
+                      setState(() {
+                        signatureBytes = bytes;
+                      });
+                    },
+                  ),
+                  if (signatureBytes != null)
+                    IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () => setState(() {
+                        _ctrlStroke.clear();
+                        signatureBytes = null;
+                      }),
+                    ),
+                ],
+              ),
+            ],
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionDownload,
-            onPressed: (disbursement_sum != null && disbursement_sum! >= 0)
-                ? _handleSubmission
-                : null,
+            onPressed: (disbursement_sum != null && disbursement_sum! >= 0) ? _handleSubmission : null,
           ),
         ],
       ),
