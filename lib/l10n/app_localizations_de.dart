@@ -1017,13 +1017,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get eventNote => 'Notizen';
 
   @override
-  String get eventOwner => 'Leiter';
+  String get eventOwner => 'Veranstalter';
 
   @override
   String get eventParticipant => 'Teilnehmer';
 
   @override
-  String get eventLeader => 'Verantwortliche';
+  String get eventLeader => 'Leiter';
 
   @override
   String get eventSupporter => 'Helfer';
