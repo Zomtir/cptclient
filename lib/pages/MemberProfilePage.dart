@@ -1,4 +1,4 @@
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';

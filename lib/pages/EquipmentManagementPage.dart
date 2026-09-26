@@ -1,7 +1,7 @@
 import 'package:cptclient/api/admin/inventory/inventory.dart' as api_admin;
 import 'package:cptclient/api/admin/inventory/item.dart' as api_admin;
 import 'package:cptclient/api/anon/skill.dart' as api_anon;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/equipment.dart';
 import 'package:cptclient/json/item.dart';
 import 'package:cptclient/json/session.dart';

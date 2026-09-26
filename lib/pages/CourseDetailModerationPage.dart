@@ -1,6 +1,6 @@
 import 'package:cptclient/api/moderator/course/imports.dart' as api_moderator;
 import 'package:cptclient/api/regular/team/team.dart' as api_regular;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/team.dart';

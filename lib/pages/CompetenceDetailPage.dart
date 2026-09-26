@@ -1,5 +1,5 @@
 import 'package:cptclient/api/admin/competence/competence.dart' as api_admin;
-import 'package:cptclient/api/admin/user/user.dart' as api_admin;
+import 'package:cptclient/api/user/user_admin.dart' as api_admin;
 import 'package:cptclient/json/competence.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/user.dart';

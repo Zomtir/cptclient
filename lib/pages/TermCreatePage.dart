@@ -1,6 +1,6 @@
 import 'package:cptclient/api/admin/club/term.dart' as api_admin;
 import 'package:cptclient/api/anon/club.dart' as api_anon;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/term.dart';

@@ -6,7 +6,7 @@ import 'package:cptclient/api/anon/organisation.dart' as api_anon;
 import 'package:cptclient/api/moderator/event/imports.dart' as api_mod;
 import 'package:cptclient/api/owner/event/imports.dart' as api_owner;
 import 'package:cptclient/api/regular/event/event.dart' as api_regular;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/confirmation.dart';
 import 'package:cptclient/json/course.dart';
 import 'package:cptclient/json/credential.dart';

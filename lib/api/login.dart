@@ -1,6 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
-import 'package:cptclient/api/anon/user.dart' as api_anon;
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
@@ -25,7 +26,7 @@ Future<Result> loadStatus() async {
 Future<Result<UserSession>> loginUser(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return Failure();
 
-  Result<String> result_salt = await api_anon.user_salt(key);
+  Result<String> result_salt = await user_salt(key);
   if (result_salt is! Success) return Failure();
   var salt = result_salt.unwrap();
 
@@ -96,4 +97,17 @@ Future<Result<EventSession>> loginLocation(String key) async {
 
   var session = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
   return Success(session);
+}
+
+Future<Result<String>> user_salt(String key) async {
+  final response = await client.get(
+    uri('/user_salt/$key'),
+    headers: {
+      'Accept': 'text/plain; charset=utf-8',
+    },
+  );
+
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(utf8.decode(response.bodyBytes));
 }

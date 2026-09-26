@@ -1,5 +1,5 @@
 import 'package:cptclient/api/admin/organisation/affiliation.dart' as api_admin;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/affiliation.dart';
 import 'package:cptclient/json/organisation.dart';
 import 'package:cptclient/json/session.dart';

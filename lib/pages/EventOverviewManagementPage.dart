@@ -1,7 +1,7 @@
 import 'package:cptclient/api/admin/event/event.dart' as api_admin;
 import 'package:cptclient/api/anon/location.dart' as api_anon;
 import 'package:cptclient/api/regular/event/event.dart' as api_regular;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/json/acceptance.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/location.dart';

@@ -1,5 +1,5 @@
 import 'package:cptclient/api/admin/club/club.dart' as api_admin;
-import 'package:cptclient/api/admin/user/user.dart' as api_admin;
+import 'package:cptclient/api/user/user_admin.dart' as api_admin;
 import 'package:cptclient/json/club.dart';
 import 'package:cptclient/json/event.dart';
 import 'package:cptclient/json/role.dart';

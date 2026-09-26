@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cptclient/api/login.dart' as api;
-import 'package:cptclient/api/regular/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user.dart' as api_regular;
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/core/environment.dart';
 import 'package:cptclient/core/router.dart' as router;
