@@ -65,7 +65,15 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
     if (result is! Success) return;
 
     List<(User, Item, int, int, int)> stats = result.unwrap();
-    stats.sort((a, b) => a.$1.compareTo(b.$1));
+    stats.sort((a, b) {
+      final criteria1 = a.$1.compareTo(b.$1);
+      if (criteria1 != 0) return criteria1;
+
+      final criteria2 = a.$2.compareTo(b.$2);
+      if (criteria2 != 0) return criteria2;
+
+      return 0;
+    });
     setState(() => _stats = stats);
   }
 
