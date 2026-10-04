@@ -81,17 +81,74 @@ void handover_protocol_pdf(BuildContext context, Event event, List<ItemBalance> 
     );
   }
 
+  pw.TableRow buildSeparator() {
+    return pw.TableRow(
+      children: List.generate(
+        6,
+        (_) => pw.Container(
+          height: 2,
+          color: PdfColors.black,
+        ),
+      ),
+    );
+  }
+
   int entriesPerPage = 20;
-  int pages = (balance_list.length / entriesPerPage).ceil();
+  List<(int, int)> pageRanges = [];
+
+  int startIndex = 0;
+
+  // Compute the page count while having all items of a user on a single page
+  while (startIndex < balance_list.length) {
+    int endIndex = min(startIndex + entriesPerPage, balance_list.length);
+
+    while (endIndex > startIndex &&
+        endIndex < balance_list.length &&
+        balance_list[endIndex - 1].$1 == balance_list[endIndex].$1) {
+      endIndex--;
+    }
+
+    // If user has more than entriesPerPage entries, split the entries across pages.
+    if (endIndex == startIndex) {
+      endIndex = min(startIndex + entriesPerPage, balance_list.length);
+    }
+
+    pageRanges.add((startIndex, endIndex));
+    startIndex = endIndex;
+  }
+
+  int pages = pageRanges.length;
 
   for (int page = 0; page < pages; page++) {
-    int startIndex = page * entriesPerPage;
-    int endIndex = min(startIndex + entriesPerPage, balance_list.length);
-    List<ItemBalance> partial_list = balance_list.sublist(startIndex, endIndex);
+    final (startIndex, endIndex) = pageRanges[page];
+    final partialList = balance_list.sublist(startIndex, endIndex);
+
+    final partialRows = <pw.TableRow>[];
+
+    // Separate users visually
+    int userStart = 0;
+    while (userStart < partialList.length) {
+      int userEnd = userStart + 1;
+
+      while (userEnd < partialList.length && partialList[userEnd].$1 == partialList[userStart].$1) {
+        userEnd++;
+      }
+
+      for (int i = userStart; i < userEnd; i++) {
+        partialRows.add(buildRow(partialList[i]));
+      }
+
+      if (userEnd < partialList.length) {
+        partialRows.add(buildSeparator());
+      }
+
+      userStart = userEnd;
+    }
 
     doc.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4.landscape,
+        margin: const pw.EdgeInsets.all(40),
         build: (pw.Context pwcontext) => pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.stretch,
           children: [
@@ -149,7 +206,7 @@ void handover_protocol_pdf(BuildContext context, Event event, List<ItemBalance> 
                     ),
                   ],
                 ),
-                ...partial_list.map((balance) => buildRow(balance)),
+                ...partialRows,
               ],
             ),
             pw.Spacer(),
