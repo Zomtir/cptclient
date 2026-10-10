@@ -146,6 +146,18 @@ abstract class AppLocalizations {
   /// **'Needed'**
   String get labelNeeded;
 
+  /// No description provided for @labelPrepared.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared'**
+  String get labelPrepared;
+
+  /// No description provided for @labelCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Count'**
+  String get labelCount;
+
   /// No description provided for @labelFull.
   ///
   /// In en, this message translates to:
@@ -175,6 +187,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To'**
   String get labelTo;
+
+  /// No description provided for @labelInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get labelInfo;
 
   /// No description provided for @labelIssuance.
   ///

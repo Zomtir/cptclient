@@ -33,6 +33,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelNeeded => 'Benötigt';
 
   @override
+  String get labelPrepared => 'Vorbereitet';
+
+  @override
+  String get labelCount => 'Anzahl';
+
+  @override
   String get labelFull => 'Voll';
 
   @override
@@ -46,6 +52,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelTo => 'Bis';
+
+  @override
+  String get labelInfo => 'Info';
 
   @override
   String get labelIssuance => 'Ausgabe';

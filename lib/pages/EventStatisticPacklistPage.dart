@@ -6,8 +6,11 @@ import 'package:cptclient/json/session.dart';
 import 'package:cptclient/json/skill.dart';
 import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
+import 'package:cptclient/material/dialogs/AppDialog.dart';
 import 'package:cptclient/material/dialogs/PickerDialog.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
+import 'package:cptclient/utils/format.dart';
+import 'package:cptclient/utils/item_balance.dart';
 import 'package:cptclient/utils/pdf_handover.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +86,59 @@ class EventStatisticPacklistPageState extends State<EventStatisticPacklistPage> 
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.pageEventStatisticPacklist),
         actions: [
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) {
+                var (uniqueUsers, miscItems, groupedItems) = evalBalance(_stats);
+                return AppDialog(
+                  title: Text(AppLocalizations.of(context)!.labelInfo, textAlign: TextAlign.center,),
+                  child: Table(
+                    columnWidths: {
+                      0: const FixedColumnWidth(130),
+                      1: const FlexColumnWidth(),
+                    },
+                    children: [
+                      TableRow(
+                        children: [
+                          Text("${AppLocalizations.of(context)!.eventTitle}:"),
+                          Text("${widget.event.title}"),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text("${AppLocalizations.of(context)!.dateFrame}:"),
+                          Text("${compressDate(context, widget.event.begin, widget.event.end)}"),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text("${AppLocalizations.of(context)!.eventLocation}:"),
+                          Text("${widget.event.location?.name ?? ''}"),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text("${AppLocalizations.of(context)!.labelPrepared}:"),
+                          Text("$uniqueUsers"),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text("${AppLocalizations.of(context)!.labelNeeded}:"),
+                          Text(
+                            "${groupedItems.entries.map((e) => '${e.value.$2} × ${e.key.name}').join(', ')}"
+                            ", $miscItems x ${AppLocalizations.of(context)!.labelMiscellaneous}",
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.picture_as_pdf),
             onPressed: () => handover_protocol_pdf(context, widget.event, _stats),
