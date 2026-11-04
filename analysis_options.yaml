@@ -4,6 +4,14 @@ formatter:
 analyzer:
   errors:
     non_constant_identifier_names: ignore
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 include: package:lints/recommended.yaml
 
 linter:

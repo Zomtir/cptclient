@@ -58,7 +58,7 @@ jobs:
             platform: windows
             build-type: windows
             asset: windows-amd64.zip
-          - os: macos-14
+          - os: macos-15
             platform: macos
             build-type: macos
             asset: macos-arm64.tar.gz

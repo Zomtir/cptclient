@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Release v1.6.4 (4th Nov 2026)
+
+- feat: Upload signature to trainer billing
+- feat: Additional info for event packlist
+- feat: Add separators between users in the packlist and ensure they are grouped together #104
+- fix: Sorting in the packlist was random for the item #105
+- locale: German event role translations
+- chore: Flutter upgrade from 3.44.0 to 3.47.0
+
 ## Release v1.6.3 (28th Jul 2026)
 
 - feat: Added title for MultiChoiceDialog

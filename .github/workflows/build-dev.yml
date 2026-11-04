@@ -47,10 +47,10 @@ jobs:
           - os: ubuntu-latest
             platform: web
             build-type: web
-          - os: macos-14
+          - os: macos-15
             platform: macos
             build-type: macos
-#          - os: macos-14
+#          - os: macos-15
 #            platform: ios
 #            build-type: ipa
 
