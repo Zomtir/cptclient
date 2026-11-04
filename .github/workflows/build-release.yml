@@ -5,7 +5,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.44.0'
+        default: '3.47.0'
         type: string
       upload_action_artifact:
         description: 'Upload build artifacts in the GH action'
