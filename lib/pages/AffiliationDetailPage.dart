@@ -166,10 +166,6 @@ class AffiliationDetailPageState extends State<AffiliationDetailPage> {
               ),
             ],
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.actionSave,
-            onPressed: _submit,
-          ),
         ],
       ),
     );

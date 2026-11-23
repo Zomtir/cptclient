@@ -1,4 +1,6 @@
 #! /bin/bash
+# Fail on error
+set -e
 
 ARCH="$1"
 
@@ -36,7 +38,8 @@ fi
 # WINDOWS
 if [[ "$ARCH" == "windows" ]]; then
     flutter build windows "${DART_DEFINES[@]}"
-    zip -r release/cptclient-windows-amd64.zip build/windows/x64/runner/Release/* -j
+    cd D:/a/cptclient/cptclient/build/windows/x64/runner/Release/
+    zip -r D:/a/cptclient/cptclient/release/cptclient-windows-amd64.zip *
 fi
 
 # MACOS

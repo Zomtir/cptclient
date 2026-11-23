@@ -5,7 +5,7 @@ on:
     inputs:
       flutter_version:
         required: false
-        default: '3.44.0'
+        default: '3.47.0'
         type: string
       upload_action_artifact:
         description: 'Upload build artifacts in the GH action'
@@ -58,7 +58,7 @@ jobs:
             platform: windows
             build-type: windows
             asset: windows-amd64.zip
-          - os: macos-14
+          - os: macos-15
             platform: macos
             build-type: macos
             asset: macos-arm64.tar.gz
