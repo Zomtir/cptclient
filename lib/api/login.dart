@@ -23,6 +23,19 @@ Future<Result> loadStatus() async {
   return Success(());
 }
 
+Future<Result<String>> loadVersion() async {
+  final response = await client.get(
+    uri('/version'),
+    headers: {
+      'Accept': 'text/plain; charset=utf-8',
+    },
+  );
+
+  if (handleFailedResponse(response)) return Failure();
+
+  return Success(utf8.decode(response.bodyBytes));
+}
+
 Future<Result<UserSession>> loginUser(String key, String pwd) async {
   if (key.isEmpty || pwd.isEmpty) return Failure();
 
@@ -101,7 +114,7 @@ Future<Result<EventSession>> loginLocation(String key) async {
 
 Future<Result<String>> user_salt(String key) async {
   final response = await client.get(
-    uri('/user_salt/$key'),
+    uri('/user/salt/$key'),
     headers: {
       'Accept': 'text/plain; charset=utf-8',
     },

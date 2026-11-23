@@ -31,6 +31,7 @@ class ConnectionPageState extends State<ConnectionPage> {
   final TextEditingController _ctrlClientPort = TextEditingController();
 
   bool _serverOnline = false;
+  String _serverVersion = "";
 
   @override
   void initState() {
@@ -89,8 +90,22 @@ class ConnectionPageState extends State<ConnectionPage> {
   }
 
   void _testConnection() async {
-    var result = await api.loadStatus();
-    setState(() => _serverOnline = (result is Success));
+    Result resultStatus = await api.loadStatus();
+    Result<String> resultVersion = Failure();
+
+    if (resultStatus is Success) {
+      resultVersion = await api.loadVersion();
+    }
+
+    setState(() {
+      _serverOnline = (resultStatus is Success);
+
+      if (resultVersion is Failure) {
+        _serverVersion = AppLocalizations.of(context)!.unknown;
+      } else {
+        _serverVersion = resultVersion.unwrap();
+      }
+    });
   }
 
   @override
@@ -101,8 +116,9 @@ class ConnectionPageState extends State<ConnectionPage> {
       ),
       body: AppBody(
         builder: (context) => [
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.labelServer),
+          MenuSection(
+            title: AppLocalizations.of(context)!.labelServer,
+            children: [],
           ),
           AppInfoRow(
             info: AppLocalizations.of(context)!.labelServerScheme,
@@ -128,10 +144,17 @@ class ConnectionPageState extends State<ConnectionPage> {
               onChanged: _updateServerPort,
             ),
           ),
-          AppButton(
-            text: AppLocalizations.of(context)!.actionTest,
-            onPressed: _testConnection,
+          ListTile(
             leading: Icon(Icons.online_prediction, color: _serverOnline ? Colors.green : Colors.red),
+            title: _serverOnline
+                ? Text(
+                    "${AppLocalizations.of(context)!.labelTrue} (${AppLocalizations.of(context)!.labelVersion} $_serverVersion)",
+                  )
+                : Text(AppLocalizations.of(context)!.unknown),
+            trailing: IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: _testConnection,
+            ),
           ),
           AppButton(
             text: AppLocalizations.of(context)!.actionConnect,
