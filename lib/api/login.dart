@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
+import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
@@ -23,6 +24,21 @@ Future<Result<(int, String)>> loginUser(String key, Credential credential) async
   final [int id, String token] = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
 
   return Success((id, token));
+}
+
+Future<Result<Right>> user_session_right(UserSession session) async {
+  final response = await client.get(
+    uri('/user_session_right'),
+    headers: {
+      'Token': session.token,
+      'Accept': 'application/json; charset=utf-8',
+    },
+  );
+
+  if (handleFailedResponse(response)) return Failure();
+
+  var right = Right.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  return Success(right);
 }
 
 Future<Result<EventSession>> loginEvent(String key, String pwd) async {

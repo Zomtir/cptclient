@@ -59,7 +59,7 @@ class LoginUserPageState extends State<LoginUserPage> {
     if (result_user is! Success) return;
     uSession.user = result_user.unwrap();
 
-    Result<Right> result_right = await api.right_info(uSession, id);
+    Result<Right> result_right = await api.user_session_right(uSession);
     if (result_right is! Success) return;
     uSession.right = result_right.unwrap();
 

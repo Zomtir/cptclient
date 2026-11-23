@@ -43,7 +43,7 @@ Future<Result<User>> user_info(UserSession session, int userID) async {
   return Success(user);
 }
 
-Future<Result<Right>> right_info(UserSession session, int userID) async {
+Future<Result<Right>> user_right(UserSession session, int userID) async {
   final response = await client.get(
     uri('/user/$userID/right'),
     headers: {
