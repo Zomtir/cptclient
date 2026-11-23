@@ -1,14 +1,11 @@
 import 'dart:convert';
 
-import 'package:cptclient/api/login.dart' as api;
-import 'package:cptclient/api/user/user.dart' as api_regular;
+import 'package:cptclient/api/generic.dart' as api;
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/core/environment.dart';
 import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/json/credential.dart';
-import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/json/user.dart';
 import 'package:cptclient/main.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -135,16 +132,10 @@ void applyServer() {
   );
 }
 
-Future<bool> loginUser(BuildContext context, UserSession uSession) async {
+Future<bool> useUserSession(BuildContext context, UserSession uSession) async {
   if (uSession.token.isEmpty) return false;
-
-  Result<User> result_user = await api_regular.user_info(uSession);
-  if (result_user is! Success) return false;
-  uSession.user = result_user.unwrap();
-
-  Result<Right> result_right = await api_regular.right_info(uSession);
-  if (result_right is! Success) return false;
-  uSession.right = result_right.unwrap();
+  if (uSession.user == null) return false;
+  if (uSession.right == null) return false;
 
   userSession = uSession;
   router.gotoRoute(context, '/user');

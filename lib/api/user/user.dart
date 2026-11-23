@@ -28,9 +28,9 @@ Future<Result<List<User>>> user_list(UserSession session) async {
   return Success(list);
 }
 
-Future<Result<User>> user_info(UserSession session) async {
+Future<Result<User>> user_info(UserSession session, int userID) async {
   final response = await client.get(
-    uri('/regular/user_info'),
+    uri('/user/$userID/info'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',
@@ -43,9 +43,9 @@ Future<Result<User>> user_info(UserSession session) async {
   return Success(user);
 }
 
-Future<Result<Right>> right_info(UserSession session) async {
+Future<Result<Right>> right_info(UserSession session, int userID) async {
   final response = await client.get(
-    uri('/regular/user_right'),
+    uri('/user/$userID/right'),
     headers: {
       'Token': session.token,
       'Accept': 'application/json; charset=utf-8',

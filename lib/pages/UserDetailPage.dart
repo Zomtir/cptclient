@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:cptclient/api/user/bankacc.dart' as api_admin;
 import 'package:cptclient/api/user/license.dart' as api_admin;
-import 'package:cptclient/api/user/user_admin.dart' as api_admin;
 import 'package:cptclient/api/user/user.dart' as api_regular;
+import 'package:cptclient/api/user/user_admin.dart' as api_admin;
 import 'package:cptclient/json/bankacc.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/gender.dart';

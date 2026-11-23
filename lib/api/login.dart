@@ -5,46 +5,10 @@ import 'dart:convert';
 import 'package:cptclient/core/client.dart';
 import 'package:cptclient/json/credential.dart';
 import 'package:cptclient/json/session.dart';
-import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:cptclient/utils/message.dart';
 import 'package:cptclient/utils/result.dart';
-import 'package:http/http.dart' as http;
 
-Future<Result> loadStatus() async {
-  final http.Response response;
-
-  try {
-    response = await client.head(uri('status')).timeout(const Duration(seconds: 3));
-  } on Exception {
-    return Failure();
-  }
-
-  if (handleFailedResponse(response)) return Failure();
-  return Success(());
-}
-
-Future<Result<String>> loadVersion() async {
-  final response = await client.get(
-    uri('/version'),
-    headers: {
-      'Accept': 'text/plain; charset=utf-8',
-    },
-  );
-
-  if (handleFailedResponse(response)) return Failure();
-
-  return Success(utf8.decode(response.bodyBytes));
-}
-
-Future<Result<UserSession>> loginUser(String key, String pwd) async {
-  if (key.isEmpty || pwd.isEmpty) return Failure();
-
-  Result<String> result_salt = await user_salt(key);
-  if (result_salt is! Success) return Failure();
-  var salt = result_salt.unwrap();
-
-  Credential credential = Credential(login: key, password: crypto.hashPassword(pwd, salt), salt: salt);
-
+Future<Result<(int, String)>> loginUser(String key, Credential credential) async {
   final response = await client.post(
     uri('/user_login'),
     headers: {
@@ -56,8 +20,9 @@ Future<Result<UserSession>> loginUser(String key, String pwd) async {
 
   if (handleFailedResponse(response)) return Failure();
 
-  var session = UserSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
-  return Success(session);
+  final [int id, String token] = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+
+  return Success((id, token));
 }
 
 Future<Result<EventSession>> loginEvent(String key, String pwd) async {
@@ -76,7 +41,7 @@ Future<Result<EventSession>> loginEvent(String key, String pwd) async {
 
   if (handleFailedResponse(response)) return Failure();
 
-  var object = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var object = EventSession(key, response.body, DateTime.now().add(Duration(hours: 3)));
   return Success(object);
 }
 
@@ -92,7 +57,7 @@ Future<Result<EventSession>> loginCourse(String key) async {
 
   if (handleFailedResponse(response)) return Failure();
 
-  var session = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var session = EventSession(key, response.body, DateTime.now().add(Duration(hours: 3)));
   return Success(session);
 }
 
@@ -108,19 +73,6 @@ Future<Result<EventSession>> loginLocation(String key) async {
 
   if (handleFailedResponse(response)) return Failure();
 
-  var session = EventSession(key,response.body,DateTime.now().add(Duration(hours: 3)));
+  var session = EventSession(key, response.body, DateTime.now().add(Duration(hours: 3)));
   return Success(session);
-}
-
-Future<Result<String>> user_salt(String key) async {
-  final response = await client.get(
-    uri('/user/salt/$key'),
-    headers: {
-      'Accept': 'text/plain; charset=utf-8',
-    },
-  );
-
-  if (handleFailedResponse(response)) return Failure();
-
-  return Success(utf8.decode(response.bodyBytes));
 }

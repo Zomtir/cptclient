@@ -1,4 +1,4 @@
-import 'package:cptclient/api/login.dart' as api;
+import 'package:cptclient/api/generic.dart' as api;
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/core/router.dart' as router;
 import 'package:cptclient/l10n/app_localizations.dart';

@@ -5,7 +5,6 @@ import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/dialogs/DateEditDialog.dart';
 import 'package:cptclient/material/dialogs/TextEditDialog.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
-import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/AppInfoRow.dart';
 import 'package:cptclient/utils/clipboard.dart';
 import 'package:cptclient/utils/datetime.dart';

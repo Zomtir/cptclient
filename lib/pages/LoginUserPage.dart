@@ -1,11 +1,16 @@
-import 'package:cptclient/api/login.dart' as server;
+import 'package:cptclient/api/login.dart' as api;
+import 'package:cptclient/api/user/salt.dart' as api;
+import 'package:cptclient/api/user/user.dart' as api;
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/credential.dart';
+import 'package:cptclient/json/right.dart';
 import 'package:cptclient/json/session.dart';
+import 'package:cptclient/json/user.dart';
 import 'package:cptclient/l10n/app_localizations.dart';
 import 'package:cptclient/material/widgets/AppBody.dart';
 import 'package:cptclient/material/widgets/AppButton.dart';
 import 'package:cptclient/material/widgets/MenuSection.dart';
+import 'package:cptclient/utils/crypto.dart' as crypto;
 import 'package:cptclient/utils/datetime.dart';
 import 'package:cptclient/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -35,21 +40,39 @@ class LoginUserPageState extends State<LoginUserPage> {
     });
   }
 
-  void _loginUser(String login, String passwd, bool remember) async {
-    Result<UserSession> result_session = await server.loginUser(login, passwd);
-    if (result_session is! Success) return;
+  void _loginUser(String key, String pwd, bool remember) async {
+    if (key.isEmpty || pwd.isEmpty) return;
 
-    if (remember) {
-      navi.addUserCredential(Credential(login: login, password: passwd, since: DateTime.now()));
-    }
+    Result<String> result_salt = await api.user_salt(key);
+    if (result_salt is! Success) return;
+    var salt = result_salt.unwrap();
+
+    Credential credential = Credential(login: key, password: crypto.hashPassword(pwd, salt), salt: salt);
+
+    Result<(int, String)> result_id_token = await api.loginUser(key, credential);
+    if (result_id_token is! Success) return;
+    var (id, token) = result_id_token.unwrap();
+
+    var uSession = UserSession(key,token,DateTime.now().add(Duration(hours: 3)));
+
+    Result<User> result_user = await api.user_info(uSession, id);
+    if (result_user is! Success) return;
+    uSession.user = result_user.unwrap();
+
+    Result<Right> result_right = await api.right_info(uSession, id);
+    if (result_right is! Success) return;
+    uSession.right = result_right.unwrap();
 
     _ctrlLogin.text = "";
     _ctrlPasswd.text = "";
     _ctrlRemember = false;
 
-    var session = result_session.unwrap();
-    navi.addUserSession(session);
-    navi.loginUser(context, session);
+    if (remember) {
+      navi.addUserCredential(Credential(login: key, password: pwd, since: DateTime.now()));
+    }
+
+    navi.addUserSession(uSession);
+    navi.useUserSession(context, uSession);
   }
 
   @override

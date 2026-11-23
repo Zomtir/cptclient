@@ -1,4 +1,5 @@
-import 'package:cptclient/api/login.dart' as server;
+import 'package:cptclient/api/generic.dart' as api;
+import 'package:cptclient/api/login.dart' as api;
 import 'package:cptclient/core/navigation.dart' as navi;
 import 'package:cptclient/json/session.dart';
 import 'package:cptclient/material/widgets/LoadingWidget.dart';
@@ -28,7 +29,7 @@ GoRouter createRouter() {
             if (!firstStart) return;
             firstStart = false;
 
-            if (await server.loadStatus() is Success) {
+            if (await api.loadStatus() is Success) {
               gotoRoute(context, '/login');
             } else {
               gotoRoute(context, '/connect');
@@ -79,7 +80,7 @@ GoRouter createRouter() {
               return;
             }
 
-            Result<EventSession> result_session = await server.loginEvent(key, pwd);
+            Result<EventSession> result_session = await api.loginEvent(key, pwd);
 
             if (result_session is! Success) {
               gotoRoute(context, '/login');

@@ -152,7 +152,7 @@ class LoginLandingPageState extends State<LoginLandingPage> {
           ),
           IconButton(
             onPressed: () async {
-              bool active = await navi.loginUser(context, session);
+              bool active = await navi.useUserSession(context, session);
               if (!active) navi.removeUserSession(session);
               _loadSessions();
             },
